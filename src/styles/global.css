@@ -1,82 +1,6 @@
-:root {
-  --bg: #151518;
-  --bg-deep: #0d0d11;
-  --surface: rgba(26, 30, 38, 0.92);
-  --surface-strong: #1d222b;
-  --surface-soft: #202632;
-  --surface-card: #1b2029;
-  --text: #f7f1ee;
-  --muted: #c6bcc0;
-  --line: rgba(121, 131, 147, 0.22);
-  --line-strong: rgba(137, 151, 171, 0.4);
-  --accent: #718096;
-  --accent-strong: #cfd7e2;
-  --status-pending-line: rgba(177, 159, 130, 0.5); /* Beige */
-  --status-pending-bg: rgba(177, 159, 130, 0.16);
-  --status-pending-fg: #b19f82;
-  --status-playing-line: rgba(75, 0, 130, 0.6); /* Indigo */
-  --status-playing-bg: rgba(75, 0, 130, 0.22);
-  --status-playing-fg: #c9a8ff;
-  --status-completed-line: rgba(147, 197, 114, 0.5); /* Pistachio */
-  --status-completed-bg: rgba(147, 197, 114, 0.16);
-  --status-completed-fg: #93c572;
-  --status-recurring-line: rgba(
-    75,
-    0,
-    130,
-    0.6
-  ); /* Indigo (igual que playing) */
-  --status-recurring-bg: rgba(75, 0, 130, 0.22);
-  --status-recurring-fg: #c9a8ff;
-  --status-wishlist-line: rgba(247, 99, 140, 0.5); /* Lollipop */
-  --status-wishlist-bg: rgba(247, 99, 140, 0.16);
-  --status-wishlist-fg: #f7638c;
-  --status-paused-line: rgba(197, 30, 58, 0.55); /* Patriot */
-  --status-paused-bg: rgba(197, 30, 58, 0.18);
-  --status-paused-fg: #c51e3a;
-  --status-abandoned-line: rgba(
-    197,
-    30,
-    58,
-    0.55
-  ); /* Patriot (igual que paused) */
-  --status-abandoned-bg: rgba(197, 30, 58, 0.18);
-  --status-abandoned-fg: #c51e3a;
-  --tag-free-line: rgba(255, 215, 0, 0.5); /* Gold */
-  --tag-free-bg: rgba(255, 215, 0, 0.14);
-  --tag-free-fg: #ffd700;
-  --price-profit-line: rgba(147, 197, 114, 0.5); /* Pistachio */
-  --price-profit-bg: rgba(147, 197, 114, 0.16);
-  --price-profit-fg: #93c572;
-  --price-profit-strong-line: rgba(147, 197, 114, 0.7); /* Pistachio fuerte */
-  --price-profit-strong-bg: rgba(147, 197, 114, 0.24);
-  --price-profit-strong-fg: #b8e096;
-  --price-neutral-line: rgba(142, 152, 170, 0.32);
-  --price-neutral-bg: rgba(142, 152, 170, 0.12);
-  --price-neutral-fg: #dce1ea;
-  --price-loss-line: rgba(197, 30, 58, 0.55); /* Patriot */
-  --price-loss-bg: rgba(197, 30, 58, 0.18);
-  --price-loss-fg: #c51e3a;
-  --price-loss-strong-line: rgba(197, 30, 58, 0.75); /* Patriot fuerte */
-  --price-loss-strong-bg: rgba(197, 30, 58, 0.28);
-  --price-loss-strong-fg: #e84060;
-  --tag-early-line: rgba(255, 117, 24, 0.5); /* Pumpkin */
-  --tag-early-bg: rgba(255, 117, 24, 0.14);
-  --tag-early-fg: #ff7518;
-  --hltb-long-line: rgba(143, 90, 255, 0.42);
-  --hltb-long-bg: rgba(143, 90, 255, 0.16);
-  --hltb-short-line: rgba(214, 80, 80, 0.42);
-  --hltb-short-bg: rgba(214, 80, 80, 0.16);
-  --shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
-  --app-radius-xl: 32px;
-  --app-radius-lg: 24px;
-  --app-radius-md: 18px;
-  --app-surface-1: rgba(20, 20, 24, 0.96);
-  --app-surface-2: rgba(29, 31, 38, 0.94);
-  --app-surface-3: rgba(39, 42, 50, 0.78);
-  --app-glow-red: rgba(126, 139, 158, 0.18);
-  font-family: Bahnschrift, 'Aptos', 'Segoe UI', sans-serif;
-}
+@import './theme.css';
+
+@layer global {
 
 [hidden] {
   display: none !important;
@@ -323,13 +247,17 @@
 
 html {
   color-scheme: dark;
+  background:
+    linear-gradient(rgba(8, 10, 14, 0.62), rgba(8, 10, 14, 0.82)),
+    url("/body.jpeg") center / cover fixed no-repeat;
+  background-color: #0b0e13;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
   color: var(--text);
-  background: #212121;
+  background: transparent;
 }
 
 body::before {
@@ -6534,3 +6462,5 @@ code {
     color: #c4b5fd !important;
   }
 }
+
+} /* end @layer global */

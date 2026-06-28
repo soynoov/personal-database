@@ -2,216 +2,196 @@
    badges.css — Estilos de badges: estado, launcher, plataforma, tag
    ================================================================
    Extraído de global.css para separación de responsabilidades.
-   Todos los badges usan fondo sólido para mayor legibilidad.
+   Todos los badges usan fondo sólido y esquinas redondeadas (no pill).
    Los colores nominales se conservan: pumpkin, patriot, pistachio,
-   lollipop, gold, etc. — solo se eliminó la transparencia del bg.
+   lollipop, gold, etc.
+
+   Prioridad de cascada: @layer badges es el último en declararse en
+   theme.css (@layer global, cards, badges), por lo que gana sobre
+   global y cards sin necesitar !important en ninguna propiedad.
    ================================================================ */
 
-/* ── Base ──────────────────────────────────────────────────── */
+@import './theme.css';
 
-.badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-}
+@layer badges {
+  /* ── Base ──────────────────────────────────────────────────── */
 
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.38rem;
-  min-height: 28px;
-  padding: 0.28rem 0.62rem;
-  border-radius: 10rem;
-  border: 1px solid var(--line);
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  font-size: 0.86rem;
-  white-space: nowrap;
-}
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
 
-.badge .launcher-inline-icon {
-  width: 0.95rem;
-  height: 0.95rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  color: #eef3f8;
-}
+  .badge {
+    font-family: 'Stack Sans Text', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 32px;
+    padding: 0.38rem 0.85rem;
+    border-radius: 10rem; /* pill effect */
+    font-size: 10px;
+    font-weight: 500;
+  }
 
-.badge .launcher-inline-icon svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  fill: currentColor;
-  stroke: none;
-}
+  .badge .launcher-inline-icon {
+    width: 0.95rem;
+    height: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    color: currentColor; /* hereda el color del badge */
+  }
 
-/* ── Estado ────────────────────────────────────────────────── */
+  .badge .launcher-inline-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    fill: currentColor;
+    stroke: none;
+  }
 
-.badge-status-default {
-  border-color: rgba(211, 211, 211, 0.3);
-  background: #1e2028;
-  color: #f3efef;
-}
+  /* ── Estado ────────────────────────────────────────────────── */
 
-.badge-status-pending {
-  border-color: var(--status-pending-fg);
-  background: #29251c; /* beige oscuro */
-  color: var(--status-pending-fg);
-}
+  .badge-status-default {
+    background: #22252e;
+    color: #d0ccd0;
+  }
 
-.badge-status-playing {
-  border-color: var(--status-playing-fg);
-  background: #180f35; /* índigo oscuro */
-  color: var(--status-playing-fg);
-}
+  .badge-status-pending {
+    background: #2e2212; /* beige / amber oscuro */
+    color: var(--status-pending-fg);
+  }
 
-.badge-status-completed {
-  border-color: var(--status-completed-fg);
-  background: #132b0c; /* pistachio oscuro */
-  color: var(--status-completed-fg);
-}
+  .badge-status-playing {
+    background: #1a1040; /* índigo oscuro */
+    color: var(--status-playing-fg);
+  }
 
-.badge-status-recurring {
-  border-color: var(--status-recurring-fg);
-  background: #180f35; /* índigo oscuro */
-  color: var(--status-recurring-fg);
-}
+  .badge-status-completed {
+    background: #0e2a08; /* pistachio oscuro */
+    color: var(--status-completed-fg);
+  }
 
-.badge-status-wishlist {
-  border-color: var(--status-wishlist-fg);
-  background: #30101d; /* lollipop oscuro */
-  color: var(--status-wishlist-fg);
-}
+  .badge-status-recurring {
+    background: #1a1040; /* índigo oscuro */
+    color: var(--status-recurring-fg);
+  }
 
-.badge-status-paused {
-  border-color: var(--status-paused-fg);
-  background: #27090f; /* patriot oscuro */
-  color: var(--status-paused-fg);
-}
+  .badge-status-wishlist {
+    background: #361018; /* lollipop oscuro */
+    color: var(--status-wishlist-fg);
+  }
 
-.badge-status-abandoned {
-  border-color: var(--status-abandoned-fg);
-  background: #27090f; /* patriot oscuro */
-  color: var(--status-abandoned-fg);
-}
+  .badge-status-paused {
+    background: #2e0810; /* patriot oscuro */
+    color: var(--status-paused-fg);
+  }
 
-/* ── Launcher ──────────────────────────────────────────────── */
+  .badge-status-abandoned {
+    background: #2e0810; /* patriot oscuro */
+    color: var(--status-abandoned-fg);
+  }
 
-.badge-launcher-default {
-  border-color: rgba(211, 211, 211, 0.3);
-  background: #1e2028;
-  color: #f3efef;
-}
+  /* ── Launcher ──────────────────────────────────────────────── */
 
-.badge-launcher-steam {
-  border-color: #a8c4f0;
-  background: #030f24; /* navy sólido */
-  color: #a8c4f0;
-}
+  .badge-launcher-default {
+    background: #22252e;
+    color: #d0ccd0;
+  }
 
-.badge-launcher-epic {
-  border-color: rgba(255, 255, 255, 0.5);
-  background: #1a1a1a;
-  color: #ffffff;
-}
+  .badge-launcher-steam {
+    background: #040e22; /* navy */
+    color: #a8c4f0;
+  }
 
-.badge-launcher-nintendo {
-  border-color: var(--status-paused-fg); /* patriot */
-  background: #27090f;
-  color: #c51e3a;
-}
+  .badge-launcher-epic {
+    background: #1c1c1c;
+    color: #e8e8e8;
+  }
 
-.badge-launcher-eshop {
-  border-color: var(--tag-early-fg); /* pumpkin */
-  background: #261100;
-  color: #ff7518;
-}
+  .badge-launcher-nintendo {
+    background: #2e0810; /* patriot */
+    color: #e05070;
+  }
 
-.badge-launcher-pirata {
-  border-color: rgba(255, 255, 255, 0.5);
-  background: #1a1a1a;
-  color: #ffffff;
-}
+  .badge-launcher-eshop {
+    background: #2a1200; /* pumpkin */
+    color: #ff7518;
+  }
 
-.badge-launcher-gamepass {
-  border-color: rgba(96, 214, 120, 0.7);
-  background: #0a2212;
-  color: #c9ffd3;
-}
+  .badge-launcher-pirata {
+    background: #1c1c1c;
+    color: #d0d0d0;
+  }
 
-.badge-launcher-riot {
-  border-color: rgba(255, 70, 70, 0.7);
-  background: #270a0a;
-  color: #ffcaca;
-}
+  .badge-launcher-gamepass {
+    background: #0a2214;
+    color: #7de89a;
+  }
 
-.badge-launcher-hoyoplay {
-  border-color: rgba(255, 190, 92, 0.7);
-  background: #261400;
-  color: #ffe1b0;
-}
+  .badge-launcher-riot {
+    background: #2a0c0c;
+    color: #ff8080;
+  }
 
-.badge-launcher-ea {
-  border-color: rgba(156, 123, 255, 0.7);
-  background: #1a0d30;
-  color: #dfd0ff;
-}
+  .badge-launcher-hoyoplay {
+    background: #2a1600;
+    color: #ffbe5c;
+  }
 
-.badge-launcher-ubisoft {
-  border-color: rgba(109, 168, 255, 0.7);
-  background: #0b1a2e;
-  color: #d1e4ff;
-}
+  .badge-launcher-ea {
+    background: #1c0e32;
+    color: #b89cff;
+  }
 
-.badge-launcher-gog {
-  border-color: rgba(205, 84, 255, 0.7);
-  background: #1c0a2e;
-  color: #f0c9ff;
-}
+  .badge-launcher-ubisoft {
+    background: #0c1c32;
+    color: #7eb4ff;
+  }
 
-.badge-launcher-itch {
-  border-color: rgba(255, 123, 123, 0.7);
-  background: #270d0d;
-  color: #ffd4d4;
-}
+  .badge-launcher-gog {
+    background: #1e0c30;
+    color: #d870ff;
+  }
 
-/* ── Plataforma ─────────────────────────────────────────────── */
+  .badge-launcher-itch {
+    background: #2a0e0e;
+    color: #ff9090;
+  }
 
-.badge-platform-default {
-  border-color: rgba(211, 211, 211, 0.3);
-  background: #1e2028;
-  color: #f3efef;
-}
+  /* ── Plataforma ─────────────────────────────────────────────── */
 
-.badge-platform-pc {
-  border-color: #555;
-  background: #080810; /* negro sólido */
-  color: #ffffff;
-}
+  .badge-platform-default {
+    background: #22252e;
+    color: #d0ccd0;
+  }
 
-.badge-platform-mobile {
-  border-color: rgba(255, 255, 255, 0.5);
-  background: #1e1e1e;
-  color: #ffffff;
-}
+  .badge-platform-pc {
+    background: #0a0a12; /* negro */
+    color: #d8d8e8;
+  }
 
-.badge-platform-switch {
-  border-color: var(--status-paused-fg); /* patriot */
-  background: #27090f;
-  color: #c51e3a;
-}
+  .badge-platform-mobile {
+    background: #1c1c22;
+    color: #d8d8d8;
+  }
 
-/* ── Tags ──────────────────────────────────────────────────── */
+  .badge-platform-switch {
+    background: #2e0810; /* patriot */
+    color: #e05070;
+  }
 
-.badge-tag-free {
-  border-color: var(--tag-free-fg); /* gold */
-  background: #1e1800;
-  color: var(--tag-free-fg);
-}
+  /* ── Tags ──────────────────────────────────────────────────── */
 
-.badge-tag-early {
-  border-color: var(--tag-early-fg); /* pumpkin */
-  background: #1e0d00;
-  color: var(--tag-early-fg);
-}
+  .badge-tag-free {
+    background: #1e1a00; /* gold */
+    color: var(--tag-free-fg);
+  }
+
+  .badge-tag-early {
+    background: #221000; /* pumpkin */
+    color: var(--tag-early-fg);
+  }
+} /* end @layer badges */
