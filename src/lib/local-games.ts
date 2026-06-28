@@ -35,14 +35,15 @@ export type LocalGame = {
   comentarios?: string | null;
   lanzamiento?: number | null;
   solo?: string | null;
-  cover_url?: string | null;
   cover_source?: string | null;
+  steam_store_name?: string | null;
+  steam_store_genres?: string[] | null;
+  steam_last_sync_at?: string | null;
   hltb_match?: string | null;
   dlcs?: {
     total?: number | null;
     items?: Array<{
       titulo: string;
-      cover_url?: string | null;
       cover_source?: string | null;
       steam_appid?: number | null;
       fecha_adquisicion?: string | null;

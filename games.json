@@ -18,7 +18,12 @@
     "hltb": 4.2,
     "cover_url": "https://howlongtobeat.com/games/131878_MiSide.jpg",
     "steam_appid": 2527500,
-    "generos": ["Aventura", "Indie", "Rol", "Simuladores"],
+    "generos": [
+      "Aventura",
+      "Indie",
+      "Rol",
+      "Simuladores"
+    ],
     "precio_pagado": null,
     "precio_actual": 14.79,
     "precio_salida": 14.79,
@@ -27,7 +32,13 @@
       "main": 4.2,
       "main_plus": 5,
       "completionist": 8.3
-    }
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Indie"
+    ],
+    "steam_store_name": "MiSide",
+    "steam_last_sync_at": "2026-06-28T11:24:56.854Z"
   },
   {
     "titulo": "Stray",
@@ -47,7 +58,7 @@
     "solo": "-",
     "hltb": 5.1,
     "cover_url": "https://howlongtobeat.com/games/79790_Stray_(2021).jpg",
-    "steam_appid": null,
+    "steam_appid": 1332010,
     "generos": null,
     "precio_pagado": 0,
     "precio_actual": 39.99,
@@ -77,7 +88,7 @@
     "solo": null,
     "hltb": 4.1,
     "cover_url": "https://howlongtobeat.com/games/Firewatch_maxresdefault.jpg",
-    "steam_appid": null,
+    "steam_appid": 383870,
     "generos": null,
     "precio_pagado": 0,
     "precio_actual": 39.99,
@@ -107,7 +118,7 @@
     "solo": null,
     "hltb": 8.2,
     "cover_url": "https://howlongtobeat.com/games/Ori_and_the_Blind_Forest_Logo.jpg",
-    "steam_appid": null,
+    "steam_appid": 387290,
     "generos": null,
     "precio_pagado": null,
     "precio_actual": null,
@@ -137,7 +148,7 @@
     "solo": null,
     "hltb": 12,
     "cover_url": "https://howlongtobeat.com/games/46428_Ori_and_the_Will_of_the_Wisps.jpg",
-    "steam_appid": null,
+    "steam_appid": 1057090,
     "generos": null,
     "precio_pagado": null,
     "precio_actual": null,
@@ -167,7 +178,7 @@
     "solo": "-",
     "hltb": 10.9,
     "cover_url": "https://howlongtobeat.com/games/65080_A_Plague_Tale_Innocence.jpeg",
-    "steam_appid": null,
+    "steam_appid": 752590,
     "generos": null,
     "precio_pagado": 0,
     "precio_actual": 39.99,
@@ -197,7 +208,7 @@
     "solo": "-",
     "hltb": 17,
     "cover_url": "https://howlongtobeat.com/games/93945_A_Plague_Tale_Requiem.jpg",
-    "steam_appid": null,
+    "steam_appid": 1182900,
     "generos": null,
     "precio_pagado": null,
     "precio_actual": null,
@@ -287,7 +298,10 @@
     "solo": null,
     "cover_url": "https://howlongtobeat.com/games/71509_Paralives.jpg",
     "steam_appid": 1118520,
-    "generos": ["Simuladores", "Acceso anticipado"],
+    "generos": [
+      "Simuladores",
+      "Acceso anticipado"
+    ],
     "precio_pagado": null,
     "precio_actual": 38.99,
     "precio_salida": 38.99,
@@ -297,7 +311,13 @@
       "main": 7.8,
       "main_plus": null,
       "completionist": null
-    }
+    },
+    "steam_store_genres": [
+      "Simuladores",
+      "Acceso anticipado"
+    ],
+    "steam_store_name": "Paralives",
+    "steam_last_sync_at": "2026-06-28T11:24:57.347Z"
   },
   {
     "titulo": "Baldur's Gate 3",
@@ -318,7 +338,11 @@
     "hltb": 72.9,
     "cover_url": "https://howlongtobeat.com/games/68033_Baldurs_Gate_3.jpg",
     "steam_appid": 1086940,
-    "generos": ["Aventura", "Rol", "Estrategia"],
+    "generos": [
+      "Aventura",
+      "Rol",
+      "Estrategia"
+    ],
     "precio_pagado": null,
     "precio_actual": 59.99,
     "precio_salida": 59.99,
@@ -327,7 +351,13 @@
       "main": 72.9,
       "main_plus": 116.3,
       "completionist": 181.1
-    }
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Rol"
+    ],
+    "steam_store_name": "Baldur's Gate 3",
+    "steam_last_sync_at": "2026-06-28T11:24:57.858Z"
   },
   {
     "titulo": "Cult of the Lamb",
@@ -348,7 +378,12 @@
     "hltb": 14.7,
     "cover_url": "https://howlongtobeat.com/games/97313_Cult_of_the_Lamb.jpg",
     "steam_appid": 1313140,
-    "generos": ["Acción", "Aventura", "Indie", "Estrategia"],
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Indie",
+      "Estrategia"
+    ],
     "precio_pagado": null,
     "precio_actual": 11.49,
     "precio_salida": 22.99,
@@ -357,7 +392,13 @@
       "main": 14.7,
       "main_plus": 20,
       "completionist": 30.1
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Cult of the Lamb",
+    "steam_last_sync_at": "2026-06-28T11:24:58.461Z"
   },
   {
     "titulo": "Cuphead",
@@ -378,7 +419,10 @@
     "hltb": 10.5,
     "cover_url": "https://howlongtobeat.com/games/cuphead-250.jpg",
     "steam_appid": 268910,
-    "generos": ["Acción", "Indie"],
+    "generos": [
+      "Acción",
+      "Indie"
+    ],
     "precio_pagado": null,
     "precio_actual": 11.99,
     "precio_salida": 19.99,
@@ -399,7 +443,13 @@
       "main": 10.5,
       "main_plus": 16.1,
       "completionist": 28
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Indie"
+    ],
+    "steam_store_name": "Cuphead",
+    "steam_last_sync_at": "2026-06-28T11:24:59.008Z"
   },
   {
     "titulo": "Dispatch",
@@ -420,7 +470,13 @@
     "hltb": 8.6,
     "cover_url": "https://howlongtobeat.com/games/160618_Dispatch.jpg",
     "steam_appid": 2592160,
-    "generos": ["Acción", "Aventura", "Casual", "Indie", "Estrategia"],
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Casual",
+      "Indie",
+      "Estrategia"
+    ],
     "precio_pagado": null,
     "precio_actual": 23.19,
     "precio_salida": 28.99,
@@ -429,7 +485,13 @@
       "main": 8.6,
       "main_plus": 10.3,
       "completionist": 20.2
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Dispatch",
+    "steam_last_sync_at": "2026-06-28T11:24:59.527Z"
   },
   {
     "titulo": "Farming Simulator 22",
@@ -450,7 +512,9 @@
     "hltb": 163.3,
     "cover_url": "https://howlongtobeat.com/games/100591_Farming_Simulator_22.jpg",
     "steam_appid": 1248130,
-    "generos": ["Simuladores"],
+    "generos": [
+      "Simuladores"
+    ],
     "precio_pagado": null,
     "precio_actual": 19.99,
     "precio_salida": 19.99,
@@ -459,7 +523,12 @@
       "main": 163.3,
       "main_plus": 216.4,
       "completionist": 269.3
-    }
+    },
+    "steam_store_genres": [
+      "Simuladores"
+    ],
+    "steam_store_name": "Farming Simulator 22",
+    "steam_last_sync_at": "2026-06-28T11:25:00.099Z"
   },
   {
     "titulo": "Forager",
@@ -480,7 +549,12 @@
     "hltb": 15.4,
     "cover_url": "https://howlongtobeat.com/games/62412_Forager.jpg",
     "steam_appid": 751780,
-    "generos": ["Acción", "Aventura", "Indie", "Simuladores"],
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Indie",
+      "Simuladores"
+    ],
     "precio_pagado": null,
     "precio_actual": 19.99,
     "precio_salida": 19.99,
@@ -489,7 +563,13 @@
       "main": 15.4,
       "main_plus": 24.9,
       "completionist": 42.6
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Forager",
+    "steam_last_sync_at": "2026-06-28T11:25:00.627Z"
   },
   {
     "titulo": "Grand Theft Auto V Enhanced",
@@ -510,7 +590,11 @@
     "hltb": 32,
     "cover_url": "https://howlongtobeat.com/games/4064_Grand_Theft_Auto_V.jpg",
     "steam_appid": 3240220,
-    "generos": ["Acción", "Aventura", "Carreras"],
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Carreras"
+    ],
     "precio_pagado": null,
     "precio_actual": 29.99,
     "precio_salida": 29.99,
@@ -519,7 +603,13 @@
       "main": 32,
       "main_plus": 51.5,
       "completionist": 88.8
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Grand Theft Auto V Enhanced",
+    "steam_last_sync_at": "2026-06-28T11:25:01.140Z"
   },
   {
     "titulo": "Marvel Rivals",
@@ -541,16 +631,27 @@
     "hltb": 18.2,
     "cover_url": "https://howlongtobeat.com/games/147712_Marvel_Rivals.jpg",
     "steam_appid": 2767030,
-    "generos": ["Acción", "Free to Play"],
+    "generos": [
+      "Acción",
+      "Free to Play"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 18.2,
       "main_plus": 58.7,
       "completionist": 130.4
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Free to Play"
+    ],
+    "steam_store_name": "Marvel Rivals",
+    "steam_last_sync_at": "2026-06-28T11:25:01.642Z"
   },
   {
     "titulo": "Muse Dash",
@@ -571,7 +672,11 @@
     "hltb": 6.8,
     "cover_url": "https://howlongtobeat.com/games/66633_Muse_Dash.jpg",
     "steam_appid": 774171,
-    "generos": ["Acción", "Casual", "Indie"],
+    "generos": [
+      "Acción",
+      "Casual",
+      "Indie"
+    ],
     "precio_pagado": null,
     "precio_actual": 3.49,
     "precio_salida": 3.49,
@@ -580,7 +685,13 @@
       "main": 6.8,
       "main_plus": 14.9,
       "completionist": 23.6
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Casual"
+    ],
+    "steam_store_name": "Muse Dash",
+    "steam_last_sync_at": "2026-06-28T11:25:02.106Z"
   },
   {
     "titulo": "Phasmophobia",
@@ -601,7 +712,11 @@
     "hltb": 20.1,
     "cover_url": "https://howlongtobeat.com/games/83704_Phasmophobia.jpg",
     "steam_appid": 739630,
-    "generos": ["Acción", "Indie", "Acceso anticipado"],
+    "generos": [
+      "Acción",
+      "Indie",
+      "Acceso anticipado"
+    ],
     "precio_pagado": null,
     "precio_actual": 18.99,
     "precio_salida": 18.99,
@@ -610,7 +725,13 @@
       "main": 20.1,
       "main_plus": 41.5,
       "completionist": 133.7
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Indie"
+    ],
+    "steam_store_name": "Phasmophobia",
+    "steam_last_sync_at": "2026-06-28T11:25:02.646Z"
   },
   {
     "titulo": "R.E.P.O.",
@@ -631,7 +752,10 @@
     "hltb": 9.8,
     "cover_url": "https://howlongtobeat.com/games/164698_repo.jpg",
     "steam_appid": 3241660,
-    "generos": ["Acción", "Acceso anticipado"],
+    "generos": [
+      "Acción",
+      "Acceso anticipado"
+    ],
     "precio_pagado": null,
     "precio_actual": 6.64,
     "precio_salida": 9.49,
@@ -640,7 +764,13 @@
       "main": 9.8,
       "main_plus": 9.9,
       "completionist": 36.3
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Acceso anticipado"
+    ],
+    "steam_store_name": "R.E.P.O.",
+    "steam_last_sync_at": "2026-06-28T11:25:03.136Z"
   },
   {
     "titulo": "Satisfactory",
@@ -661,7 +791,12 @@
     "hltb": 106.6,
     "cover_url": "https://howlongtobeat.com/games/65835_Satisfactory.png",
     "steam_appid": 526870,
-    "generos": ["Aventura", "Indie", "Simuladores", "Estrategia"],
+    "generos": [
+      "Aventura",
+      "Indie",
+      "Simuladores",
+      "Estrategia"
+    ],
     "precio_pagado": null,
     "precio_actual": 38.99,
     "precio_salida": 38.99,
@@ -670,7 +805,13 @@
       "main": 106.6,
       "main_plus": 145.5,
       "completionist": 224
-    }
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Indie"
+    ],
+    "steam_store_name": "Satisfactory",
+    "steam_last_sync_at": "2026-06-28T11:25:03.598Z"
   },
   {
     "titulo": "Schedule I",
@@ -706,7 +847,13 @@
       "main": 16.6,
       "main_plus": 37.5,
       "completionist": 47.3
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Indie"
+    ],
+    "steam_store_name": "Schedule I",
+    "steam_last_sync_at": "2026-06-28T11:25:04.115Z"
   },
   {
     "titulo": "Star Birds",
@@ -742,7 +889,13 @@
       "main": null,
       "main_plus": 9.9,
       "completionist": 22
-    }
+    },
+    "steam_store_genres": [
+      "Casual",
+      "Indie"
+    ],
+    "steam_store_name": "Star Birds",
+    "steam_last_sync_at": "2026-06-28T11:25:04.585Z"
   },
   {
     "titulo": "Metro: Last Light Complete Edition",
@@ -761,7 +914,7 @@
     "solo": "x",
     "hltb": 10.3,
     "cover_url": "https://howlongtobeat.com/games/5947_Metro_Last_Light.jpg",
-    "steam_appid": null,
+    "steam_appid": 287390,
     "generos": null,
     "precio_pagado": null,
     "precio_actual": null,
@@ -792,11 +945,18 @@
     "hltb": 5.6,
     "cover_url": "https://howlongtobeat.com/games/151136_Mini_Airways.jpg",
     "steam_appid": 2554700,
-    "generos": ["Casual", "Indie", "Simuladores", "Estrategia"],
+    "generos": [
+      "Casual",
+      "Indie",
+      "Simuladores",
+      "Estrategia"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 5.6,
       "main_plus": 20,
@@ -822,7 +982,11 @@
     "hltb": 6.6,
     "cover_url": "https://howlongtobeat.com/games/70788_Mini_Motorways.jpg",
     "steam_appid": 1127500,
-    "generos": ["Casual", "Simuladores", "Estrategia"],
+    "generos": [
+      "Casual",
+      "Simuladores",
+      "Estrategia"
+    ],
     "precio_pagado": null,
     "precio_actual": 8.19,
     "precio_salida": 8.19,
@@ -831,7 +995,13 @@
       "main": 6.6,
       "main_plus": 12.2,
       "completionist": 45
-    }
+    },
+    "steam_store_genres": [
+      "Casual",
+      "Simuladores"
+    ],
+    "steam_store_name": "Mini Motorways",
+    "steam_last_sync_at": "2026-06-28T11:25:05.590Z"
   },
   {
     "titulo": "Monster Hunter: World",
@@ -852,7 +1022,9 @@
     "hltb": 46.5,
     "cover_url": "https://howlongtobeat.com/games/52493_Monster_Hunter_World.jpg",
     "steam_appid": 582010,
-    "generos": ["Acción"],
+    "generos": [
+      "Acción"
+    ],
     "precio_pagado": null,
     "precio_actual": 7.79,
     "precio_salida": 29.99,
@@ -861,7 +1033,12 @@
       "main": 46.5,
       "main_plus": 115.4,
       "completionist": 430.5
-    }
+    },
+    "steam_store_genres": [
+      "Acción"
+    ],
+    "steam_store_name": "Monster Hunter: World",
+    "steam_last_sync_at": "2026-06-28T11:25:06.623Z"
   },
   {
     "titulo": "MultiVersus",
@@ -881,7 +1058,7 @@
     "solo": "-",
     "hltb": 6.5,
     "cover_url": "https://howlongtobeat.com/games/100706_MultiVersus.jpg",
-    "steam_appid": null,
+    "steam_appid": 1818750,
     "generos": null,
     "precio_pagado": null,
     "precio_actual": null,
@@ -912,7 +1089,11 @@
     "hltb": 5.1,
     "cover_url": "https://howlongtobeat.com/games/Outlast_cover.jpg",
     "steam_appid": 238320,
-    "generos": ["Acción", "Aventura", "Indie"],
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Indie"
+    ],
     "precio_pagado": null,
     "precio_actual": 14.79,
     "precio_salida": 14.79,
@@ -921,7 +1102,13 @@
       "main": 5.1,
       "main_plus": 7.3,
       "completionist": 11.4
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Outlast",
+    "steam_last_sync_at": "2026-06-28T11:25:07.095Z"
   },
   {
     "titulo": "PAYDAY 2",
@@ -942,7 +1129,10 @@
     "hltb": 27.1,
     "cover_url": "https://howlongtobeat.com/games/12649_Payday_2.jpg",
     "steam_appid": 218620,
-    "generos": ["Acción", "Rol"],
+    "generos": [
+      "Acción",
+      "Rol"
+    ],
     "precio_pagado": null,
     "precio_actual": 9.49,
     "precio_salida": 9.49,
@@ -951,7 +1141,13 @@
       "main": 27.1,
       "main_plus": 155,
       "completionist": 538
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Rol"
+    ],
+    "steam_store_name": "PAYDAY 2",
+    "steam_last_sync_at": "2026-06-28T11:25:07.807Z"
   },
   {
     "titulo": "Plague Inc: Evolved",
@@ -972,7 +1168,12 @@
     "hltb": 3.6,
     "cover_url": "https://howlongtobeat.com/games/Plague_Inc_Evolved.jpg",
     "steam_appid": 246620,
-    "generos": ["Casual", "Indie", "Simuladores", "Estrategia"],
+    "generos": [
+      "Casual",
+      "Indie",
+      "Simuladores",
+      "Estrategia"
+    ],
     "precio_pagado": null,
     "precio_actual": 14.79,
     "precio_salida": 14.79,
@@ -981,7 +1182,13 @@
       "main": 3.6,
       "main_plus": 14.6,
       "completionist": 54.8
-    }
+    },
+    "steam_store_genres": [
+      "Casual",
+      "Indie"
+    ],
+    "steam_store_name": "Plague Inc: Evolved",
+    "steam_last_sync_at": "2026-06-28T11:25:08.388Z"
   },
   {
     "titulo": "Portal 2",
@@ -1002,7 +1209,10 @@
     "hltb": 8.5,
     "cover_url": "https://howlongtobeat.com/games/Portal2cover.jpg",
     "steam_appid": 620,
-    "generos": ["Acción", "Aventura"],
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
     "precio_pagado": null,
     "precio_actual": 9.75,
     "precio_salida": 9.75,
@@ -1011,7 +1221,13 @@
       "main": 8.5,
       "main_plus": 13.7,
       "completionist": 22.5
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Portal 2",
+    "steam_last_sync_at": "2026-06-28T11:25:08.855Z"
   },
   {
     "titulo": "Potion Craft: Alchemist Simulator",
@@ -1032,7 +1248,10 @@
     "hltb": 17.8,
     "cover_url": "https://howlongtobeat.com/games/92845_Potion_Craft_Alchemist_Simulator.jpg",
     "steam_appid": 1210320,
-    "generos": ["Indie", "Simuladores"],
+    "generos": [
+      "Indie",
+      "Simuladores"
+    ],
     "precio_pagado": null,
     "precio_actual": 19.5,
     "precio_salida": 19.5,
@@ -1041,7 +1260,13 @@
       "main": 17.8,
       "main_plus": 21.3,
       "completionist": 29.9
-    }
+    },
+    "steam_store_genres": [
+      "Indie",
+      "Simuladores"
+    ],
+    "steam_store_name": "Potion Craft: Alchemist Simulator",
+    "steam_last_sync_at": "2026-06-28T11:25:09.398Z"
   },
   {
     "titulo": "Raft",
@@ -1062,7 +1287,11 @@
     "hltb": 25.4,
     "cover_url": "https://howlongtobeat.com/games/56668_Raft.jpg",
     "steam_appid": 648800,
-    "generos": ["Aventura", "Indie", "Simuladores"],
+    "generos": [
+      "Aventura",
+      "Indie",
+      "Simuladores"
+    ],
     "precio_pagado": null,
     "precio_actual": 20.49,
     "precio_salida": 20.49,
@@ -1071,7 +1300,13 @@
       "main": 25.4,
       "main_plus": 36.2,
       "completionist": 69.9
-    }
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Indie"
+    ],
+    "steam_store_name": "Raft",
+    "steam_last_sync_at": "2026-06-28T11:25:09.905Z"
   },
   {
     "titulo": "Reigns: Her Majesty",
@@ -1092,7 +1327,11 @@
     "hltb": 3.5,
     "cover_url": "https://howlongtobeat.com/games/51322_Reigns_Her_Majesty.jpg",
     "steam_appid": 717640,
-    "generos": ["Casual", "Indie", "Simuladores"],
+    "generos": [
+      "Casual",
+      "Indie",
+      "Simuladores"
+    ],
     "precio_pagado": null,
     "precio_actual": 0.98,
     "precio_salida": 2.99,
@@ -1101,7 +1340,13 @@
       "main": 3.5,
       "main_plus": 10.2,
       "completionist": 26.6
-    }
+    },
+    "steam_store_genres": [
+      "Casual",
+      "Indie"
+    ],
+    "steam_store_name": "Reigns: Her Majesty",
+    "steam_last_sync_at": "2026-06-28T11:25:10.439Z"
   },
   {
     "titulo": "Rocket League",
@@ -1122,7 +1367,7 @@
     "solo": "-",
     "hltb": 4.7,
     "cover_url": "https://howlongtobeat.com/games/Rocket_League_header.jpg",
-    "steam_appid": null,
+    "steam_appid": 252950,
     "generos": null,
     "precio_pagado": null,
     "precio_actual": null,
@@ -1132,7 +1377,13 @@
       "main": 4.7,
       "main_plus": 26.6,
       "completionist": 105.5
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Indie"
+    ],
+    "steam_store_name": "Rocket League®",
+    "steam_last_sync_at": "2026-06-28T11:25:11.003Z"
   },
   {
     "titulo": "Sekiro: Shadows Die Twice",
@@ -1153,7 +1404,10 @@
     "hltb": 30.2,
     "cover_url": "https://howlongtobeat.com/games/57415_Sekiro_Shadows_Die_Twice.jpg",
     "steam_appid": 814380,
-    "generos": ["Acción", "Aventura"],
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
     "precio_pagado": null,
     "precio_actual": 59.99,
     "precio_salida": 59.99,
@@ -1162,7 +1416,13 @@
       "main": 30.2,
       "main_plus": 42.9,
       "completionist": 69.8
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Sekiro™: Shadows Die Twice - GOTY Edition",
+    "steam_last_sync_at": "2026-06-28T11:25:11.498Z"
   },
   {
     "titulo": "Sid Meier's Civilization VI",
@@ -1183,7 +1443,9 @@
     "hltb": 23.3,
     "cover_url": "https://howlongtobeat.com/games/37867_Sid_Meiers_Civilization_VI.jpg",
     "steam_appid": 289070,
-    "generos": ["Estrategia"],
+    "generos": [
+      "Estrategia"
+    ],
     "precio_pagado": null,
     "precio_actual": 59.99,
     "precio_salida": 59.99,
@@ -1192,7 +1454,12 @@
       "main": 23.3,
       "main_plus": 98.4,
       "completionist": 387.6
-    }
+    },
+    "steam_store_genres": [
+      "Estrategia"
+    ],
+    "steam_store_name": "Sid Meier’s Civilization® VI",
+    "steam_last_sync_at": "2026-06-28T11:25:11.994Z"
   },
   {
     "titulo": "Slime Rancher 2",
@@ -1213,7 +1480,13 @@
     "hltb": 12,
     "cover_url": "https://howlongtobeat.com/games/94769_Slime_Rancher_2.jpg",
     "steam_appid": 1657630,
-    "generos": ["Acción", "Aventura", "Casual", "Indie", "Simuladores"],
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Casual",
+      "Indie",
+      "Simuladores"
+    ],
     "precio_pagado": null,
     "precio_actual": 28.49,
     "precio_salida": 28.49,
@@ -1222,7 +1495,13 @@
       "main": 12,
       "main_plus": 24.7,
       "completionist": 42.3
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Slime Rancher 2",
+    "steam_last_sync_at": "2026-06-28T11:25:12.502Z"
   },
   {
     "titulo": "Soulworker",
@@ -1242,17 +1521,30 @@
     "solo": null,
     "cover_url": "https://howlongtobeat.com/games/53770_SoulWorker.jpg",
     "steam_appid": 1377580,
-    "generos": ["Acción", "Multijugador masivo", "Rol", "Free to Play"],
+    "generos": [
+      "Acción",
+      "Multijugador masivo",
+      "Rol",
+      "Free to Play"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb": 52.5,
     "hltb_breakdown": {
       "main": 52.5,
       "main_plus": null,
       "completionist": null
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Multijugador masivo"
+    ],
+    "steam_store_name": "Soulworker",
+    "steam_last_sync_at": "2026-06-28T11:25:12.941Z"
   },
   {
     "titulo": "Stacklands",
@@ -1273,7 +1565,11 @@
     "hltb": 6.5,
     "cover_url": "https://howlongtobeat.com/games/106758_Stacklands.jpg",
     "steam_appid": 1948280,
-    "generos": ["Casual", "Indie", "Simuladores"],
+    "generos": [
+      "Casual",
+      "Indie",
+      "Simuladores"
+    ],
     "precio_pagado": null,
     "precio_actual": 7.99,
     "precio_salida": 7.99,
@@ -1282,7 +1578,13 @@
       "main": 6.5,
       "main_plus": 10.8,
       "completionist": 12.5
-    }
+    },
+    "steam_store_genres": [
+      "Casual",
+      "Indie"
+    ],
+    "steam_store_name": "Stacklands",
+    "steam_last_sync_at": "2026-06-28T11:25:13.402Z"
   },
   {
     "titulo": "Stardew Valley",
@@ -1303,7 +1605,11 @@
     "hltb": 53.4,
     "cover_url": "https://howlongtobeat.com/games/34716_Stardew_Valley.jpg",
     "steam_appid": 413150,
-    "generos": ["Indie", "Rol", "Simuladores"],
+    "generos": [
+      "Indie",
+      "Rol",
+      "Simuladores"
+    ],
     "precio_pagado": null,
     "precio_actual": 13.99,
     "precio_salida": 13.99,
@@ -1312,7 +1618,13 @@
       "main": 53.4,
       "main_plus": 94.7,
       "completionist": 171.8
-    }
+    },
+    "steam_store_genres": [
+      "Indie",
+      "Rol"
+    ],
+    "steam_store_name": "Stardew Valley",
+    "steam_last_sync_at": "2026-06-28T11:25:13.862Z"
   },
   {
     "titulo": "Surviving Mars",
@@ -1333,7 +1645,10 @@
     "hltb": 22.2,
     "cover_url": "https://howlongtobeat.com/games/45951_Surviving_Mars.jpg",
     "steam_appid": 3215050,
-    "generos": ["Simuladores", "Estrategia"],
+    "generos": [
+      "Simuladores",
+      "Estrategia"
+    ],
     "precio_pagado": null,
     "precio_actual": 39.99,
     "precio_salida": 39.99,
@@ -1342,7 +1657,13 @@
       "main": 22.2,
       "main_plus": 45.9,
       "completionist": 190.3
-    }
+    },
+    "steam_store_genres": [
+      "Simuladores",
+      "Estrategia"
+    ],
+    "steam_store_name": "Surviving Mars: Relaunched",
+    "steam_last_sync_at": "2026-06-28T11:25:14.360Z"
   },
   {
     "titulo": "Terraria",
@@ -1363,7 +1684,12 @@
     "hltb": 51.8,
     "cover_url": "https://howlongtobeat.com/games/9705_Terraria.jpg",
     "steam_appid": 105600,
-    "generos": ["Acción", "Aventura", "Indie", "Rol"],
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Indie",
+      "Rol"
+    ],
     "precio_pagado": null,
     "precio_actual": 9.75,
     "precio_salida": 9.75,
@@ -1372,7 +1698,13 @@
       "main": 51.8,
       "main_plus": 92,
       "completionist": 205.8
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Terraria",
+    "steam_last_sync_at": "2026-06-28T11:25:14.894Z"
   },
   {
     "titulo": "The Binding of Isaac: Rebirth",
@@ -1393,7 +1725,9 @@
     "hltb": 5.6,
     "cover_url": "https://howlongtobeat.com/games/TheBindingofIsaacRebirth.jpg",
     "steam_appid": 250900,
-    "generos": ["Acción"],
+    "generos": [
+      "Acción"
+    ],
     "precio_pagado": null,
     "precio_actual": 14.99,
     "precio_salida": 14.99,
@@ -1402,7 +1736,12 @@
       "main": 5.6,
       "main_plus": 98.5,
       "completionist": 386.5
-    }
+    },
+    "steam_store_genres": [
+      "Acción"
+    ],
+    "steam_store_name": "The Binding of Isaac: Rebirth",
+    "steam_last_sync_at": "2026-06-28T11:25:15.377Z"
   },
   {
     "titulo": "The Elder Scrolls V: Skyrim",
@@ -1423,7 +1762,9 @@
     "hltb": 34.7,
     "cover_url": "https://howlongtobeat.com/games/9859_The_Elder_Scrolls_V_Skyrim.jpg",
     "steam_appid": 489830,
-    "generos": ["Rol"],
+    "generos": [
+      "Rol"
+    ],
     "precio_pagado": null,
     "precio_actual": 39.99,
     "precio_salida": 39.99,
@@ -1432,7 +1773,12 @@
       "main": 34.7,
       "main_plus": 109.7,
       "completionist": 237.4
-    }
+    },
+    "steam_store_genres": [
+      "Rol"
+    ],
+    "steam_store_name": "The Elder Scrolls V: Skyrim Special Edition",
+    "steam_last_sync_at": "2026-06-28T11:25:15.877Z"
   },
   {
     "titulo": "The Escapists",
@@ -1453,7 +1799,13 @@
     "hltb": 19.4,
     "cover_url": "https://howlongtobeat.com/games/TheEscapistsheader.jpg",
     "steam_appid": 298630,
-    "generos": ["Acción", "Aventura", "Indie", "Simuladores", "Estrategia"],
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Indie",
+      "Simuladores",
+      "Estrategia"
+    ],
     "precio_pagado": null,
     "precio_actual": 2.99,
     "precio_salida": 14.99,
@@ -1462,7 +1814,13 @@
       "main": 19.4,
       "main_plus": 42.5,
       "completionist": 44.4
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "The Escapists",
+    "steam_last_sync_at": "2026-06-28T11:25:16.359Z"
   },
   {
     "titulo": "The Walking Dead: The Telltale Definitive Series",
@@ -1483,7 +1841,9 @@
     "hltb": 42.2,
     "cover_url": "https://howlongtobeat.com/games/69341_The_Walking_Dead_The_Telltale_Definitive_Series.jpg",
     "steam_appid": 1449690,
-    "generos": ["Aventura"],
+    "generos": [
+      "Aventura"
+    ],
     "precio_pagado": null,
     "precio_actual": 48.99,
     "precio_salida": 48.99,
@@ -1492,7 +1852,12 @@
       "main": 42.2,
       "main_plus": 47.5,
       "completionist": 48.2
-    }
+    },
+    "steam_store_genres": [
+      "Aventura"
+    ],
+    "steam_store_name": "The Walking Dead: The Telltale Definitive Series",
+    "steam_last_sync_at": "2026-06-28T11:25:16.833Z"
   },
   {
     "titulo": "The Witcher 3: Wild Hunt",
@@ -1513,7 +1878,9 @@
     "hltb": 51.6,
     "cover_url": "https://howlongtobeat.com/games/10270_The_Witcher_3_Wild_Hunt.jpg",
     "steam_appid": 292030,
-    "generos": ["Rol"],
+    "generos": [
+      "Rol"
+    ],
     "precio_pagado": null,
     "precio_actual": 29.99,
     "precio_salida": 29.99,
@@ -1522,7 +1889,12 @@
       "main": 51.6,
       "main_plus": 103.7,
       "completionist": 174.4
-    }
+    },
+    "steam_store_genres": [
+      "Rol"
+    ],
+    "steam_store_name": "The Witcher 3: Wild Hunt",
+    "steam_last_sync_at": "2026-06-28T11:25:17.351Z"
   },
   {
     "titulo": "The Witness",
@@ -1543,7 +1915,10 @@
     "hltb": 16.9,
     "cover_url": "https://howlongtobeat.com/games/250px-The_witness_poster.jpg",
     "steam_appid": 210970,
-    "generos": ["Aventura", "Indie"],
+    "generos": [
+      "Aventura",
+      "Indie"
+    ],
     "precio_pagado": null,
     "precio_actual": 7.39,
     "precio_salida": 36.99,
@@ -1552,7 +1927,13 @@
       "main": 16.9,
       "main_plus": 24.3,
       "completionist": 37.4
-    }
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Indie"
+    ],
+    "steam_store_name": "The Witness",
+    "steam_last_sync_at": "2026-06-28T11:25:17.828Z"
   },
   {
     "titulo": "Tom Clancy's Rainbow Six Siege",
@@ -1573,16 +1954,27 @@
     "hltb": 3.3,
     "cover_url": "https://howlongtobeat.com/games/Rainbow_Six_siege_photo_2014-06-14_17-51.jpg",
     "steam_appid": 359550,
-    "generos": ["Acción", "Free to Play"],
+    "generos": [
+      "Acción",
+      "Free to Play"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 3.3,
       "main_plus": 26.4,
       "completionist": 169.1
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Free to Play"
+    ],
+    "steam_store_name": "Tom Clancy's Rainbow Six Siege",
+    "steam_last_sync_at": "2026-06-28T11:25:18.527Z"
   },
   {
     "titulo": "Tomb Raider",
@@ -1603,7 +1995,10 @@
     "hltb": 11.3,
     "cover_url": "https://howlongtobeat.com/games/256px-Tr2011cover.jpg",
     "steam_appid": 203160,
-    "generos": ["Acción", "Aventura"],
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
     "precio_pagado": null,
     "precio_actual": 19.99,
     "precio_salida": 19.99,
@@ -1612,7 +2007,13 @@
       "main": 11.3,
       "main_plus": 15.5,
       "completionist": 20.9
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Tomb Raider Game of the Year",
+    "steam_last_sync_at": "2026-06-28T11:25:19.086Z"
   },
   {
     "titulo": "Townscaper",
@@ -1633,7 +2034,11 @@
     "hltb": 0.8,
     "cover_url": "https://howlongtobeat.com/games/80672_Townscaper.jpg",
     "steam_appid": 1291340,
-    "generos": ["Casual", "Indie", "Simuladores"],
+    "generos": [
+      "Casual",
+      "Indie",
+      "Simuladores"
+    ],
     "precio_pagado": null,
     "precio_actual": 5.99,
     "precio_salida": 5.99,
@@ -1642,7 +2047,13 @@
       "main": 0.8,
       "main_plus": 0.9,
       "completionist": 2.8
-    }
+    },
+    "steam_store_genres": [
+      "Casual",
+      "Indie"
+    ],
+    "steam_store_name": "Townscaper",
+    "steam_last_sync_at": "2026-06-28T11:25:19.550Z"
   },
   {
     "titulo": "Undertale",
@@ -1663,7 +2074,10 @@
     "hltb": 7,
     "cover_url": "https://howlongtobeat.com/games/30385_Undertale.png",
     "steam_appid": 391540,
-    "generos": ["Indie", "Rol"],
+    "generos": [
+      "Indie",
+      "Rol"
+    ],
     "precio_pagado": null,
     "precio_actual": 2.49,
     "precio_salida": 9.99,
@@ -1672,7 +2086,13 @@
       "main": 7,
       "main_plus": 11.3,
       "completionist": 20.7
-    }
+    },
+    "steam_store_genres": [
+      "Indie",
+      "Rol"
+    ],
+    "steam_store_name": "Undertale",
+    "steam_last_sync_at": "2026-06-28T11:25:20.044Z"
   },
   {
     "titulo": "Unpacking",
@@ -1693,7 +2113,11 @@
     "hltb": 3.6,
     "cover_url": "https://howlongtobeat.com/games/69666_Unpacking_(2021).jpg",
     "steam_appid": 1135690,
-    "generos": ["Casual", "Indie", "Simuladores"],
+    "generos": [
+      "Casual",
+      "Indie",
+      "Simuladores"
+    ],
     "precio_pagado": null,
     "precio_actual": 19.99,
     "precio_salida": 19.99,
@@ -1702,7 +2126,13 @@
       "main": 3.6,
       "main_plus": 4.2,
       "completionist": 4.3
-    }
+    },
+    "steam_store_genres": [
+      "Casual",
+      "Indie"
+    ],
+    "steam_store_name": "Unpacking",
+    "steam_last_sync_at": "2026-06-28T11:25:20.541Z"
   },
   {
     "titulo": "Urban Rivals",
@@ -1733,13 +2163,21 @@
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb": null,
     "hltb_breakdown": {
       "main": null,
       "main_plus": null,
       "completionist": null
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Indie"
+    ],
+    "steam_store_name": "Urban Rivals",
+    "steam_last_sync_at": "2026-06-28T11:25:21.002Z"
   },
   {
     "titulo": "XCOM 2",
@@ -1760,7 +2198,9 @@
     "hltb": 33.2,
     "cover_url": "https://howlongtobeat.com/games/XCOM_2_2015.jpg",
     "steam_appid": 268500,
-    "generos": ["Estrategia"],
+    "generos": [
+      "Estrategia"
+    ],
     "precio_pagado": null,
     "precio_actual": 19.99,
     "precio_salida": 19.99,
@@ -1769,7 +2209,12 @@
       "main": 33.2,
       "main_plus": 48,
       "completionist": 89.5
-    }
+    },
+    "steam_store_genres": [
+      "Estrategia"
+    ],
+    "steam_store_name": "XCOM® 2",
+    "steam_last_sync_at": "2026-06-28T11:25:21.533Z"
   },
   {
     "titulo": "60 Seconds! Reatomized",
@@ -1790,7 +2235,13 @@
     "hltb": 2.4,
     "cover_url": "https://howlongtobeat.com/games/69373_60_Seconds_Reatomized.jpg",
     "steam_appid": 1012880,
-    "generos": ["Aventura", "Casual", "Indie", "Simuladores", "Estrategia"],
+    "generos": [
+      "Aventura",
+      "Casual",
+      "Indie",
+      "Simuladores",
+      "Estrategia"
+    ],
     "precio_pagado": null,
     "precio_actual": 9.75,
     "precio_salida": 9.75,
@@ -1799,7 +2250,13 @@
       "main": 2.4,
       "main_plus": 7.9,
       "completionist": 31.6
-    }
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Casual"
+    ],
+    "steam_store_name": "60 Seconds! Reatomized",
+    "steam_last_sync_at": "2026-06-28T11:25:22.040Z"
   },
   {
     "titulo": "Amnesia: The Dark Descent",
@@ -1820,7 +2277,11 @@
     "hltb": 8,
     "cover_url": "https://howlongtobeat.com/games/440_Amnesia_The_Dark_Descent.jpg",
     "steam_appid": 57300,
-    "generos": ["Acción", "Aventura", "Indie"],
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Indie"
+    ],
     "precio_pagado": null,
     "precio_actual": 19.5,
     "precio_salida": 19.5,
@@ -1829,7 +2290,13 @@
       "main": 8,
       "main_plus": 9.1,
       "completionist": 11.7
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Amnesia: The Dark Descent",
+    "steam_last_sync_at": "2026-06-28T11:25:22.516Z"
   },
   {
     "titulo": "Among Us",
@@ -1850,7 +2317,9 @@
     "hltb": 9,
     "cover_url": "https://howlongtobeat.com/games/74207_Among_Us.jpg",
     "steam_appid": 945360,
-    "generos": ["Casual"],
+    "generos": [
+      "Casual"
+    ],
     "precio_pagado": 3.99,
     "precio_actual": 4.49,
     "precio_salida": 4.49,
@@ -1859,7 +2328,12 @@
       "main": 9,
       "main_plus": 17.8,
       "completionist": 28.5
-    }
+    },
+    "steam_store_genres": [
+      "Casual"
+    ],
+    "steam_store_name": "Among Us",
+    "steam_last_sync_at": "2026-06-28T11:25:22.984Z"
   },
   {
     "titulo": "Apex Legends",
@@ -1880,16 +2354,28 @@
     "hltb": 33.2,
     "cover_url": "https://howlongtobeat.com/games/64753_Apex_Legends.jpg",
     "steam_appid": 1172470,
-    "generos": ["Acción", "Aventura", "Free to Play"],
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Free to Play"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 33.2,
       "main_plus": 85.1,
       "completionist": 152.9
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Apex Legends™",
+    "steam_last_sync_at": "2026-06-28T11:25:23.559Z"
   },
   {
     "titulo": "Atomic Heart",
@@ -1910,7 +2396,11 @@
     "hltb": 16.2,
     "cover_url": "https://howlongtobeat.com/games/56297_Atomic_Heart.jpg",
     "steam_appid": 668580,
-    "generos": ["Acción", "Aventura", "Rol"],
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Rol"
+    ],
     "precio_pagado": null,
     "precio_actual": 59.99,
     "precio_salida": 59.99,
@@ -1919,7 +2409,13 @@
       "main": 16.2,
       "main_plus": 25,
       "completionist": 37
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Atomic Heart",
+    "steam_last_sync_at": "2026-06-28T11:25:24.137Z"
   },
   {
     "titulo": "Bandle Tale: A League of Legends Story",
@@ -1940,7 +2436,10 @@
     "hltb": 27.2,
     "cover_url": "https://howlongtobeat.com/games/137788_Bandle_Tale_A_League_of_Legends_Story.jpg",
     "steam_appid": 1759380,
-    "generos": ["Rol", "Simuladores"],
+    "generos": [
+      "Rol",
+      "Simuladores"
+    ],
     "precio_pagado": null,
     "precio_actual": 24.99,
     "precio_salida": 24.99,
@@ -1949,7 +2448,13 @@
       "main": 27.2,
       "main_plus": 33.2,
       "completionist": 33.5
-    }
+    },
+    "steam_store_genres": [
+      "Rol",
+      "Simuladores"
+    ],
+    "steam_store_name": "Bandle Tale: A League of Legends Story",
+    "steam_last_sync_at": "2026-06-28T11:25:24.612Z"
   },
   {
     "titulo": "Beyond: Two Souls",
@@ -1970,7 +2475,10 @@
     "hltb": 10.6,
     "cover_url": "https://howlongtobeat.com/games/1023_Beyond_Two_Souls.jpg",
     "steam_appid": 960990,
-    "generos": ["Acción", "Aventura"],
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
     "precio_pagado": null,
     "precio_actual": 19.99,
     "precio_salida": 19.99,
@@ -1979,7 +2487,13 @@
       "main": 10.6,
       "main_plus": 12.4,
       "completionist": 28
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Beyond: Two Souls",
+    "steam_last_sync_at": "2026-06-28T11:25:25.112Z"
   },
   {
     "titulo": "Borderlands 2",
@@ -2000,7 +2514,10 @@
     "hltb": 30.1,
     "cover_url": "https://howlongtobeat.com/games/Borderlands2boxart3.jpg",
     "steam_appid": 49520,
-    "generos": ["Acción", "Rol"],
+    "generos": [
+      "Acción",
+      "Rol"
+    ],
     "precio_pagado": null,
     "precio_actual": 7.49,
     "precio_salida": 29.99,
@@ -2009,7 +2526,13 @@
       "main": 30.1,
       "main_plus": 54.9,
       "completionist": 130.2
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Rol"
+    ],
+    "steam_store_name": "Borderlands 2",
+    "steam_last_sync_at": "2026-06-28T11:25:25.673Z"
   },
   {
     "titulo": "Catherine Classic",
@@ -2030,7 +2553,9 @@
     "hltb": 13.2,
     "cover_url": "https://howlongtobeat.com/games/250px-Catherine_Cover_Art.png",
     "steam_appid": 893180,
-    "generos": ["Aventura"],
+    "generos": [
+      "Aventura"
+    ],
     "precio_pagado": null,
     "precio_actual": 19.99,
     "precio_salida": 19.99,
@@ -2039,7 +2564,12 @@
       "main": 13.2,
       "main_plus": 17.3,
       "completionist": 64
-    }
+    },
+    "steam_store_genres": [
+      "Aventura"
+    ],
+    "steam_store_name": "Catherine Classic",
+    "steam_last_sync_at": "2026-06-28T11:25:26.188Z"
   },
   {
     "titulo": "Celeste",
@@ -2060,7 +2590,11 @@
     "hltb": 8.3,
     "cover_url": "https://howlongtobeat.com/games/42818_Celeste.jpg",
     "steam_appid": 504230,
-    "generos": ["Acción", "Aventura", "Indie"],
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Indie"
+    ],
     "precio_pagado": null,
     "precio_actual": 18.99,
     "precio_salida": 18.99,
@@ -2069,7 +2603,13 @@
       "main": 8.3,
       "main_plus": 14.7,
       "completionist": 39.2
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Celeste",
+    "steam_last_sync_at": "2026-06-28T11:25:26.766Z"
   },
   {
     "titulo": "Counter-Strike 2",
@@ -2090,16 +2630,27 @@
     "hltb": 145.5,
     "cover_url": "https://howlongtobeat.com/games/1957_Counter-Strike_2.jpg",
     "steam_appid": 730,
-    "generos": ["Acción", "Free to Play"],
+    "generos": [
+      "Acción",
+      "Free to Play"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 145.5,
       "main_plus": 373.1,
       "completionist": 742.6
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Free to Play"
+    ],
+    "steam_store_name": "Counter-Strike 2",
+    "steam_last_sync_at": "2026-06-28T11:25:27.339Z"
   },
   {
     "titulo": "Cyberpunk 2077",
@@ -2118,9 +2669,10 @@
     "lanzamiento": 2020,
     "solo": "-",
     "hltb": 26,
-    "cover_url": "https://howlongtobeat.com/games/Cyberpunk-2077-2.jpg",
     "steam_appid": 1091500,
-    "generos": ["Rol"],
+    "generos": [
+      "Rol"
+    ],
     "precio_pagado": null,
     "precio_actual": 59.99,
     "precio_salida": 59.99,
@@ -2129,12 +2681,18 @@
       "main": 26,
       "main_plus": 63.1,
       "completionist": 108.6
-    }
+    },
+    "steam_store_genres": [
+      "Rol"
+    ],
+    "steam_store_name": "Cyberpunk 2077",
+    "steam_last_sync_at": "2026-06-28T11:25:27.830Z"
   },
   {
     "titulo": "Dead by Daylight",
     "estado": "Recurrente",
     "launcher": "Steam",
+    "steam_appid": 381210,
     "plataforma": "PC",
     "horas": 765.7,
     "fecha_inicio": null,
@@ -2148,9 +2706,9 @@
     "lanzamiento": 2016,
     "solo": "-",
     "hltb": 78.6,
-    "cover_url": "https://howlongtobeat.com/games/37986_Dead_by_Daylight.jpg",
-    "steam_appid": 381210,
-    "generos": ["Acción", "Terror"],
+    "generos": [
+      "Acción"
+    ],
     "precio_pagado": 9.99,
     "precio_actual": 19.99,
     "precio_salida": 19.99,
@@ -2399,7 +2957,12 @@
       "main": 78.6,
       "main_plus": 356.3,
       "completionist": 763.4
-    }
+    },
+    "steam_store_genres": [
+      "Acción"
+    ],
+    "steam_store_name": "Dead by Daylight",
+    "steam_last_sync_at": "2026-06-28T11:25:28.424Z"
   },
   {
     "titulo": "Destiny 2",
@@ -2420,16 +2983,28 @@
     "hltb": 12.2,
     "cover_url": "https://howlongtobeat.com/games/43894_Destiny_2.png",
     "steam_appid": 1085660,
-    "generos": ["Acción", "Aventura", "Free to Play"],
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Free to Play"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 12.2,
       "main_plus": 45.5,
       "completionist": 197.8
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Destiny 2",
+    "steam_last_sync_at": "2026-06-28T11:25:28.975Z"
   },
   {
     "titulo": "Detroit: Become Human",
@@ -2450,7 +3025,10 @@
     "hltb": 12.1,
     "cover_url": "https://howlongtobeat.com/games/31388_Detroit_Become_Human.jpg",
     "steam_appid": 1222140,
-    "generos": ["Acción", "Aventura"],
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
     "precio_pagado": null,
     "precio_actual": 39.99,
     "precio_salida": 39.99,
@@ -2459,7 +3037,13 @@
       "main": 12.1,
       "main_plus": 15.7,
       "completionist": 32.1
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Detroit: Become Human",
+    "steam_last_sync_at": "2026-06-28T11:25:29.449Z"
   },
   {
     "titulo": "Don't Starve Together",
@@ -2496,7 +3080,13 @@
       "main": 34.1,
       "main_plus": 109.9,
       "completionist": 213.7
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Don't Starve Together",
+    "steam_last_sync_at": "2026-06-28T11:25:30.039Z"
   },
   {
     "titulo": "Dying Light",
@@ -2517,7 +3107,10 @@
     "hltb": 18.2,
     "cover_url": "https://howlongtobeat.com/games/256px-Dying_Light_cover.jpg",
     "steam_appid": 239140,
-    "generos": ["Acción", "Rol"],
+    "generos": [
+      "Acción",
+      "Rol"
+    ],
     "precio_pagado": null,
     "precio_actual": 24.99,
     "precio_salida": 24.99,
@@ -2526,7 +3119,13 @@
       "main": 18.2,
       "main_plus": 36.6,
       "completionist": 64.3
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Rol"
+    ],
+    "steam_store_name": "Dying Light",
+    "steam_last_sync_at": "2026-06-28T11:25:30.730Z"
   },
   {
     "titulo": "Eternal Return",
@@ -2546,17 +3145,29 @@
     "solo": "-",
     "cover_url": "https://howlongtobeat.com/games/50597_Eternal_Return.jpg",
     "steam_appid": 1049590,
-    "generos": ["Indie", "Estrategia", "Free to Play"],
+    "generos": [
+      "Indie",
+      "Estrategia",
+      "Free to Play"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb": 11,
     "hltb_breakdown": {
       "main": 11,
       "main_plus": null,
       "completionist": null
-    }
+    },
+    "steam_store_genres": [
+      "Indie",
+      "Estrategia"
+    ],
+    "steam_store_name": "Eternal Return",
+    "steam_last_sync_at": "2026-06-28T11:25:31.223Z"
   },
   {
     "titulo": "Euro Truck Simulator 2",
@@ -2577,7 +3188,10 @@
     "hltb": 45.9,
     "cover_url": "https://howlongtobeat.com/games/Euro_Truck_Simulator_2_cover.jpg",
     "steam_appid": 227300,
-    "generos": ["Indie", "Simuladores"],
+    "generos": [
+      "Indie",
+      "Simuladores"
+    ],
     "precio_pagado": null,
     "precio_actual": 19.99,
     "precio_salida": 19.99,
@@ -2586,7 +3200,13 @@
       "main": 45.9,
       "main_plus": 116.4,
       "completionist": 448.7
-    }
+    },
+    "steam_store_genres": [
+      "Indie",
+      "Simuladores"
+    ],
+    "steam_store_name": "Euro Truck Simulator 2",
+    "steam_last_sync_at": "2026-06-28T11:25:31.830Z"
   },
   {
     "titulo": "Fallout 4",
@@ -2607,7 +3227,9 @@
     "hltb": 27.8,
     "cover_url": "https://howlongtobeat.com/games/Fallout_4.jpg",
     "steam_appid": 377160,
-    "generos": ["Rol"],
+    "generos": [
+      "Rol"
+    ],
     "precio_pagado": null,
     "precio_actual": 19.99,
     "precio_salida": 19.99,
@@ -2616,7 +3238,12 @@
       "main": 27.8,
       "main_plus": 83.2,
       "completionist": 160.5
-    }
+    },
+    "steam_store_genres": [
+      "Rol"
+    ],
+    "steam_store_name": "Fallout 4",
+    "steam_last_sync_at": "2026-06-28T11:25:32.417Z"
   },
   {
     "titulo": "Fallout Shelter",
@@ -2637,16 +3264,28 @@
     "hltb": 18.4,
     "cover_url": "https://howlongtobeat.com/games/Fallout_Shelter_Icon.jpeg",
     "steam_appid": 588430,
-    "generos": ["Rol", "Simuladores", "Free to Play"],
+    "generos": [
+      "Rol",
+      "Simuladores",
+      "Free to Play"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 18.4,
       "main_plus": 53,
       "completionist": 96.7
-    }
+    },
+    "steam_store_genres": [
+      "Rol",
+      "Simuladores"
+    ],
+    "steam_store_name": "Fallout Shelter",
+    "steam_last_sync_at": "2026-06-28T11:25:32.900Z"
   },
   {
     "titulo": "Garry's Mod",
@@ -2667,7 +3306,11 @@
     "hltb": 51.4,
     "cover_url": "https://howlongtobeat.com/games/GarrysMod_292x136.jpg",
     "steam_appid": 4000,
-    "generos": ["Casual", "Indie", "Simuladores"],
+    "generos": [
+      "Casual",
+      "Indie",
+      "Simuladores"
+    ],
     "precio_pagado": null,
     "precio_actual": 4.99,
     "precio_salida": 9.99,
@@ -2676,7 +3319,13 @@
       "main": 51.4,
       "main_plus": 279,
       "completionist": 554
-    }
+    },
+    "steam_store_genres": [
+      "Casual",
+      "Indie"
+    ],
+    "steam_store_name": "Garry's Mod",
+    "steam_last_sync_at": "2026-06-28T11:25:33.520Z"
   },
   {
     "titulo": "Ghost of Tsushima Director's Cut",
@@ -2697,7 +3346,10 @@
     "hltb": 25.1,
     "cover_url": "https://howlongtobeat.com/games/51225_Ghost_of_Tsushima.jpg",
     "steam_appid": 2215430,
-    "generos": ["Acción", "Aventura"],
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
     "precio_pagado": null,
     "precio_actual": 59.99,
     "precio_salida": 59.99,
@@ -2706,7 +3358,13 @@
       "main": 25.1,
       "main_plus": 46.2,
       "completionist": 62.4
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Ghost of Tsushima: VERSIÓN DEL DIRECTOR",
+    "steam_last_sync_at": "2026-06-28T11:25:34.088Z"
   },
   {
     "titulo": "Gotham Knights",
@@ -2727,7 +3385,11 @@
     "hltb": 17.4,
     "cover_url": "https://howlongtobeat.com/games/82068_Gotham_Knights.jpg",
     "steam_appid": 1496790,
-    "generos": ["Acción", "Aventura", "Rol"],
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Rol"
+    ],
     "precio_pagado": null,
     "precio_actual": 59.99,
     "precio_salida": 59.99,
@@ -2736,7 +3398,13 @@
       "main": 17.4,
       "main_plus": 27.7,
       "completionist": 49.4
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Gotham Knights",
+    "steam_last_sync_at": "2026-06-28T11:25:34.616Z"
   },
   {
     "titulo": "Governor of Poker 3",
@@ -2757,16 +3425,29 @@
     "hltb": 25.5,
     "cover_url": "https://howlongtobeat.com/games/35858_Governor_of_Poker_3.jpg",
     "steam_appid": 436150,
-    "generos": ["Casual", "Multijugador masivo", "Simuladores", "Free to Play"],
+    "generos": [
+      "Casual",
+      "Multijugador masivo",
+      "Simuladores",
+      "Free to Play"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 25.5,
       "main_plus": 38.9,
       "completionist": 42
-    }
+    },
+    "steam_store_genres": [
+      "Casual",
+      "Multijugador masivo"
+    ],
+    "steam_store_name": "Governor of Poker 3",
+    "steam_last_sync_at": "2026-06-28T11:25:35.152Z"
   },
   {
     "titulo": "Grand Theft Auto IV: The Complete Edition",
@@ -2787,7 +3468,10 @@
     "hltb": 30.8,
     "cover_url": "https://howlongtobeat.com/games/14831_Grand_Theft_Auto_IV_The_Complete_Edition.jpg",
     "steam_appid": 12210,
-    "generos": ["Acción", "Aventura"],
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
     "precio_pagado": null,
     "precio_actual": 19.99,
     "precio_salida": 19.99,
@@ -2796,7 +3480,13 @@
       "main": 30.8,
       "main_plus": 52.1,
       "completionist": 100.2
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Grand Theft Auto IV: The Complete Edition",
+    "steam_last_sync_at": "2026-06-28T11:25:35.737Z"
   },
   {
     "titulo": "Grand Theft Auto V Legacy",
@@ -2813,7 +3503,7 @@
     "nota": null,
     "comentarios": null,
     "solo": "x",
-    "steam_appid": null,
+    "steam_appid": 271590,
     "generos": null,
     "precio_pagado": null,
     "precio_actual": null,
@@ -2846,7 +3536,10 @@
     "hltb": 3.6,
     "cover_url": "https://howlongtobeat.com/games/62257_Gris.jpg",
     "steam_appid": 683320,
-    "generos": ["Aventura", "Indie"],
+    "generos": [
+      "Aventura",
+      "Indie"
+    ],
     "precio_pagado": null,
     "precio_actual": 2.95,
     "precio_salida": 14.79,
@@ -2855,7 +3548,13 @@
       "main": 3.6,
       "main_plus": 4.1,
       "completionist": 6.4
-    }
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Indie"
+    ],
+    "steam_store_name": "GRIS",
+    "steam_last_sync_at": "2026-06-28T11:25:36.216Z"
   },
   {
     "titulo": "Hades",
@@ -2876,7 +3575,11 @@
     "hltb": 23.4,
     "cover_url": "https://howlongtobeat.com/games/62941_Hades.jpg",
     "steam_appid": 1145360,
-    "generos": ["Acción", "Indie", "Rol"],
+    "generos": [
+      "Acción",
+      "Indie",
+      "Rol"
+    ],
     "precio_pagado": null,
     "precio_actual": 24.5,
     "precio_salida": 24.5,
@@ -2885,7 +3588,13 @@
       "main": 23.4,
       "main_plus": 48.5,
       "completionist": 95.2
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Indie"
+    ],
+    "steam_store_name": "Hades",
+    "steam_last_sync_at": "2026-06-28T11:25:36.793Z"
   },
   {
     "titulo": "Heartopia",
@@ -2905,17 +3614,29 @@
     "solo": null,
     "cover_url": "https://howlongtobeat.com/games/180772_Heartopia.jpg",
     "steam_appid": 4025700,
-    "generos": ["Casual", "Simuladores", "Free to Play"],
+    "generos": [
+      "Casual",
+      "Simuladores",
+      "Free to Play"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb": 3,
     "hltb_breakdown": {
       "main": 3,
       "main_plus": null,
       "completionist": null
-    }
+    },
+    "steam_store_genres": [
+      "Casual",
+      "Simuladores"
+    ],
+    "steam_store_name": "Heartopia",
+    "steam_last_sync_at": "2026-06-28T11:25:37.431Z"
   },
   {
     "titulo": "Hogwarts Legacy",
@@ -2936,7 +3657,11 @@
     "hltb": 26.7,
     "cover_url": "https://howlongtobeat.com/games/83145_Hogwarts_Legacy.jpg",
     "steam_appid": 990080,
-    "generos": ["Acción", "Aventura", "Rol"],
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Rol"
+    ],
     "precio_pagado": 59.99,
     "precio_actual": 59.99,
     "precio_salida": 59.99,
@@ -2945,7 +3670,13 @@
       "main": 26.7,
       "main_plus": 45.2,
       "completionist": 72.1
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Hogwarts Legacy",
+    "steam_last_sync_at": "2026-06-28T11:25:37.904Z"
   },
   {
     "titulo": "Hollow Knight",
@@ -2966,7 +3697,11 @@
     "hltb": 27,
     "cover_url": "https://howlongtobeat.com/games/26286_Hollow_Knight.jpg",
     "steam_appid": 367520,
-    "generos": ["Acción", "Aventura", "Indie"],
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Indie"
+    ],
     "precio_pagado": null,
     "precio_actual": 14.79,
     "precio_salida": 14.79,
@@ -2975,7 +3710,13 @@
       "main": 27,
       "main_plus": 41.6,
       "completionist": 65.6
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Hollow Knight",
+    "steam_last_sync_at": "2026-06-28T11:25:38.386Z"
   },
   {
     "titulo": "It Takes Two",
@@ -2996,7 +3737,10 @@
     "hltb": 12.8,
     "cover_url": "https://howlongtobeat.com/games/80199_It_Takes_Two.jpg",
     "steam_appid": 1426210,
-    "generos": ["Acción", "Aventura"],
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
     "precio_pagado": null,
     "precio_actual": 39.99,
     "precio_salida": 39.99,
@@ -3005,7 +3749,13 @@
       "main": 12.8,
       "main_plus": 14.2,
       "completionist": 16.4
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "It Takes Two",
+    "steam_last_sync_at": "2026-06-28T11:25:38.963Z"
   },
   {
     "titulo": "Just Cause 3",
@@ -3026,7 +3776,10 @@
     "hltb": 18.3,
     "cover_url": "https://howlongtobeat.com/games/Just_Cause_3_cover_art.jpg",
     "steam_appid": 225540,
-    "generos": ["Acción", "Aventura"],
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
     "precio_pagado": null,
     "precio_actual": 19.99,
     "precio_salida": 19.99,
@@ -3035,7 +3788,13 @@
       "main": 18.3,
       "main_plus": 38,
       "completionist": 63.8
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Just Cause™ 3",
+    "steam_last_sync_at": "2026-06-28T11:25:39.439Z"
   },
   {
     "titulo": "Left 4 Dead 2",
@@ -3056,7 +3815,9 @@
     "hltb": 10.2,
     "cover_url": "https://howlongtobeat.com/games/250px-Left4Dead2.jpg",
     "steam_appid": 550,
-    "generos": ["Acción"],
+    "generos": [
+      "Acción"
+    ],
     "precio_pagado": null,
     "precio_actual": 9.75,
     "precio_salida": 9.75,
@@ -3065,7 +3826,12 @@
       "main": 10.2,
       "main_plus": 27.8,
       "completionist": 61.4
-    }
+    },
+    "steam_store_genres": [
+      "Acción"
+    ],
+    "steam_store_name": "Left 4 Dead 2",
+    "steam_last_sync_at": "2026-06-28T11:25:39.918Z"
   },
   {
     "titulo": "Little Nightmares",
@@ -3086,7 +3852,9 @@
     "hltb": 3.6,
     "cover_url": "https://howlongtobeat.com/games/39417_Little_Nightmares.jpg",
     "steam_appid": 424840,
-    "generos": ["Aventura"],
+    "generos": [
+      "Aventura"
+    ],
     "precio_pagado": null,
     "precio_actual": 19.99,
     "precio_salida": 19.99,
@@ -3095,7 +3863,12 @@
       "main": 3.6,
       "main_plus": 5.2,
       "completionist": 9.1
-    }
+    },
+    "steam_store_genres": [
+      "Aventura"
+    ],
+    "steam_store_name": "Little Nightmares",
+    "steam_last_sync_at": "2026-06-28T11:25:40.549Z"
   },
   {
     "titulo": "MARVEL SNAP",
@@ -3115,16 +3888,37 @@
     "hltb": 66,
     "cover_url": "https://howlongtobeat.com/games/108501_Marvel_SNAP.jpg",
     "steam_appid": 1997040,
-    "generos": ["Casual", "Estrategia", "Free to Play"],
+    "generos": [
+      "Casual",
+      "Estrategia",
+      "Free to Play"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 66,
       "main_plus": 100.6,
       "completionist": null
-    }
+    },
+    "dlcs": {
+      "total": 1,
+      "items": [
+        {
+          "titulo": "Versión Mobile",
+          "notas": "66.1 horas jugadas en móvil (separadas de PC/Steam)."
+        }
+      ]
+    },
+    "steam_store_genres": [
+      "Casual",
+      "Estrategia"
+    ],
+    "steam_store_name": "MARVEL SNAP",
+    "steam_last_sync_at": "2026-06-28T11:25:41.171Z"
   },
   {
     "titulo": "A Game About Digging A Hole",
@@ -3144,7 +3938,7 @@
     "solo": null,
     "hltb": 1.8,
     "cover_url": "https://howlongtobeat.com/games/163358_A_Game_About_Digging_A_Hole.jpg",
-    "steam_appid": null,
+    "steam_appid": 3244220,
     "generos": null,
     "precio_pagado": null,
     "precio_actual": null,
@@ -3175,7 +3969,11 @@
     "hltb": 65.3,
     "cover_url": "https://howlongtobeat.com/games/129956_Metaphor_ReFantazio.jpg",
     "steam_appid": 2679460,
-    "generos": ["Acción", "Aventura", "Rol"],
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Rol"
+    ],
     "precio_pagado": null,
     "precio_actual": 69.99,
     "precio_salida": 69.99,
@@ -3184,7 +3982,13 @@
       "main": 65.3,
       "main_plus": 88.2,
       "completionist": 108.8
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Metaphor: ReFantazio",
+    "steam_last_sync_at": "2026-06-28T11:25:41.896Z"
   },
   {
     "titulo": "Metro 2033",
@@ -3205,7 +4009,9 @@
     "hltb": 9.5,
     "cover_url": "https://howlongtobeat.com/games/5946_Metro_2033.jpg",
     "steam_appid": 286690,
-    "generos": ["Acción"],
+    "generos": [
+      "Acción"
+    ],
     "precio_pagado": null,
     "precio_actual": 19.99,
     "precio_salida": 19.99,
@@ -3214,7 +4020,12 @@
       "main": 9.5,
       "main_plus": 12.1,
       "completionist": 20.7
-    }
+    },
+    "steam_store_genres": [
+      "Acción"
+    ],
+    "steam_store_name": "Metro 2033 Redux",
+    "steam_last_sync_at": "2026-06-28T11:25:42.417Z"
   },
   {
     "titulo": "Valorant",
@@ -3240,7 +4051,9 @@
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 106.4,
       "main_plus": 474.1,
@@ -3271,7 +4084,9 @@
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 1163.3,
       "main_plus": 1751,
@@ -3301,7 +4116,9 @@
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 45.6,
       "main_plus": 92.2,
@@ -3361,7 +4178,9 @@
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 39.2,
       "main_plus": 90.4,
@@ -3391,7 +4210,9 @@
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 4.4,
       "main_plus": 26.4,
@@ -3416,17 +4237,31 @@
     "solo": null,
     "cover_url": "https://howlongtobeat.com/games/169141_Sea_of_Remnants.jpg",
     "steam_appid": 3633680,
-    "generos": ["Aventura", "Casual", "Rol", "Estrategia", "Free to Play"],
+    "generos": [
+      "Aventura",
+      "Casual",
+      "Rol",
+      "Estrategia",
+      "Free to Play"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb": null,
     "hltb_breakdown": {
       "main": null,
       "main_plus": null,
       "completionist": null
-    }
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Casual"
+    ],
+    "steam_store_name": "Sea of Remnants",
+    "steam_last_sync_at": "2026-06-28T11:25:42.884Z"
   },
   {
     "titulo": "Goblin Cleanup",
@@ -3462,7 +4297,13 @@
       "main": null,
       "main_plus": null,
       "completionist": null
-    }
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Casual"
+    ],
+    "steam_store_name": "Goblin Cleanup",
+    "steam_last_sync_at": "2026-06-28T11:25:43.373Z"
   },
   {
     "titulo": "Genshin Impact",
@@ -3487,7 +4328,9 @@
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 69.2,
       "main_plus": 242.2,
@@ -3517,7 +4360,9 @@
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 114.2,
       "main_plus": 183.9,
@@ -3547,7 +4392,9 @@
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 25.6,
       "main_plus": 85.7,
@@ -3576,7 +4423,9 @@
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb": null,
     "hltb_breakdown": {
       "main": null,
@@ -3602,12 +4451,14 @@
     "solo": "x",
     "hltb": 50.5,
     "cover_url": "https://howlongtobeat.com/games/109101_Zenless_Zone_Zero.png",
-    "steam_appid": null,
+    "steam_appid": 4162040,
     "generos": null,
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": ["free-to-play"],
+    "tags": [
+      "free-to-play"
+    ],
     "hltb_breakdown": {
       "main": 50.5,
       "main_plus": 110.6,
@@ -3632,7 +4483,7 @@
     "solo": null,
     "hltb": null,
     "cover_url": null,
-    "steam_appid": null,
+    "steam_appid": 2185060,
     "generos": null,
     "precio_pagado": null,
     "precio_actual": null,
@@ -3642,7 +4493,13 @@
       "main": null,
       "main_plus": null,
       "completionist": null
-    }
+    },
+    "steam_store_genres": [
+      "Casual",
+      "Indie"
+    ],
+    "steam_store_name": "Two Point Museum",
+    "steam_last_sync_at": "2026-06-28T11:25:43.849Z"
   },
   {
     "titulo": "The Lift Playtest",
@@ -3662,7 +4519,7 @@
     "solo": null,
     "hltb": null,
     "cover_url": null,
-    "steam_appid": null,
+    "steam_appid": 3916290,
     "generos": null,
     "precio_pagado": null,
     "precio_actual": null,
@@ -3672,7 +4529,10 @@
       "main": null,
       "main_plus": null,
       "completionist": null
-    }
+    },
+    "steam_store_genres": [],
+    "steam_store_name": "The Lift Playtest",
+    "steam_last_sync_at": "2026-06-28T11:25:44.342Z"
   },
   {
     "titulo": "Banana",
@@ -3692,7 +4552,7 @@
     "solo": null,
     "hltb": null,
     "cover_url": null,
-    "steam_appid": null,
+    "steam_appid": 2923300,
     "generos": null,
     "precio_pagado": null,
     "precio_actual": null,
@@ -3722,7 +4582,7 @@
     "solo": null,
     "hltb": null,
     "cover_url": null,
-    "steam_appid": null,
+    "steam_appid": 291550,
     "generos": null,
     "precio_pagado": null,
     "precio_actual": null,
@@ -3732,7 +4592,13 @@
       "main": null,
       "main_plus": null,
       "completionist": null
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Indie"
+    ],
+    "steam_store_name": "Brawlhalla",
+    "steam_last_sync_at": "2026-06-28T11:25:45.394Z"
   },
   {
     "titulo": "Paladins",
@@ -3752,7 +4618,7 @@
     "solo": null,
     "hltb": null,
     "cover_url": null,
-    "steam_appid": null,
+    "steam_appid": 444090,
     "generos": null,
     "precio_pagado": null,
     "precio_actual": null,
@@ -3762,36 +4628,12 @@
       "main": null,
       "main_plus": null,
       "completionist": null
-    }
-  },
-  {
-    "titulo": "MARVEL SNAP Mobile",
-    "estado": "Abandonado",
-    "launcher": null,
-    "plataforma": "mobile",
-    "horas": 66.1,
-    "fecha_inicio": null,
-    "fecha_fin": null,
-    "logros": {
-      "actual": null,
-      "total": null
     },
-    "nota": null,
-    "comentarios": "Horas separadas de la versi\u00f3n de PC/Steam.",
-    "lanzamiento": null,
-    "solo": null,
-    "hltb": null,
-    "cover_url": null,
-    "steam_appid": null,
-    "generos": null,
-    "precio_pagado": null,
-    "precio_actual": null,
-    "precio_salida": null,
-    "tags": [],
-    "hltb_breakdown": {
-      "main": null,
-      "main_plus": null,
-      "completionist": null
-    }
-  }
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Paladins®",
+    "steam_last_sync_at": "2026-06-28T11:25:45.892Z"
+  },
 ]

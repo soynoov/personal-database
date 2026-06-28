@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "prebuild": "node scripts/prepare-games-json.mjs",
+    "sync:steam-capsules": "node scripts/sync-steam-library-capsules.mjs",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview"

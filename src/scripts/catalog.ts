@@ -30,7 +30,6 @@ interface LocalGame {
   comentarios?: string | null;
   lanzamiento?: number | null;
   solo?: string | null;
-  cover_url?: string | null;
   steam_appid?: number | null;
   dlcs?: { total?: number | null; items?: Array<{ precio_pagado?: number | null }> } | null;
 }

@@ -1,21 +1,16 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { readGames, slugifyGameTitle } from "../../lib/local-games";
+import GameDetailChartsScript from "../../components/GameDetailChartsScript.astro";
+import { buildGameCoverUrl } from "../../lib/game-cover-url";
+import { findGameBySlug, readGames } from "../../lib/local-games";
 
-export async function getStaticPaths() {
-  const games = await readGames();
+const game = findGameBySlug(await readGames(), Astro.params.slug ?? "");
 
-  return games.map((game) => ({
-    params: {
-      slug: slugifyGameTitle(game.titulo),
-    },
-    props: {
-      game,
-    },
-  }));
+if (!game) {
+  return Astro.redirect("/");
 }
 
-const { game } = Astro.props;
+const coverUrl = buildGameCoverUrl(game);
 
 const formatValue = (value: unknown, fallback = "-") => {
   if (value === null || value === undefined || value === "") return fallback;
@@ -559,10 +554,7 @@ const moneySnapshotCards = [
   },
 ];
 
-const heroCoverStyle =
-  game.cover_url && String(game.cover_url).trim() !== ""
-    ? `--hero-cover:url("${String(game.cover_url).replace(/"/g, '\\"')}")`
-    : undefined;
+const heroCoverStyle = `--hero-cover:url("${coverUrl.replace(/"/g, '\\"')}")`;
 
 const clampPercent = (value: number) => Math.max(0, Math.min(100, Number(value.toFixed(1))));
 
@@ -645,7 +637,7 @@ const metadataGroups = [
       { label: "Fecha fin", value: formatDate(game.fecha_fin) },
       { label: "Solo", value: formatSolo(game.solo) },
       { label: "Nota", value: formatValue(game.nota) },
-      { label: "Caratula", value: game.cover_url ? "Disponible" : "No disponible" },
+      { label: "Caratula", value: "Dinamica" },
     ],
   },
 ];
@@ -657,15 +649,11 @@ const metadataGroups = [
 
     <section class="game-hero-rich game-hero-cinematic" id="overview" style={heroCoverStyle}>
       <section class="game-intro-panel game-overview-card game-overview-card-cinematic">
-        <div class="game-overview-media">
-          {game.cover_url ? (
+          <div class="game-overview-media">
             <div class="game-poster-stack">
-              <img class="game-poster-image" src={game.cover_url} alt={`Caratula de ${game.titulo}`} loading="lazy" />
+              <img class="game-poster-image" src={coverUrl} alt={`Caratula de ${game.titulo}`} loading="lazy" />
             </div>
-          ) : (
-            <div class="game-hero-fallback">{game.titulo.slice(0, 2).toUpperCase()}</div>
-          )}
-        </div>
+          </div>
 
         <div class="game-overview-copy">
           <div class="eyebrow">Personal Database</div>
@@ -865,16 +853,10 @@ const metadataGroups = [
           {dlcItems.map((dlc) => (
             <article class="dlc-showcase-card">
               <div class="dlc-showcase-cover">
-                {dlc.cover_url ? (
-                  <img src={dlc.cover_url} alt={`Caratula de ${formatValue(dlc.titulo, "DLC")}`} loading="lazy" />
-                ) : game.cover_url ? (
-                  <div class="dlc-showcase-fallback">
-                    <img src={game.cover_url} alt="" aria-hidden="true" loading="lazy" />
-                    <span class="dlc-showcase-fallback-badge">Sin portada propia</span>
-                  </div>
-                ) : (
-                  <div class="dlc-showcase-fallback-empty">Sin portada</div>
-                )}
+                <div class="dlc-showcase-fallback">
+                  <img src={coverUrl} alt="" aria-hidden="true" loading="lazy" />
+                  <span class="dlc-showcase-fallback-badge">Sin portada propia</span>
+                </div>
               </div>
 
               <div class="dlc-showcase-body">
@@ -920,162 +902,5 @@ const metadataGroups = [
       <dd>{formatValue(game.comentarios)}</dd>
     </section>
   </main>
-  <script>
-    import { Chart, Filler, Tooltip, CategoryScale, LinearScale, LineController, LineElement, PointElement } from "chart.js";
-
-    Chart.register(Filler, Tooltip, CategoryScale, LinearScale, LineController, LineElement, PointElement);
-
-    const charts = new Map();
-
-    const formatMetricValue = (metric, value) => {
-      if (metric === "currency") return `${Number(value).toFixed(2)} EUR`;
-      return `${Number(value).toFixed(1)} h`;
-    };
-
-    const buildGradient = (ctx, area, colorStops) => {
-      const gradient = ctx.createLinearGradient(0, area.top, 0, area.bottom);
-      colorStops.forEach(([stop, color]) => gradient.addColorStop(stop, color));
-      return gradient;
-    };
-
-    const readChartPayload = (canvasId) => {
-      const canvas = document.getElementById(canvasId);
-      if (!(canvas instanceof HTMLCanvasElement)) return null;
-
-      try {
-        return {
-          canvas,
-          payload: JSON.parse(canvas.dataset.chart ?? "null"),
-        };
-      } catch {
-        return null;
-      }
-    };
-
-    const renderLineChart = (canvasId, palette) => {
-      const chartData = readChartPayload(canvasId);
-      if (!chartData) return;
-
-      const { canvas, payload } = chartData;
-      const labels = Array.isArray(payload?.points) ? payload.points.map((point) => point.label) : [];
-      const values = Array.isArray(payload?.points) ? payload.points.map((point) => Number(point.value)) : [];
-      if (labels.length < 2 || values.some((value) => Number.isNaN(value))) return;
-
-      charts.get(canvasId)?.destroy();
-
-      const chart = new Chart(canvas, {
-        type: "line",
-        data: {
-          labels,
-          datasets: [
-            {
-              label: payload.seriesLabel,
-              data: values,
-              fill: true,
-              tension: 0.34,
-              borderWidth: 2,
-              borderColor: palette.stroke,
-              pointRadius: 3,
-              pointHoverRadius: 5,
-              pointBackgroundColor: palette.stroke,
-              pointBorderWidth: 0,
-              backgroundColor(context) {
-                const { chart } = context;
-                const { ctx, chartArea } = chart;
-                if (!chartArea) return palette.fillFallback;
-                return buildGradient(ctx, chartArea, palette.fill);
-              },
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          interaction: {
-            intersect: false,
-            mode: "index",
-          },
-          plugins: {
-            legend: {
-              display: false,
-            },
-            tooltip: {
-              displayColors: false,
-              backgroundColor: "rgba(13, 18, 26, 0.94)",
-              borderColor: "rgba(255, 255, 255, 0.1)",
-              borderWidth: 1,
-              padding: 12,
-              titleColor: "#f7f1ee",
-              bodyColor: "#dbe4ef",
-              callbacks: {
-                label(context) {
-                  return formatMetricValue(payload.metric, context.parsed.y);
-                },
-              },
-            },
-          },
-          scales: {
-            x: {
-              border: {
-                display: false,
-              },
-              grid: {
-                display: false,
-              },
-              ticks: {
-                color: "rgba(218, 226, 236, 0.62)",
-                font: {
-                  size: 11,
-                },
-              },
-            },
-            y: {
-              border: {
-                display: false,
-              },
-              grid: {
-                color: "rgba(132, 146, 166, 0.16)",
-                drawTicks: false,
-              },
-              ticks: {
-                color: "rgba(218, 226, 236, 0.5)",
-                padding: 10,
-                font: {
-                  size: 11,
-                },
-                callback(value) {
-                  return formatMetricValue(payload.metric, value);
-                },
-              },
-            },
-          },
-        },
-      });
-
-      charts.set(canvasId, chart);
-    };
-
-    const renderAllCharts = () => {
-      renderLineChart("hours-detail-chart", {
-        stroke: "#c56cff",
-        fillFallback: "rgba(197, 108, 255, 0.18)",
-        fill: [
-          [0, "rgba(197, 108, 255, 0.32)"],
-          [1, "rgba(197, 108, 255, 0.03)"],
-        ],
-      });
-
-      renderLineChart("money-detail-chart", {
-        stroke: "#9bff83",
-        fillFallback: "rgba(155, 255, 131, 0.18)",
-        fill: [
-          [0, "rgba(155, 255, 131, 0.26)"],
-          [1, "rgba(155, 255, 131, 0.03)"],
-        ],
-      });
-    };
-
-    renderAllCharts();
-    window.addEventListener("resize", renderAllCharts);
-  </script>
+  <GameDetailChartsScript />
 </BaseLayout>
