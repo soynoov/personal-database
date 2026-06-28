@@ -1,0 +1,167 @@
+---
+interface Props {
+  estados: string[];
+  launchers: string[];
+  plataformas: string[];
+  totalGames: number;
+}
+
+const { estados, launchers, plataformas, totalGames } = Astro.props;
+---
+
+<section class='panel panel-controls pc-controls mock-catalog-controls'>
+  <div class='catalog-filters'>
+    <div class='catalog-filters-top'>
+      <div class='field field-search'>
+        <label class='sr-only' for='search'>Buscar</label>
+        <span class='field-search-icon' aria-hidden='true'>
+          <svg viewBox='0 0 24 24'>
+            <circle cx='11' cy='11' r='7'></circle>
+            <path d='m20 20-3.5-3.5'></path>
+          </svg>
+        </span>
+        <input id='search' type='search' placeholder='Buscar juegos...' />
+      </div>
+      <div class='actions actions-inline'>
+        <button class='button button-ghost button-clear' id='reset-filters' type='button'>
+          Limpiar todo
+        </button>
+      </div>
+    </div>
+
+    <div class='catalog-filters-selects' id='mobile-extra-filters'>
+      <div class='field cf-main'>
+        <label for='estado'>Estado</label>
+        <select id='estado'>
+          <option value=''>Todos</option>
+          {estados.map((estado) => <option value={estado}>{estado}</option>)}
+        </select>
+      </div>
+      <div class='field cf-main'>
+        <label for='launcher'>Launcher</label>
+        <select id='launcher'>
+          <option value=''>Todos</option>
+          {launchers.map((launcher) => <option value={launcher}>{launcher}</option>)}
+        </select>
+      </div>
+      <div class='field cf-main'>
+        <label for='plataforma'>Plataforma</label>
+        <select id='plataforma'>
+          <option value=''>Todas</option>
+          {plataformas.map((plataforma) => <option value={plataforma}>{plataforma}</option>)}
+        </select>
+      </div>
+      <div class='field cf-main'>
+        <label for='sort'>Orden</label>
+        <select id='sort'>
+          <option value='titulo-asc'>A-Z</option>
+          <option value='horas-desc'>Horas</option>
+          <option value='lanzamiento-desc'>Reciente</option>
+        </select>
+      </div>
+      <div class='field cf-extra'>
+        <label for='solo'>Solo</label>
+        <select id='solo'>
+          <option value=''>Da igual</option>
+          <option value='x'>Si</option>
+          <option value='-'>No</option>
+        </select>
+      </div>
+      <div class='field cf-extra'>
+        <label for='precio'>Precio</label>
+        <select id='precio'>
+          <option value=''>Todos</option>
+          <option value='free'>Free to play</option>
+          <option value='cheap'>Hasta 10 EUR</option>
+          <option value='mid'>10 a 30 EUR</option>
+          <option value='high'>Mas de 30 EUR</option>
+          <option value='unknown'>Sin dato</option>
+        </select>
+      </div>
+      <button
+        class='catalog-filter-toggle'
+        id='mobile-filter-toggle'
+        type='button'
+        aria-label='Mas filtros'
+        aria-expanded='false'
+      >
+        <svg viewBox='0 0 24 24' aria-hidden='true'>
+          <polygon points='22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3'></polygon>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class='active-filter-pills' id='active-filter-pills' hidden></div>
+
+  <div class='panel-subtoolbar'>
+    <div class='muted'>
+      Viendo <strong id='results-count'>{totalGames}</strong> de <strong>{totalGames}</strong>
+    </div>
+    <div class='view-toggle' role='tablist' aria-label='Modo de catalogo'>
+      <button
+        class='view-toggle-button is-active'
+        id='view-cards'
+        type='button'
+        data-view='cards'
+        aria-pressed='true'
+        aria-label='Vista en cards'
+        title='Vista en cards'
+      >
+        <svg viewBox='0 0 24 24' aria-hidden='true'>
+          <rect x='4' y='4' width='7' height='7' rx='1.8'></rect>
+          <rect x='13' y='4' width='7' height='7' rx='1.8'></rect>
+          <rect x='4' y='13' width='7' height='7' rx='1.8'></rect>
+          <rect x='13' y='13' width='7' height='7' rx='1.8'></rect>
+        </svg>
+        <span>Cards</span>
+      </button>
+      <button
+        class='view-toggle-button'
+        id='view-table'
+        type='button'
+        data-view='table'
+        aria-pressed='false'
+        aria-label='Vista en tabla'
+        title='Vista en tabla'
+      >
+        <svg viewBox='0 0 24 24' aria-hidden='true'>
+          <path d='M5 7.25h14'></path>
+          <path d='M5 12h14'></path>
+          <path d='M5 16.75h14'></path>
+          <circle cx='7' cy='7.25' r='1.25'></circle>
+          <circle cx='7' cy='12' r='1.25'></circle>
+          <circle cx='7' cy='16.75' r='1.25'></circle>
+        </svg>
+        <span>Tabla</span>
+      </button>
+    </div>
+  </div>
+
+  <div class='legend legend-app' aria-label='Filtros destacados'>
+    <button class='legend-chip legend-chip-all' type='button' data-quick-filter=''>
+      <span class='legend-dot'></span>Todos
+    </button>
+    <button class='legend-chip legend-chip-completed' type='button' data-quick-filter='terminado'>
+      <span class='legend-dot'></span>Terminado
+    </button>
+    <button class='legend-chip legend-chip-playing' type='button' data-quick-filter='jugando'>
+      <span class='legend-dot'></span>Jugando
+    </button>
+    <button class='legend-chip legend-chip-pending' type='button' data-quick-filter='pendiente'>
+      <span class='legend-dot'></span>Pendiente
+    </button>
+    <button class='legend-chip legend-chip-free' type='button' data-quick-filter='free'>
+      <span class='legend-dot'></span>Free to play
+    </button>
+    <button class='legend-chip legend-chip-profit' type='button' data-quick-filter='profit'>
+      <span class='legend-dot'></span>Buena compra
+    </button>
+    <button class='legend-chip legend-chip-loss' type='button' data-quick-filter='loss'>
+      <span class='legend-dot'></span>Mala compra
+    </button>
+    <button class='legend-chip legend-chip-early' type='button' data-quick-filter='early'>
+      <span class='legend-dot'></span>Early Access
+    </button>
+  </div>
+</section>

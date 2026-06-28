@@ -1,0 +1,536 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton+SC&family=Elms+Sans:wght@100..900&family=Stack+Sans+Text:wght@200..700&display=swap');
+
+/* ================================================================
+   cards.css — Catálogo de juegos: diseño de tarjetas
+   ================================================================
+   Estrategia: mobile-first.
+   Diseño: imagen full-bleed + panel inferior con blur (glass-morphism).
+   Anula reglas legacy de global.css usando source-order (este archivo
+   se importa después, ganando por source-order cuando la especificidad es igual.
+
+   Estructura HTML que se asume:
+     article.card.mock-game-card
+       div.card-main                   ← contexto de posicionamiento
+         div.card-cover[data-cover]    ← imagen full-bleed (absolute)
+           img
+         div.card-body                 ← panel overlay (absolute, bottom)
+           div.card-head
+             div.card-title-stack
+               h2[data-title]
+               div.card-platform-badges
+             button.card-action
+           div.badges
+             span.badge[data-estado]
+           dl.meta
+             div > dt + dd[data-horas]
+           p.card-support[data-support]
+   ================================================================ */
+
+/* ── 1. Variables ───────────────────────────────────────────── */
+:root {
+  /* Altura total de la tarjeta según breakpoint */
+  --card-h-mobile: 10cm;
+  --card-h-tablet: 10cm;
+  --card-h-desktop: 12cm;
+
+  /*
+    Altura fija del panel inferior (card-body).
+    Mantenerla constante garantiza que el borde superior del overlay
+    —y por tanto la línea visual del título— sea siempre la misma
+    en todos los cards de una fila.
+  */
+  --card-body-h: 148px;
+
+  /*
+    Zona de fade-in del gradiente al inicio del panel (en px).
+    El blur y el fondo se desvanecen gradualmente durante este tramo.
+  */
+  --card-body-fade: 36px;
+
+  /* Border-radius de la tarjeta */
+  --card-radius: 1rem;
+
+  /* Panel inferior (glass) */
+  --card-blur: 20px;
+  --card-glass: rgba(0, 0, 0, 0.5);
+  --card-glass-border: rgba(255, 255, 255, 0);
+
+  /* Tipografía interna */
+  --card-title-color: #f4efea;
+  --card-sub-color: rgba(195, 208, 225, 0.65);
+  --card-accent-color: #e8d5c4;
+
+  /* Colores de estado */
+  --color-lollipop: #f7638c; /* wishlist */
+  --color-pistachio: #93c572; /* terminado */
+}
+
+/* ── 2. Grid del catálogo ──────────────────────────────────── */
+
+/*
+  Mobile base: 2 columnas de tarjetas tipo póster.
+  El gap y padding pequeños aprovechan todo el ancho en pantallas estrechas.
+*/
+.mock-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  padding: 0.6rem;
+}
+
+/* ── 3. Tarjeta base (mobile-first) ──────────────────────── */
+
+/*
+  Contenedor principal: overflow hidden para respetar border-radius.
+  Usamos .mock-cards-grid .mock-game-card (especificidad 0,2,0) para ganar
+  sobre .cards-bento .card { border-radius:0 } (0,2,0) de global.css por source-order.
+*/
+.mock-cards-grid .mock-game-card {
+  position: relative;
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid rgba(255, 255, 255, 0);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+  display: block; /* gana sobre .card{display:grid} por source-order */
+  grid-column: auto; /* anula cualquier span 4/5/3 residual de global.css */
+}
+
+/* Alias sin el grid padre, para que el hover funcione aunque cambie el contenedor */
+.mock-game-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--card-radius);
+  cursor: pointer;
+  display: block;
+}
+
+.mock-game-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.48);
+}
+
+/* El panel sube al hacer hover */
+.mock-game-card:hover .card-body {
+  transform: translateY(0);
+}
+
+/* Borde de la card al hover según estado — usa las mismas variables de global.css */
+.mock-game-card:has(.badge-status-pending):hover {
+  border-color: var(--status-pending-fg);
+}
+.mock-game-card:has(.badge-status-wishlist):hover {
+  border-color: var(--status-wishlist-fg);
+}
+.mock-game-card:has(.badge-status-completed):hover {
+  border-color: var(--status-completed-fg);
+}
+.mock-game-card:has(.badge-status-playing):hover {
+  border-color: var(--status-playing-fg);
+}
+.mock-game-card:has(.badge-status-recurring):hover {
+  border-color: var(--status-recurring-fg);
+}
+.mock-game-card:has(.badge-status-paused):hover {
+  border-color: var(--status-paused-fg);
+}
+.mock-game-card:has(.badge-status-abandoned):hover {
+  border-color: var(--status-abandoned-fg);
+}
+
+/*
+  card-main: el único hijo del artículo; actúa como canvas.
+  display:block (no grid) + height fija hacen que cover y body
+  se posicionen de forma absoluta sobre él.
+*/
+.mock-game-card .card-main {
+  display: flex;
+  align-items: end;
+  height: var(--card-h-mobile);
+}
+
+/*
+  card-cover: imagen de fondo que llena TODO card-main.
+  .mock-game-card .card-cover (0,2,0) gana sobre .cards-bento .card-cover (0,2,0)
+  de global.css por source-order; inset:0 hace irrelevante cualquier height legacy.
+*/
+.mock-game-card .card-cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: unset;
+  padding-bottom: 0; /* limpia el "poster trick" de global.css */
+  align-self: unset;
+  background: #0d111a; /* fallback mientras carga la imagen */
+}
+
+/* La imagen ocupa todo el cover con object-fit:cover */
+.mock-game-card .card-cover img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 240ms ease;
+}
+
+.mock-game-card:hover .card-cover img {
+  transform: scale(1.04);
+}
+
+/* El ::after ya no hace falta: el gradiente del mask-image del body lo cubre */
+.mock-game-card .card-cover::after {
+  content: none;
+}
+
+/*
+  card-body: panel glass-morphism con altura FIJA anclado al fondo.
+
+  La altura fija es la clave del alineamiento horizontal:
+  si todos los panels miden lo mismo, el borde superior del overlay
+  —donde empieza el título— siempre cae en la misma posición Y.
+
+  El gradiente en mask-image hace que el blur y el fondo del panel
+  se desvanezcan suavemente desde transparente hasta opaco durante
+  los primeros --card-body-fade píxeles, eliminando la línea de corte.
+*/
+.mock-game-card .card-body {
+  width: 100%;
+  overflow: hidden;
+  position: relative; /* necesario para el ::before del noise */
+
+  /* Glass morphism */
+  backdrop-filter: blur(var(--card-blur));
+  -webkit-backdrop-filter: blur(var(--card-blur));
+  background: var(--card-glass);
+  border-top: 1px solid var(--card-glass-border);
+
+  /*
+    Animación hover: el panel empieza fuera de pantalla (abajo) y sube al hacer hover.
+    overflow:hidden del card-main lo recorta cuando está desplazado → invisible.
+    cubic-bezier spring: sale rápido y frena con un leve rebote al llegar.
+  */
+  transform: translateY(100%);
+  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+
+  /*
+    Gradiente de máscara: el panel pasa de transparente (arriba)
+    a totalmente opaco (abajo) en --card-body-fade píxeles.
+    Esto afecta tanto al fondo como al blur, sin línea dura.
+  */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0px,
+    black var(--card-body-fade)
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0px,
+    black var(--card-body-fade)
+  );
+
+  /* Layout interno */
+  display: grid; /* especificidad 0,2,0 > .card-body{display:grid}(0,1,0) */
+  gap: 0.3rem;
+  /* El padding-top incluye el fade para que el texto no quede en la zona transparente */
+  padding: calc(var(--card-body-fade) + 0.35rem) 0.85rem 0.85rem;
+  align-content: start;
+
+  /* Limpieza de herencia de global.css */
+  border-left: 0;
+  margin-top: 0;
+}
+
+/* Noise grain solo dentro del panel de blur */
+.mock-game-card .card-body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+}
+
+/*
+  Fallback: cuando no hay imagen se muestra un fondo degradado
+  con el título accesible.
+*/
+.mock-game-card .card-cover-fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #1a1f2e, #0d111a);
+  font-size: 2.5rem;
+  color: rgba(255, 255, 255, 0.12);
+}
+
+/* ── 4. Contenido interno del card-body ──────────────────── */
+
+/*
+  card-head: fila con el título a la izquierda y el botón de acciones
+  a la derecha. flex permite que el botón no empuje el título.
+*/
+.mock-game-card .card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.mock-game-card .card-title-stack {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0; /* evita que el texto desborde el flex */
+}
+
+/*
+  Título: recortado a 2 líneas para mantener altura predecible.
+  .mock-game-card .card-title-stack h2 → especificidad (0,2,1), empata con
+  .cards-bento .card h2 (0,2,1) de global.css; cards.css gana por source-order.
+*/
+.mock-game-card .card-title-stack h2 {
+  margin: 0;
+  font-family: 'Anton SC', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: calc(20px + 10px);
+  letter-spacing: 1px;
+  color: var(--card-title-color);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+/* Badges de plataforma (PC, Switch, etc.) */
+.mock-game-card .card-platform-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+
+  margin-bottom: -0.5rem;
+}
+
+/* Divisor sutil debajo de los badges de plataforma */
+.mock-game-card .card-divider {
+  width: 25%;
+  border: none;
+  border-top: 2px solid rgba(255, 255, 255, 0.12);
+  margin: 0.2rem 0 0;
+}
+
+/* Badge de estado (Pendiente, Terminado…) */
+.mock-game-card .badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+/* Todos los badges: estado + plataforma + launcher */
+.mock-game-card .badge {
+  font-family: 'Stack Sans Text', sans-serif;
+  font-size: 10px;
+  padding: 0.25rem 1rem;
+  height: 0.5cm;
+}
+
+/*
+  Meta (horas jugadas): solo se muestra el número en mobile
+  para no saturar la tarjeta pequeña. La etiqueta "Horas:" se
+  oculta y se muestra en desktop.
+*/
+.mock-game-card .meta {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  margin-top: 0.1rem;
+}
+
+.mock-game-card .meta dt {
+  /* Oculto en mobile, visible en desktop (ver sección 6) */
+  display: none;
+}
+
+.mock-game-card .meta dd {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--card-accent-color);
+  line-height: 1;
+}
+
+/*
+  card-support: año de lanzamiento y género.
+  Una sola línea con ellipsis para no ocupar espacio extra.
+*/
+.mock-game-card p,
+.mock-game-card .meta dt,
+.mock-game-card .meta dd {
+  font-family: 'Elms Sans', sans-serif;
+}
+
+.mock-game-card .card-support {
+  margin: 0;
+  font-size: 0.7rem;
+  color: var(--card-sub-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Botón de acciones (tres puntos) */
+.mock-game-card .card-action {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  padding: 0.2rem 0.25rem;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 160ms ease;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: center;
+}
+
+.mock-game-card .card-action:hover {
+  opacity: 1;
+}
+
+/* Los spans del botón (puntos) heredan color del texto blanco */
+.mock-game-card .card-action span {
+  display: block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  color: #fff;
+}
+
+/* ── 5. Touch: tap para revelar el panel (hover: none) ───── */
+/*
+  En dispositivos táctiles (móvil, tablet) el hover no existe.
+  El card-body se mantiene oculto hasta que el usuario pulsa la card.
+  El JS añade .is-open al card en el primer tap; el segundo navega.
+  Usamos @media (hover: none) en vez de un breakpoint de ancho para
+  detectar correctamente dispositivos táctiles independientemente del tamaño.
+*/
+@media (hover: none) {
+  /* El hover de desktop no aplica en touch → solo .is-open muestra el panel */
+  .mock-game-card:hover .card-body {
+    transform: translateY(100%);
+  }
+
+  .mock-game-card.is-open .card-body {
+    transform: translateY(0);
+  }
+
+  /* El borde de estado se muestra al abrir */
+  .mock-game-card.is-open:has(.badge-status-wishlist) {
+    border-color: var(--status-wishlist-fg);
+  }
+  .mock-game-card.is-open:has(.badge-status-completed) {
+    border-color: var(--status-completed-fg);
+  }
+  .mock-game-card.is-open:has(.badge-status-playing) {
+    border-color: var(--status-playing-fg);
+  }
+  .mock-game-card.is-open:has(.badge-status-recurring) {
+    border-color: var(--status-recurring-fg);
+  }
+  .mock-game-card.is-open:has(.badge-status-paused) {
+    border-color: var(--status-paused-fg);
+  }
+  .mock-game-card.is-open:has(.badge-status-abandoned) {
+    border-color: var(--status-abandoned-fg);
+  }
+  .mock-game-card.is-open:has(.badge-status-pending) {
+    border-color: var(--status-pending-fg);
+  }
+}
+
+/* ── 5b. Pantalla muy estrecha (≤380px): reduce altura ───── */
+/*
+  Siempre 2 columnas. En pantallas muy pequeñas solo reducimos
+  la altura de la card para que quepan bien.
+*/
+@media (max-width: 380px) {
+  .mock-cards-grid {
+    gap: 0.4rem;
+    padding: 0.4rem;
+  }
+
+  .mock-game-card .card-main {
+    height: 220px;
+  }
+}
+
+/* ── 6. Tablet / Desktop (≥821px) ──────────────────────── */
+/*
+  A partir de 821px las tarjetas son más altas y la cuadrícula
+  pasa a 3 columnas. Se muestran más detalles (etiqueta horas).
+*/
+@media (min-width: 821px) {
+  .mock-cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.95rem;
+    padding: 0.85rem;
+  }
+
+  /* Tarjetas más altas en desktop */
+  .mock-game-card .card-main {
+    height: var(--card-h-tablet);
+  }
+
+  /* Panel con más respiración y altura algo mayor en desktop */
+  .mock-game-card .card-body {
+    --card-body-h: 160px;
+    --card-body-fade: 40px;
+    padding: calc(var(--card-body-fade) + 0.45rem) 1rem 1rem;
+    gap: 1rem;
+  }
+
+  /* Mostrar etiqueta "Horas" */
+  .mock-game-card .meta dt {
+    display: inline;
+    font-size: 0.76rem;
+    color: var(--card-sub-color);
+  }
+}
+
+/* ── 7. Desktop con sidebar (≥1181px) ────────────────────── */
+/*
+  Con el sidebar presente el área de contenido es más estrecha;
+  las tarjetas se ajustan a esa limitación.
+*/
+@media (min-width: 1181px) {
+  .mock-game-card .card-main {
+    height: var(--card-h-desktop);
+  }
+
+  /* 3 columnas dentro del área de contenido (con sidebar) */
+  .mock-cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ── 8. Pantalla extra-grande (≥1450px) ──────────────────── */
+/*
+  Con suficiente espacio horizontal, ampliamos a 4 columnas.
+*/
+@media (min-width: 1450px) {
+  .mock-cards-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

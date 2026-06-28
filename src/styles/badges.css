@@ -1,0 +1,217 @@
+/* ================================================================
+   badges.css — Estilos de badges: estado, launcher, plataforma, tag
+   ================================================================
+   Extraído de global.css para separación de responsabilidades.
+   Todos los badges usan fondo sólido para mayor legibilidad.
+   Los colores nominales se conservan: pumpkin, patriot, pistachio,
+   lollipop, gold, etc. — solo se eliminó la transparencia del bg.
+   ================================================================ */
+
+/* ── Base ──────────────────────────────────────────────────── */
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  min-height: 28px;
+  padding: 0.28rem 0.62rem;
+  border-radius: 10rem;
+  border: 1px solid var(--line);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.86rem;
+  white-space: nowrap;
+}
+
+.badge .launcher-inline-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  color: #eef3f8;
+}
+
+.badge .launcher-inline-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  fill: currentColor;
+  stroke: none;
+}
+
+/* ── Estado ────────────────────────────────────────────────── */
+
+.badge-status-default {
+  border-color: rgba(211, 211, 211, 0.3);
+  background: #1e2028;
+  color: #f3efef;
+}
+
+.badge-status-pending {
+  border-color: var(--status-pending-fg);
+  background: #29251c; /* beige oscuro */
+  color: var(--status-pending-fg);
+}
+
+.badge-status-playing {
+  border-color: var(--status-playing-fg);
+  background: #180f35; /* índigo oscuro */
+  color: var(--status-playing-fg);
+}
+
+.badge-status-completed {
+  border-color: var(--status-completed-fg);
+  background: #132b0c; /* pistachio oscuro */
+  color: var(--status-completed-fg);
+}
+
+.badge-status-recurring {
+  border-color: var(--status-recurring-fg);
+  background: #180f35; /* índigo oscuro */
+  color: var(--status-recurring-fg);
+}
+
+.badge-status-wishlist {
+  border-color: var(--status-wishlist-fg);
+  background: #30101d; /* lollipop oscuro */
+  color: var(--status-wishlist-fg);
+}
+
+.badge-status-paused {
+  border-color: var(--status-paused-fg);
+  background: #27090f; /* patriot oscuro */
+  color: var(--status-paused-fg);
+}
+
+.badge-status-abandoned {
+  border-color: var(--status-abandoned-fg);
+  background: #27090f; /* patriot oscuro */
+  color: var(--status-abandoned-fg);
+}
+
+/* ── Launcher ──────────────────────────────────────────────── */
+
+.badge-launcher-default {
+  border-color: rgba(211, 211, 211, 0.3);
+  background: #1e2028;
+  color: #f3efef;
+}
+
+.badge-launcher-steam {
+  border-color: #a8c4f0;
+  background: #030f24; /* navy sólido */
+  color: #a8c4f0;
+}
+
+.badge-launcher-epic {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+.badge-launcher-nintendo {
+  border-color: var(--status-paused-fg); /* patriot */
+  background: #27090f;
+  color: #c51e3a;
+}
+
+.badge-launcher-eshop {
+  border-color: var(--tag-early-fg); /* pumpkin */
+  background: #261100;
+  color: #ff7518;
+}
+
+.badge-launcher-pirata {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+.badge-launcher-gamepass {
+  border-color: rgba(96, 214, 120, 0.7);
+  background: #0a2212;
+  color: #c9ffd3;
+}
+
+.badge-launcher-riot {
+  border-color: rgba(255, 70, 70, 0.7);
+  background: #270a0a;
+  color: #ffcaca;
+}
+
+.badge-launcher-hoyoplay {
+  border-color: rgba(255, 190, 92, 0.7);
+  background: #261400;
+  color: #ffe1b0;
+}
+
+.badge-launcher-ea {
+  border-color: rgba(156, 123, 255, 0.7);
+  background: #1a0d30;
+  color: #dfd0ff;
+}
+
+.badge-launcher-ubisoft {
+  border-color: rgba(109, 168, 255, 0.7);
+  background: #0b1a2e;
+  color: #d1e4ff;
+}
+
+.badge-launcher-gog {
+  border-color: rgba(205, 84, 255, 0.7);
+  background: #1c0a2e;
+  color: #f0c9ff;
+}
+
+.badge-launcher-itch {
+  border-color: rgba(255, 123, 123, 0.7);
+  background: #270d0d;
+  color: #ffd4d4;
+}
+
+/* ── Plataforma ─────────────────────────────────────────────── */
+
+.badge-platform-default {
+  border-color: rgba(211, 211, 211, 0.3);
+  background: #1e2028;
+  color: #f3efef;
+}
+
+.badge-platform-pc {
+  border-color: #555;
+  background: #080810; /* negro sólido */
+  color: #ffffff;
+}
+
+.badge-platform-mobile {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: #1e1e1e;
+  color: #ffffff;
+}
+
+.badge-platform-switch {
+  border-color: var(--status-paused-fg); /* patriot */
+  background: #27090f;
+  color: #c51e3a;
+}
+
+/* ── Tags ──────────────────────────────────────────────────── */
+
+.badge-tag-free {
+  border-color: var(--tag-free-fg); /* gold */
+  background: #1e1800;
+  color: var(--tag-free-fg);
+}
+
+.badge-tag-early {
+  border-color: var(--tag-early-fg); /* pumpkin */
+  background: #1e0d00;
+  color: var(--tag-early-fg);
+}

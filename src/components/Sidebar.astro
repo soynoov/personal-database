@@ -1,0 +1,216 @@
+---
+interface Props {
+  orderedDrawerEstados: string[];
+  plataformas: string[];
+  launchers: string[];
+}
+
+const { orderedDrawerEstados, plataformas, launchers } = Astro.props;
+
+const estadoColor = (estado: string): string => {
+  const n = estado.toLowerCase().trim();
+  if (n === 'jugando') return '#6ee76c';
+  if (n === 'terminado' || n === 'completado') return '#67b1ff';
+  if (n === 'pendiente') return '#f5c518';
+  if (n === 'wishlist') return '#5ad0ff';
+  if (n === 'pausado') return '#f5a818';
+  if (n === 'abandonado' || n === 'retirado') return '#ff7055';
+  if (n === 'recurrente') return '#c9a0ff';
+  return '#8b9ab5';
+};
+---
+
+<!-- Mobile Drawer Overlay -->
+<div class='mobile-drawer-overlay' id='mobile-drawer-overlay' aria-hidden='true'></div>
+
+<!-- Mobile Drawer -->
+<nav
+  class='mobile-drawer'
+  id='mobile-drawer'
+  aria-label='Menú lateral'
+  aria-hidden='true'
+>
+  <div class='mobile-drawer-header'>
+    <div class='mobile-drawer-brand'>
+      <div class='desktop-sidebar-brandmark mobile-brandmark' aria-hidden='true'>
+        <svg viewBox='0 0 32 32'>
+          <path d='M8.5 5.5v21'></path>
+          <path d='M8.5 5.5h7.1c4.1 0 6.4 2.15 6.4 5.8 0 3.95-2.75 6.25-7.2 6.25H8.5'></path>
+          <path d='M13.3 5.5v21'></path>
+          <path d='M13.3 5.5h5.1c4.05 0 6.1 2.15 6.1 5.95v9.1c0 3.8-2.05 5.95-6.1 5.95h-5.1'></path>
+        </svg>
+      </div>
+      <div class='mobile-brand-copy'>
+        <span>Personal</span>
+        <span>Database</span>
+      </div>
+    </div>
+    <button class='mobile-drawer-close' id='mobile-drawer-close' type='button' aria-label='Cerrar menú'>
+      <svg viewBox='0 0 24 24' aria-hidden='true'>
+        <path d='M18 6 6 18'></path>
+        <path d='m6 6 12 12'></path>
+      </svg>
+    </button>
+  </div>
+
+  <div class='mobile-drawer-body'>
+    <div class='mobile-drawer-section'>
+      <span class='mobile-drawer-section-label'>Estado</span>
+      <button class='mobile-drawer-item' data-drawer-filter='estado' data-value='' type='button'>
+        <span class='mobile-drawer-dot' style='background:#5a6a80'></span>
+        <span>Todos</span>
+      </button>
+      {orderedDrawerEstados.map((estado) => (
+        <button class='mobile-drawer-item' data-drawer-filter='estado' data-value={estado} type='button'>
+          <span class='mobile-drawer-dot' style={`background:${estadoColor(estado)}`} />
+          <span>{estado}</span>
+        </button>
+      ))}
+    </div>
+
+    {plataformas.length > 0 && (
+      <div class='mobile-drawer-section'>
+        <span class='mobile-drawer-section-label'>Plataforma</span>
+        <button class='mobile-drawer-item' data-drawer-filter='plataforma' data-value='' type='button'>
+          <span>Todas</span>
+        </button>
+        {plataformas.map((p) => (
+          <button class='mobile-drawer-item' data-drawer-filter='plataforma' data-value={p} type='button'>
+            <span>{p}</span>
+          </button>
+        ))}
+      </div>
+    )}
+
+    {launchers.length > 0 && (
+      <div class='mobile-drawer-section'>
+        <span class='mobile-drawer-section-label'>Launcher</span>
+        <button class='mobile-drawer-item' data-drawer-filter='launcher' data-value='' type='button'>
+          <span>Todos</span>
+        </button>
+        {launchers.map((l) => (
+          <button class='mobile-drawer-item' data-drawer-filter='launcher' data-value={l} type='button'>
+            <span>{l}</span>
+          </button>
+        ))}
+      </div>
+    )}
+
+    <div class='mobile-drawer-section'>
+      <span class='mobile-drawer-section-label'>Ordenar</span>
+      <button class='mobile-drawer-item' data-drawer-filter='sort' data-value='titulo-asc' type='button'>
+        <span>A → Z</span>
+      </button>
+      <button class='mobile-drawer-item' data-drawer-filter='sort' data-value='horas-desc' type='button'>
+        <span>Más horas</span>
+      </button>
+      <button class='mobile-drawer-item' data-drawer-filter='sort' data-value='lanzamiento-desc' type='button'>
+        <span>Más reciente</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Desktop Sidebar -->
+<aside class='desktop-sidebar panel' aria-label='Navegacion principal'>
+  <div class='desktop-sidebar-brand'>
+    <div class='desktop-sidebar-brandmark' aria-hidden='true'>
+      <svg class='icon-solid' viewBox='0 0 640 640' style='color:#eef3f8;fill:currentColor'>
+        <path fill='currentColor' d='M160 128C160 110.3 174.3 96 192 96L320 96C408.4 96 480 167.6 480 256C480 344.4 408.4 416 320 416L224 416L224 512C224 529.7 209.7 544 192 544C174.3 544 160 529.7 160 512L160 128zM224 352L320 352C373 352 416 309 416 256C416 203 373 160 320 160L224 160L224 352z'></path>
+      </svg>
+      <svg class='icon-solid' viewBox='0 0 640 640' style='color:#eef3f8;fill:currentColor'>
+        <path fill='currentColor' d='M128 128C128 110.3 142.3 96 160 96L288 96C411.7 96 512 196.3 512 320C512 443.7 411.7 544 288 544L160 544C142.3 544 128 529.7 128 512L128 128zM192 160L192 480L288 480C376.4 480 448 408.4 448 320C448 231.6 376.4 160 288 160L192 160z'></path>
+      </svg>
+    </div>
+    <div>
+      <div class='desktop-sidebar-title'>Personal Database</div>
+    </div>
+  </div>
+
+  <nav class='desktop-sidebar-nav'>
+    <a class='desktop-nav-item is-active' href='/'>
+      <span class='desktop-nav-icon' aria-hidden='true'>
+        <svg viewBox='0 0 640 640'>
+          <path d='M480 576L192 576C139 576 96 533 96 480L96 160C96 107 139 64 192 64L496 64C522.5 64 544 85.5 544 112L544 400C544 420.9 530.6 438.7 512 445.3L512 512C529.7 512 544 526.3 544 544C544 561.7 529.7 576 512 576L480 576zM192 448C174.3 448 160 462.3 160 480C160 497.7 174.3 512 192 512L448 512L448 448L192 448zM224 216C224 229.3 234.7 240 248 240L424 240C437.3 240 448 229.3 448 216C448 202.7 437.3 192 424 192L248 192C234.7 192 224 202.7 224 216zM248 288C234.7 288 224 298.7 224 312C224 325.3 234.7 336 248 336L424 336C437.3 336 448 325.3 448 312C448 298.7 437.3 288 424 288L248 288z'></path>
+        </svg>
+      </span>
+      <span>Catalogo</span>
+    </a>
+    <button class='desktop-nav-item' type='button' disabled>
+      <span class='desktop-nav-icon' aria-hidden='true'>
+        <svg viewBox='0 0 640 640'>
+          <path d='M96 96C113.7 96 128 110.3 128 128L128 464C128 472.8 135.2 480 144 480L544 480C561.7 480 576 494.3 576 512C576 529.7 561.7 544 544 544L144 544C99.8 544 64 508.2 64 464L64 128C64 110.3 78.3 96 96 96zM304 160C310.7 160 317.1 162.8 321.7 167.8L392.8 245.3L439 199C448.4 189.6 463.6 189.6 472.9 199L536.9 263C541.4 267.5 543.9 273.6 543.9 280L543.9 392C543.9 405.3 533.2 416 519.9 416L215.9 416C202.6 416 191.9 405.3 191.9 392L191.9 280C191.9 274 194.2 268.2 198.2 263.8L286.2 167.8C290.7 162.8 297.2 160 303.9 160z'></path>
+        </svg>
+      </span>
+      <span>Estadisticas</span>
+    </button>
+    <button class='desktop-nav-item' type='button' disabled>
+      <span class='desktop-nav-icon' aria-hidden='true'>
+        <svg viewBox='0 0 640 640'>
+          <path d='M416 208C416 305.2 330 384 224 384C197.3 384 171.9 379 148.8 370L67.2 413.2C57.9 418.1 46.5 416.4 39 409C31.5 401.6 29.8 390.1 34.8 380.8L70.4 313.6C46.3 284.2 32 247.6 32 208C32 110.8 118 32 224 32C330 32 416 110.8 416 208zM416 576C321.9 576 243.6 513.9 227.2 432C347.2 430.5 451.5 345.1 463 229.3C546.3 248.5 608 317.6 608 400C608 439.6 593.7 476.2 569.6 505.6L605.2 572.8C610.1 582.1 608.4 593.5 601 601C593.6 608.5 582.1 610.2 572.8 605.2L491.2 562C468.1 571 442.7 576 416 576z'></path>
+        </svg>
+      </span>
+      <span>Criterio</span>
+    </button>
+    <button class='desktop-nav-item' type='button' disabled>
+      <span class='desktop-nav-icon' aria-hidden='true'>
+        <svg viewBox='0 0 640 640'>
+          <path d='M259.1 73.5C262.1 58.7 275.2 48 290.4 48L350.2 48C365.4 48 378.5 58.7 381.5 73.5L396 143.5C410.1 149.5 423.3 157.2 435.3 166.3L503.1 143.8C517.5 139 533.3 145 540.9 158.2L570.8 210C578.4 223.2 575.7 239.8 564.3 249.9L511 297.3C511.9 304.7 512.3 312.3 512.3 320C512.3 327.7 511.8 335.3 511 342.7L564.4 390.2C575.8 400.3 578.4 417 570.9 430.1L541 481.9C533.4 495 517.6 501.1 503.2 496.3L435.4 473.8C423.3 482.9 410.1 490.5 396.1 496.6L381.7 566.5C378.6 581.4 365.5 592 350.4 592L290.6 592C275.4 592 262.3 581.3 259.3 566.5L244.9 496.6C230.8 490.6 217.7 482.9 205.6 473.8L137.5 496.3C123.1 501.1 107.3 495.1 99.7 481.9L69.8 430.1C62.2 416.9 64.9 400.3 76.3 390.2L129.7 342.7C128.8 335.3 128.4 327.7 128.4 320C128.4 312.3 128.9 304.7 129.7 297.3L76.3 249.8C64.9 239.7 62.3 223 69.8 209.9L99.7 158.1C107.3 144.9 123.1 138.9 137.5 143.7L205.3 166.2C217.4 157.1 230.6 149.5 244.6 143.4L259.1 73.5zM320.3 400C364.5 399.8 400.2 363.9 400 319.7C399.8 275.5 363.9 239.8 319.7 240C275.5 240.2 239.8 276.1 240 320.3C240.2 364.5 276.1 400.2 320.3 400z'></path>
+        </svg>
+      </span>
+      <span>Ajustes</span>
+    </button>
+  </nav>
+
+  <a
+    class='desktop-sidebar-link desktop-sidebar-link-top'
+    href='https://github.com/soynoov/personal-database'
+    target='_blank'
+    rel='noreferrer'
+  >
+    <svg viewBox='0 0 24 24' aria-hidden='true'>
+      <path d='M12 3C7.03 3 3 7.15 3 12.27c0 4.1 2.58 7.58 6.16 8.8.45.09.61-.2.61-.44 0-.22-.01-.95-.01-1.72-2.26.42-2.85-.57-3.03-1.1-.1-.27-.51-1.1-.87-1.33-.3-.16-.73-.57-.01-.58.68-.01 1.16.64 1.32.9.78 1.35 2.03.97 2.53.73.08-.58.3-.97.55-1.19-2-.23-4.1-1.03-4.1-4.57 0-1.01.35-1.84.92-2.49-.09-.23-.4-1.18.09-2.45 0 0 .76-.25 2.48.95A8.35 8.35 0 0 1 12 7.82c.74 0 1.49.1 2.19.3 1.72-1.21 2.48-.95 2.48-.95.49 1.27.18 2.22.09 2.45.57.65.92 1.47.92 2.49 0 3.55-2.11 4.34-4.12 4.57.31.27.58.79.58 1.6 0 1.15-.01 2.07-.01 2.35 0 .24.16.54.61.44A9.31 9.31 0 0 0 21 12.27C21 7.15 16.97 3 12 3Z'></path>
+    </svg>
+    <span>GitHub</span>
+  </a>
+
+  <button class='desktop-sidebar-collapse' type='button' aria-label='Contraer sidebar' disabled>
+    <span aria-hidden='true'>«</span>
+  </button>
+</aside>
+
+<!-- Mobile Bottom Nav -->
+<nav class='mobile-bottom-nav panel' aria-label='Navegacion movil'>
+  <a class='mobile-bottom-nav-item is-active' href='/'>
+    <span class='mobile-bottom-nav-icon' aria-hidden='true'>
+      <svg viewBox='0 0 640 640'>
+        <path d='M480 576L192 576C139 576 96 533 96 480L96 160C96 107 139 64 192 64L496 64C522.5 64 544 85.5 544 112L544 400C544 420.9 530.6 438.7 512 445.3L512 512C529.7 512 544 526.3 544 544C544 561.7 529.7 576 512 576L480 576zM192 448C174.3 448 160 462.3 160 480C160 497.7 174.3 512 192 512L448 512L448 448L192 448zM224 216C224 229.3 234.7 240 248 240L424 240C437.3 240 448 229.3 448 216C448 202.7 437.3 192 424 192L248 192C234.7 192 224 202.7 224 216zM248 288C234.7 288 224 298.7 224 312C224 325.3 234.7 336 248 336L424 336C437.3 336 448 325.3 448 312C448 298.7 437.3 288 424 288L248 288z'></path>
+      </svg>
+    </span>
+    <span>Catalogo</span>
+  </a>
+  <button class='mobile-bottom-nav-item' type='button' disabled>
+    <span class='mobile-bottom-nav-icon' aria-hidden='true'>
+      <svg viewBox='0 0 640 640'>
+        <path d='M96 96C113.7 96 128 110.3 128 128L128 464C128 472.8 135.2 480 144 480L544 480C561.7 480 576 494.3 576 512C576 529.7 561.7 544 544 544L144 544C99.8 544 64 508.2 64 464L64 128C64 110.3 78.3 96 96 96zM304 160C310.7 160 317.1 162.8 321.7 167.8L392.8 245.3L439 199C448.4 189.6 463.6 189.6 472.9 199L536.9 263C541.4 267.5 543.9 273.6 543.9 280L543.9 392C543.9 405.3 533.2 416 519.9 416L215.9 416C202.6 416 191.9 405.3 191.9 392L191.9 280C191.9 274 194.2 268.2 198.2 263.8L286.2 167.8C290.7 162.8 297.2 160 303.9 160z'></path>
+      </svg>
+    </span>
+    <span>Estadisticas</span>
+  </button>
+  <button class='mobile-bottom-nav-item' type='button' disabled>
+    <span class='mobile-bottom-nav-icon' aria-hidden='true'>
+      <svg viewBox='0 0 640 640'>
+        <path d='M416 208C416 305.2 330 384 224 384C197.3 384 171.9 379 148.8 370L67.2 413.2C57.9 418.1 46.5 416.4 39 409C31.5 401.6 29.8 390.1 34.8 380.8L70.4 313.6C46.3 284.2 32 247.6 32 208C32 110.8 118 32 224 32C330 32 416 110.8 416 208zM416 576C321.9 576 243.6 513.9 227.2 432C347.2 430.5 451.5 345.1 463 229.3C546.3 248.5 608 317.6 608 400C608 439.6 593.7 476.2 569.6 505.6L605.2 572.8C610.1 582.1 608.4 593.5 601 601C593.6 608.5 582.1 610.2 572.8 605.2L491.2 562C468.1 571 442.7 576 416 576z'></path>
+      </svg>
+    </span>
+    <span>Criterio</span>
+  </button>
+  <button class='mobile-bottom-nav-item' type='button' disabled>
+    <span class='mobile-bottom-nav-icon' aria-hidden='true'>
+      <svg viewBox='0 0 640 640'>
+        <path d='M259.1 73.5C262.1 58.7 275.2 48 290.4 48L350.2 48C365.4 48 378.5 58.7 381.5 73.5L396 143.5C410.1 149.5 423.3 157.2 435.3 166.3L503.1 143.8C517.5 139 533.3 145 540.9 158.2L570.8 210C578.4 223.2 575.7 239.8 564.3 249.9L511 297.3C511.9 304.7 512.3 312.3 512.3 320C512.3 327.7 511.8 335.3 511 342.7L564.4 390.2C575.8 400.3 578.4 417 570.9 430.1L541 481.9C533.4 495 517.6 501.1 503.2 496.3L435.4 473.8C423.3 482.9 410.1 490.5 396.1 496.6L381.7 566.5C378.6 581.4 365.5 592 350.4 592L290.6 592C275.4 592 262.3 581.3 259.3 566.5L244.9 496.6C230.8 490.6 217.7 482.9 205.6 473.8L137.5 496.3C123.1 501.1 107.3 495.1 99.7 481.9L69.8 430.1C62.2 416.9 64.9 400.3 76.3 390.2L129.7 342.7C128.8 335.3 128.4 327.7 128.4 320C128.4 312.3 128.9 304.7 129.7 297.3L76.3 249.8C64.9 239.7 62.3 223 69.8 209.9L99.7 158.1C107.3 144.9 123.1 138.9 137.5 143.7L205.3 166.2C217.4 157.1 230.6 149.5 244.6 143.4L259.1 73.5zM320.3 400C364.5 399.8 400.2 363.9 400 319.7C399.8 275.5 363.9 239.8 319.7 240C275.5 240.2 239.8 276.1 240 320.3C240.2 364.5 276.1 400.2 320.3 400z'></path>
+      </svg>
+    </span>
+    <span>Ajustes</span>
+  </button>
+</nav>

@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html class="h-full bg-[#0d1117]" lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Personal Database - Dead by Daylight</title>
+  <!-- Tailwind CSS v3 -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <!-- Google Fonts: Inter and Playfair Display -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;display=swap"
+    rel="stylesheet">
+  <style data-purpose="typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #94a3b8;
+    }
+
+    h1,
+    h2,
+    h3,
+    .font-serif {
+      font-family: 'Playfair Display', serif;
+    }
+  </style>
+  <style data-purpose="custom-layout">
+    /* Custom scrollbar for dark theme */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0d1117;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
+    }
+
+    .sidebar-active {
+      background: linear-gradient(90deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0) 100%);
+      border-left: 2px solid #ef4444;
+      color: #f8fafc;
+    }
+
+    .chart-container {
+      background: rgba(22, 27, 34, 0.5);
+      border: 1px solid #30363d;
+    }
+
+    .dlc-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      transition: all 0.2s ease;
+    }
+
+    .dlc-card:hover {
+      border-color: #484f58;
+      transform: translateY(-2px);
+    }
+
+    .badge-dlc {
+      background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+      transform: rotate(-45deg);
+      position: absolute;
+      top: 5px;
+      left: -20px;
+      width: 80px;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: white;
+    }
+  </style>
+</head>
+
+<body class="flex h-screen overflow-hidden">
+  <!-- BEGIN: LeftSidebar -->
+  <aside class="w-64 flex-shrink-0 border-r border-[#30363d] flex flex-col h-full bg-[#0d1117]"
+    data-purpose="main-sidebar">
+    <div class="p-6">
+      <div class="flex items-center gap-3 mb-10">
+        <div class="w-8 h-8 bg-white flex items-center justify-center rounded">
+          <span class="text-[#0d1117] font-bold text-xl">P</span>
+        </div>
+        <div>
+          <div class="text-white font-bold leading-none tracking-tight text-sm uppercase">Personal</div>
+          <div class="text-gray-500 text-[10px] uppercase tracking-widest">Database</div>
+        </div>
+      </div>
+      <nav class="space-y-1">
+        <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium hover:text-white transition-colors" href="#">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" stroke-linecap="round" stroke-linejoin="round"
+              stroke-width="2"></path>
+          </svg>
+          GitHub
+        </a>
+        <a class="sidebar-active flex items-center gap-3 px-4 py-3 text-sm font-medium" href="#">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+          Catálogo
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium hover:text-white transition-colors" href="#">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+          Estadísticas
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium hover:text-white transition-colors" href="#">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+          Criterio
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium hover:text-white transition-colors" href="#">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+            <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+            </path>
+          </svg>
+          Ajustes
+        </a>
+      </nav>
+    </div>
+    <div class="mt-auto p-4 flex items-center justify-center">
+      <button class="text-gray-500 hover:text-white transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M11 19l-7-7 7-7m8 14l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+          </path>
+        </svg>
+      </button>
+    </div>
+  </aside>
+  <!-- END: LeftSidebar -->
+  <!-- BEGIN: MainContent -->
+  <main class="flex-1 overflow-y-auto bg-[#0d1117] p-8">
+    <!-- BEGIN: Breadcrumbs -->
+    <div class="flex items-center gap-2 text-xs mb-8 text-gray-400">
+      <span class="hover:text-white cursor-pointer">Catálogo</span>
+      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+      </svg>
+      <span class="text-gray-600">Dead by Daylight</span>
+    </div>
+    <!-- END: Breadcrumbs -->
+    <!-- BEGIN: HeroSection -->
+    <section class="mb-12 relative" data-purpose="game-hero">
+      <div class="flex gap-10">
+        <!-- Game Cover -->
+        <div class="w-[220px] flex-shrink-0">
+          <img alt="Dead by Daylight Cover" class="w-full rounded-lg shadow-2xl border border-[#30363d] object-cover"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8kZdH77BBF98hWrT3Y85DJfnYuJjMUzXVXPAixWhORstiYdb0CCBvHD00YCCu5QRoQH4FMdw_Qf_5L4uZvGbXZaDY0Zh7SvtnIpvE4fADXEd2MjU9o5FJoySpqvqk2IKxNpGHsglRf68QE-kcDZXX40M6RcX5LKo7BDfIBGe0rzWLCuLofjMPXhMQ-__LXoMefCBSbeNK7zQX9V2n2u70dQwfsgiFYjaojgyfNXSoBg4bVrwJ6nIii0AS68TVqyycSxmmZkYaPJZd1Q"
+            style="aspect-ratio: 1024/1536">
+        </div>
+        <!-- Game Info -->
+        <div class="flex-1 pt-4">
+          <div class="flex justify-between items-start mb-6">
+            <div>
+              <h1 class="text-5xl font-serif text-white mb-6">Dead by Daylight</h1>
+              <div class="flex gap-2 items-center mb-6">
+                <span
+                  class="bg-green-500/10 text-green-500 text-[10px] font-bold px-3 py-1 rounded uppercase tracking-wider border border-green-500/20">Jugando</span>
+                <span
+                  class="bg-[#1e293b] text-gray-300 text-[10px] px-3 py-1 rounded flex items-center gap-1.5 border border-gray-700">
+                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3.123 16.5c-.24 0-.442-.144-.526-.33l-1.572-3.486-1.571 3.486c-.085.186-.287.33-.527.33h-1.427v-8.5h1.5v7.056l1.248-2.766c.15-.333.606-.333.756 0l1.248 2.766v-7.056h1.5v8.5h-1.427z">
+                    </path>
+                  </svg>
+                  Steam
+                </span>
+                <span
+                  class="bg-[#1e293b] text-gray-300 text-[10px] px-3 py-1 rounded border border-gray-700 uppercase">PC</span>
+              </div>
+              <p class="text-gray-400 max-w-2xl text-base mb-6 leading-relaxed">
+                Juego multijugador asimétrico de terror y supervivencia.
+              </p>
+              <div class="flex gap-x-4 text-xs font-medium text-gray-500 uppercase tracking-widest">
+                <span class="">Acción</span>
+                <span class="opacity-30">•</span>
+                <span class="">Horror</span>
+                <span class="opacity-30">•</span>
+                <span class="">Supervivencia</span>
+                <span class="opacity-30">•</span>
+                <span class="">Multijugador</span>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button class="p-2.5 rounded-lg border border-gray-700 hover:bg-gray-800 transition-colors">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.175 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.382-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                </svg>
+              </button>
+              <button class="p-2.5 rounded-lg border border-gray-700 hover:bg-gray-800 transition-colors">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <!-- Section Tabs -->
+          <div class="flex gap-8 border-b border-gray-800 mt-12 overflow-x-auto">
+            <button
+              class="pb-4 text-sm font-semibold text-white border-b-2 border-red-500 flex items-center gap-2 whitespace-nowrap">
+              <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+              Overview
+            </button>
+            <button
+              class="pb-4 text-sm font-semibold text-gray-500 hover:text-gray-300 flex items-center gap-2 whitespace-nowrap transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"
+                  stroke-width="2"></path>
+              </svg>
+              Horas
+            </button>
+            <button
+              class="pb-4 text-sm font-semibold text-gray-500 hover:text-gray-300 flex items-center gap-2 whitespace-nowrap transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+              Dinero
+            </button>
+            <button
+              class="pb-4 text-sm font-semibold text-gray-500 hover:text-gray-300 flex items-center gap-2 whitespace-nowrap transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+              DLCs
+            </button>
+            <button
+              class="pb-4 text-sm font-semibold text-gray-500 hover:text-gray-300 flex items-center gap-2 whitespace-nowrap transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+              Estadísticas
+            </button>
+            <button
+              class="pb-4 text-sm font-semibold text-gray-500 hover:text-gray-300 flex items-center gap-2 whitespace-nowrap transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+              Logros
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: HeroSection -->
+    <!-- BEGIN: PlaytimeSection -->
+    <section class="mb-12" data-purpose="playtime-stats">
+      <h2 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-6">Horas</h2>
+      <div class="grid grid-cols-12 gap-6">
+        <!-- Main Chart -->
+        <div class="col-span-8 chart-container rounded-xl p-6">
+          <div class="flex justify-between items-center mb-8">
+            <span class="text-xs font-medium text-gray-300">Tiempo de juego a lo largo del tiempo</span>
+            <select class="bg-gray-800 border-none text-[10px] text-gray-300 py-1 pl-2 pr-8 rounded-md focus:ring-0">
+              <option>Últimos 18 meses</option>
+            </select>
+          </div>
+          <!-- Canvas for Purple Line Chart -->
+          <div class="h-64 relative">
+            <canvas class="w-full h-full" id="playtimeChart" width="582" height="256"></canvas>
+            <!-- X-Axis Labels Placeholder (visual recreation via HTML for precision if needed, but here simple tags) -->
+            <div class="flex justify-between mt-4 text-[10px] text-gray-600 px-2">
+              <span class="">ene '24</span>
+              <span class="">mar '24</span>
+              <span class="">may '24</span>
+              <span class="">jul '24</span>
+              <span class="">sep '24</span>
+              <span class="">nov '24</span>
+              <span class="">ene '25</span>
+              <span class="">mar '25</span>
+              <span class="">may '25</span>
+            </div>
+          </div>
+        </div>
+        <!-- Quick Stats Grid -->
+        <div class="col-span-4 grid grid-rows-2 gap-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="chart-container rounded-xl p-4 flex flex-col justify-center">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="p-1.5 rounded bg-purple-500/10 text-purple-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"
+                      stroke-width="2"></path>
+                  </svg>
+                </div>
+                <span class="text-[10px] text-gray-500 uppercase font-bold">Horas totales</span>
+              </div>
+              <div class="text-2xl font-bold text-white">1,287.6 h</div>
+              <div class="text-[10px] text-gray-500 mt-1">Jugado en PC</div>
+            </div>
+            <div class="chart-container rounded-xl p-4 flex flex-col justify-center">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="p-1.5 rounded bg-purple-500/10 text-purple-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke-linecap="round" stroke-linejoin="round"
+                      stroke-width="2"></path>
+                  </svg>
+                </div>
+                <span class="text-[10px] text-gray-500 uppercase font-bold">Últimas 2 semanas</span>
+              </div>
+              <div class="text-2xl font-bold text-white">18.4 h</div>
+              <div class="text-[10px] text-green-500 mt-1 flex items-center gap-1">
+                <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M7 14l5-5 5 5H7z"></path>
+                </svg>
+                28% vs. periodo anterior
+              </div>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="chart-container rounded-xl p-4 flex flex-col justify-center">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="p-1.5 rounded bg-purple-500/10 text-purple-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"
+                      stroke-width="2"></path>
+                  </svg>
+                </div>
+                <span class="text-[10px] text-gray-500 uppercase font-bold">Media por sesión</span>
+              </div>
+              <div class="text-2xl font-bold text-white">1.9 h</div>
+              <div class="text-[10px] text-gray-500 mt-1">Basado en 684 sesiones</div>
+            </div>
+            <div class="chart-container rounded-xl p-4 flex flex-col justify-center">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="p-1.5 rounded bg-purple-500/10 text-purple-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" stroke-linecap="round" stroke-linejoin="round"
+                      stroke-width="2"></path>
+                  </svg>
+                </div>
+                <span class="text-[10px] text-gray-500 uppercase font-bold">Pico mensual</span>
+              </div>
+              <div class="text-2xl font-bold text-white">126.8 h</div>
+              <div class="text-[10px] text-gray-500 mt-1 uppercase">Diciembre de 2024</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: PlaytimeSection -->
+    <!-- BEGIN: MoneySection -->
+    <section class="mb-12" data-purpose="spending-stats">
+      <h2 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-6">Dinero</h2>
+      <div class="grid grid-cols-12 gap-6">
+        <!-- Main Growth Chart -->
+        <div class="col-span-8 chart-container rounded-xl p-6">
+          <div class="flex justify-between items-center mb-8">
+            <span class="text-xs font-medium text-gray-300">Gasto acumulado a lo largo del tiempo</span>
+            <select class="bg-gray-800 border-none text-[10px] text-gray-300 py-1 pl-2 pr-8 rounded-md focus:ring-0">
+              <option>Todo el tiempo</option>
+            </select>
+          </div>
+          <div class="h-64 relative">
+            <canvas class="w-full h-full" id="spendingChart" width="582" height="256"></canvas>
+            <div class="flex justify-between mt-4 text-[10px] text-gray-600 px-2">
+              <span class="">ene '24</span>
+              <span class="">mar '24</span>
+              <span class="">may '24</span>
+              <span class="">jul '24</span>
+              <span class="">sep '24</span>
+              <span class="">nov '24</span>
+              <span class="">ene '25</span>
+              <span class="">mar '25</span>
+              <span class="">may '25</span>
+            </div>
+          </div>
+        </div>
+        <!-- Financial Summary Grid -->
+        <div class="col-span-4 grid grid-rows-3 gap-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="chart-container rounded-xl p-4">
+              <div class="flex items-center gap-2 mb-1">
+                <div class="p-1.5 rounded bg-green-500/10 text-green-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
+                      stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                  </svg>
+                </div>
+                <span class="text-[10px] text-gray-500 uppercase font-bold">Gastado</span>
+              </div>
+              <div class="text-xl font-bold text-white">74.00 €</div>
+              <div class="text-[10px] text-gray-500">En DLCs y contenido</div>
+            </div>
+            <div class="chart-container rounded-xl p-4">
+              <div class="flex items-center gap-2 mb-1">
+                <div class="p-1.5 rounded bg-green-500/10 text-green-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                      stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                  </svg>
+                </div>
+                <span class="text-[10px] text-gray-500 uppercase font-bold">Precio actual</span>
+              </div>
+              <div class="text-xl font-bold text-white">19.99 €</div>
+              <div class="text-[10px] text-gray-500">Precio base en tienda</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="chart-container rounded-xl p-4">
+              <div class="flex items-center gap-2 mb-1">
+                <div class="p-1.5 rounded bg-green-500/10 text-green-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                  </svg>
+                </div>
+                <span class="text-[10px] text-gray-500 uppercase font-bold">Descuento actual</span>
+              </div>
+              <div class="text-xl font-bold text-white">-60%</div>
+              <div class="text-[10px] text-green-500 font-medium">Oferta especial</div>
+            </div>
+            <div class="chart-container rounded-xl p-4">
+              <div class="flex items-center gap-2 mb-1">
+                <div class="p-1.5 rounded bg-green-500/10 text-green-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
+                      stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                  </svg>
+                </div>
+                <span class="text-[10px] text-gray-500 uppercase font-bold">Precio medio</span>
+              </div>
+              <div class="text-xl font-bold text-white">16.52 €</div>
+              <div class="text-[10px] text-gray-500">Histórico de descuentos</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="chart-container rounded-xl p-4">
+              <div class="flex items-center gap-2 mb-1">
+                <div class="p-1.5 rounded bg-green-500/10 text-green-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-linecap="round"
+                      stroke-linejoin="round" stroke-width="2"></path>
+                  </svg>
+                </div>
+                <span class="text-[10px] text-gray-500 uppercase font-bold">Valor estimado</span>
+              </div>
+              <div class="text-xl font-bold text-white">92.30 €</div>
+              <div class="text-[10px] text-gray-500">Contenido adquirido</div>
+            </div>
+            <div class="chart-container rounded-xl p-4">
+              <div class="flex items-center gap-2 mb-1">
+                <div class="p-1.5 rounded bg-green-500/10 text-green-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758L5 19m0-14l4.121 4.121"
+                      stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                  </svg>
+                </div>
+                <span class="text-[10px] text-gray-500 uppercase font-bold">Ahorro estimado</span>
+              </div>
+              <div class="text-xl font-bold text-white">56.30 €</div>
+              <div class="text-[10px] text-gray-500">Vs. precio sin descuento</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: MoneySection -->
+    <!-- BEGIN: ResumenGrid -->
+    <section class="mb-12" data-purpose="game-details">
+      <h2 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-6">Resumen</h2>
+      <div class="grid grid-cols-3 gap-y-1 gap-x-6">
+        <!-- Row 1 -->
+        <div class="flex items-center gap-4 p-4 border border-[#30363d] rounded-lg bg-[#161b22]/30">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+          <div>
+            <div class="text-[10px] text-gray-500 uppercase font-bold">Género</div>
+            <div class="text-sm text-gray-200">Acción, Horror, Supervivencia</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 p-4 border border-[#30363d] rounded-lg bg-[#161b22]/30">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+          <div>
+            <div class="text-[10px] text-gray-500 uppercase font-bold">Colección</div>
+            <div class="text-sm text-gray-200">Terror y Supervivencia</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 p-4 border border-[#30363d] rounded-lg bg-[#161b22]/30">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+          <div class="flex-1 flex justify-between items-center">
+            <div>
+              <div class="text-[10px] text-gray-500 uppercase font-bold">Clasificación</div>
+              <div class="text-sm text-gray-200">PEGI 18</div>
+            </div>
+            <span
+              class="bg-red-900/40 text-red-500 text-[10px] px-1.5 py-0.5 rounded border border-red-500/30">18</span>
+          </div>
+        </div>
+        <!-- Row 2 -->
+        <div class="flex items-center gap-4 p-4 border border-[#30363d] rounded-lg bg-[#161b22]/30">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+          <div>
+            <div class="text-[10px] text-gray-500 uppercase font-bold">Desarrollador</div>
+            <div class="text-sm text-gray-200">Behaviour Interactive Inc.</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 p-4 border border-[#30363d] rounded-lg bg-[#161b22]/30">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+          <div>
+            <div class="text-[10px] text-gray-500 uppercase font-bold">Editor</div>
+            <div class="text-sm text-gray-200">Behaviour Interactive Inc.</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 p-4 border border-[#30363d] rounded-lg bg-[#161b22]/30">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.175 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.382-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+          <div class="flex-1">
+            <div class="text-[10px] text-gray-500 uppercase font-bold">Logros</div>
+            <div class="flex items-center gap-3">
+              <span class="text-sm text-gray-200">145 / 209 (69%)</span>
+              <div class="flex-1 h-1 bg-gray-700 rounded-full overflow-hidden">
+                <div class="h-full bg-purple-500" style="width: 69%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Row 3 -->
+        <div class="flex items-center gap-4 p-4 border border-[#30363d] rounded-lg bg-[#161b22]/30">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+          <div>
+            <div class="text-[10px] text-gray-500 uppercase font-bold">Modo de juego</div>
+            <div class="text-sm text-gray-200">Multijugador asimétrico (1 vs 4)</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 p-4 border border-[#30363d] rounded-lg bg-[#161b22]/30">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+            </path>
+            <path
+              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+          <div>
+            <div class="text-[10px] text-gray-500 uppercase font-bold">Perspectiva</div>
+            <div class="text-sm text-gray-200">Primera / Tercera persona</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 p-4 border border-[#30363d] rounded-lg bg-[#161b22]/30">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+          <div class="flex-1">
+            <div class="text-[10px] text-gray-500 uppercase font-bold">DLCs adquiridos</div>
+            <div class="flex items-center gap-3">
+              <span class="text-sm text-gray-200">18 / 29 (62%)</span>
+              <div class="flex-1 h-1 bg-gray-700 rounded-full overflow-hidden">
+                <div class="h-full bg-purple-500" style="width: 62%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Row 4 -->
+        <div class="flex items-center gap-4 p-4 border border-[#30363d] rounded-lg bg-[#161b22]/30">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"
+              stroke-width="2"></path>
+          </svg>
+          <div>
+            <div class="text-[10px] text-gray-500 uppercase font-bold">Estado</div>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-bold text-green-500 uppercase">Jugando</span>
+              <span class="text-[10px] text-gray-600">Actualmente en biblioteca</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 p-4 border border-[#30363d] rounded-lg bg-[#161b22]/30">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+          <div class="flex-1 flex justify-between items-center">
+            <div>
+              <div class="text-[10px] text-gray-500 uppercase font-bold">Plataforma</div>
+              <div class="text-sm text-gray-200">PC (Windows)</div>
+            </div>
+            <span
+              class="bg-[#1e293b] text-gray-400 text-[10px] px-2 py-0.5 rounded border border-gray-700 uppercase">PC</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 p-4 border border-[#30363d] rounded-lg bg-[#161b22]/30">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 11.37 9.188 16.503 5 20"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+          <div>
+            <div class="text-[10px] text-gray-500 uppercase font-bold">Idioma</div>
+            <div class="text-sm text-gray-200">Español (Interfaz y Subtítulos)</div>
+          </div>
+        </div>
+        <!-- Row 5 -->
+        <div class="flex items-center gap-4 p-4 border border-[#30363d] rounded-lg bg-[#161b22]/30">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+          <div>
+            <div class="text-[10px] text-gray-500 uppercase font-bold">Fecha de lanzamiento</div>
+            <div class="text-sm text-gray-200">14 de junio de 2016</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 p-4 border border-[#30363d] rounded-lg bg-[#161b22]/30">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"
+              stroke-width="2"></path>
+          </svg>
+          <div>
+            <div class="text-[10px] text-gray-500 uppercase font-bold">Última vez jugado</div>
+            <div class="text-sm text-gray-200">6 de mayo de 2025</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 p-4 border border-[#30363d] rounded-lg bg-[#161b22]/30">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"
+              stroke-width="2"></path>
+          </svg>
+          <div>
+            <div class="text-[10px] text-gray-500 uppercase font-bold">Tiempo desde instalación</div>
+            <div class="text-sm text-gray-200">3 años, 8 meses</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: ResumenGrid -->
+    <!-- BEGIN: DLCSection -->
+    <section class="mb-12" data-purpose="dlc-list">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xs font-bold text-gray-500 uppercase tracking-widest">DLCs</h2>
+        <button
+          class="text-[10px] font-bold text-gray-400 bg-gray-800/50 border border-gray-700 px-3 py-1 rounded hover:text-white hover:border-gray-600 transition-colors">
+          Ver todos (29)
+        </button>
+      </div>
+      <div class="grid grid-cols-6 gap-4">
+        <!-- Card 1 -->
+        <div class="dlc-card rounded-lg overflow-hidden relative">
+          <div class="badge-dlc">DLC</div>
+          <img alt="DLC Thumbnail" class="w-full h-24 object-cover opacity-80"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4nBxA0wAR7acDZOg5nkfwivkvkFWDZFXYuX3xcns7xAZRoEe4GXFXQ4Wv0SpwcNDcot9hbEFTMuxVR3HFcPMqjEjNG4AKmhTRSjDPnYqXkfUK_-rQUy-HY2lBrIH-QPcGWZ4Q_7tDGlNE5CJH5VcHLbOn4qwRQwh0zIS-K0tmCWtb5Y1bpUU8MX7eEgy8iABx0scMHsHtlDia9lKqsjouOCuw_GStSStV-gq7VfwSClNcDD3hXhpuHxRIFGySddQypRbIZQlY2T4">
+          <div class="p-3">
+            <h3 class="text-[11px] font-bold text-white mb-1 leading-tight h-8 line-clamp-2">Resident Evil™ Chapter</h3>
+            <div class="text-[9px] text-gray-500 mb-2">15 de junio de 2021</div>
+            <div class="flex justify-between items-center">
+              <span class="text-[11px] font-bold text-white">6.99 €</span>
+              <span
+                class="text-[8px] bg-green-500/10 text-green-500 px-1.5 py-0.5 rounded border border-green-500/20 font-bold uppercase">Adquirido</span>
+            </div>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="dlc-card rounded-lg overflow-hidden relative">
+          <div class="badge-dlc">DLC</div>
+          <img alt="DLC Thumbnail" class="w-full h-24 object-cover opacity-80"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVnz3GOh1BJ4BQe1dWmwr5tA09MbRcktYFz86O5C2q5fXRr7PcHNLOrxPf-bBEfy7yX5daETz9W0KF6_GJS3JZwyqR6Ef59WBQtnLFmHuNbCc6muANGi23eYFeEebxWy6LtnD4mz9HsANitYHAXPwUalO54Ib3Nuu_l-_nM3oEFpc727mmbrkFJ9KvwdjdaL_XJo_soraeF1QqZDw70Q2cPlyknF-6L3LEi8L912m_Gi6nsFodhCyasK1-kW7Kr0wEsz7ypt0FHV8">
+          <div class="p-3">
+            <h3 class="text-[11px] font-bold text-white mb-1 leading-tight h-8 line-clamp-2">A Binding of Kin: Chapter
+            </h3>
+            <div class="text-[9px] text-gray-500 mb-2">1 de diciembre de 2020</div>
+            <div class="flex justify-between items-center">
+              <span class="text-[11px] font-bold text-white">4.99 €</span>
+              <span
+                class="text-[8px] bg-green-500/10 text-green-500 px-1.5 py-0.5 rounded border border-green-500/20 font-bold uppercase">Adquirido</span>
+            </div>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="dlc-card rounded-lg overflow-hidden relative">
+          <div class="badge-dlc">DLC</div>
+          <img alt="DLC Thumbnail" class="w-full h-24 object-cover opacity-80"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH1OBJk7fuwNwkeg676nZOAGS4fjMCathvGl9HUIWN45Z1pXhtxaXmPwc9W_R456QK6T201-WzQYFhegVxQaIAOWD6Lj_FGTTgr-TkdZuXBCn0a_83Rmy-ZlVrXZvzdLG3PNzPLRXg02UoXzoMx5lgFZ5DmvhU0U_GwfBxuHHHmp8b_hVpkbcYatPzNvYhVij9cV4Z1rE4VX-MUfxCSqmCpAbA-Hkd49cvNNJSoRd6DgAq-umO4P7nKaa1UGOj_XdQhoMh_sr2nIU">
+          <div class="p-3">
+            <h3 class="text-[11px] font-bold text-white mb-1 leading-tight h-8 line-clamp-2">Hour of the Witch Chapter
+            </h3>
+            <div class="text-[9px] text-gray-500 mb-2">16 de mayo de 2019</div>
+            <div class="flex justify-between items-center">
+              <span class="text-[11px] font-bold text-white">4.99 €</span>
+              <span
+                class="text-[8px] bg-green-500/10 text-green-500 px-1.5 py-0.5 rounded border border-green-500/20 font-bold uppercase">Adquirido</span>
+            </div>
+          </div>
+        </div>
+        <!-- Card 4 -->
+        <div class="dlc-card rounded-lg overflow-hidden relative">
+          <div class="badge-dlc">DLC</div>
+          <img alt="DLC Thumbnail" class="w-full h-24 object-cover opacity-80"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_43sOptghSUt48mk_6pmE_VUNaJLa6RGbAPXD07Du1enWmxFOfPUDiNNMd0E80Qa9VgCL87tbwvkYHOQAnN1LtPD21pkZBjJzuThZ3DecrgEsjxF0vG-NIYiAQEBmmrOkHz3CrPTn7a1g0IDS2WqVlk85D25DL9aZe9qgONj2w8TpxMyQD38ldjQa-BToMg7LzlgPze4WaAcE7x6B3JE6Yb-JhvfsEreGPBWnuI55qY1TmVW2qvalWmqLqGmH-5YGR1gn--AIRJ0">
+          <div class="p-3">
+            <h3 class="text-[11px] font-bold text-white mb-1 leading-tight h-8 line-clamp-2">Ghost Face® Chapter</h3>
+            <div class="text-[9px] text-gray-500 mb-2">18 de noviembre de 2022</div>
+            <div class="flex justify-between items-center">
+              <span class="text-[11px] font-bold text-white">4.99 €</span>
+              <span
+                class="text-[8px] bg-green-500/10 text-green-500 px-1.5 py-0.5 rounded border border-green-500/20 font-bold uppercase">Adquirido</span>
+            </div>
+          </div>
+        </div>
+        <!-- Card 5 -->
+        <div class="dlc-card rounded-lg overflow-hidden relative">
+          <div class="badge-dlc">DLC</div>
+          <img alt="DLC Thumbnail" class="w-full h-24 object-cover opacity-80"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmorswUgeuPkFDJCgaISruu8qcSXcB1OUoReHgsoXG84sVe6pfDGDnekLtSMH2C_5GNuEj-mAosd0-NL_9G2CkbJ-95baWfxutIXwZNdE62-2F7VnzcQqHR37SPFtZdFsQ2qiKLJL_yKvKrBjOHlsj8iuCleWA_AvwRN8ehPm4DKJNu_1TUpF7Qm3luZGTn4zuMQ0uOLyxdvCxxPo33qGxVHcD-bnluN11BTqqyNoLM8_E78cNyvql75wXSNtQ155NI8wE9GqoVW4">
+          <div class="p-3">
+            <h3 class="text-[11px] font-bold text-white mb-1 leading-tight h-8 line-clamp-2">Silent Hill Chapter</h3>
+            <div class="text-[9px] text-gray-500 mb-2">16 de junio de 2020</div>
+            <div class="flex justify-between items-center">
+              <span class="text-[11px] font-bold text-white">6.99 €</span>
+              <span
+                class="text-[8px] bg-green-500/10 text-green-500 px-1.5 py-0.5 rounded border border-green-500/20 font-bold uppercase">Adquirido</span>
+            </div>
+          </div>
+        </div>
+        <!-- Card 6 -->
+        <div class="dlc-card rounded-lg overflow-hidden relative">
+          <div class="badge-dlc">DLC</div>
+          <img alt="DLC Thumbnail" class="w-full h-24 object-cover opacity-80"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzfYx0EZEvIDmFfg2w6frtdzEdBkgSVR-fu79o-eVV0M0fpnLfgRddNp2gwfWk1UjLezflXDLN_9a_bD98JghFemIumQ149OPozWsBNgIwReE6MqRKP9VDF-pkhp7WtT7llFnEbyl6FrLwM5nYpJKg-W7RWgRMkSGcPkK-L6F370aIeFr-nUD6TM6AViSbIKKitHhiew66bQ3qyYXV9d6piOhChazaIaQtamAKXe5IkYMVY3tuZs8oRZ9-lrgm9uIW3STqmtRZ5ug">
+          <div class="p-3">
+            <h3 class="text-[11px] font-bold text-white mb-1 leading-tight h-8 line-clamp-2">Stranger Things Chapter
+            </h3>
+            <div class="text-[9px] text-gray-500 mb-2">17 de noviembre de 2020</div>
+            <div class="flex justify-between items-center">
+              <span class="text-[11px] font-bold text-white">6.99 €</span>
+              <span
+                class="text-[8px] bg-green-500/10 text-green-500 px-1.5 py-0.5 rounded border border-green-500/20 font-bold uppercase">Adquirido</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Second Row of DLCs -->
+      <div class="grid grid-cols-6 gap-4 mt-4">
+        <!-- Card 7 -->
+        <div class="dlc-card rounded-lg overflow-hidden relative">
+          <div class="badge-dlc">DLC</div>
+          <img alt="DLC Thumbnail" class="w-full h-24 object-cover opacity-80"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdhnDLOLeC_L-tR04TaPUNvrYsgcIUK7Vkb_eFPsXAJTeHgAyvprisuJf-TcTRuEyWIAK26kKG71z7CDoZahivm3cQYG_smp39vaLTDFVg_gS56ubX1DfhYnV-GD57s6qFZe9eCu6cZYCT6WI-S8Piy7qLwiXefIXN6zE5ysRwuDj9YHWy7eBgaPKHy7qgRjwcDHGdM0007EwG1s2DENlaUtE93VX0IMwgnJUd8CwEHuirpk52rCmKWxvHFfZsFnLgIME_Kq5oHiE">
+          <div class="p-3">
+            <h3 class="text-[11px] font-bold text-white mb-1 leading-tight h-8 line-clamp-2">The Saw® Chapter</h3>
+            <div class="text-[9px] text-gray-500 mb-2">23 de enero de 2018</div>
+            <div class="flex justify-between items-center">
+              <span class="text-[11px] font-bold text-white">6.99 €</span>
+              <span
+                class="text-[8px] bg-green-500/10 text-green-500 px-1.5 py-0.5 rounded border border-green-500/20 font-bold uppercase">Adquirido</span>
+            </div>
+          </div>
+        </div>
+        <!-- Card 8 -->
+        <div class="dlc-card rounded-lg overflow-hidden relative">
+          <div class="badge-dlc">DLC</div>
+          <img alt="DLC Thumbnail" class="w-full h-24 object-cover opacity-80"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCFm82MlZCMpiiMio8z6xtAKkyFgizw11rEu5u2zuCgFRZBOq3UPfUTuAmkrnbNt823kZr8wjyk7AwGhC3ujugtyMilNwwG3dSCJMCZ8bf724OFzrGmrkKgc0erXuur5BfmyHu8dA6WA_7gcQoUjZAgzzv9Te8aKQGgEatgcNsuYZnhqffdB3ZeLupqfYKzpYnH2UzyAidQcj1Z76jZMikGwTRrDGhdQ1DF9nsvqh1W87Y1OPjKjwpS3XXgprI99PWQvf7agnVeLk">
+          <div class="p-3">
+            <h3 class="text-[11px] font-bold text-white mb-1 leading-tight h-8 line-clamp-2">Leatherface™ Chapter</h3>
+            <div class="text-[9px] text-gray-500 mb-2">25 de marzo de 2025</div>
+            <div class="flex justify-between items-center">
+              <span class="text-[11px] font-bold text-white">4.99 €</span>
+              <span
+                class="text-[8px] bg-green-500/10 text-green-500 px-1.5 py-0.5 rounded border border-green-500/20 font-bold uppercase">Adquirido</span>
+            </div>
+          </div>
+        </div>
+        <!-- Card 9 -->
+        <div class="dlc-card rounded-lg overflow-hidden relative">
+          <div class="badge-dlc">DLC</div>
+          <img alt="DLC Thumbnail" class="w-full h-24 object-cover opacity-80"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0VrY3nkcSHS-GEQYAWIoDbtfObPGQjX7ysbNpgm6nIZ2quqH0j3gvE6ynoFs41VxkO4c_-bkqKvmVAIlN92gWiwCJPqVW4VbtYm_lqx24jeajO_NoFORQw7-P08_hxsY4z1-Umby33-jYL40RvC8e9kWCYjbS2_QRnVrSasVnLF7_BYoJXznVvNuOjCnRNJIdouqM_Ec-4d7vmf8Xtm-krX6ZuigBBwp8B6B9tt3HOCuIIG-dbxaDlzHkR7dIy9Dsor6DcPUdIxk">
+          <div class="p-3">
+            <h3 class="text-[11px] font-bold text-white mb-1 leading-tight h-8 line-clamp-2">Charity Case Chapter</h3>
+            <div class="text-[9px] text-gray-500 mb-2">25 de noviembre de 2016</div>
+            <div class="flex justify-between items-center">
+              <span class="text-[11px] font-bold text-white">2.99 €</span>
+              <span
+                class="text-[8px] bg-green-500/10 text-green-500 px-1.5 py-0.5 rounded border border-green-500/20 font-bold uppercase">Adquirido</span>
+            </div>
+          </div>
+        </div>
+        <!-- Card 10 -->
+        <div class="dlc-card rounded-lg overflow-hidden relative">
+          <div class="badge-dlc">DLC</div>
+          <img alt="DLC Thumbnail" class="w-full h-24 object-cover opacity-80"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQPXnO163sdpk-XdecyRJ94d4EwzRUApX0P-RUdMuAS91OEnfI3nw8vr2H2FGTZ5b3z5i7JpPiq_EB69gqypLscWBT9AIH-yQ7jIlrVQCDhe_4Zf74pSTimqfWCtakNkiZZhXkKJoQtZdKBcaR2sanF_QEs-2xhgIaERf1DNz5sfjRr_1AEazZlrn-i7OpurpacGNG535hlZ6oAVlkkgA16FCLTEUkSmQGp0y8EN-03_ICInX900uEqmSmgXZUwG1Kd8O9_Zb1iDc">
+          <div class="p-3">
+            <h3 class="text-[11px] font-bold text-white mb-1 leading-tight h-8 line-clamp-2">Nightmare on Elm Street™
+              Chapter</h3>
+            <div class="text-[9px] text-gray-500 mb-2">31 de octubre de 2017</div>
+            <div class="flex justify-between items-center">
+              <span class="text-[11px] font-bold text-white">6.99 €</span>
+              <span
+                class="text-[8px] bg-green-500/10 text-green-500 px-1.5 py-0.5 rounded border border-green-500/20 font-bold uppercase">Adquirido</span>
+            </div>
+          </div>
+        </div>
+        <!-- Card 11 -->
+        <div class="dlc-card rounded-lg overflow-hidden relative">
+          <div class="badge-dlc">DLC</div>
+          <img alt="DLC Thumbnail" class="w-full h-24 object-cover opacity-80"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQ_k-9g2j8nVjR51DLnytHLciRt3DA-Xm7S6JZ9gj-nPaNbKrgtu_1TXUq-GCyCkCgge2hqwzV1P9Jqy47lHoTmoDSanNDaAaMpyjf-txbNh2S73K2xnUF7UDwz_J_ecaatg7gpja3H9A09sjYCngxzOwl0-Uf2wc9U38dvj_0nljmXcLnZVPZdFm_mdXJqf7_aH2cgk6TYBTQEydwVWCCHl4Pk08jf-3K4PxaKrR4y24GwXpgtbtLQACnwnK6FimuDgjFdVM6vyc">
+          <div class="p-3">
+            <h3 class="text-[11px] font-bold text-white mb-1 leading-tight h-8 line-clamp-2">All-Kill Chapter</h3>
+            <div class="text-[9px] text-gray-500 mb-2">30 de agosto de 2022</div>
+            <div class="flex justify-between items-center">
+              <span class="text-[11px] font-bold text-white">4.99 €</span>
+              <span
+                class="text-[8px] bg-green-500/10 text-green-500 px-1.5 py-0.5 rounded border border-green-500/20 font-bold uppercase">Adquirido</span>
+            </div>
+          </div>
+        </div>
+        <!-- Card 12 -->
+        <div class="dlc-card rounded-lg overflow-hidden relative">
+          <div class="badge-dlc">DLC</div>
+          <img alt="DLC Thumbnail" class="w-full h-24 object-cover opacity-80"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8SvyLknJkhDNJ5_81PIUhYeM5Ka8K8MwtZBJ48znSSH8Q78UK8qGmhdksR8gYs4m8uURVRlVODaDYw3V0vJGDgYaWyuM0fGfTAE_gZHaW68lx1S7EPHF-ZH89dpcRYK7079ci74djFz6z5EWuU9wPWtLRfeAfWZRPNRrqCVGqgR0SkRlQDiEuw-qe8PSvh2FokR01LaWJp-mLe2oAt2AdXpLgSneTSfaUVRgZLSCX8Uygdr-8CMLUTJ_yRzTcT-DDtDVOutTtKL4">
+          <div class="p-3">
+            <h3 class="text-[11px] font-bold text-white mb-1 leading-tight h-8 line-clamp-2">Portrait of a Murder
+              Chapter</h3>
+            <div class="text-[9px] text-gray-500 mb-2">9 de junio de 2025</div>
+            <div class="flex justify-between items-center">
+              <span class="text-[11px] font-bold text-white">4.99 €</span>
+              <span
+                class="text-[8px] bg-green-500/10 text-green-500 px-1.5 py-0.5 rounded border border-green-500/20 font-bold uppercase">Adquirido</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: DLCSection -->
+    <!-- BEGIN: NotesSection -->
+    <section class="mb-12" data-purpose="notes-section">
+      <h2 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-6">Notas y comentarios</h2>
+      <div class="relative">
+        <div class="absolute left-4 top-4 text-gray-500">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+        </div>
+        <textarea
+          class="w-full bg-[#161b22]/50 border border-[#30363d] rounded-xl p-4 pl-10 text-sm text-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 h-24 resize-none transition-all"
+          placeholder="Añade tus notas, impresiones o comentarios sobre este juego..."></textarea>
+      </div>
+      <div class="flex justify-end mt-4">
+        <div class="flex items-center gap-2 text-[10px] text-gray-500">
+          <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"
+              stroke-width="2"></path>
+          </svg>
+          Guardado automáticamente
+        </div>
+      </div>
+    </section>
+    <!-- END: NotesSection -->
+  </main>
+  <!-- END: MainContent -->
+  <script data-purpose="chart-rendering">
+    /**
+     * Recreates the visual appearance of the charts using basic Canvas API 
+     * since external libraries like Chart.js aren't allowed unless specified.
+     */
+    function drawPlaytimeChart() {
+      const canvas = document.getElementById('playtimeChart');
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+
+      const w = rect.width;
+      const h = rect.height;
+      const padding = 20;
+
+      // Data Points (visual estimation from image)
+      const data = [10, 15, 12, 18, 14, 25, 20, 30, 45, 80, 40, 25, 45, 60, 50];
+      const max = 80;
+
+      // Draw Grid Lines (horizontal)
+      ctx.strokeStyle = 'rgba(48, 54, 61, 0.5)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = padding + (h - 2 * padding) * (1 - i / 4);
+        ctx.beginPath();
+        ctx.moveTo(padding, y);
+        ctx.lineTo(w - padding, y);
+        ctx.stroke();
+
+        // Label
+        ctx.fillStyle = '#484f58';
+        ctx.font = '10px Inter';
+        ctx.fillText(`${i * 20} h`, 0, y + 3);
+      }
+
+      // Draw Line
+      ctx.beginPath();
+      ctx.strokeStyle = '#a855f7';
+      ctx.lineWidth = 2;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = '#a855f7';
+
+      const step = (w - 2 * padding) / (data.length - 1);
+      data.forEach((val, i) => {
+        const x = padding + i * step;
+        const y = padding + (h - 2 * padding) * (1 - val / max);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      // Reset Shadow for Points
+      ctx.shadowBlur = 0;
+
+      // Draw Points
+      data.forEach((val, i) => {
+        const x = padding + i * step;
+        const y = padding + (h - 2 * padding) * (1 - val / max);
+        ctx.beginPath();
+        ctx.fillStyle = '#a855f7';
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#161b22';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      });
+    }
+
+    function drawSpendingChart() {
+      const canvas = document.getElementById('spendingChart');
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+
+      const w = rect.width;
+      const h = rect.height;
+      const padding = 20;
+
+      // Data Points (cumulative)
+      const data = [10, 15, 18, 20, 22, 25, 28, 45, 50, 55, 60, 75, 85, 90, 95];
+      const max = 100;
+
+      // Draw Grid Lines
+      ctx.strokeStyle = 'rgba(48, 54, 61, 0.5)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = padding + (h - 2 * padding) * (1 - i / 4);
+        ctx.beginPath();
+        ctx.moveTo(padding, y);
+        ctx.lineTo(w - padding, y);
+        ctx.stroke();
+
+        ctx.fillStyle = '#484f58';
+        ctx.font = '10px Inter';
+        ctx.fillText(`${i * 25} €`, 0, y + 3);
+      }
+
+      // Draw Area
+      const step = (w - 2 * padding) / (data.length - 1);
+      ctx.beginPath();
+      ctx.moveTo(padding, h - padding);
+      data.forEach((val, i) => {
+        const x = padding + i * step;
+        const y = padding + (h - 2 * padding) * (1 - val / max);
+        ctx.lineTo(x, y);
+      });
+      ctx.lineTo(w - padding, h - padding);
+      ctx.closePath();
+      const gradient = ctx.createLinearGradient(0, 0, 0, h);
+      gradient.addColorStop(0, 'rgba(34, 197, 94, 0.2)');
+      gradient.addColorStop(1, 'rgba(34, 197, 94, 0)');
+      ctx.fillStyle = gradient;
+      ctx.fill();
+
+      // Draw Line
+      ctx.beginPath();
+      ctx.strokeStyle = '#22c55e';
+      ctx.lineWidth = 2;
+      data.forEach((val, i) => {
+        const x = padding + i * step;
+        const y = padding + (h - 2 * padding) * (1 - val / max);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      // Draw Points
+      data.forEach((val, i) => {
+        const x = padding + i * step;
+        const y = padding + (h - 2 * padding) * (1 - val / max);
+        ctx.beginPath();
+        ctx.fillStyle = '#22c55e';
+        ctx.arc(x, y, 2, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+
+    // Initialize on load
+    window.addEventListener('load', () => {
+      drawPlaytimeChart();
+      drawSpendingChart();
+    });
+
+    // Re-draw on resize for responsiveness
+    window.addEventListener('resize', () => {
+      drawPlaytimeChart();
+      drawSpendingChart();
+    });
+  </script>
+
+
+</body>
+
+</html>

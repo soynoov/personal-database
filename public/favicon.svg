@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title>EvaDB Games</title>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#2a2a2b" />
+      <stop offset="100%" stop-color="#14181e" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ef5759" />
+      <stop offset="100%" stop-color="#ba2426" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#bg)" />
+  <path d="M16 47V17h10.5c9 0 14.5 4.8 14.5 13.5S35.5 47 26.5 47H16Zm8-6h2.2c4.3 0 6.7-3.1 6.7-10.5 0-7.3-2.4-10.5-6.7-10.5H24V41Z" fill="#f7f1ee" />
+  <path d="M42 19h6v12l-1.1 6.1h-3.8L42 31V19Zm0 20h6v8h-6v-8Z" fill="url(#accent)" />
+</svg>

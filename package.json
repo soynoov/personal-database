@@ -1,0 +1,16 @@
+{
+  "name": "games-db-viewer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prebuild": "node scripts/prepare-games-json.mjs",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/node": "^10.1.4",
+    "astro": "^6.4.6",
+    "chart.js": "^4.5.1"
+  }
+}

@@ -1,0 +1,1081 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { readGames, slugifyGameTitle } from "../../lib/local-games";
+
+export async function getStaticPaths() {
+  const games = await readGames();
+
+  return games.map((game) => ({
+    params: {
+      slug: slugifyGameTitle(game.titulo),
+    },
+    props: {
+      game,
+    },
+  }));
+}
+
+const { game } = Astro.props;
+
+const formatValue = (value: unknown, fallback = "-") => {
+  if (value === null || value === undefined || value === "") return fallback;
+  return String(value);
+};
+
+const formatSolo = (value: unknown) => {
+  if (value === "x") return "Si";
+  if (value === "-") return "No";
+  return "-";
+};
+
+const hasFreeToPlayTag =
+  Array.isArray(game.tags) && game.tags.some((tag: string) => String(tag).toLowerCase() === "free-to-play");
+
+const hasEarlyAccess =
+  Array.isArray(game.generos) &&
+  game.generos.some((genre: string) => {
+    const normalized = String(genre).toLowerCase();
+    return normalized === "acceso anticipado" || normalized === "early access";
+  });
+
+const formatCurrency = (value: unknown, fallback = "-") => {
+  if (value === null || value === undefined || value === "") return fallback;
+  const amount = Number(value);
+  if (Number.isNaN(amount)) return String(value);
+  return `${amount.toFixed(2)} EUR`;
+};
+
+const formatPrice = (value: unknown) => {
+  if (hasFreeToPlayTag) return "Free to play";
+  return formatCurrency(value);
+};
+
+const getReferencePrice = () => {
+  if (game.precio_actual !== null && game.precio_actual !== undefined && game.precio_actual !== "") {
+    return Number(game.precio_actual);
+  }
+  if (game.precio_salida !== null && game.precio_salida !== undefined && game.precio_salida !== "") {
+    return Number(game.precio_salida);
+  }
+  return null;
+};
+
+const getPaidPriceVisual = () => {
+  if (hasFreeToPlayTag) {
+    return {
+      className: "detail-item-price-free",
+      note: "Entrada sin coste",
+      deltaLabel: "0%",
+      delta: 0,
+      percent: 0,
+    };
+  }
+
+  if (game.precio_pagado === null || game.precio_pagado === undefined || game.precio_pagado === "") {
+    return {
+      className: "",
+      note: "",
+      deltaLabel: "",
+      delta: null,
+      percent: null,
+    };
+  }
+
+  const paid = Number(game.precio_pagado);
+  const reference = getReferencePrice();
+  if (Number.isNaN(paid) || reference === null || Number.isNaN(reference) || reference <= 0) {
+    return {
+      className: "detail-item-price-neutral",
+      note: "",
+      deltaLabel: "",
+      delta: null,
+      percent: null,
+    };
+  }
+
+  const delta = Number((reference - paid).toFixed(2));
+  const ratio = delta / reference;
+  const percent = Math.abs(ratio) * 100;
+  const sourceLabel =
+    game.precio_actual !== null && game.precio_actual !== undefined && game.precio_actual !== ""
+      ? "actual"
+      : "de salida";
+
+  if (Math.abs(ratio) < 0.12) {
+    return {
+      className: "detail-item-price-neutral",
+      note: `Variacion estable frente al precio ${sourceLabel}`,
+      deltaLabel: `${delta >= 0 ? "+" : "-"}${percent.toFixed(1)}%`,
+      delta,
+      percent,
+    };
+  }
+
+  if (delta > 0) {
+    if (ratio >= 0.5) {
+      return {
+        className: "detail-item-price-profit-strong",
+        note: `${delta.toFixed(2)} EUR por debajo del precio ${sourceLabel}`,
+        deltaLabel: `+${percent.toFixed(1)}%`,
+        delta,
+        percent,
+      };
+    }
+
+    return {
+      className: "detail-item-price-profit",
+      note: `${delta.toFixed(2)} EUR por debajo del precio ${sourceLabel}`,
+      deltaLabel: `+${percent.toFixed(1)}%`,
+      delta,
+      percent,
+    };
+  }
+
+  if (ratio <= -0.5) {
+    return {
+      className: "detail-item-price-loss-strong",
+      note: `${Math.abs(delta).toFixed(2)} EUR por encima del precio ${sourceLabel}`,
+      deltaLabel: `-${percent.toFixed(1)}%`,
+      delta,
+      percent,
+    };
+  }
+
+  return {
+    className: "detail-item-price-loss",
+    note: `${Math.abs(delta).toFixed(2)} EUR por encima del precio ${sourceLabel}`,
+    deltaLabel: `-${percent.toFixed(1)}%`,
+    delta,
+    percent,
+  };
+};
+
+const formatDate = (value: unknown) => {
+  if (!value) return "-";
+  const date = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return String(value);
+  return new Intl.DateTimeFormat("es-ES", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  }).format(date);
+};
+
+const statusClassName = (value: unknown) => {
+  const normalized = String(value ?? "").trim().toLowerCase();
+  const map: Record<string, string> = {
+    pendiente: "badge-status-pending",
+    jugando: "badge-status-playing",
+    terminado: "badge-status-completed",
+    completado: "badge-status-completed",
+    recurrente: "badge-status-recurring",
+    wishlist: "badge-status-wishlist",
+    pausado: "badge-status-paused",
+    abandonado: "badge-status-abandoned",
+    retirado: "badge-status-abandoned",
+  };
+
+  return map[normalized] ?? "badge-status-default";
+};
+
+const launcherClassName = (value: unknown) => {
+  const normalized = String(value ?? "").trim().toLowerCase();
+  const map: Record<string, string> = {
+    steam: "badge-launcher-steam",
+    "epic games": "badge-launcher-epic",
+    epic: "badge-launcher-epic",
+    nintendo: "badge-launcher-nintendo",
+    "nintendo eshop": "badge-launcher-nintendo",
+    pirata: "badge-launcher-pirata",
+    gamepass: "badge-launcher-gamepass",
+    "xbox game pass": "badge-launcher-gamepass",
+    "riot games": "badge-launcher-riot",
+    hoyoplay: "badge-launcher-hoyoplay",
+    "ea app": "badge-launcher-ea",
+    ubisoft: "badge-launcher-ubisoft",
+    "ubisoft connect": "badge-launcher-ubisoft",
+    gog: "badge-launcher-gog",
+    itch: "badge-launcher-itch",
+    "itch.io": "badge-launcher-itch",
+  };
+
+  return map[normalized] ?? "badge-launcher-default";
+};
+
+const launcherInlineIcon = (value: unknown) => {
+  const normalized = String(value ?? "").trim().toLowerCase();
+  const icons: Record<string, string> = {
+    steam:
+      '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M.329 10.333A8.01 8.01 0 0 0 7.99 16C12.414 16 16 12.418 16 8s-3.586-8-8.009-8A8.006 8.006 0 0 0 0 7.468l.003.006 4.304 1.769A2.2 2.2 0 0 1 5.62 8.88l1.96-2.844-.001-.04a3.046 3.046 0 0 1 3.042-3.043 3.046 3.046 0 0 1 3.042 3.043 3.047 3.047 0 0 1-3.111 3.044l-2.804 2a2.223 2.223 0 0 1-3.075 2.11 2.22 2.22 0 0 1-1.312-1.568L.33 10.333Z"/><path fill="currentColor" d="M4.868 12.683a1.715 1.715 0 0 0 1.318-3.165 1.7 1.7 0 0 0-1.263-.02l1.023.424a1.261 1.261 0 1 1-.97 2.33l-.99-.41a1.7 1.7 0 0 0 .882.84Zm3.726-6.687a2.03 2.03 0 0 0 2.027 2.029 2.03 2.03 0 0 0 2.027-2.029 2.03 2.03 0 0 0-2.027-2.027 2.03 2.03 0 0 0-2.027 2.027m2.03-1.527a1.524 1.524 0 1 1-.002 3.048 1.524 1.524 0 0 1 .002-3.048"/></svg>',
+    "epic games":
+      '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M4.719 0c-1.833 0-2.505.677-2.505 2.505v22.083c0 .209.011.401.027.579.047.401.047.792.421 1.229.036.052.412.328.412.328.203.099.343.172.572.265l11.115 4.656c.573.261.819.371 1.235.355h.005c.421.016.667-.093 1.24-.355l11.109-4.656c.235-.093.369-.167.577-.265 0 0 .376-.287.412-.328.375-.437.375-.828.421-1.229.016-.177.027-.369.027-.573v-22.088c0-1.828-.677-2.505-2.505-2.505zM22.527 4.145h.905c1.511 0 2.251.735 2.251 2.267v2.505H23.85v-2.407c0-.489-.224-.713-.699-.713h-.312c-.489 0-.713.224-.713.713v7.749c0 .489.224.713.713.713h.349c.468 0 .692-.224.692-.713v-2.771h1.833v2.86c0 1.525-.749 2.276-2.265 2.276h-.921c-1.521 0-2.267-.756-2.267-2.276v-7.923c0-1.525.745-2.281 2.267-2.281zM6.276 4.251h4.151v1.703H8.14v3.468h2.204v1.699H8.14v3.697h2.319v1.704H6.276zM11.364 4.251h2.928c1.515 0 2.265.755 2.265 2.28v3.261c0 1.525-.751 2.276-2.265 2.276h-1.057v4.453h-1.871zM17.401 4.251h1.864v12.271h-1.864zM13.229 5.901v4.52H14c.469 0 .693-.228.693-.719v-3.083c0-.489-.224-.719-.693-.719zM10.683 27.615h10.681l-5.452 1.797z"/></svg>',
+    "riot games":
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.534 21.77l-1.09-2.81 10.52.54-.451 4.5zM15.06 0 .307 6.969 2.59 17.471H5.6l-.52-7.512.461-.144 1.81 7.656h3.126l-.116-9.15.462-.144 1.582 9.294h3.31l.78-11.053.462-.144.82 11.197h4.376l1.54-15.37Z"/></svg>',
+    hoyoplay:
+      '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m25.9053 34.0474c5.0425-1.4728 6.8196-1.2987 8.3484-1.2948 1.1339.0029 2.2586-.203 3.2921-.6696l.1333-.0602c4.4766-2.0212 6.1813-7.5024 3.6311-11.7001-3.846-6.3305-9.1608-14.0172-11.9794-13.4193-4.7401 1.0056-4.7399 7.1219-4.7399 7.1219s-1.272-.278-4.3376.6715c-3.0947.8498-4.0171 1.7687-4.0171 1.7687s-3.2918-5.1549-7.828-3.4511c-2.6973 1.0131-3.0393 10.3521-2.8734 17.7574.11 4.9105 4.497 8.6125 9.3577 7.9064l.1448-.021c1.1221-.163 2.1809-.5948 3.135-1.2076 1.2864-.8262 2.6904-1.9294 7.7329-3.4022Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m15.9995 38.4489c1.512 3.1381 3.7374 3.1593 5.2644 1.9013 1.527-1.2579 1.6407-4.0191-.0229-6.5644" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m24.4791 30.8374c2.4295-.7096 10.227-.6596 7.9688-6.3871-2.2582-5.7274-5.8688-5.8637-11.1735-4.5849-5.159 1.7775-8.1286 3.8356-6.9491 9.8781 1.1795 6.0425 7.7243 1.8035 10.1538 1.0938Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m19.853 28.218-.9563-3.2738" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m26.9681 26.1398-.9562-3.2738" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m34.7079 32.7399c2.2729 3.9724 2.2263 6.963 2.2263 6.963" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m32.8535 32.7494c-1.4937 4.2834-7.2554 6.9536-12.6733 3.4721" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>',
+    "ea app":
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.7 3.4 7.65v8.7L12 21.3l8.6-4.95v-8.7L12 2.7Zm0 1.98 6.8 3.92v6.8L12 19.32 5.2 15.4V8.6L12 4.68Zm-3.3 4.06h5.43v1.48h-3.55v1.23h3.2v1.42h-3.2v1.92H8.7V8.74Zm6.16 0h.94c1.5 0 2.5 1 2.5 2.48 0 1.55-.97 2.57-2.57 2.57h-.87V8.74Zm.93 1.44v2.18h.14c.6 0 .97-.38.97-1.09 0-.72-.37-1.1-.97-1.1h-.14Z"/></svg>',
+  };
+
+  if (!icons[normalized]) return "";
+  return `<span class="launcher-inline-icon" aria-hidden="true">${icons[normalized]}</span>`;
+};
+
+const launcherBadgeContent = (value: unknown) => `${launcherInlineIcon(value)}<span>${formatValue(value, "Sin launcher")}</span>`;
+
+const platformClassName = (value: unknown) => {
+  const normalized = String(value ?? "").trim().toLowerCase();
+  return normalized === "pc" ? "badge-platform-pc" : "badge-platform-default";
+};
+
+const hoursValue = game.horas === null || game.horas === undefined ? null : Number(game.horas);
+const hltbValue = game.hltb === null || game.hltb === undefined ? null : Number(game.hltb);
+const hltbBreakdown = {
+  main:
+    game.hltb_breakdown?.main === null || game.hltb_breakdown?.main === undefined
+      ? null
+      : Number(game.hltb_breakdown.main),
+  mainPlus:
+    game.hltb_breakdown?.main_plus === null || game.hltb_breakdown?.main_plus === undefined
+      ? null
+      : Number(game.hltb_breakdown.main_plus),
+  completionist:
+    game.hltb_breakdown?.completionist === null || game.hltb_breakdown?.completionist === undefined
+      ? null
+      : Number(game.hltb_breakdown.completionist),
+};
+
+const timeDelta =
+  hoursValue !== null && hltbValue !== null && hltbValue > 0 ? Number((hoursValue - hltbValue).toFixed(1)) : null;
+const timeRatio =
+  hoursValue !== null && hltbValue !== null && hltbValue > 0 ? Number(((hoursValue - hltbValue) / hltbValue).toFixed(4)) : null;
+
+let hltbVisualClass = "";
+let hltbNote = "";
+let hoursDeltaLabel = "";
+let hoursDeltaTone = "neutral";
+if (timeDelta !== null && timeRatio !== null) {
+  if (Math.abs(timeRatio) < 0.12) {
+    hltbNote = `Tiempo muy cercano a HLTB (${Math.abs(timeDelta).toFixed(1)} h de diferencia)`;
+    hoursDeltaLabel = `${timeDelta >= 0 ? "+" : "-"}${Math.abs(timeRatio * 100).toFixed(1)}%`;
+    hoursDeltaTone = "neutral";
+  } else if (timeRatio > 0) {
+    hltbVisualClass = "detail-item-hltb-long";
+    hltbNote = `Has jugado ${Math.abs(timeDelta).toFixed(1)} h mas que la estimacion`;
+    hoursDeltaLabel = `+${Math.abs(timeRatio * 100).toFixed(1)}%`;
+    hoursDeltaTone = "positive";
+  } else {
+    hltbVisualClass = "detail-item-hltb-short";
+    hltbNote = `Has jugado ${Math.abs(timeDelta).toFixed(1)} h menos que la estimacion`;
+    hoursDeltaLabel = `-${Math.abs(timeRatio * 100).toFixed(1)}%`;
+    hoursDeltaTone = "negative";
+  }
+}
+
+const achievements =
+  game.logros && (game.logros.actual !== null || game.logros.total !== null)
+    ? `${formatValue(game.logros.actual)} / ${formatValue(game.logros.total)}`
+    : "-";
+
+const steamCards =
+  game.steam_cromos && (game.steam_cromos.actual !== null || game.steam_cromos.total !== null)
+    ? `${formatValue(game.steam_cromos.actual)} / ${formatValue(game.steam_cromos.total)}`
+    : "-";
+
+const achievementsProgress =
+  game.logros &&
+  game.logros.actual !== null &&
+  game.logros.actual !== undefined &&
+  game.logros.total !== null &&
+  game.logros.total !== undefined &&
+  Number(game.logros.total) > 0
+    ? Math.max(0, Math.min(100, (Number(game.logros.actual) / Number(game.logros.total)) * 100))
+    : null;
+
+const cardsProgress =
+  game.steam_cromos &&
+  game.steam_cromos.actual !== null &&
+  game.steam_cromos.actual !== undefined &&
+  game.steam_cromos.total !== null &&
+  game.steam_cromos.total !== undefined &&
+  Number(game.steam_cromos.total) > 0
+    ? Math.max(0, Math.min(100, (Number(game.steam_cromos.actual) / Number(game.steam_cromos.total)) * 100))
+    : null;
+
+const normalizedStatus = String(game.estado ?? "").toLowerCase();
+let statusCellClass = "";
+if (normalizedStatus === "terminado") statusCellClass = "detail-item-status-completed";
+else if (normalizedStatus === "jugando") statusCellClass = "detail-item-status-playing";
+else if (normalizedStatus === "pendiente") statusCellClass = "detail-item-status-pending";
+else if (normalizedStatus === "recurrente") statusCellClass = "detail-item-status-recurring";
+else if (normalizedStatus === "wishlist") statusCellClass = "detail-item-status-wishlist";
+else if (normalizedStatus === "pausado") statusCellClass = "detail-item-status-paused";
+else if (normalizedStatus === "abandonado" || normalizedStatus === "retirado") statusCellClass = "detail-item-status-abandoned";
+
+const pricePaidVisual = getPaidPriceVisual();
+const priceDeltaTone =
+  hasFreeToPlayTag || pricePaidVisual.deltaLabel === ""
+    ? "neutral"
+    : String(pricePaidVisual.deltaLabel).startsWith("+")
+      ? "positive"
+      : String(pricePaidVisual.deltaLabel).startsWith("-")
+        ? "negative"
+        : "neutral";
+const genres = Array.isArray(game.generos) && game.generos.length > 0 ? game.generos.join(", ") : "-";
+const tags = Array.isArray(game.tags) && game.tags.length > 0 ? game.tags.join(", ") : "-";
+const dlcItems = Array.isArray(game.dlcs?.items) ? game.dlcs.items : [];
+const dlcTotal = Number(game.dlcs?.total ?? dlcItems.length ?? 0);
+const historicalLowPrice =
+  game.precio_minimo_historico === null || game.precio_minimo_historico === undefined
+    ? null
+    : Number(game.precio_minimo_historico);
+
+const normalizeScalePosition = (value: number | null, min: number, max: number) => {
+  if (value === null || Number.isNaN(value)) return null;
+  if (max <= min) return 50;
+  return Number((((value - min) / (max - min)) * 100).toFixed(2));
+};
+
+const purchasePrice =
+  game.precio_pagado === null || game.precio_pagado === undefined ? null : Number(game.precio_pagado);
+const currentPrice =
+  game.precio_actual === null || game.precio_actual === undefined ? null : Number(game.precio_actual);
+const launchPrice =
+  game.precio_salida === null || game.precio_salida === undefined ? null : Number(game.precio_salida);
+
+const moneyScaleValues = [purchasePrice, currentPrice, launchPrice, historicalLowPrice].filter(
+  (value): value is number => value !== null && !Number.isNaN(value),
+);
+const moneyMin = moneyScaleValues.length > 0 ? Math.min(...moneyScaleValues) : 0;
+const moneyMax = moneyScaleValues.length > 0 ? Math.max(...moneyScaleValues) : 1;
+
+const moneyReferenceLines = [
+  {
+    label: "Precio salida",
+    value: launchPrice,
+    display: formatCurrency(launchPrice),
+    note: "PVP inicial del mercado",
+    tone:
+      purchasePrice !== null && launchPrice !== null ? (launchPrice >= purchasePrice ? "up" : "down") : "neutral",
+  },
+  {
+    label: "Precio actual",
+    value: currentPrice,
+    display: formatCurrency(currentPrice),
+    note: "Mercado actual",
+    tone:
+      purchasePrice !== null && currentPrice !== null ? (currentPrice >= purchasePrice ? "up" : "down") : "neutral",
+  },
+  {
+    label: "Min. historico",
+    value: historicalLowPrice,
+    display: formatCurrency(historicalLowPrice),
+    note: historicalLowPrice === null ? "Sin dato historico" : "Suelo historico conocido",
+    tone:
+      purchasePrice !== null && historicalLowPrice !== null
+        ? historicalLowPrice >= purchasePrice
+          ? "up"
+          : "down"
+        : "neutral",
+  },
+].map((entry) => ({
+  ...entry,
+  position: normalizeScalePosition(entry.value, moneyMin, moneyMax),
+}));
+
+const moneyPurchasePoint =
+  purchasePrice === null
+    ? null
+    : {
+        label: "Tu compra",
+        value: purchasePrice,
+        display: formatPrice(purchasePrice),
+        note: pricePaidVisual.note || "Sin lectura financiera",
+        position: normalizeScalePosition(purchasePrice, moneyMin, moneyMax),
+        tone: hasFreeToPlayTag ? "free" : pricePaidVisual.delta !== null && pricePaidVisual.delta >= 0 ? "up" : "down",
+      };
+
+const hoursScaleValues = [hoursValue, hltbValue].filter((value): value is number => value !== null && !Number.isNaN(value));
+const hoursMin = hoursScaleValues.length > 0 ? Math.min(...hoursScaleValues) : 0;
+const hoursMax = hoursScaleValues.length > 0 ? Math.max(...hoursScaleValues) : 1;
+
+const hoursReferenceLine =
+  hltbValue === null
+    ? null
+    : {
+        label: "HLTB estimado",
+        value: hltbValue,
+        display: `${hltbValue.toFixed(1)} h`,
+        note: "Linea base de referencia",
+        position: normalizeScalePosition(hltbValue, hoursMin, hoursMax),
+      };
+
+const hoursPoint =
+  hoursValue === null
+    ? null
+    : {
+        label: "Tus horas",
+        value: hoursValue,
+        display: `${hoursValue.toFixed(1)} h`,
+        note: hltbNote || "Sin comparativa HLTB",
+        position: normalizeScalePosition(hoursValue, hoursMin, hoursMax),
+        tone: timeRatio === null ? "neutral" : timeRatio >= 0 ? "up" : "down",
+      };
+
+const summaryCards = [
+  {
+    label: "Estado",
+    value: formatValue(game.estado),
+    note: "Actual",
+    className: statusCellClass,
+  },
+  {
+    label: "Logros",
+    value: achievements,
+    note: achievementsProgress === null ? "Sin datos" : `${achievementsProgress.toFixed(0)}% completado`,
+    className: achievementsProgress !== null ? "detail-item-achievements" : "",
+    progress: achievementsProgress,
+  },
+  {
+    label: "Cromos Steam",
+    value: steamCards,
+    note: cardsProgress === null ? "Sin datos" : `${cardsProgress.toFixed(0)}% completado`,
+    className: cardsProgress !== null ? "detail-item-achievements" : "",
+    progress: cardsProgress,
+  },
+  {
+    label: "DLCs",
+    value: dlcTotal > 0 ? String(dlcTotal) : "-",
+    note: dlcTotal > 0 ? "Registrados" : "Sin DLCs",
+  },
+];
+
+const heroMetrics = [
+  {
+    label: "Horas jugadas",
+    value: hoursValue !== null ? `${hoursValue.toFixed(1)} h` : "-",
+    note: hltbNote || "Sin comparativa HLTB",
+    className: hoursDeltaTone === "positive" ? "hero-metric-positive" : hoursDeltaTone === "negative" ? "hero-metric-negative" : "",
+  },
+  {
+    label: "HLTB",
+    value: hltbValue !== null ? `${hltbValue.toFixed(1)} h` : "-",
+    note: hltbValue !== null ? "Estimacion base" : "Falta cargar HLTB",
+    className: hltbVisualClass,
+  },
+  {
+    label: "Precio pagado",
+    value: formatPrice(game.precio_pagado),
+    note: pricePaidVisual.note || "Sin lectura de compra",
+    className: pricePaidVisual.className,
+  },
+  {
+    label: "DLCs",
+    value: dlcTotal > 0 ? String(dlcTotal) : "-",
+    note: dlcTotal > 0 ? "Expansiones registradas" : "Sin DLCs registrados",
+    className: dlcTotal > 0 ? "hero-metric-accent" : "",
+  },
+];
+
+const formatHoursValue = (value: number | null) => (value !== null ? `${value.toFixed(1)} h` : "-");
+
+const hoursChartPoints = [
+  { label: "HLTB Main", value: hltbBreakdown.main },
+  { label: "HLTB Main + Extras", value: hltbBreakdown.mainPlus },
+  { label: "HLTB Completionist", value: hltbBreakdown.completionist },
+  { label: "Tus horas", value: hoursValue },
+].filter((point): point is { label: string; value: number } => point.value !== null && !Number.isNaN(point.value));
+
+const hoursChartPayload = {
+  seriesLabel: "Horas",
+  metric: "hours",
+  points: hoursChartPoints,
+};
+
+const moneyChartPoints = [
+  { label: "Salida", value: launchPrice },
+  { label: "Compra", value: purchasePrice },
+  { label: "Min. historico", value: historicalLowPrice },
+  { label: "Actual", value: currentPrice },
+].filter((point): point is { label: string; value: number } => point.value !== null && !Number.isNaN(point.value));
+
+const moneyChartPayload = {
+  seriesLabel: "Precio",
+  metric: "currency",
+  points: moneyChartPoints,
+};
+
+const hoursSnapshotCards = [
+  {
+    label: "Horas totales",
+    value: formatHoursValue(hoursValue),
+    note: hoursValue !== null ? "Registradas en tu ficha" : "Sin horas cargadas",
+    tone: "hours",
+  },
+  {
+    label: "Referencia HLTB",
+    value: formatHoursValue(hltbValue),
+    note: hltbValue !== null ? "Base activa de comparacion" : "HLTB no disponible",
+    tone: "neutral",
+  },
+  {
+    label: "Desviacion",
+    value: timeDelta !== null ? `${timeDelta > 0 ? "+" : ""}${timeDelta.toFixed(1)} h` : "-",
+    note: hltbNote || "Sin comparativa suficiente",
+    tone: hoursDeltaTone,
+  },
+  {
+    label: "Completionist",
+    value: formatHoursValue(hltbBreakdown.completionist),
+    note: hltbBreakdown.completionist !== null ? "Techo estimado de contenido" : "Sin valor completionist",
+    tone: "neutral",
+  },
+];
+
+const moneySnapshotCards = [
+  {
+    label: "Precio pagado",
+    value: formatPrice(game.precio_pagado),
+    note: pricePaidVisual.note || "Sin dato de compra",
+    tone: priceDeltaTone,
+  },
+  {
+    label: "Precio actual",
+    value: formatCurrency(game.precio_actual),
+    note: currentPrice !== null ? "Lectura actual del mercado" : "Sin precio actual",
+    tone: "money",
+  },
+  {
+    label: "Min. historico",
+    value: formatCurrency(historicalLowPrice),
+    note: historicalLowPrice !== null ? "Suelo historico conocido" : "No hay historico cargado",
+    tone: historicalLowPrice !== null ? "money" : "neutral",
+  },
+  {
+    label: "Lectura",
+    value: pricePaidVisual.deltaLabel || "-",
+    note: hasFreeToPlayTag ? "Entrada gratuita" : pricePaidVisual.note || "Sin lectura financiera",
+    tone: priceDeltaTone,
+  },
+];
+
+const heroCoverStyle =
+  game.cover_url && String(game.cover_url).trim() !== ""
+    ? `--hero-cover:url("${String(game.cover_url).replace(/"/g, '\\"')}")`
+    : undefined;
+
+const clampPercent = (value: number) => Math.max(0, Math.min(100, Number(value.toFixed(1))));
+
+const hoursTarget = hltbValue && hltbValue > 0 ? hltbValue : hoursValue && hoursValue > 0 ? hoursValue : 1;
+const hoursPlayedPercent = hoursValue !== null ? clampPercent((hoursValue / hoursTarget) * 100) : 0;
+const hoursEstimatePercent = hltbValue !== null ? clampPercent((hltbValue / Math.max(hoursValue ?? 0, hltbValue, 1)) * 100) : 0;
+const hoursDiffPercent =
+  timeRatio === null ? 50 : clampPercent(50 + Math.max(-50, Math.min(50, timeRatio * 50)));
+
+const moneyReferenceMax = Math.max(purchasePrice ?? 0, currentPrice ?? 0, launchPrice ?? 0, historicalLowPrice ?? 0, 1);
+const purchasePercent = purchasePrice !== null ? clampPercent((purchasePrice / moneyReferenceMax) * 100) : 0;
+const currentPercent = currentPrice !== null ? clampPercent((currentPrice / moneyReferenceMax) * 100) : 0;
+const launchPercent = launchPrice !== null ? clampPercent((launchPrice / moneyReferenceMax) * 100) : 0;
+const financeTimelineBase = [launchPrice, purchasePrice, currentPrice].filter(
+  (value): value is number => value !== null && !Number.isNaN(value),
+);
+const financeTimelineMin = financeTimelineBase.length > 0 ? Math.min(...financeTimelineBase) : 0;
+const financeTimelineMax = financeTimelineBase.length > 0 ? Math.max(...financeTimelineBase) : 1;
+const financeTimelineRange = financeTimelineMax - financeTimelineMin;
+const financeTimelineChartWidth = 160;
+const financeTimelineGuideStart = 14;
+const financeTimelineGuideEnd = 146;
+const financeTimelineSlots = [
+  { key: "launch", label: "Salida", shortLabel: "Salida", value: launchPrice, x: 18 },
+  { key: "purchase", label: "Compra", shortLabel: "Compra", value: purchasePrice, x: 80 },
+  { key: "current", label: "Actual", shortLabel: "Actual", value: currentPrice, x: 142 },
+].map((point) => {
+  if (point.value === null || Number.isNaN(point.value)) {
+    return {
+      ...point,
+      y: null,
+      valueLabel: "-",
+    };
+  }
+
+  const normalized =
+    financeTimelineRange <= 0 ? 0.5 : (point.value - financeTimelineMin) / financeTimelineRange;
+
+  return {
+    ...point,
+    y: Number((90 - normalized * 58).toFixed(2)),
+    valueLabel: formatCurrency(point.value),
+  };
+});
+const financeTimelinePoints = financeTimelineSlots.filter(
+  (point): point is (typeof financeTimelineSlots)[number] & { y: number } => point.y !== null,
+);
+const financeTimelinePolyline = financeTimelinePoints.map((point) => `${point.x},${point.y}`).join(" ");
+const financeTimelineArea =
+  financeTimelinePoints.length >= 2
+    ? `${financeTimelinePoints[0].x},90 ${financeTimelinePoints
+        .map((point) => `${point.x},${point.y}`)
+        .join(" ")} ${financeTimelinePoints[financeTimelinePoints.length - 1].x},90`
+    : "";
+const financeTimelineSummary =
+  financeTimelinePoints.length >= 2
+    ? "Lectura temporal entre precio de salida, precio de compra y precio actual."
+    : "Faltan al menos dos precios para dibujar la evolucion.";
+const financeTimelineTone =
+  priceDeltaTone === "positive" ? "profit" : priceDeltaTone === "negative" ? "loss" : "neutral";
+const financeTimelineGuides = [22, 40, 58, 76];
+
+const metadataGroups = [
+  {
+    title: "Catalogacion",
+    items: [
+      { label: "Generos", value: genres },
+      { label: "Tags", value: tags },
+      { label: "Launcher", value: formatValue(game.launcher, "Sin launcher") },
+      { label: "Plataforma", value: formatValue(game.plataforma) },
+      { label: "Steam AppID", value: formatValue(game.steam_appid) },
+      { label: "Coincidencia HLTB", value: formatValue(game.hltb_match) },
+    ],
+  },
+  {
+    title: "Cronologia",
+    items: [
+      { label: "Lanzamiento", value: formatValue(game.lanzamiento) },
+      { label: "Fecha inicio", value: formatDate(game.fecha_inicio) },
+      { label: "Fecha fin", value: formatDate(game.fecha_fin) },
+      { label: "Solo", value: formatSolo(game.solo) },
+      { label: "Nota", value: formatValue(game.nota) },
+      { label: "Caratula", value: game.cover_url ? "Disponible" : "No disponible" },
+    ],
+  },
+];
+---
+
+<BaseLayout title={`${game.titulo} | Personal Database`}>
+  <main class="shell game-page game-page-rich">
+    <a class="back-link" href="/">Volver a la biblioteca</a>
+
+    <section class="game-hero-rich game-hero-cinematic" id="overview" style={heroCoverStyle}>
+      <section class="game-intro-panel game-overview-card game-overview-card-cinematic">
+        <div class="game-overview-media">
+          {game.cover_url ? (
+            <div class="game-poster-stack">
+              <img class="game-poster-image" src={game.cover_url} alt={`Caratula de ${game.titulo}`} loading="lazy" />
+            </div>
+          ) : (
+            <div class="game-hero-fallback">{game.titulo.slice(0, 2).toUpperCase()}</div>
+          )}
+        </div>
+
+        <div class="game-overview-copy">
+          <div class="eyebrow">Personal Database</div>
+          <h1>{game.titulo}</h1>
+          <div class="badges game-page-badges">
+            <span class={`badge ${statusClassName(game.estado)}`}>{formatValue(game.estado)}</span>
+            <span class={`badge ${launcherClassName(game.launcher)}`} set:html={launcherBadgeContent(game.launcher)} />
+            <span class={`badge ${platformClassName(game.plataforma)}`}>{formatValue(game.plataforma)}</span>
+            {hasFreeToPlayTag && <span class="badge badge-tag-free">Free to play</span>}
+            {hasEarlyAccess && <span class="badge badge-tag-early">Early Access</span>}
+          </div>
+          <p class="game-overview-summary">
+            {genres !== "-" ? genres : "Sin genero cargado"} · {pricePaidVisual.note || "Sin lectura financiera"} ·{" "}
+            {formatSolo(game.solo) === "Si" ? "Experiencia en solitario" : "Puede jugarse acompanado"}
+          </p>
+        </div>
+      </section>
+    </section>
+
+    <nav class="game-sections-nav" aria-label="Secciones del juego">
+      <a href="#overview">Overview</a>
+      <a href="#stats">Horas</a>
+      <a href="#finance">Dinero</a>
+      <a href="#technical">Estadísticas</a>
+      <a href="#dlcs">DLCs</a>
+    </nav>
+
+    <section class="hero-analysis-grid" id="stats">
+          <article class="analysis-panel">
+            <div class="section-title-row analysis-head">
+              <div>
+                <h2>Horas</h2>
+              </div>
+              {hoursDeltaLabel && <span class:list={["section-pill", `section-pill-${hoursDeltaTone}`]}>{hoursDeltaLabel}</span>}
+            </div>
+            <div class="range-chart-card">
+              <div class="chart-shell">
+                <div class="chart-visual-card">
+                  <div class="chart-header">
+                    <div>
+                      <strong>Perfil de horas</strong>
+                      <p>Comparativa real entre tus horas y las referencias HLTB disponibles.</p>
+                    </div>
+                    <span class="chart-badge">Chart.js</span>
+                  </div>
+                  {hoursChartPoints.length >= 2 ? (
+                    <div class="chart-canvas-wrap chart-canvas-wrap-hours">
+                      <canvas id="hours-detail-chart" data-chart={JSON.stringify(hoursChartPayload)}></canvas>
+                    </div>
+                  ) : (
+                    <div class="chart-empty">Faltan al menos dos puntos validos para dibujar la grafica de horas.</div>
+                  )}
+                </div>
+                <div class="chart-metrics-grid">
+                  {hoursSnapshotCards.map(({ label, value, note, tone }) => (
+                    <article class:list={["chart-metric-card", `chart-metric-card-${tone}`]}>
+                      <span>{label}</span>
+                      <strong>{value}</strong>
+                      <p>{note}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div class="game-page-section game-page-section-inline">
+              <div class="section-title-row">
+                <div>
+                  <h2>Desglose HLTB</h2>
+                </div>
+              </div>
+              <dl class="detail-grid detail-grid-4">
+                <div class={`detail-item ${hltbBreakdown.main !== null ? "" : "detail-item-empty"}`}>
+                  <dt>Main</dt>
+                  <dd>{hltbBreakdown.main !== null ? `${hltbBreakdown.main.toFixed(1)} h` : "-"}</dd>
+                  <span class="detail-item-note">Campana principal</span>
+                </div>
+                <div class={`detail-item ${hltbBreakdown.mainPlus !== null ? "" : "detail-item-empty"}`}>
+                  <dt>Main + Extras</dt>
+                  <dd>{hltbBreakdown.mainPlus !== null ? `${hltbBreakdown.mainPlus.toFixed(1)} h` : "-"}</dd>
+                  <span class="detail-item-note">Contenido adicional sobre la campana principal</span>
+                </div>
+                <div class={`detail-item ${hltbBreakdown.completionist !== null ? "" : "detail-item-empty"}`}>
+                  <dt>Completionist</dt>
+                  <dd>{hltbBreakdown.completionist !== null ? `${hltbBreakdown.completionist.toFixed(1)} h` : "-"}</dd>
+                  <span class="detail-item-note">Todo el contenido</span>
+                </div>
+                <div class={`detail-item ${hltbValue !== null ? hltbVisualClass : "detail-item-empty"}`}>
+                  <dt>Referencia activa</dt>
+                  <dd>{hltbValue !== null ? `${hltbValue.toFixed(1)} h` : "-"}</dd>
+                  <span class="detail-item-note">
+                    {hltbValue !== null ? "Main si existe; si no, Main + Extras; si no, Completionist" : "HLTB sin tiempo util publicado"}
+                  </span>
+                </div>
+              </dl>
+            </div>
+          </article>
+
+          <article class="analysis-panel" id="finance">
+            <div class="section-title-row analysis-head">
+              <div>
+                <h2>Dinero</h2>
+              </div>
+              {pricePaidVisual.deltaLabel && <span class:list={["section-pill", `section-pill-${priceDeltaTone}`]}>{pricePaidVisual.deltaLabel}</span>}
+            </div>
+            <div class="range-chart-card">
+              <div class="chart-shell">
+                <div class="chart-visual-card chart-visual-card-money">
+                  <div class="chart-header">
+                    <div>
+                      <strong>Fotografia financiera</strong>
+                      <p>Salida, compra, minimo historico y precio actual con los hitos cargados en tu ficha.</p>
+                    </div>
+                    <span class="chart-badge">Chart.js</span>
+                  </div>
+                  {moneyChartPoints.length >= 2 ? (
+                    <div class="chart-canvas-wrap chart-canvas-wrap-money">
+                      <canvas id="money-detail-chart" data-chart={JSON.stringify(moneyChartPayload)}></canvas>
+                    </div>
+                  ) : (
+                    <div class="chart-empty">Faltan al menos dos puntos validos para dibujar la grafica financiera.</div>
+                  )}
+                </div>
+                <div class="chart-metrics-grid">
+                  {moneySnapshotCards.map(({ label, value, note, tone }) => (
+                    <article class:list={["chart-metric-card", `chart-metric-card-${tone}`]}>
+                      <span>{label}</span>
+                      <strong>{value}</strong>
+                      <p>{note}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </article>
+    </section>
+
+    <section class="game-page-section game-summary-section">
+      <div class="section-title-row">
+        <div>
+          <h2>Resumen</h2>
+        </div>
+      </div>
+      <dl class="detail-grid detail-grid-4 summary-grid">
+        {summaryCards.map(({ label, value, note, className = "", progress = null }) => (
+          <div
+            class:list={["detail-item", "summary-card", className, value === "-" && "detail-item-empty", progress !== null && "detail-item-progress"]}
+            style={progress !== null ? `--progress:${progress}%` : undefined}
+          >
+            <dt>{label}</dt>
+            <dd>{value}</dd>
+            {note && <span class="detail-item-note">{note}</span>}
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="game-page-section" id="technical">
+      <div class="section-title-row">
+        <div>
+          <h2>Estadísticas</h2>
+          <p class="section-subtitle">Aqui es donde se concentra toda la chicha: metadatos, tiempos, precios y señales de progreso.</p>
+        </div>
+      </div>
+
+      <div class="game-data-groups">
+        {metadataGroups.map((group) => (
+          <article class="data-group-card">
+            <div class="data-group-head">
+              <h3>{group.title}</h3>
+            </div>
+            <dl class="detail-grid detail-grid-2">
+              {group.items.map(({ label, value, className = "", note = "" }) => (
+                <div class:list={["detail-item", className, value === "-" && "detail-item-empty"]}>
+                  <dt>{label}</dt>
+                  <dd>{value}</dd>
+                  {note && <span class="detail-item-note">{note}</span>}
+                </div>
+              ))}
+            </dl>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="game-page-section" id="dlcs">
+      <div class="section-title-row">
+        <div>
+          <h2>DLCs</h2>
+        </div>
+        <span class="section-pill">{dlcTotal > 0 ? `${dlcTotal} registrados` : "Sin DLCs"}</span>
+      </div>
+
+      {dlcTotal === 0 ? (
+        <div class="detail-dlc-empty">No hay DLCs registrados para este juego.</div>
+      ) : dlcItems.length > 0 ? (
+        <div class="dlc-gallery">
+          {dlcItems.map((dlc) => (
+            <article class="dlc-showcase-card">
+              <div class="dlc-showcase-cover">
+                {dlc.cover_url ? (
+                  <img src={dlc.cover_url} alt={`Caratula de ${formatValue(dlc.titulo, "DLC")}`} loading="lazy" />
+                ) : game.cover_url ? (
+                  <div class="dlc-showcase-fallback">
+                    <img src={game.cover_url} alt="" aria-hidden="true" loading="lazy" />
+                    <span class="dlc-showcase-fallback-badge">Sin portada propia</span>
+                  </div>
+                ) : (
+                  <div class="dlc-showcase-fallback-empty">Sin portada</div>
+                )}
+              </div>
+
+              <div class="dlc-showcase-body">
+                <h3>{formatValue(dlc.titulo, "DLC sin nombre")}</h3>
+                <dl class="detail-grid detail-grid-2">
+                  <div class:list={["detail-item", formatDate(dlc.fecha_adquisicion) === "-" && "detail-item-empty"]}>
+                    <dt>Adquirido</dt>
+                    <dd>{formatDate(dlc.fecha_adquisicion)}</dd>
+                  </div>
+                  <div class:list={["detail-item", (dlc.precio_pagado === null || dlc.precio_pagado === undefined) && "detail-item-empty"]}>
+                    <dt>Precio pagado</dt>
+                    <dd>{formatCurrency(dlc.precio_pagado)}</dd>
+                  </div>
+                  <div class:list={["detail-item", (dlc.precio_actual === null || dlc.precio_actual === undefined) && "detail-item-empty"]}>
+                    <dt>Precio actual</dt>
+                    <dd>{formatCurrency(dlc.precio_actual)}</dd>
+                  </div>
+                  <div class:list={["detail-item", (dlc.precio_salida === null || dlc.precio_salida === undefined) && "detail-item-empty"]}>
+                    <dt>Precio salida</dt>
+                    <dd>{formatCurrency(dlc.precio_salida)}</dd>
+                  </div>
+                  <div class:list={["detail-item", formatValue(dlc.tamano) === "-" && "detail-item-empty"]}>
+                    <dt>Tamano</dt>
+                    <dd>{formatValue(dlc.tamano)}</dd>
+                  </div>
+                  <div class:list={["detail-item", formatValue(dlc.cover_source) === "-" && "detail-item-empty"]}>
+                    <dt>Fuente portada</dt>
+                    <dd>{dlc.cover_source ? dlc.cover_source : "Fallback del juego"}</dd>
+                  </div>
+                </dl>
+                {formatValue(dlc.notas) !== "-" && <p class="dlc-showcase-notes">{formatValue(dlc.notas)}</p>}
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div class="detail-dlc-empty">Hay DLCs contabilizados, pero aun no tienen ficha individual.</div>
+      )}
+    </section>
+
+    <section class:list={["detail-comments", "detail-comments-vault", formatValue(game.comentarios) === "-" && "detail-comments-empty"]}>
+      <dt class="muted">Comentarios</dt>
+      <dd>{formatValue(game.comentarios)}</dd>
+    </section>
+  </main>
+  <script>
+    import { Chart, Filler, Tooltip, CategoryScale, LinearScale, LineController, LineElement, PointElement } from "chart.js";
+
+    Chart.register(Filler, Tooltip, CategoryScale, LinearScale, LineController, LineElement, PointElement);
+
+    const charts = new Map();
+
+    const formatMetricValue = (metric, value) => {
+      if (metric === "currency") return `${Number(value).toFixed(2)} EUR`;
+      return `${Number(value).toFixed(1)} h`;
+    };
+
+    const buildGradient = (ctx, area, colorStops) => {
+      const gradient = ctx.createLinearGradient(0, area.top, 0, area.bottom);
+      colorStops.forEach(([stop, color]) => gradient.addColorStop(stop, color));
+      return gradient;
+    };
+
+    const readChartPayload = (canvasId) => {
+      const canvas = document.getElementById(canvasId);
+      if (!(canvas instanceof HTMLCanvasElement)) return null;
+
+      try {
+        return {
+          canvas,
+          payload: JSON.parse(canvas.dataset.chart ?? "null"),
+        };
+      } catch {
+        return null;
+      }
+    };
+
+    const renderLineChart = (canvasId, palette) => {
+      const chartData = readChartPayload(canvasId);
+      if (!chartData) return;
+
+      const { canvas, payload } = chartData;
+      const labels = Array.isArray(payload?.points) ? payload.points.map((point) => point.label) : [];
+      const values = Array.isArray(payload?.points) ? payload.points.map((point) => Number(point.value)) : [];
+      if (labels.length < 2 || values.some((value) => Number.isNaN(value))) return;
+
+      charts.get(canvasId)?.destroy();
+
+      const chart = new Chart(canvas, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: payload.seriesLabel,
+              data: values,
+              fill: true,
+              tension: 0.34,
+              borderWidth: 2,
+              borderColor: palette.stroke,
+              pointRadius: 3,
+              pointHoverRadius: 5,
+              pointBackgroundColor: palette.stroke,
+              pointBorderWidth: 0,
+              backgroundColor(context) {
+                const { chart } = context;
+                const { ctx, chartArea } = chart;
+                if (!chartArea) return palette.fillFallback;
+                return buildGradient(ctx, chartArea, palette.fill);
+              },
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            intersect: false,
+            mode: "index",
+          },
+          plugins: {
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              displayColors: false,
+              backgroundColor: "rgba(13, 18, 26, 0.94)",
+              borderColor: "rgba(255, 255, 255, 0.1)",
+              borderWidth: 1,
+              padding: 12,
+              titleColor: "#f7f1ee",
+              bodyColor: "#dbe4ef",
+              callbacks: {
+                label(context) {
+                  return formatMetricValue(payload.metric, context.parsed.y);
+                },
+              },
+            },
+          },
+          scales: {
+            x: {
+              border: {
+                display: false,
+              },
+              grid: {
+                display: false,
+              },
+              ticks: {
+                color: "rgba(218, 226, 236, 0.62)",
+                font: {
+                  size: 11,
+                },
+              },
+            },
+            y: {
+              border: {
+                display: false,
+              },
+              grid: {
+                color: "rgba(132, 146, 166, 0.16)",
+                drawTicks: false,
+              },
+              ticks: {
+                color: "rgba(218, 226, 236, 0.5)",
+                padding: 10,
+                font: {
+                  size: 11,
+                },
+                callback(value) {
+                  return formatMetricValue(payload.metric, value);
+                },
+              },
+            },
+          },
+        },
+      });
+
+      charts.set(canvasId, chart);
+    };
+
+    const renderAllCharts = () => {
+      renderLineChart("hours-detail-chart", {
+        stroke: "#c56cff",
+        fillFallback: "rgba(197, 108, 255, 0.18)",
+        fill: [
+          [0, "rgba(197, 108, 255, 0.32)"],
+          [1, "rgba(197, 108, 255, 0.03)"],
+        ],
+      });
+
+      renderLineChart("money-detail-chart", {
+        stroke: "#9bff83",
+        fillFallback: "rgba(155, 255, 131, 0.18)",
+        fill: [
+          [0, "rgba(155, 255, 131, 0.26)"],
+          [1, "rgba(155, 255, 131, 0.03)"],
+        ],
+      });
+    };
+
+    renderAllCharts();
+    window.addEventListener("resize", renderAllCharts);
+  </script>
+</BaseLayout>

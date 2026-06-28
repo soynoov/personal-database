@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Personal Database - Catálogo Personal</title>
+<!-- Google Fonts: Playfair Display & Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Playfair+Display:wght@700&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script type='text/javascript' nonce='rv9NpqEJn0lMYG2asFO9gQ==' src='https://contribution.usercontent.google.com/2HwUbaWyc-qJmNogqfMi2dylfWpcx5cxARQ824VUqs5T4t5yxl3iKA1k4VZ4_6AwQPJ6reE_ukWab3N1VyggsdbmhHZr3dWE6Zhl6HAdT4rjYeeNak_deHYasC43SHQIMPzt-YHR6Wcu-3cfQO1gVw1JS27wLdxMPI3JHDS7bC_ZL4lZrLYQwZhIUuYvzu_KvndTd8-aUrTMbKSwuWuXrNl7DnDl3PiymYmIzjP2GYxSqaLZM7_KmlIF5ATknu9JEQuak7VY0B3NkRH1PuLNlNls-C79NsEPHKKLcIjOcX25nvsIOQehOC7oMkA_jVO8tpG0D-EqJjwDO8BLPFcyFqmMO09_f240dgy2AGqvetvEuz9x_YJ13IbEMUSGE8NRsscgfsIk_Sbr3M4SUWKuWNwYOsblYP4i9-z42UFlfk78JA5g0-CjjYjR9c2ygK0f0L52hmc2CPj25UYXcAI3nf0XSMgzw9w4IpKd5bLxOvjGAozwvHpKtFwADMTH2ik4OdUF-lx-3QW4b1cXQuqCoHTzdc8wMrtuFzkqyZnCCtZPJzUP9b4Exs1ytn86feKytio717SIUcpKiPOySNgEWRgj5T10bzRzD5-mh1_qg1YwNU-PwWOKjJ-xZYP60arpF11kaiIhGtozf78w5xhU8W0YQ15_t8313twwZ27u-60wIDeMo0OtPe4sq44YGyNw7idZIikcPFlbfFR00ylVdlnxKf6wBOOsqH2xm2DFV9oKRD3nayRhlbGmwoBHGsPUo6qD_y-8cfIFZ1mEPqG72YHJjTxMlehCQ2Lhdw'></script><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#0a0c14',
+              sidebar: '#0d111c',
+              card: '#161b2a',
+              accent: '#8b5cf6', // purple
+              border: '#1e293b'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          },
+          borderRadius: {
+            'card': '12px',
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-layout">
+    body {
+      background-color: #0a0c14;
+      color: #e2e8f0;
+      font-family: 'Inter', sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 10px;
+    }
+    .active-nav-item {
+      background: linear-gradient(90deg, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0.02) 100%);
+      border-left: 3px solid #8b5cf6;
+    }
+  </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+<!-- BEGIN: LeftSidebar -->
+<aside class="w-64 flex-shrink-0 bg-brand-sidebar border-r border-brand-border flex flex-col justify-between py-8">
+<div data-purpose="sidebar-top">
+<!-- Logo -->
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-8 h-8 border-2 border-white rounded flex items-center justify-center font-bold text-xs">PD</div>
+<div class="leading-tight">
+<span class="block text-xs font-bold tracking-widest uppercase opacity-70">Personal</span>
+<span class="block text-sm font-bold">DATABASE</span>
+</div>
+</div>
+<!-- Main Navigation -->
+<nav class="space-y-1">
+<a class="flex items-center px-6 py-4 text-sm font-medium text-gray-400 hover:text-white transition-colors" href="#">
+<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          GitHub
+        </a>
+<div class="pt-4 pb-2">
+<div class="border-t border-brand-border mx-6"></div>
+</div>
+<a class="active-nav-item flex items-center px-6 py-4 text-sm font-medium text-white" href="#">
+<svg class="w-5 h-5 mr-3 text-brand-accent" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          Catálogo
+        </a>
+<a class="flex items-center px-6 py-4 text-sm font-medium text-gray-400 hover:text-white transition-colors" href="#">
+<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          Estadísticas
+        </a>
+<a class="flex items-center px-6 py-4 text-sm font-medium text-gray-400 hover:text-white transition-colors" href="#">
+<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          Criterio
+        </a>
+<a class="flex items-center px-6 py-4 text-sm font-medium text-gray-400 hover:text-white transition-colors" href="#">
+<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          Ajustes
+        </a>
+</nav>
+</div>
+<!-- Toggle sidebar button -->
+<div class="px-6">
+<button class="p-2 rounded bg-gray-800 hover:bg-gray-700 text-gray-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M11 19l-7-7 7-7m8 14l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</aside>
+<!-- END: LeftSidebar -->
+<!-- BEGIN: MainContent -->
+<main class="flex-1 overflow-y-auto custom-scrollbar bg-brand-dark px-12 py-10 relative">
+<!-- Header Abstract Background Glow -->
+<div class="absolute top-0 right-0 w-[500px] h-[300px] bg-red-900/10 blur-[120px] -z-10 rounded-full"></div>
+<!-- Header Section -->
+<header class="mb-12">
+<p class="text-xs font-bold tracking-[0.2em] text-red-500 uppercase mb-2">Personal Database</p>
+<h1 class="font-serif text-5xl text-white mb-6">Catálogo personal</h1>
+<!-- Stats Row -->
+<div class="flex items-center gap-8 text-gray-400 text-sm">
+<div class="flex items-center gap-2">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM3 8h18v8H3V8zm3 2h2v4H6v-4zm10 0h2v4h-2v-4zm-4 0h2v4h-2v-4z"></path></svg>
+<span class="font-bold text-white">111</span> juegos
+        </div>
+<div class="flex items-center gap-2">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="font-bold text-white">2816.8 h</span>
+</div>
+<div class="flex items-center gap-2">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="font-bold text-white">74 €</span>
+</div>
+<div class="flex items-center gap-2">
+<svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="font-bold text-green-500">6</span> activos
+        </div>
+<div class="flex items-center gap-2">
+<svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="font-bold text-blue-400">9</span> completados
+        </div>
+</div>
+</header>
+<!-- BEGIN: SearchAndFilters -->
+<section class="bg-[#111522] rounded-xl p-6 mb-8 border border-brand-border">
+<!-- Search Bar -->
+<div class="flex items-center gap-4 mb-6">
+<div class="relative flex-1">
+<span class="absolute inset-y-0 left-4 flex items-center text-gray-500">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<input class="w-full bg-[#0d111c] border-brand-border border rounded-lg py-2.5 pl-12 pr-4 text-sm focus:ring-brand-accent focus:border-brand-accent outline-none" placeholder="Buscar juegos..." type="text"/>
+</div>
+<button class="text-xs text-gray-400 flex items-center gap-2 hover:text-white transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          Limpiar todo
+        </button>
+</div>
+<!-- Filters Row -->
+<div class="grid grid-cols-6 gap-4 mb-4">
+<div data-purpose="filter-item">
+<label class="block text-[10px] font-bold text-gray-500 uppercase mb-1 ml-1">Estado</label>
+<select class="w-full bg-[#1e2436] border-none rounded-lg text-sm text-white focus:ring-brand-accent">
+<option>Jugando</option>
+</select>
+</div>
+<div data-purpose="filter-item">
+<label class="block text-[10px] font-bold text-gray-500 uppercase mb-1 ml-1">Launcher</label>
+<select class="w-full bg-[#1e2436] border-none rounded-lg text-sm text-white focus:ring-brand-accent">
+<option>Todos</option>
+</select>
+</div>
+<div data-purpose="filter-item">
+<label class="block text-[10px] font-bold text-gray-500 uppercase mb-1 ml-1">Plataforma</label>
+<select class="w-full bg-[#1e2436] border-none rounded-lg text-sm text-white focus:ring-brand-accent">
+<option>Todas</option>
+</select>
+</div>
+<div data-purpose="filter-item">
+<label class="block text-[10px] font-bold text-gray-500 uppercase mb-1 ml-1">Solo</label>
+<select class="w-full bg-[#1e2436] border-none rounded-lg text-sm text-white focus:ring-brand-accent">
+<option>Da igual</option>
+</select>
+</div>
+<div data-purpose="filter-item">
+<label class="block text-[10px] font-bold text-gray-500 uppercase mb-1 ml-1">Orden</label>
+<select class="w-full bg-[#1e2436] border-none rounded-lg text-sm text-white focus:ring-brand-accent">
+<option>Título A-Z</option>
+</select>
+</div>
+<div data-purpose="filter-item">
+<label class="block text-[10px] font-bold text-gray-500 uppercase mb-1 ml-1">Precio</label>
+<select class="w-full bg-[#1e2436] border-none rounded-lg text-sm text-white focus:ring-brand-accent">
+<option>Todos</option>
+</select>
+</div>
+</div>
+<!-- Active Filter Tags -->
+<div class="flex gap-2">
+<span class="inline-flex items-center px-3 py-1 bg-brand-accent/20 text-brand-accent rounded-full text-xs font-medium">
+          Jugando
+          <button class="ml-2 hover:text-white">×</button>
+</span>
+</div>
+</section>
+<!-- END: SearchAndFilters -->
+<!-- BEGIN: ViewControls -->
+<section class="flex items-center justify-between mb-8">
+<div class="text-sm text-gray-400">Viendo 6 de 111</div>
+<div class="flex gap-2 bg-[#111522] p-1 rounded-lg">
+<button class="flex items-center gap-2 px-4 py-1.5 bg-gray-800 text-white rounded text-sm font-medium">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 20 20"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+          Cards
+        </button>
+<button class="flex items-center gap-2 px-4 py-1.5 text-gray-400 rounded text-sm font-medium hover:text-white transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          Tabla
+        </button>
+</div>
+</section>
+<!-- Status Tags Row -->
+<div class="flex flex-wrap gap-3 mb-8">
+<span class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-green-900/50 bg-green-950/20 text-[11px] font-bold text-green-500 uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Terminado
+      </span>
+<span class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-purple-900/50 bg-purple-950/20 text-[11px] font-bold text-brand-accent uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-accent"></span> Jugando
+      </span>
+<span class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-yellow-900/50 bg-yellow-950/20 text-[11px] font-bold text-yellow-500 uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-yellow-500"></span> Pendiente
+      </span>
+<span class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-blue-900/50 bg-blue-950/20 text-[11px] font-bold text-blue-500 uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span> Free to play
+      </span>
+<span class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-emerald-900/50 bg-emerald-950/20 text-[11px] font-bold text-emerald-500 uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Buena compra
+      </span>
+<span class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-red-900/50 bg-red-950/20 text-[11px] font-bold text-red-500 uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Mala compra
+      </span>
+<span class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-orange-900/50 bg-orange-950/20 text-[11px] font-bold text-orange-500 uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span> Early Access
+      </span>
+</div>
+<!-- BEGIN: GameGrid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Card 1: Ruinas del Norte -->
+<article class="bg-brand-card rounded-card overflow-hidden border border-brand-border hover:border-brand-accent/50 transition-all group" data-purpose="game-card">
+<div class="relative h-64">
+<img alt="Ruinas del Norte" class="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8hkwCqJ-6QN3B9DugAe-OyW3700kSkt0XACivenkReZlbiZ5sJc7vJuou10FrpYb05wnlSvDjvvOhvKUi39QYBw26GMSvrvLK4RlHknv69y0gcPMyjRad70bBiBOJWmR1JKLoGvIdwpGH4e9zfu2nSMrArAvU0ub9FKgP-9VyXbRPbWQogzD4JIRMwBB83vgatDKXNh9MmkZ70LKwpKp_8luYPQmY5bon-3oqEIvPCapP6uCZ9b7KwkX7mxjZQQXUDrEMzBYEPv0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-brand-card via-transparent to-transparent"></div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-serif text-2xl text-white">Ruinas del Norte</h3>
+<button class="text-gray-500 hover:text-white">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg>
+</button>
+</div>
+<div class="flex items-center gap-2 text-xs text-gray-400 mb-4 uppercase tracking-wider font-bold">
+            PC <span class="opacity-30">•</span>
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M11.979 0L5.678 2.658l.492 1.341c.219-.074.453-.133.702-.178l-.694 5.376h1.229l-.26 2.016h2.29l.176 4.398c.038.932.321 1.706.848 2.322.527.616 1.258.924 2.193.924s1.666-.308 2.193-.924c.527-.616.81-1.39.848-2.322l.176-4.398h2.29l-.26-2.016h1.229l-.694-5.376c.249.045.483.104.702.178l.492-1.341L11.979 0zm2.744 15.656c0 .41-.11.758-.33 1.045-.22.287-.525.43-.914.43s-.694-.143-.914-.43c-.22-.287-.33-.635-.33-1.045l-.123-3.08h2.734l-.123 3.08zM14.613 11l.169-1.312h-5.564L9.387 11h5.226zm.431-3.344h-6.088l.307-2.378c.045-.349.199-.607.462-.774.263-.167.575-.25.937-.25h2.664c.362 0 .674.083.937.25.263.167.417.425.462.774l.321 2.378z"></path></svg>
+            Steam
+          </div>
+<div class="mb-6">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-950/30 text-brand-accent border border-purple-900/50 rounded-lg text-xs font-bold uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-accent"></span> Jugando
+            </span>
+</div>
+<div class="text-3xl font-bold text-white mb-6">8.75 h</div>
+<div class="flex items-center gap-3 text-xs text-gray-500 font-medium">
+<span>2019</span>
+<span class="opacity-30">•</span>
+<span>Aventura, Narrativa</span>
+</div>
+</div>
+</article>
+<!-- Card 2: Culto Eterno -->
+<article class="bg-brand-card rounded-card overflow-hidden border border-brand-border hover:border-brand-accent/50 transition-all group" data-purpose="game-card">
+<div class="relative h-64">
+<img alt="Culto Eterno" class="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUy1cUIs2hJX1NW74LCI0TZyt-htrDZ9t4RKOnyo3q0ZfX8V5NmVVMQC-sswbn6-sziXELMZscMIToVk72CQ92TX3s1pHWKG8VVsOBM4MfohbbtkhXAw88ZjIm8XuPvfiYmlwomhaD4JDKiNbz5L39YYezgjTgDrUJ07tfDLYXasjYLoeANTCkkeUIZACE2Unn9S6LF7c3vcD4CqezQRbfjzdJ7-V6nfA6yqhz41LcAg249yNZdvwPvrxXa5p774Ns4CrfS8ZasLQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-brand-card via-transparent to-transparent"></div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-serif text-2xl text-white">Culto Eterno</h3>
+<button class="text-gray-500 hover:text-white">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg>
+</button>
+</div>
+<div class="flex items-center gap-2 text-xs text-gray-400 mb-4 uppercase tracking-wider font-bold">
+            PC <span class="opacity-30">•</span>
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M11.979 0L5.678 2.658l.492 1.341c.219-.074.453-.133.702-.178l-.694 5.376h1.229l-.26 2.016h2.29l.176 4.398c.038.932.321 1.706.848 2.322.527.616 1.258.924 2.193.924s1.666-.308 2.193-.924c.527-.616.81-1.39.848-2.322l.176-4.398h2.29l-.26-2.016h1.229l-.694-5.376c.249.045.483.104.702.178l.492-1.341L11.979 0zm2.744 15.656c0 .41-.11.758-.33 1.045-.22.287-.525.43-.914.43s-.694-.143-.914-.43c-.22-.287-.33-.635-.33-1.045l-.123-3.08h2.734l-.123 3.08zM14.613 11l.169-1.312h-5.564L9.387 11h5.226zm.431-3.344h-6.088l.307-2.378c.045-.349.199-.607.462-.774.263-.167.575-.25.937-.25h2.664c.362 0 .674.083.937.25.263.167.417.425.462.774l.321 2.378z"></path></svg>
+            Steam
+          </div>
+<div class="mb-6">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-950/30 text-brand-accent border border-purple-900/50 rounded-lg text-xs font-bold uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-accent"></span> Jugando
+            </span>
+</div>
+<div class="text-3xl font-bold text-white mb-6">14.7 h</div>
+<div class="flex items-center gap-3 text-xs text-gray-500 font-medium">
+<span>2022</span>
+<span class="opacity-30">•</span>
+<span>Acción, Roguelite</span>
+</div>
+</div>
+</article>
+<!-- Card 3: Horizontes -->
+<article class="bg-brand-card rounded-card overflow-hidden border border-brand-border hover:border-brand-accent/50 transition-all group" data-purpose="game-card">
+<div class="relative h-64">
+<img alt="Horizontes" class="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKZTPgFKFIc7N74khrhuU6HVwuY4wmI61V-P7PfDgE5EJEy4czQocb9xTw4VKhXHvG-wFICGTUnR7E8Gs9WZLyENUq8qLXAqsmEzXYAvC8KhoFLaE-s5vpq8IajBQsija03WVpHknnucubc_qJotTy6rySkl90FuGwm3ODsrtr090MVttDQcTsQB1YJk6ZTKEJZta12xYO_7_k4gMeDAYT7t-wQcD9sQkrxttpfTGEwwTpu1mpT90FgYtEJJpLiRrzCtPt7nfu6DY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-brand-card via-transparent to-transparent"></div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-serif text-2xl text-white">Horizontes</h3>
+<button class="text-gray-500 hover:text-white">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg>
+</button>
+</div>
+<div class="flex items-center gap-2 text-xs text-gray-400 mb-4 uppercase tracking-wider font-bold">
+            PC <span class="opacity-30">•</span>
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 0L1.745 3.72v16.56L12 24l10.255-3.72V3.72L12 0zm7.636 17.58L12 21.36l-7.636-3.78V6.42L12 10.2l7.636-3.78v11.16z"></path></svg>
+            Epic Games
+          </div>
+<div class="mb-6">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-950/30 text-brand-accent border border-purple-900/50 rounded-lg text-xs font-bold uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-accent"></span> Jugando
+            </span>
+</div>
+<div class="text-3xl font-bold text-white mb-6">12.8 h</div>
+<div class="flex items-center gap-3 text-xs text-gray-500 font-medium">
+<span>2021</span>
+<span class="opacity-30">•</span>
+<span>Aventura, Exploración</span>
+</div>
+</div>
+</article>
+<!-- Card 4: Metacronías -->
+<article class="bg-brand-card rounded-card overflow-hidden border border-brand-border hover:border-brand-accent/50 transition-all group" data-purpose="game-card">
+<div class="relative h-64">
+<img alt="Metacronías" class="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxAMBBfb-8GSvFMQJ2-7fVDdHYcPv5oVLsdX7HEgpqybvFsf4jQoOE5ZTWT4psMZvm_Wi3jErMQpTSO5n2i2q3ce2LIvVMS81Bpmfj52o8YAB1ruSAq28JPR-Ri3jsUlx9RfvLufqGBWvUGWJTgXcQLIDy-HjAcTVKfYfdY7xzZ0UygKX_26JJi0cCb9maNaNhlxV09LKZBL0T6qXe8F_XnTpa1ai2IGnpViIo5UOhEd8UK0jIz4p809XHEPvIbCtuS5e-3eGo1Sg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-brand-card via-transparent to-transparent"></div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-serif text-2xl text-white">Metacronías</h3>
+<button class="text-gray-500 hover:text-white">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg>
+</button>
+</div>
+<div class="flex items-center gap-2 text-xs text-gray-400 mb-4 uppercase tracking-wider font-bold">
+            PC <span class="opacity-30">•</span>
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M11.979 0L5.678 2.658l.492 1.341c.219-.074.453-.133.702-.178l-.694 5.376h1.229l-.26 2.016h2.29l.176 4.398c.038.932.321 1.706.848 2.322.527.616 1.258.924 2.193.924s1.666-.308 2.193-.924c.527-.616.81-1.39.848-2.322l.176-4.398h2.29l-.26-2.016h1.229l-.694-5.376c.249.045.483.104.702.178l.492-1.341L11.979 0zm2.744 15.656c0 .41-.11.758-.33 1.045-.22.287-.525.43-.914.43s-.694-.143-.914-.43c-.22-.287-.33-.635-.33-1.045l-.123-3.08h2.734l-.123 3.08zM14.613 11l.169-1.312h-5.564L9.387 11h5.226zm.431-3.344h-6.088l.307-2.378c.045-.349.199-.607.462-.774.263-.167.575-.25.937-.25h2.664c.362 0 .674.083.937.25.263.167.417.425.462.774l.321 2.378z"></path></svg>
+            Steam
+          </div>
+<div class="mb-6">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-950/30 text-brand-accent border border-purple-900/50 rounded-lg text-xs font-bold uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-accent"></span> Jugando
+            </span>
+</div>
+<div class="text-3xl font-bold text-white mb-6">3.7 h</div>
+<div class="flex items-center gap-3 text-xs text-gray-500 font-medium">
+<span>2024</span>
+<span class="opacity-30">•</span>
+<span>RPG, Ciencia ficción</span>
+</div>
+</div>
+</article>
+<!-- Card 5: Oddsparks -->
+<article class="bg-brand-card rounded-card overflow-hidden border border-brand-border hover:border-brand-accent/50 transition-all group" data-purpose="game-card">
+<div class="relative h-64">
+<img alt="Oddsparks" class="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBwJ_GI7hq4_Hpw6HOpB9i1sIZCfB2ORSaoF3zfMLcCenkV5jFuYRFzUk5fZLLZ1zkmNXUvF78WL8P_cJE6YC6tjHPxkyHon81T_X6szorz7ZxxJTpxHVcKjCoRVzntGKfRrGbb8-rgHElAJWTG-1Fkdwr-CT5ZB_jUm5O82IzygnFBW6icQ2kA7Eblz1BtREgU5lgemdxae3IaVJomNkrqVX937LaGmYyOiW488gdtVihywMBYprqhz5CaJG6Punp7Ut9PGmmWts"/>
+<div class="absolute inset-0 bg-gradient-to-t from-brand-card via-transparent to-transparent"></div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-serif text-2xl text-white">Oddsparks</h3>
+<button class="text-gray-500 hover:text-white">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg>
+</button>
+</div>
+<div class="flex items-center gap-2 text-xs text-gray-400 mb-4 uppercase tracking-wider font-bold">
+            PC <span class="opacity-30">•</span>
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 0L1.745 3.72v16.56L12 24l10.255-3.72V3.72L12 0zm7.636 17.58L12 21.36l-7.636-3.78V6.42L12 10.2l7.636-3.78v11.16z"></path></svg>
+            Epic Games
+          </div>
+<div class="mb-6">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-950/30 text-brand-accent border border-purple-900/50 rounded-lg text-xs font-bold uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-accent"></span> Jugando
+            </span>
+</div>
+<div class="text-3xl font-bold text-white mb-6">22.8 h</div>
+<div class="flex items-center gap-3 text-xs text-gray-500 font-medium">
+<span>2024</span>
+<span class="opacity-30">•</span>
+<span>Estrategia, Construcción</span>
+</div>
+</div>
+</article>
+<!-- Card 6: Schedule I -->
+<article class="bg-brand-card rounded-card overflow-hidden border border-brand-border hover:border-brand-accent/50 transition-all group" data-purpose="game-card">
+<div class="relative h-64">
+<img alt="Schedule I" class="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeVZZCs2fVUVSvP2Gxd6n42SbVF1x9vl5R_yx6TimrdGIXBRkp1liIdPIi0W4ggQJ5JO1g134Uf38IHScOIbOwxOWS2j81oQlvSxYxz3RS17Cvhj9YmNb2yK1QCB_ToWVBuM8QvmItM5tNsAyFtJ3YnGO7hDleEaEbzX3iblV5EggXwY1Ljz-OMljH4fLl3TGxGXwmDfZg5mBD-bGyxmjpt-WDFqvcfoAOMpY_vO82S51IiMmlWxdpGiycwJ8Al2-5-qllYjiy8fQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-brand-card via-transparent to-transparent"></div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-serif text-2xl text-white">Schedule I</h3>
+<button class="text-gray-500 hover:text-white">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg>
+</button>
+</div>
+<div class="flex items-center gap-2 text-xs text-gray-400 mb-4 uppercase tracking-wider font-bold">
+            PC <span class="opacity-30">•</span>
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M11.979 0L5.678 2.658l.492 1.341c.219-.074.453-.133.702-.178l-.694 5.376h1.229l-.26 2.016h2.29l.176 4.398c.038.932.321 1.706.848 2.322.527.616 1.258.924 2.193.924s1.666-.308 2.193-.924c.527-.616.81-1.39.848-2.322l.176-4.398h2.29l-.26-2.016h1.229l-.694-5.376c.249.045.483.104.702.178l.492-1.341L11.979 0zm2.744 15.656c0 .41-.11.758-.33 1.045-.22.287-.525.43-.914.43s-.694-.143-.914-.43c-.22-.287-.33-.635-.33-1.045l-.123-3.08h2.734l-.123 3.08zM14.613 11l.169-1.312h-5.564L9.387 11h5.226zm.431-3.344h-6.088l.307-2.378c.045-.349.199-.607.462-.774.263-.167.575-.25.937-.25h2.664c.362 0 .674.083.937.25.263.167.417.425.462.774l.321 2.378z"></path></svg>
+            Steam
+            <span class="ml-1 px-1.5 py-0.5 bg-orange-950/40 text-orange-500 border border-orange-900/50 rounded text-[10px]">EA</span>
+</div>
+<div class="mb-6">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-950/30 text-brand-accent border border-purple-900/50 rounded-lg text-xs font-bold uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-accent"></span> Jugando
+            </span>
+</div>
+<div class="text-3xl font-bold text-white mb-6">16.4 h</div>
+<div class="flex items-center gap-3 text-xs text-gray-500 font-medium">
+<span>2025</span>
+<span class="opacity-30">•</span>
+<span>Simulación, Gestión</span>
+</div>
+</div>
+</article>
+</div>
+<!-- END: GameGrid -->
+</main>
+<!-- END: MainContent -->
+</body></html>

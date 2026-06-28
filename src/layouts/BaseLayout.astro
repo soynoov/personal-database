@@ -1,0 +1,24 @@
+---
+import "../styles/global.css";
+import "../styles/badges.css"; // Badges: estado, launcher, plataforma, tag
+import "../styles/cards.css"; // Diseño de tarjetas del catálogo (override de global.css)
+
+type Props = {
+  title?: string;
+};
+
+const { title = "EvaDB Games" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
