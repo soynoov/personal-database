@@ -1,0 +1,67 @@
+---
+/**
+ * GameDetailHero.astro — Hero cinematográfico de la página de detalle de juego.
+ * Muestra la portada, título, badges (estado, launcher, plataforma, tags) y resumen.
+ * Datos: todos computados en [slug].astro y recibidos como props.
+ */
+import '../../styles/game-detail/hero.css';
+
+interface Props {
+  title: string;
+  coverUrl: string;
+  heroCoverStyle: string;
+  statusBadge: { class: string; label: string };
+  launcherBadge: { class: string; html: string };
+  platformBadge: { class: string; label: string };
+  hasFreeToPlayTag: boolean;
+  hasEarlyAccess: boolean;
+  genres: string;
+  pricePaidNote: string;
+  soloLabel: string;
+}
+
+const {
+  title,
+  coverUrl,
+  heroCoverStyle,
+  statusBadge,
+  launcherBadge,
+  platformBadge,
+  hasFreeToPlayTag,
+  hasEarlyAccess,
+  genres,
+  pricePaidNote,
+  soloLabel,
+} = Astro.props;
+---
+
+<section class="game-hero-rich game-hero-cinematic" id="overview" style={heroCoverStyle}>
+  <section class="game-intro-panel game-overview-card game-overview-card-cinematic">
+    <div class="game-overview-media">
+      <div class="game-poster-stack">
+        <img
+          class="game-poster-image"
+          src={coverUrl}
+          alt={`Caratula de ${title}`}
+          loading="lazy"
+        />
+      </div>
+    </div>
+
+    <div class="game-overview-copy">
+      <div class="eyebrow">Personal Database</div>
+      <h1>{title}</h1>
+      <div class="badges game-page-badges">
+        <span class={`badge ${statusBadge.class}`}>{statusBadge.label}</span>
+        <span class={`badge ${launcherBadge.class}`} set:html={launcherBadge.html} />
+        <span class={`badge ${platformBadge.class}`}>{platformBadge.label}</span>
+        {hasFreeToPlayTag && <span class="badge badge-tag-free">Free to play</span>}
+        {hasEarlyAccess && <span class="badge badge-tag-early">Early Access</span>}
+      </div>
+      <p class="game-overview-summary">
+        {genres !== "-" ? genres : "Sin genero cargado"} · {pricePaidNote || "Sin lectura financiera"} ·{" "}
+        {soloLabel === "Si" ? "Experiencia en solitario" : "Puede jugarse acompanado"}
+      </p>
+    </div>
+  </section>
+</section>

@@ -264,7 +264,7 @@
 */
   .mock-game-card .card-title-stack h2 {
     margin: 0;
-    font-family: 'Anton SC', sans-serif;
+    font-family: var(--font-display);
     font-size: 25px;
     font-weight: 400;
     line-height: calc(20px + 10px);
@@ -302,7 +302,7 @@
 
   /* Todos los badges: estado + plataforma + launcher */
   .mock-game-card .badge {
-    font-family: 'Stack Sans Text', sans-serif;
+    font-family: var(--font-badge);
     font-size: 10px;
     font-weight: 600;
     padding: 0.25rem 0.65rem;
@@ -342,7 +342,7 @@
   .mock-game-card p,
   .mock-game-card .meta dt,
   .mock-game-card .meta dd {
-    font-family: 'Elms Sans', sans-serif;
+    font-family: var(--font-body);
   }
 
   .mock-game-card .card-support {

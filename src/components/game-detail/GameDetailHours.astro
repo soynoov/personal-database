@@ -1,0 +1,108 @@
+---
+/**
+ * GameDetailHours.astro — Panel de horas de juego.
+ * Muestra el chart de horas (Chart.js), las métricas snapshot y el desglose HLTB.
+ * Renderiza dentro de .hero-analysis-grid > article.analysis-panel
+ * Datos: todos computados en [slug].astro y recibidos como props.
+ */
+import '../../styles/game-detail/shared.css';
+import '../../styles/game-detail/hours.css';
+
+interface Props {
+  hoursChartPayload: object;
+  hoursChartPoints: Array<{ label: string; value: number; color?: string }>;
+  hoursDeltaLabel: string;
+  hoursDeltaTone: string;
+  hoursSnapshotCards: Array<{ label: string; value: string; note: string; tone: string }>;
+  hltbBreakdown: { main: number | null; mainPlus: number | null; completionist: number | null };
+  hltbValue: number | null;
+  hltbVisualClass: string;
+}
+
+const {
+  hoursChartPayload,
+  hoursChartPoints,
+  hoursDeltaLabel,
+  hoursDeltaTone,
+  hoursSnapshotCards,
+  hltbBreakdown,
+  hltbValue,
+  hltbVisualClass,
+} = Astro.props;
+---
+
+<article class="analysis-panel">
+  <div class="section-title-row analysis-head">
+    <div>
+      <h2>Horas</h2>
+    </div>
+    {hoursDeltaLabel && (
+      <span class:list={["section-pill", `section-pill-${hoursDeltaTone}`]}>{hoursDeltaLabel}</span>
+    )}
+  </div>
+
+  <div class="range-chart-card">
+    <div class="chart-shell">
+      <div class="chart-visual-card">
+        <div class="chart-header">
+          <div>
+            <strong>Perfil de horas</strong>
+            <p>Comparativa real entre tus horas y las referencias HLTB disponibles.</p>
+          </div>
+          <span class="chart-badge">Chart.js</span>
+        </div>
+        {hoursChartPoints.length >= 1 ? (
+          <div class="chart-canvas-wrap chart-canvas-wrap-hours">
+            <canvas id="hours-detail-chart" data-chart={JSON.stringify(hoursChartPayload)}></canvas>
+          </div>
+        ) : (
+          <div class="chart-empty">Faltan al menos dos puntos validos para dibujar la grafica de horas.</div>
+        )}
+      </div>
+
+      <div class="chart-metrics-grid">
+        {hoursSnapshotCards.map(({ label, value, note, tone }) => (
+          <article class:list={["chart-metric-card", `chart-metric-card-${tone}`]}>
+            <span>{label}</span>
+            <strong>{value}</strong>
+            <p>{note}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="game-page-section game-page-section-inline">
+    <div class="section-title-row">
+      <div>
+        <h2>Desglose HLTB</h2>
+      </div>
+    </div>
+    <dl class="detail-grid detail-grid-4">
+      <div class={`detail-item ${hltbBreakdown.main !== null ? "" : "detail-item-empty"}`}>
+        <dt>Main</dt>
+        <dd>{hltbBreakdown.main !== null ? `${hltbBreakdown.main.toFixed(1)} h` : "-"}</dd>
+        <span class="detail-item-note">Campana principal</span>
+      </div>
+      <div class={`detail-item ${hltbBreakdown.mainPlus !== null ? "" : "detail-item-empty"}`}>
+        <dt>Main + Extras</dt>
+        <dd>{hltbBreakdown.mainPlus !== null ? `${hltbBreakdown.mainPlus.toFixed(1)} h` : "-"}</dd>
+        <span class="detail-item-note">Contenido adicional sobre la campana principal</span>
+      </div>
+      <div class={`detail-item ${hltbBreakdown.completionist !== null ? "" : "detail-item-empty"}`}>
+        <dt>Completionist</dt>
+        <dd>{hltbBreakdown.completionist !== null ? `${hltbBreakdown.completionist.toFixed(1)} h` : "-"}</dd>
+        <span class="detail-item-note">Todo el contenido</span>
+      </div>
+      <div class={`detail-item ${hltbValue !== null ? hltbVisualClass : "detail-item-empty"}`}>
+        <dt>Referencia activa</dt>
+        <dd>{hltbValue !== null ? `${hltbValue.toFixed(1)} h` : "-"}</dd>
+        <span class="detail-item-note">
+          {hltbValue !== null
+            ? "Main si existe; si no, Main + Extras; si no, Completionist"
+            : "HLTB sin tiempo util publicado"}
+        </span>
+      </div>
+    </dl>
+  </div>
+</article>

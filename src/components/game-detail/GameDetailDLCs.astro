@@ -1,0 +1,82 @@
+---
+/**
+ * GameDetailDLCs.astro — Sección DLCs (galería de expansiones).
+ * Muestra las tarjetas de cada DLC con portada fallback, precios y notas.
+ * Las funciones de formato (formatDate, formatValue, formatCurrency) se pasan
+ * como props desde [slug].astro porque los datos DLC no se pre-formatean.
+ * Datos: dlcItems, dlcTotal, coverUrl computados en [slug].astro.
+ */
+import '../../styles/game-detail/dlcs.css';
+
+interface Props {
+  dlcItems: any[];
+  dlcTotal: number;
+  coverUrl: string;
+  formatDate: (value: unknown) => string;
+  formatValue: (value: unknown, fallback?: string) => string;
+  formatCurrency: (value: unknown, fallback?: string) => string;
+}
+
+const { dlcItems, dlcTotal, coverUrl, formatDate, formatValue, formatCurrency } = Astro.props;
+---
+
+<section class="game-page-section" id="dlcs">
+  <div class="section-title-row">
+    <div>
+      <h2>DLCs</h2>
+    </div>
+    <span class="section-pill">{dlcTotal > 0 ? `${dlcTotal} registrados` : "Sin DLCs"}</span>
+  </div>
+
+  {dlcTotal === 0 ? (
+    <div class="detail-dlc-empty">No hay DLCs registrados para este juego.</div>
+  ) : dlcItems.length > 0 ? (
+    <div class="dlc-gallery">
+      {dlcItems.map((dlc) => (
+        <article class="dlc-showcase-card">
+          <div class="dlc-showcase-cover">
+            <div class="dlc-showcase-fallback">
+              <img src={coverUrl} alt="" aria-hidden="true" loading="lazy" />
+              <span class="dlc-showcase-fallback-badge">Sin portada propia</span>
+            </div>
+          </div>
+
+          <div class="dlc-showcase-body">
+            <h3>{formatValue(dlc.titulo, "DLC sin nombre")}</h3>
+            <dl class="detail-grid detail-grid-2">
+              <div class:list={["detail-item", formatDate(dlc.fecha_adquisicion) === "-" && "detail-item-empty"]}>
+                <dt>Adquirido</dt>
+                <dd>{formatDate(dlc.fecha_adquisicion)}</dd>
+              </div>
+              <div class:list={["detail-item", (dlc.precio_pagado === null || dlc.precio_pagado === undefined) && "detail-item-empty"]}>
+                <dt>Precio pagado</dt>
+                <dd>{formatCurrency(dlc.precio_pagado)}</dd>
+              </div>
+              <div class:list={["detail-item", (dlc.precio_actual === null || dlc.precio_actual === undefined) && "detail-item-empty"]}>
+                <dt>Precio actual</dt>
+                <dd>{formatCurrency(dlc.precio_actual)}</dd>
+              </div>
+              <div class:list={["detail-item", (dlc.precio_salida === null || dlc.precio_salida === undefined) && "detail-item-empty"]}>
+                <dt>Precio salida</dt>
+                <dd>{formatCurrency(dlc.precio_salida)}</dd>
+              </div>
+              <div class:list={["detail-item", formatValue(dlc.tamano) === "-" && "detail-item-empty"]}>
+                <dt>Tamano</dt>
+                <dd>{formatValue(dlc.tamano)}</dd>
+              </div>
+              <div class:list={["detail-item", formatValue(dlc.cover_source) === "-" && "detail-item-empty"]}>
+                <dt>Fuente portada</dt>
+                <dd>{dlc.cover_source ? dlc.cover_source : "Fallback del juego"}</dd>
+              </div>
+            </dl>
+            {formatValue(dlc.notas) !== "-" && (
+              <p class="dlc-showcase-notes">{formatValue(dlc.notas)}</p>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+  ) : (
+    <div class="detail-dlc-empty">Hay DLCs contabilizados, pero aun no tienen ficha individual.</div>
+  )}
+</section>

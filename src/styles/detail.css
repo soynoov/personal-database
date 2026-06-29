@@ -1,0 +1,976 @@
+@import './theme.css';
+
+/* ================================================================
+   detail.css — modal y página de detalle clásica
+   ================================================================ */
+
+@layer global {
+
+.detail-dialog {
+  width: min(1320px, calc(100% - 1.5rem));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 0;
+  background:
+    linear-gradient(180deg, rgba(19, 23, 31, 0.98), rgba(16, 19, 26, 0.98)),
+    radial-gradient(
+      circle at top left,
+      rgba(186, 36, 38, 0.08),
+      transparent 28%
+    );
+  color: var(--text);
+  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.58);
+}
+
+.detail-dialog::backdrop {
+  background: rgba(4, 7, 11, 0.78);
+  backdrop-filter: blur(4px);
+}
+
+.detail-shell {
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+}
+
+.detail-cover {
+  min-height: 100%;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.7)),
+    linear-gradient(160deg, rgba(186, 36, 38, 0.24), rgba(255, 255, 255, 0.04));
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 2rem;
+}
+
+.detail-cover-backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.detail-cover-backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(12, 16, 22, 0.15), rgba(12, 16, 22, 0.72)),
+    radial-gradient(
+      circle at center,
+      transparent 18%,
+      rgba(12, 16, 22, 0.52) 100%
+    );
+}
+
+.detail-cover-backdrop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.12);
+  filter: blur(18px) saturate(0.92);
+  opacity: 0.72;
+}
+
+.detail-cover-poster {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 380px);
+}
+
+.detail-cover-poster img {
+  width: 100%;
+  max-height: 82vh;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  object-fit: cover;
+  box-shadow:
+    0 24px 50px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.detail-cover-fallback {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 380px);
+  min-height: 560px;
+  border-radius: 18px;
+  display: grid;
+  place-items: end start;
+  padding: 1rem;
+  background:
+    linear-gradient(180deg, rgba(186, 36, 38, 0.14), rgba(0, 0, 0, 0.5)),
+    radial-gradient(
+      circle at top right,
+      rgba(223, 74, 76, 0.35),
+      transparent 30%
+    );
+  color: #fff6f6;
+  font-family: var(--font-body);
+  font-size: 2rem;
+  line-height: 1;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.4);
+}
+
+.detail-body {
+  padding: 1.75rem 1.75rem 1.6rem;
+}
+
+.detail-topbar {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.detail-header {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.detail-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 4.6vw, 4.2rem);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: 1px;
+  text-wrap: balance;
+}
+
+.detail-close {
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  border-radius: 999px;
+  width: 46px;
+  height: 46px;
+  cursor: pointer;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.95rem;
+  margin-top: 0;
+}
+
+.detail-item {
+  padding: 0.95rem 1rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(29, 34, 42, 0.96),
+    rgba(22, 27, 34, 0.96)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.detail-item-highlight {
+  border-color: rgba(186, 36, 38, 0.5);
+  background: linear-gradient(
+    180deg,
+    rgba(68, 30, 34, 0.88),
+    rgba(44, 23, 28, 0.92)
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 0 0 1px rgba(186, 36, 38, 0.12);
+}
+
+.detail-item:nth-child(1),
+.detail-item:nth-child(2),
+.detail-item:nth-child(3),
+.detail-item:nth-child(4) {
+  grid-column: span 2;
+}
+
+.detail-item-empty {
+  border-color: rgba(133, 145, 168, 0.1);
+  background: rgba(255, 255, 255, 0.015);
+  opacity: 0.52;
+}
+
+.detail-item-price-free {
+  border-color: var(--tag-free-line);
+  background: linear-gradient(
+    180deg,
+    rgba(26, 60, 72, 0.92),
+    rgba(18, 39, 47, 0.94)
+  );
+}
+
+.detail-item-price-profit {
+  border-color: var(--price-profit-line);
+  background: linear-gradient(
+    180deg,
+    rgba(28, 58, 41, 0.92),
+    rgba(22, 38, 30, 0.94)
+  );
+}
+
+.detail-item-price-profit-strong {
+  border-color: var(--price-profit-strong-line);
+  background: linear-gradient(
+    180deg,
+    rgba(74, 56, 22, 0.92),
+    rgba(49, 37, 16, 0.94)
+  );
+}
+
+.detail-item-price-neutral {
+  border-color: var(--price-neutral-line);
+  background: linear-gradient(
+    180deg,
+    rgba(42, 47, 58, 0.92),
+    rgba(27, 31, 39, 0.94)
+  );
+}
+
+.detail-item-price-loss {
+  border-color: var(--price-loss-line);
+  background: linear-gradient(
+    180deg,
+    rgba(79, 30, 34, 0.92),
+    rgba(48, 22, 25, 0.94)
+  );
+}
+
+.detail-item-price-loss-strong {
+  border-color: var(--price-loss-strong-line);
+  background: linear-gradient(
+    180deg,
+    rgba(94, 24, 26, 0.92),
+    rgba(57, 16, 18, 0.95)
+  );
+}
+
+.detail-item-status-completed {
+  border-color: var(--status-completed-line);
+  background: linear-gradient(
+    180deg,
+    rgba(28, 58, 41, 0.92),
+    rgba(22, 38, 30, 0.94)
+  );
+}
+
+.detail-item-status-playing {
+  border-color: var(--status-playing-line);
+  background: linear-gradient(
+    180deg,
+    rgba(64, 31, 79, 0.92),
+    rgba(40, 23, 49, 0.94)
+  );
+}
+
+.detail-item-status-pending {
+  border-color: var(--status-pending-line);
+  background: linear-gradient(
+    180deg,
+    rgba(68, 57, 22, 0.92),
+    rgba(43, 36, 16, 0.94)
+  );
+}
+
+.detail-item-status-recurring {
+  border-color: var(--status-recurring-line);
+  background: linear-gradient(
+    180deg,
+    rgba(53, 32, 82, 0.92),
+    rgba(35, 24, 52, 0.94)
+  );
+}
+
+.detail-item-status-wishlist {
+  border-color: var(--status-wishlist-line);
+  background: linear-gradient(
+    180deg,
+    rgba(82, 30, 55, 0.92),
+    rgba(51, 20, 35, 0.94)
+  );
+}
+
+.detail-item-status-paused {
+  border-color: var(--status-paused-line);
+  background: linear-gradient(
+    180deg,
+    rgba(30, 51, 79, 0.92),
+    rgba(22, 34, 50, 0.94)
+  );
+}
+
+.detail-item-status-abandoned {
+  border-color: var(--status-abandoned-line);
+  background: linear-gradient(
+    180deg,
+    rgba(45, 47, 50, 0.92),
+    rgba(30, 32, 35, 0.94)
+  );
+}
+
+.detail-item-launcher-steam {
+  border-color: rgba(74, 148, 255, 0.42);
+  background: linear-gradient(
+    180deg,
+    rgba(28, 47, 78, 0.92),
+    rgba(20, 32, 53, 0.94)
+  );
+}
+
+.detail-item-launcher-epic {
+  border-color: rgba(160, 160, 160, 0.4);
+  background: linear-gradient(
+    180deg,
+    rgba(54, 54, 56, 0.92),
+    rgba(33, 33, 36, 0.94)
+  );
+}
+
+.detail-item-launcher-nintendo {
+  border-color: rgba(255, 78, 78, 0.45);
+  background: linear-gradient(
+    180deg,
+    rgba(80, 29, 29, 0.92),
+    rgba(49, 20, 20, 0.94)
+  );
+}
+
+.detail-item-launcher-pirata {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: linear-gradient(
+    180deg,
+    rgba(66, 66, 70, 0.92),
+    rgba(34, 34, 38, 0.94)
+  );
+}
+
+.detail-item-launcher-gamepass {
+  border-color: rgba(96, 214, 120, 0.45);
+  background: linear-gradient(
+    180deg,
+    rgba(30, 62, 38, 0.92),
+    rgba(21, 39, 26, 0.94)
+  );
+}
+
+.detail-item-launcher-riot {
+  border-color: rgba(255, 70, 70, 0.45);
+  background: linear-gradient(
+    180deg,
+    rgba(83, 28, 32, 0.92),
+    rgba(52, 20, 23, 0.94)
+  );
+}
+
+.detail-item-launcher-hoyoplay {
+  border-color: rgba(255, 190, 92, 0.45);
+  background: linear-gradient(
+    180deg,
+    rgba(83, 57, 25, 0.92),
+    rgba(49, 35, 17, 0.94)
+  );
+}
+
+.detail-item-launcher-ea {
+  border-color: rgba(156, 123, 255, 0.45);
+  background: linear-gradient(
+    180deg,
+    rgba(57, 40, 84, 0.92),
+    rgba(35, 26, 52, 0.94)
+  );
+}
+
+.detail-item-launcher-ubisoft {
+  border-color: rgba(109, 168, 255, 0.45);
+  background: linear-gradient(
+    180deg,
+    rgba(31, 52, 84, 0.92),
+    rgba(22, 33, 52, 0.94)
+  );
+}
+
+.detail-item-launcher-gog {
+  border-color: rgba(205, 84, 255, 0.45);
+  background: linear-gradient(
+    180deg,
+    rgba(65, 31, 84, 0.92),
+    rgba(41, 21, 52, 0.94)
+  );
+}
+
+.detail-item-launcher-itch {
+  border-color: rgba(255, 123, 123, 0.45);
+  background: linear-gradient(
+    180deg,
+    rgba(80, 35, 35, 0.92),
+    rgba(49, 23, 23, 0.94)
+  );
+}
+
+.detail-item-platform-pc {
+  border-color: rgba(0, 0, 0, 0.68);
+  background: linear-gradient(
+    180deg,
+    rgba(21, 21, 24, 0.94),
+    rgba(8, 8, 10, 0.96)
+  );
+}
+
+.detail-item-hltb-long {
+  border-color: var(--hltb-long-line);
+  background: linear-gradient(
+    180deg,
+    rgba(53, 32, 82, 0.92),
+    rgba(35, 24, 52, 0.94)
+  );
+}
+
+.detail-item-hltb-short {
+  border-color: var(--hltb-short-line);
+  background: linear-gradient(
+    180deg,
+    rgba(79, 30, 34, 0.92),
+    rgba(48, 22, 25, 0.94)
+  );
+}
+
+.detail-item-achievements {
+  position: relative;
+  overflow: hidden;
+}
+
+.detail-item-progress::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  width: var(--progress, 0%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 118, 118, 0.9),
+    rgba(255, 198, 120, 0.92)
+  );
+  box-shadow: 0 0 14px rgba(255, 118, 118, 0.28);
+}
+
+.detail-item dt {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.detail-item dd {
+  margin: 0.42rem 0 0;
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.detail-item-note {
+  display: block;
+  margin-top: 0.55rem;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: rgba(244, 236, 236, 0.7);
+}
+
+.detail-item-delta {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-top: 0.35rem;
+  padding: 0.18rem 0.48rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  line-height: 1;
+  opacity: 0.92;
+}
+
+.detail-more {
+  margin-top: 1rem;
+}
+
+.detail-more-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(186, 36, 38, 0.34);
+  background: linear-gradient(
+    180deg,
+    rgba(59, 25, 29, 0.96),
+    rgba(36, 18, 22, 0.96)
+  );
+  color: #fff1f1;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.detail-more-panel {
+  margin-top: 0.9rem;
+  padding: 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(26, 31, 38, 0.96),
+    rgba(20, 24, 30, 0.96)
+  );
+}
+
+.detail-section {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.detail-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.detail-section-head h3 {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.detail-dlc-table {
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(18, 19, 24, 0.98),
+    rgba(18, 20, 26, 0.96)
+  );
+}
+
+.detail-dlc-table-head,
+.detail-dlc-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.8fr) repeat(5, minmax(110px, 0.8fr));
+  gap: 1rem;
+  align-items: center;
+}
+
+.detail-dlc-table-head {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f0dee0;
+}
+
+.detail-dlc-table-body {
+  display: grid;
+}
+
+.detail-dlc-row {
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.detail-dlc-row:first-child {
+  border-top: 0;
+}
+
+.detail-dlc-cell {
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  color: #f4ecec;
+}
+
+.detail-dlc-title-cell {
+  display: grid;
+  gap: 0.28rem;
+}
+
+.detail-dlc-title-cell strong {
+  font-size: 1.02rem;
+}
+
+.detail-dlc-title-cell span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.detail-dlc-cell-empty {
+  color: rgba(244, 236, 236, 0.45);
+}
+
+.detail-dlc-empty {
+  padding: 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(29, 34, 42, 0.94),
+    rgba(22, 27, 34, 0.94)
+  );
+  font-family: var(--font-body);
+  color: var(--muted);
+}
+
+.detail-comments {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(29, 34, 42, 0.96),
+    rgba(22, 27, 34, 0.96)
+  );
+}
+
+.detail-comments dt {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: #f6ecee;
+}
+
+.detail-comments dd {
+  margin: 0.85rem 0 0;
+  min-height: 108px;
+  padding: 0.95rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(10, 13, 18, 0.34);
+  font-family: var(--font-body);
+  color: #f4ecec;
+}
+
+.detail-comments-empty {
+  border-color: rgba(133, 145, 168, 0.1);
+  background: rgba(255, 255, 255, 0.015);
+  opacity: 0.52;
+}
+
+.detail-comments-empty dd {
+  color: rgba(244, 236, 236, 0.55);
+}
+
+.detail-comments-vault dd {
+  min-height: 140px;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* ── game-page (original / classic) ── */
+
+.game-page {
+  padding-top: 1.25rem;
+}
+
+.game-hero {
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  gap: 1.4rem;
+  align-items: stretch;
+}
+
+.game-hero-vault {
+  align-items: start;
+}
+
+.game-hero-cover,
+.game-hero-body,
+.game-page-section {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: linear-gradient(
+    180deg,
+    rgba(30, 35, 44, 0.95),
+    rgba(24, 28, 35, 0.95)
+  );
+  box-shadow: var(--shadow);
+}
+
+.game-hero-cover {
+  position: relative;
+  min-height: 640px;
+  overflow: hidden;
+}
+
+.game-hero-backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.game-hero-backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(16, 19, 24, 0.18), rgba(16, 19, 24, 0.72)),
+    radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.08),
+      transparent 60%
+    );
+  backdrop-filter: blur(18px);
+}
+
+.game-hero-backdrop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.08);
+  filter: blur(18px);
+}
+
+.game-hero-poster,
+.game-hero-fallback {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+.game-hero-poster img {
+  width: min(100%, 320px);
+  max-height: 100%;
+  border-radius: 24px;
+  object-fit: cover;
+  box-shadow: 0 32px 60px rgba(0, 0, 0, 0.42);
+}
+
+.game-hero-fallback {
+  font-family: var(--font-body);
+  font-size: 6rem;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.game-hero-body {
+  padding: 1.6rem;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 17, 22, 0.98),
+    rgba(19, 22, 29, 0.96)
+  );
+}
+
+.game-hero-body h1 {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 5vw, 5rem);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: 1px;
+}
+
+.game-page-badges {
+  margin-top: 1rem;
+}
+
+.game-page-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.95rem;
+  margin-top: 1.4rem;
+}
+
+.game-page-stat {
+  min-height: 132px;
+}
+
+.game-page-kpi {
+  position: relative;
+  justify-content: start;
+}
+
+.game-page-section {
+  margin-top: 1.2rem;
+  padding: 1.2rem;
+  background: linear-gradient(
+    180deg,
+    rgba(17, 18, 22, 0.98),
+    rgba(17, 19, 24, 0.96)
+  );
+}
+
+.section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.section-title-row h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-family: var(--font-body);
+}
+
+.section-subtitle {
+  margin: 0.3rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  color: #ddd0d3;
+}
+
+.section-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0.55rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.section-pill-positive {
+  color: var(--price-profit-fg);
+  border-color: var(--price-profit-line);
+  background: linear-gradient(
+    180deg,
+    rgba(72, 184, 109, 0.22),
+    rgba(72, 184, 109, 0.1)
+  );
+  box-shadow: inset 0 0 0 1px rgba(108, 226, 141, 0.08);
+}
+
+.section-pill-negative {
+  color: var(--price-loss-fg);
+  border-color: var(--price-loss-line);
+  background: linear-gradient(
+    180deg,
+    rgba(214, 80, 80, 0.2),
+    rgba(214, 80, 80, 0.08)
+  );
+}
+
+.section-pill-neutral {
+  color: var(--price-neutral-fg);
+  border-color: var(--price-neutral-line);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.game-page-grid .detail-item:nth-child(1),
+.game-page-grid .detail-item:nth-child(2),
+.game-page-grid .detail-item:nth-child(3),
+.game-page-grid .detail-item:nth-child(4) {
+  grid-column: span 1;
+}
+
+@media (max-width: 1120px) {
+  .game-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .game-page-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .detail-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .detail-dlc-table-head,
+  .detail-dlc-row {
+    grid-template-columns: minmax(220px, 1.6fr) repeat(3, minmax(100px, 0.8fr));
+  }
+
+  .detail-dlc-table-head span:nth-child(5),
+  .detail-dlc-table-head span:nth-child(6),
+  .detail-dlc-row .detail-dlc-cell:nth-child(5),
+  .detail-dlc-row .detail-dlc-cell:nth-child(6) {
+    display: none;
+  }
+
+  .detail-item:nth-child(1),
+  .detail-item:nth-child(2),
+  .detail-item:nth-child(3),
+  .detail-item:nth-child(4) {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 720px) {
+  .detail-grid,
+  .detail-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .game-page-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-cover {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    min-height: 520px;
+  }
+
+  .game-hero-cover {
+    min-height: 520px;
+  }
+
+  .detail-body {
+    padding: 1rem;
+  }
+
+  .detail-title {
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+
+  .section-title-row {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .detail-dlc-table {
+    border: 0;
+    background: transparent;
+  }
+
+  .detail-dlc-table-head {
+    display: none;
+  }
+
+  .detail-dlc-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem;
+    margin-top: 0.8rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(
+      180deg,
+      rgba(24, 27, 34, 0.96),
+      rgba(18, 21, 28, 0.96)
+    );
+  }
+
+  .detail-dlc-title-cell {
+    grid-column: 1 / -1;
+  }
+}
+
+} /* end @layer global */

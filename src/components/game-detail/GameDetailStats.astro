@@ -1,0 +1,47 @@
+---
+/**
+ * GameDetailStats.astro — Sección Estadísticas (metadatos en grupos).
+ * Muestra grupos de metadatos como Catalogación y Cronología.
+ * Datos: metadataGroups computado en [slug].astro y recibido como prop.
+ */
+import '../../styles/game-detail/stats.css';
+
+interface Props {
+  metadataGroups: Array<{
+    title: string;
+    items: Array<{ label: string; value: string; className?: string; note?: string }>;
+  }>;
+}
+
+const { metadataGroups } = Astro.props;
+---
+
+<section class="game-page-section" id="technical">
+  <div class="section-title-row">
+    <div>
+      <h2>Estadísticas</h2>
+      <p class="section-subtitle">
+        Aqui es donde se concentra toda la chicha: metadatos, tiempos, precios y señales de progreso.
+      </p>
+    </div>
+  </div>
+
+  <div class="game-data-groups">
+    {metadataGroups.map((group) => (
+      <article class="data-group-card">
+        <div class="data-group-head">
+          <h3>{group.title}</h3>
+        </div>
+        <dl class="detail-grid detail-grid-2">
+          {group.items.map(({ label, value, className = "", note = "" }) => (
+            <div class:list={["detail-item", className, value === "-" && "detail-item-empty"]}>
+              <dt>{label}</dt>
+              <dd>{value}</dd>
+              {note && <span class="detail-item-note">{note}</span>}
+            </div>
+          ))}
+        </dl>
+      </article>
+    ))}
+  </div>
+</section>

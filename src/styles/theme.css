@@ -12,40 +12,53 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton+SC&family=Elms+Sans:wght@100..900&family=Stack+Sans+Text:wght@200..700&display=swap');
 
 /* ── Orden de capas ─────────────────────────────────────────── */
-/* Declarar aquí garantiza que el orden sea el mismo           */
-/* independientemente de en qué orden se importen los CSS.    */
 @layer global, cards, badges;
 
 /* ── Variables del tema ─────────────────────────────────────── */
 :root {
-  /* Tipografía base (heredada por todo el documento) */
-  font-family: 'Stack Sans Text', 'Aptos', 'Segoe UI', sans-serif;
+  /* ── Tipografía ─────────────────────────────────────────────
+     Anton SC  → títulos y headings (h1, h2, display copy)
+     Elms Sans → cuerpo, UI, labels, párrafos
+     Stack Sans Text → badges, chips, etiquetas compactas
+  ─────────────────────────────────────────────────────────── */
+  --font-display: 'Anton SC', sans-serif;
+  --font-body:    'Elms Sans', sans-serif;
+  --font-badge:   'Stack Sans Text', sans-serif;
+  --font-mono:    Consolas, 'SFMono-Regular', monospace;
 
-  /* Colores y leyendas */
-  --lollipop: #f7638c;
-  --pistachio: #93c572;
-  --patriot: #c51e3a;
-  --gold: #ffd700;
-  --pumpkin: #ff7518;
+  /* Tipografía heredada por todo el documento */
+  font-family: var(--font-body);
+
+  /* ── Paleta nominal (colores crudos) ────────────────────────
+     Usar estas vars cuando el color importa por su nombre,
+     no por su semántica de estado. Los tokens de estado
+     apuntan a estas vars para centralizar cambios de palette.
+  ─────────────────────────────────────────────────────────── */
+  --lollipop:  #f7638c;  /* wishlist, romance */
+  --pistachio: #93c572;  /* completed, success */
+  --patriot:   #c51e3a;  /* paused, error, loss */
+  --gold:      #ffd700;  /* free, featured */
+  --pumpkin:   #ff7518;  /* early access, warning */
+  --indigo:    #c9a8ff;  /* playing, recurring, accent */
 
   /* ── Fondos y superficies ───────────────────────────────── */
-  --bg: #151518;
-  --bg-deep: #0d0d11;
-  --surface: rgba(26, 30, 38, 0.92);
+  --bg:             #151518;
+  --bg-deep:        #0d0d11;
+  --surface:        rgba(26, 30, 38, 0.92);
   --surface-strong: #1d222b;
-  --surface-soft: #202632;
-  --surface-card: #1b2029;
+  --surface-soft:   #202632;
+  --surface-card:   #1b2029;
 
   /* ── Texto ──────────────────────────────────────────────── */
-  --text: #f7f1ee;
+  --text:  #f7f1ee;
   --muted: #c6bcc0;
 
   /* ── Bordes y líneas ────────────────────────────────────── */
-  --line: rgba(121, 131, 147, 0.22);
+  --line:        rgba(121, 131, 147, 0.22);
   --line-strong: rgba(137, 151, 171, 0.4);
 
   /* ── Acentos ────────────────────────────────────────────── */
-  --accent: #718096;
+  --accent:        #718096;
   --accent-strong: #cfd7e2;
 
   /* ── Sombras ────────────────────────────────────────────── */
@@ -60,105 +73,105 @@
   --app-surface-1: rgba(20, 20, 24, 0.96);
   --app-surface-2: rgba(29, 31, 38, 0.94);
   --app-surface-3: rgba(39, 42, 50, 0.78);
-  --app-glow-red: rgba(126, 139, 158, 0.18);
+  --app-glow-red:  rgba(126, 139, 158, 0.18);
 
   /* ── Estado: Pending (Beige / Amber) ───────────────────── */
   --status-pending-line: rgba(177, 159, 130, 0.5);
-  --status-pending-bg: rgba(177, 159, 130, 0.16);
-  --status-pending-fg: #b19f82;
+  --status-pending-bg:   rgba(177, 159, 130, 0.16);
+  --status-pending-fg:   #b19f82;
 
   /* ── Estado: Playing (Indigo) ──────────────────────────── */
   --status-playing-line: rgba(75, 0, 130, 0.6);
-  --status-playing-bg: rgba(75, 0, 130, 0.22);
-  --status-playing-fg: #c9a8ff;
+  --status-playing-bg:   rgba(75, 0, 130, 0.22);
+  --status-playing-fg:   var(--indigo);
 
   /* ── Estado: Completed (Pistachio) ─────────────────────── */
   --status-completed-line: rgba(147, 197, 114, 0.5);
-  --status-completed-bg: rgba(147, 197, 114, 0.16);
-  --status-completed-fg: #93c572;
+  --status-completed-bg:   rgba(147, 197, 114, 0.16);
+  --status-completed-fg:   var(--pistachio);
 
   /* ── Estado: Recurring (Indigo — igual que playing) ─────── */
   --status-recurring-line: rgba(75, 0, 130, 0.6);
-  --status-recurring-bg: rgba(75, 0, 130, 0.22);
-  --status-recurring-fg: #c9a8ff;
+  --status-recurring-bg:   rgba(75, 0, 130, 0.22);
+  --status-recurring-fg:   var(--indigo);
 
   /* ── Estado: Wishlist (Lollipop) ───────────────────────── */
   --status-wishlist-line: rgba(247, 99, 140, 0.5);
-  --status-wishlist-bg: rgba(247, 99, 140, 0.16);
-  --status-wishlist-fg: #f7638c;
+  --status-wishlist-bg:   rgba(247, 99, 140, 0.16);
+  --status-wishlist-fg:   var(--lollipop);
 
   /* ── Estado: Paused (Patriot) ──────────────────────────── */
   --status-paused-line: rgba(197, 30, 58, 0.55);
-  --status-paused-bg: rgba(197, 30, 58, 0.18);
-  --status-paused-fg: #c51e3a;
+  --status-paused-bg:   rgba(197, 30, 58, 0.18);
+  --status-paused-fg:   var(--patriot);
 
   /* ── Estado: Abandoned (Patriot — igual que paused) ─────── */
   --status-abandoned-line: rgba(197, 30, 58, 0.55);
-  --status-abandoned-bg: rgba(197, 30, 58, 0.18);
-  --status-abandoned-fg: #c51e3a;
+  --status-abandoned-bg:   rgba(197, 30, 58, 0.18);
+  --status-abandoned-fg:   var(--patriot);
 
   /* ── Tag: Free (Gold) ───────────────────────────────────── */
   --tag-free-line: rgba(255, 215, 0, 0.5);
-  --tag-free-bg: rgba(255, 215, 0, 0.14);
-  --tag-free-fg: #ffd700;
+  --tag-free-bg:   rgba(255, 215, 0, 0.14);
+  --tag-free-fg:   var(--gold);
 
   /* ── Tag: Early Access (Pumpkin) ───────────────────────── */
   --tag-early-line: rgba(255, 117, 24, 0.5);
-  --tag-early-bg: rgba(255, 117, 24, 0.14);
-  --tag-early-fg: #ff7518;
+  --tag-early-bg:   rgba(255, 117, 24, 0.14);
+  --tag-early-fg:   var(--pumpkin);
 
   /* ── Precio: Profit (Pistachio) ─────────────────────────── */
   --price-profit-line: rgba(147, 197, 114, 0.5);
-  --price-profit-bg: rgba(147, 197, 114, 0.16);
-  --price-profit-fg: #93c572;
+  --price-profit-bg:   rgba(147, 197, 114, 0.16);
+  --price-profit-fg:   var(--pistachio);
 
   /* ── Precio: Profit fuerte ──────────────────────────────── */
   --price-profit-strong-line: rgba(147, 197, 114, 0.7);
-  --price-profit-strong-bg: rgba(147, 197, 114, 0.24);
-  --price-profit-strong-fg: #b8e096;
+  --price-profit-strong-bg:   rgba(147, 197, 114, 0.24);
+  --price-profit-strong-fg:   #b8e096;
 
   /* ── Precio: Neutral ────────────────────────────────────── */
   --price-neutral-line: rgba(142, 152, 170, 0.32);
-  --price-neutral-bg: rgba(142, 152, 170, 0.12);
-  --price-neutral-fg: #dce1ea;
+  --price-neutral-bg:   rgba(142, 152, 170, 0.12);
+  --price-neutral-fg:   #dce1ea;
 
   /* ── Precio: Loss (Patriot) ─────────────────────────────── */
   --price-loss-line: rgba(197, 30, 58, 0.55);
-  --price-loss-bg: rgba(197, 30, 58, 0.18);
-  --price-loss-fg: #c51e3a;
+  --price-loss-bg:   rgba(197, 30, 58, 0.18);
+  --price-loss-fg:   var(--patriot);
 
   /* ── Precio: Loss fuerte ────────────────────────────────── */
   --price-loss-strong-line: rgba(197, 30, 58, 0.75);
-  --price-loss-strong-bg: rgba(197, 30, 58, 0.28);
-  --price-loss-strong-fg: #e84060;
+  --price-loss-strong-bg:   rgba(197, 30, 58, 0.28);
+  --price-loss-strong-fg:   #e84060;
 
   /* ── HLTB: Long (Violet) ────────────────────────────────── */
   --hltb-long-line: rgba(143, 90, 255, 0.42);
-  --hltb-long-bg: rgba(143, 90, 255, 0.16);
+  --hltb-long-bg:   rgba(143, 90, 255, 0.16);
 
   /* ── HLTB: Short (Red) ──────────────────────────────────── */
   --hltb-short-line: rgba(214, 80, 80, 0.42);
-  --hltb-short-bg: rgba(214, 80, 80, 0.16);
+  --hltb-short-bg:   rgba(214, 80, 80, 0.16);
 
   /* ── Card: Dimensiones ──────────────────────────────────── */
-  --card-h-mobile: 10cm;
-  --card-h-tablet: 10cm;
+  --card-h-mobile:  10cm;
+  --card-h-tablet:  10cm;
   --card-h-desktop: 12cm;
-  --card-body-h: 148px;
+  --card-body-h:    148px;
   --card-body-fade: 36px;
-  --card-radius: 1rem;
+  --card-radius:    1rem;
 
   /* ── Card: Glass morphism ───────────────────────────────── */
-  --card-blur: 20px;
-  --card-glass: rgba(0, 0, 0, 0.5);
+  --card-blur:         20px;
+  --card-glass:        rgba(0, 0, 0, 0.5);
   --card-glass-border: rgba(255, 255, 255, 0);
 
   /* ── Card: Tipografía interna ───────────────────────────── */
   --card-title-color: #f4efea;
-  --card-sub-color: rgba(195, 208, 225, 0.65);
+  --card-sub-color:   rgba(195, 208, 225, 0.65);
   --card-accent-color: #e8d5c4;
 
-  /* ── Colores nominales (palette) ────────────────────────── */
-  --color-lollipop: #f7638c; /* wishlist */
-  --color-pistachio: #93c572; /* completed */
+  /* ── Compatibilidad: alias legacy ───────────────────────── */
+  --color-lollipop: var(--lollipop);
+  --color-pistachio: var(--pistachio);
 }

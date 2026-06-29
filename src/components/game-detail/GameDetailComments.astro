@@ -1,0 +1,26 @@
+---
+/**
+ * GameDetailComments.astro — Sección de comentarios libres del juego.
+ * Muestra el campo de texto libre 'comentarios'. Se oculta visualmente
+ * si no hay comentarios (clase detail-comments-empty).
+ * Datos: comentarios viene del campo game.comentarios formateado en [slug].astro.
+ */
+import '../../styles/game-detail/comments.css';
+
+interface Props {
+  comentarios: string;
+}
+
+const { comentarios } = Astro.props;
+---
+
+<section
+  class:list={[
+    "detail-comments",
+    "detail-comments-vault",
+    comentarios === "-" && "detail-comments-empty",
+  ]}
+>
+  <dt class="muted">Comentarios</dt>
+  <dd>{comentarios}</dd>
+</section>

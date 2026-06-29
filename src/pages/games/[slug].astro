@@ -1,6 +1,14 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import GameDetailChartsScript from "../../components/GameDetailChartsScript.astro";
+import GameDetailHero from "../../components/game-detail/GameDetailHero.astro";
+import GameDetailNav from "../../components/game-detail/GameDetailNav.astro";
+import GameDetailHours from "../../components/game-detail/GameDetailHours.astro";
+import GameDetailFinance from "../../components/game-detail/GameDetailFinance.astro";
+import GameDetailSummary from "../../components/game-detail/GameDetailSummary.astro";
+import GameDetailStats from "../../components/game-detail/GameDetailStats.astro";
+import GameDetailDLCs from "../../components/game-detail/GameDetailDLCs.astro";
+import GameDetailComments from "../../components/game-detail/GameDetailComments.astro";
 import { buildGameCoverUrl } from "../../lib/game-cover-url";
 import { findGameBySlug, readGames } from "../../lib/local-games";
 
@@ -203,7 +211,7 @@ const launcherInlineIcon = (value: unknown) => {
     steam:
       '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M.329 10.333A8.01 8.01 0 0 0 7.99 16C12.414 16 16 12.418 16 8s-3.586-8-8.009-8A8.006 8.006 0 0 0 0 7.468l.003.006 4.304 1.769A2.2 2.2 0 0 1 5.62 8.88l1.96-2.844-.001-.04a3.046 3.046 0 0 1 3.042-3.043 3.046 3.046 0 0 1 3.042 3.043 3.047 3.047 0 0 1-3.111 3.044l-2.804 2a2.223 2.223 0 0 1-3.075 2.11 2.22 2.22 0 0 1-1.312-1.568L.33 10.333Z"/><path fill="currentColor" d="M4.868 12.683a1.715 1.715 0 0 0 1.318-3.165 1.7 1.7 0 0 0-1.263-.02l1.023.424a1.261 1.261 0 1 1-.97 2.33l-.99-.41a1.7 1.7 0 0 0 .882.84Zm3.726-6.687a2.03 2.03 0 0 0 2.027 2.029 2.03 2.03 0 0 0 2.027-2.029 2.03 2.03 0 0 0-2.027-2.027 2.03 2.03 0 0 0-2.027 2.027m2.03-1.527a1.524 1.524 0 1 1-.002 3.048 1.524 1.524 0 0 1 .002-3.048"/></svg>',
     "epic games":
-      '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M4.719 0c-1.833 0-2.505.677-2.505 2.505v22.083c0 .209.011.401.027.579.047.401.047.792.421 1.229.036.052.412.328.412.328.203.099.343.172.572.265l11.115 4.656c.573.261.819.371 1.235.355h.005c.421.016.667-.093 1.24-.355l11.109-4.656c.235-.093.369-.167.577-.265 0 0 .376-.287.412-.328.375-.437.375-.828.421-1.229.016-.177.027-.369.027-.573v-22.088c0-1.828-.677-2.505-2.505-2.505zM22.527 4.145h.905c1.511 0 2.251.735 2.251 2.267v2.505H23.85v-2.407c0-.489-.224-.713-.699-.713h-.312c-.489 0-.713.224-.713.713v7.749c0 .489.224.713.713.713h.349c.468 0 .692-.224.692-.713v-2.771h1.833v2.86c0 1.525-.749 2.276-2.265 2.276h-.921c-1.521 0-2.267-.756-2.267-2.276v-7.923c0-1.525.745-2.281 2.267-2.281zM6.276 4.251h4.151v1.703H8.14v3.468h2.204v1.699H8.14v3.697h2.319v1.704H6.276zM11.364 4.251h2.928c1.515 0 2.265.755 2.265 2.28v3.261c0 1.525-.751 2.276-2.265 2.276h-1.057v4.453h-1.871zM17.401 4.251h1.864v12.271h-1.864zM13.229 5.901v4.52H14c.469 0 .693-.228.693-.719v-3.083c0-.489-.224-.719-.693-.719zM10.683 27.615h10.681l-5.452 1.797z"/></svg>',
+      '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M4.719 0c-1.833 0-2.505.677-2.505 2.505v22.083c0 .209.011.401.027.579.047.401.047.792.421 1.229.036.052.412.328.412.328.203.099.343.172.572.265l11.115 4.656c.573.261.819.371 1.235.355h.005c.421.016.667-.093 1.24-.355l11.109-4.656c.235-.093.369-.167.577-.265 0 0 .376-.287.412-.328.375-.437.375-.828.421-1.229.016-.177.027-.369.027-.573v-22.088c0-1.828-.677-2.505-2.505-2.505zM22.527 4.145h.905c1.511 0 2.251.735 2.251 2.267v2.505H23.85v-2.407c0-.489-.224-.713-.699-.713h-.312c-.489 0-.713.224-.713.713v7.749c0 .489.224.713.713.713h.349c.468 0 .692-.224.692-.713v-2.771h1.833v2.86c0 1.525-.749 2.276-2.265 2.276h-.921c-1.521 0-2.267-.756-2.267-2.276v-7.923c0-1.525.745-2.281 2.267-2.281zM6.276 4.251h4.151v1.703H8.14v3.468h2.204v1.699H8.14v3.697h2.319v1.704H6.276zM11.364 4.251h2.928c1.515 0 2.265.755 2.265 2.28v3.261c0 1.525-.751 2.276-2.265 2.276h-1.057v4.453h-1.871zM17.401 4.251h1.864v12.271h-1.864zM13.229 5.901v4.52H14c.469 0 .693-.228.693-.719v-3.083c0-.489-.224-.719-.693-.719z"/></svg>',
     "riot games":
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.534 21.77l-1.09-2.81 10.52.54-.451 4.5zM15.06 0 .307 6.969 2.59 17.471H5.6l-.52-7.512.461-.144 1.81 7.656h3.126l-.116-9.15.462-.144 1.582 9.294h3.31l.78-11.053.462-.144.82 11.197h4.376l1.54-15.37Z"/></svg>',
     hoyoplay:
@@ -445,46 +453,36 @@ const summaryCards = [
   },
 ];
 
-const heroMetrics = [
-  {
-    label: "Horas jugadas",
-    value: hoursValue !== null ? `${hoursValue.toFixed(1)} h` : "-",
-    note: hltbNote || "Sin comparativa HLTB",
-    className: hoursDeltaTone === "positive" ? "hero-metric-positive" : hoursDeltaTone === "negative" ? "hero-metric-negative" : "",
-  },
-  {
-    label: "HLTB",
-    value: hltbValue !== null ? `${hltbValue.toFixed(1)} h` : "-",
-    note: hltbValue !== null ? "Estimacion base" : "Falta cargar HLTB",
-    className: hltbVisualClass,
-  },
-  {
-    label: "Precio pagado",
-    value: formatPrice(game.precio_pagado),
-    note: pricePaidVisual.note || "Sin lectura de compra",
-    className: pricePaidVisual.className,
-  },
-  {
-    label: "DLCs",
-    value: dlcTotal > 0 ? String(dlcTotal) : "-",
-    note: dlcTotal > 0 ? "Expansiones registradas" : "Sin DLCs registrados",
-    className: dlcTotal > 0 ? "hero-metric-accent" : "",
-  },
-];
-
 const formatHoursValue = (value: number | null) => (value !== null ? `${value.toFixed(1)} h` : "-");
 
-const hoursChartPoints = [
-  { label: "HLTB Main", value: hltbBreakdown.main },
-  { label: "HLTB Main + Extras", value: hltbBreakdown.mainPlus },
-  { label: "HLTB Completionist", value: hltbBreakdown.completionist },
-  { label: "Tus horas", value: hoursValue },
-].filter((point): point is { label: string; value: number } => point.value !== null && !Number.isNaN(point.value));
+// Barras HLTB: escala cromática Blanco → Rosa → Morado → (Dinámico = Mis horas)
+const hltbBars = [
+  { label: "Main",          value: hltbBreakdown.main,          color: "#f0ece8" }, // blanco cálido
+  { label: "Main+Extras",   value: hltbBreakdown.mainPlus,      color: "#f7638c" }, // rosa lollipop
+  { label: "Completionist", value: hltbBreakdown.completionist, color: "#c9a8ff" }, // morado indigo
+].filter((bar): bar is { label: string; value: number; color: string } =>
+  bar.value !== null && !Number.isNaN(bar.value)
+);
+
+// Color de la línea de mis horas:
+//   verde  → mis horas ≥ Main+Extras  (supero la media)
+//   rojo   → mis horas < Main          (no llego al mínimo)
+//   naranja → entre Main y Main+Extras (en progreso)
+const hoursLineColor = (() => {
+  if (hoursValue === null) return "#718096";
+  if (hltbBreakdown.main !== null && hoursValue < hltbBreakdown.main)    return "#c51e3a"; // rojo
+  if (hltbBreakdown.mainPlus !== null && hoursValue >= hltbBreakdown.mainPlus) return "#93c572"; // verde
+  return "#ff7518"; // naranja
+})();
+
+// hoursChartPoints: alias de hltbBars para el check de renderizado en el componente
+const hoursChartPoints = hltbBars;
 
 const hoursChartPayload = {
-  seriesLabel: "Horas",
-  metric: "hours",
-  points: hoursChartPoints,
+  type:      "hours-vs-hltb",
+  myHours:   hoursValue,
+  hltbBars,
+  lineColor: hoursLineColor,
 };
 
 const moneyChartPoints = [
@@ -641,266 +639,68 @@ const metadataGroups = [
     ],
   },
 ];
+
+// Props del Hero
+const statusBadge = { class: statusClassName(game.estado), label: formatValue(game.estado) };
+const launcherBadge = { class: launcherClassName(game.launcher), html: launcherBadgeContent(game.launcher) };
+const platformBadge = { class: platformClassName(game.plataforma), label: formatValue(game.plataforma) };
 ---
 
 <BaseLayout title={`${game.titulo} | Personal Database`}>
   <main class="shell game-page game-page-rich">
     <a class="back-link" href="/">Volver a la biblioteca</a>
 
-    <section class="game-hero-rich game-hero-cinematic" id="overview" style={heroCoverStyle}>
-      <section class="game-intro-panel game-overview-card game-overview-card-cinematic">
-          <div class="game-overview-media">
-            <div class="game-poster-stack">
-              <img class="game-poster-image" src={coverUrl} alt={`Caratula de ${game.titulo}`} loading="lazy" />
-            </div>
-          </div>
+    <GameDetailHero
+      title={game.titulo}
+      coverUrl={coverUrl}
+      heroCoverStyle={heroCoverStyle}
+      statusBadge={statusBadge}
+      launcherBadge={launcherBadge}
+      platformBadge={platformBadge}
+      hasFreeToPlayTag={hasFreeToPlayTag}
+      hasEarlyAccess={hasEarlyAccess}
+      genres={genres}
+      pricePaidNote={pricePaidVisual.note}
+      soloLabel={formatSolo(game.solo)}
+    />
 
-        <div class="game-overview-copy">
-          <div class="eyebrow">Personal Database</div>
-          <h1>{game.titulo}</h1>
-          <div class="badges game-page-badges">
-            <span class={`badge ${statusClassName(game.estado)}`}>{formatValue(game.estado)}</span>
-            <span class={`badge ${launcherClassName(game.launcher)}`} set:html={launcherBadgeContent(game.launcher)} />
-            <span class={`badge ${platformClassName(game.plataforma)}`}>{formatValue(game.plataforma)}</span>
-            {hasFreeToPlayTag && <span class="badge badge-tag-free">Free to play</span>}
-            {hasEarlyAccess && <span class="badge badge-tag-early">Early Access</span>}
-          </div>
-          <p class="game-overview-summary">
-            {genres !== "-" ? genres : "Sin genero cargado"} · {pricePaidVisual.note || "Sin lectura financiera"} ·{" "}
-            {formatSolo(game.solo) === "Si" ? "Experiencia en solitario" : "Puede jugarse acompanado"}
-          </p>
-        </div>
-      </section>
-    </section>
-
-    <nav class="game-sections-nav" aria-label="Secciones del juego">
-      <a href="#overview">Overview</a>
-      <a href="#stats">Horas</a>
-      <a href="#finance">Dinero</a>
-      <a href="#technical">Estadísticas</a>
-      <a href="#dlcs">DLCs</a>
-    </nav>
+    <GameDetailNav hasDlcs={dlcTotal > 0} />
 
     <section class="hero-analysis-grid" id="stats">
-          <article class="analysis-panel">
-            <div class="section-title-row analysis-head">
-              <div>
-                <h2>Horas</h2>
-              </div>
-              {hoursDeltaLabel && <span class:list={["section-pill", `section-pill-${hoursDeltaTone}`]}>{hoursDeltaLabel}</span>}
-            </div>
-            <div class="range-chart-card">
-              <div class="chart-shell">
-                <div class="chart-visual-card">
-                  <div class="chart-header">
-                    <div>
-                      <strong>Perfil de horas</strong>
-                      <p>Comparativa real entre tus horas y las referencias HLTB disponibles.</p>
-                    </div>
-                    <span class="chart-badge">Chart.js</span>
-                  </div>
-                  {hoursChartPoints.length >= 2 ? (
-                    <div class="chart-canvas-wrap chart-canvas-wrap-hours">
-                      <canvas id="hours-detail-chart" data-chart={JSON.stringify(hoursChartPayload)}></canvas>
-                    </div>
-                  ) : (
-                    <div class="chart-empty">Faltan al menos dos puntos validos para dibujar la grafica de horas.</div>
-                  )}
-                </div>
-                <div class="chart-metrics-grid">
-                  {hoursSnapshotCards.map(({ label, value, note, tone }) => (
-                    <article class:list={["chart-metric-card", `chart-metric-card-${tone}`]}>
-                      <span>{label}</span>
-                      <strong>{value}</strong>
-                      <p>{note}</p>
-                    </article>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div class="game-page-section game-page-section-inline">
-              <div class="section-title-row">
-                <div>
-                  <h2>Desglose HLTB</h2>
-                </div>
-              </div>
-              <dl class="detail-grid detail-grid-4">
-                <div class={`detail-item ${hltbBreakdown.main !== null ? "" : "detail-item-empty"}`}>
-                  <dt>Main</dt>
-                  <dd>{hltbBreakdown.main !== null ? `${hltbBreakdown.main.toFixed(1)} h` : "-"}</dd>
-                  <span class="detail-item-note">Campana principal</span>
-                </div>
-                <div class={`detail-item ${hltbBreakdown.mainPlus !== null ? "" : "detail-item-empty"}`}>
-                  <dt>Main + Extras</dt>
-                  <dd>{hltbBreakdown.mainPlus !== null ? `${hltbBreakdown.mainPlus.toFixed(1)} h` : "-"}</dd>
-                  <span class="detail-item-note">Contenido adicional sobre la campana principal</span>
-                </div>
-                <div class={`detail-item ${hltbBreakdown.completionist !== null ? "" : "detail-item-empty"}`}>
-                  <dt>Completionist</dt>
-                  <dd>{hltbBreakdown.completionist !== null ? `${hltbBreakdown.completionist.toFixed(1)} h` : "-"}</dd>
-                  <span class="detail-item-note">Todo el contenido</span>
-                </div>
-                <div class={`detail-item ${hltbValue !== null ? hltbVisualClass : "detail-item-empty"}`}>
-                  <dt>Referencia activa</dt>
-                  <dd>{hltbValue !== null ? `${hltbValue.toFixed(1)} h` : "-"}</dd>
-                  <span class="detail-item-note">
-                    {hltbValue !== null ? "Main si existe; si no, Main + Extras; si no, Completionist" : "HLTB sin tiempo util publicado"}
-                  </span>
-                </div>
-              </dl>
-            </div>
-          </article>
+      <GameDetailHours
+        hoursChartPayload={hoursChartPayload}
+        hoursChartPoints={hoursChartPoints}
+        hoursDeltaLabel={hoursDeltaLabel}
+        hoursDeltaTone={hoursDeltaTone}
+        hoursSnapshotCards={hoursSnapshotCards}
+        hltbBreakdown={hltbBreakdown}
+        hltbValue={hltbValue}
+        hltbVisualClass={hltbVisualClass}
+      />
 
-          <article class="analysis-panel" id="finance">
-            <div class="section-title-row analysis-head">
-              <div>
-                <h2>Dinero</h2>
-              </div>
-              {pricePaidVisual.deltaLabel && <span class:list={["section-pill", `section-pill-${priceDeltaTone}`]}>{pricePaidVisual.deltaLabel}</span>}
-            </div>
-            <div class="range-chart-card">
-              <div class="chart-shell">
-                <div class="chart-visual-card chart-visual-card-money">
-                  <div class="chart-header">
-                    <div>
-                      <strong>Fotografia financiera</strong>
-                      <p>Salida, compra, minimo historico y precio actual con los hitos cargados en tu ficha.</p>
-                    </div>
-                    <span class="chart-badge">Chart.js</span>
-                  </div>
-                  {moneyChartPoints.length >= 2 ? (
-                    <div class="chart-canvas-wrap chart-canvas-wrap-money">
-                      <canvas id="money-detail-chart" data-chart={JSON.stringify(moneyChartPayload)}></canvas>
-                    </div>
-                  ) : (
-                    <div class="chart-empty">Faltan al menos dos puntos validos para dibujar la grafica financiera.</div>
-                  )}
-                </div>
-                <div class="chart-metrics-grid">
-                  {moneySnapshotCards.map(({ label, value, note, tone }) => (
-                    <article class:list={["chart-metric-card", `chart-metric-card-${tone}`]}>
-                      <span>{label}</span>
-                      <strong>{value}</strong>
-                      <p>{note}</p>
-                    </article>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </article>
+      <GameDetailFinance
+        moneyChartPayload={moneyChartPayload}
+        moneyChartPoints={moneyChartPoints}
+        priceDeltaLabel={pricePaidVisual.deltaLabel}
+        priceDeltaTone={priceDeltaTone}
+        moneySnapshotCards={moneySnapshotCards}
+      />
     </section>
 
-    <section class="game-page-section game-summary-section">
-      <div class="section-title-row">
-        <div>
-          <h2>Resumen</h2>
-        </div>
-      </div>
-      <dl class="detail-grid detail-grid-4 summary-grid">
-        {summaryCards.map(({ label, value, note, className = "", progress = null }) => (
-          <div
-            class:list={["detail-item", "summary-card", className, value === "-" && "detail-item-empty", progress !== null && "detail-item-progress"]}
-            style={progress !== null ? `--progress:${progress}%` : undefined}
-          >
-            <dt>{label}</dt>
-            <dd>{value}</dd>
-            {note && <span class="detail-item-note">{note}</span>}
-          </div>
-        ))}
-      </dl>
-    </section>
+    <GameDetailSummary summaryCards={summaryCards} />
 
-    <section class="game-page-section" id="technical">
-      <div class="section-title-row">
-        <div>
-          <h2>Estadísticas</h2>
-          <p class="section-subtitle">Aqui es donde se concentra toda la chicha: metadatos, tiempos, precios y señales de progreso.</p>
-        </div>
-      </div>
+    <GameDetailStats metadataGroups={metadataGroups} />
 
-      <div class="game-data-groups">
-        {metadataGroups.map((group) => (
-          <article class="data-group-card">
-            <div class="data-group-head">
-              <h3>{group.title}</h3>
-            </div>
-            <dl class="detail-grid detail-grid-2">
-              {group.items.map(({ label, value, className = "", note = "" }) => (
-                <div class:list={["detail-item", className, value === "-" && "detail-item-empty"]}>
-                  <dt>{label}</dt>
-                  <dd>{value}</dd>
-                  {note && <span class="detail-item-note">{note}</span>}
-                </div>
-              ))}
-            </dl>
-          </article>
-        ))}
-      </div>
-    </section>
+    <GameDetailDLCs
+      dlcItems={dlcItems}
+      dlcTotal={dlcTotal}
+      coverUrl={coverUrl}
+      formatDate={formatDate}
+      formatValue={formatValue}
+      formatCurrency={formatCurrency}
+    />
 
-    <section class="game-page-section" id="dlcs">
-      <div class="section-title-row">
-        <div>
-          <h2>DLCs</h2>
-        </div>
-        <span class="section-pill">{dlcTotal > 0 ? `${dlcTotal} registrados` : "Sin DLCs"}</span>
-      </div>
-
-      {dlcTotal === 0 ? (
-        <div class="detail-dlc-empty">No hay DLCs registrados para este juego.</div>
-      ) : dlcItems.length > 0 ? (
-        <div class="dlc-gallery">
-          {dlcItems.map((dlc) => (
-            <article class="dlc-showcase-card">
-              <div class="dlc-showcase-cover">
-                <div class="dlc-showcase-fallback">
-                  <img src={coverUrl} alt="" aria-hidden="true" loading="lazy" />
-                  <span class="dlc-showcase-fallback-badge">Sin portada propia</span>
-                </div>
-              </div>
-
-              <div class="dlc-showcase-body">
-                <h3>{formatValue(dlc.titulo, "DLC sin nombre")}</h3>
-                <dl class="detail-grid detail-grid-2">
-                  <div class:list={["detail-item", formatDate(dlc.fecha_adquisicion) === "-" && "detail-item-empty"]}>
-                    <dt>Adquirido</dt>
-                    <dd>{formatDate(dlc.fecha_adquisicion)}</dd>
-                  </div>
-                  <div class:list={["detail-item", (dlc.precio_pagado === null || dlc.precio_pagado === undefined) && "detail-item-empty"]}>
-                    <dt>Precio pagado</dt>
-                    <dd>{formatCurrency(dlc.precio_pagado)}</dd>
-                  </div>
-                  <div class:list={["detail-item", (dlc.precio_actual === null || dlc.precio_actual === undefined) && "detail-item-empty"]}>
-                    <dt>Precio actual</dt>
-                    <dd>{formatCurrency(dlc.precio_actual)}</dd>
-                  </div>
-                  <div class:list={["detail-item", (dlc.precio_salida === null || dlc.precio_salida === undefined) && "detail-item-empty"]}>
-                    <dt>Precio salida</dt>
-                    <dd>{formatCurrency(dlc.precio_salida)}</dd>
-                  </div>
-                  <div class:list={["detail-item", formatValue(dlc.tamano) === "-" && "detail-item-empty"]}>
-                    <dt>Tamano</dt>
-                    <dd>{formatValue(dlc.tamano)}</dd>
-                  </div>
-                  <div class:list={["detail-item", formatValue(dlc.cover_source) === "-" && "detail-item-empty"]}>
-                    <dt>Fuente portada</dt>
-                    <dd>{dlc.cover_source ? dlc.cover_source : "Fallback del juego"}</dd>
-                  </div>
-                </dl>
-                {formatValue(dlc.notas) !== "-" && <p class="dlc-showcase-notes">{formatValue(dlc.notas)}</p>}
-              </div>
-            </article>
-          ))}
-        </div>
-      ) : (
-        <div class="detail-dlc-empty">Hay DLCs contabilizados, pero aun no tienen ficha individual.</div>
-      )}
-    </section>
-
-    <section class:list={["detail-comments", "detail-comments-vault", formatValue(game.comentarios) === "-" && "detail-comments-empty"]}>
-      <dt class="muted">Comentarios</dt>
-      <dd>{formatValue(game.comentarios)}</dd>
-    </section>
+    <GameDetailComments comentarios={formatValue(game.comentarios)} />
   </main>
   <GameDetailChartsScript />
 </BaseLayout>

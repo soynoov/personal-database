@@ -23,7 +23,7 @@
   }
 
   .badge {
-    font-family: 'Stack Sans Text', sans-serif;
+    font-family: var(--font-badge);
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;

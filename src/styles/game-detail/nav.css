@@ -1,0 +1,73 @@
+@import '../theme.css';
+
+/* ================================================================
+   game-detail/nav.css — barra de navegación entre secciones
+   Selectores: .game-sections-nav, .game-sections-nav a,
+   .game-sections-nav a:hover, .game-sections-nav a:focus-visible
+   Extraídos de src/styles/game-page.css
+   ================================================================ */
+
+@layer global {
+
+/* ── Sections nav ───────────────────────────────────────────────── */
+.game-sections-nav {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  position: sticky;
+  top: 0.8rem;
+  z-index: 30;
+  padding: 0.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  background: rgba(19, 21, 26, 0.8);
+  backdrop-filter: blur(8px);
+  overflow-x: auto;
+}
+
+.game-sections-nav a {
+  position: relative;
+  padding: 0.72rem 1rem;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: #d5cfd1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.game-sections-nav a:first-child::after {
+  display: none;
+}
+
+.game-sections-nav a:hover,
+.game-sections-nav a:focus-visible {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ── game-page-rich overrides (context prefix) ──────────────────── */
+.game-page-rich .game-sections-nav {
+  gap: 0.45rem;
+  padding: 0.16rem;
+}
+
+.game-page-rich .game-sections-nav a {
+  padding: 0.6rem 0.88rem;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 820px) {
+  .game-sections-nav {
+    border-radius: 24px;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .game-sections-nav {
+    top: 0;
+    padding-bottom: 0.75rem;
+  }
+}
+
+} /* end @layer global */

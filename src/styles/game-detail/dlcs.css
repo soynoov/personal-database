@@ -1,0 +1,153 @@
+@import '../theme.css';
+
+/* ================================================================
+   game-detail/dlcs.css — sección DLCs (galería de expansiones)
+   Selectores: .dlc-gallery, .dlc-showcase-card, .dlc-showcase-cover,
+   .dlc-showcase-body, .dlc-showcase-notes, .dlc-showcase-fallback,
+   .dlc-showcase-fallback-badge
+   Extraídos de src/styles/game-page.css
+   ================================================================ */
+
+@layer global {
+
+/* ── DLC gallery ────────────────────────────────────────────────── */
+.dlc-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1.25rem;
+}
+
+/* ── DLC showcase card ──────────────────────────────────────────── */
+.dlc-showcase-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 20, 26, 0.98),
+    rgba(14, 16, 22, 0.96)
+  );
+  box-shadow: var(--shadow);
+}
+
+/* ── DLC showcase cover ─────────────────────────────────────────── */
+.dlc-showcase-cover {
+  position: relative;
+  min-height: 0;
+  aspect-ratio: 16 / 9;
+  padding: 1rem;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at top, rgba(186, 36, 38, 0.14), transparent 44%),
+    linear-gradient(180deg, rgba(27, 31, 39, 0.98), rgba(18, 21, 28, 0.98));
+}
+
+.dlc-showcase-cover img {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: contain;
+  display: block;
+  border-radius: 18px;
+}
+
+/* ── DLC showcase fallback ──────────────────────────────────────── */
+.dlc-showcase-fallback {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.dlc-showcase-fallback img {
+  width: auto;
+  max-width: min(72%, 230px);
+  height: 100%;
+  max-height: calc(100% - 1rem);
+}
+
+.dlc-showcase-fallback-badge,
+.dlc-showcase-fallback-empty {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 17, 22, 0.9);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: #d6c8cc;
+}
+
+.dlc-showcase-fallback-empty {
+  position: static;
+}
+
+/* ── DLC showcase body ──────────────────────────────────────────── */
+.dlc-showcase-body {
+  padding: 1.15rem;
+  display: grid;
+  gap: 0.95rem;
+}
+
+.dlc-showcase-body h3 {
+  margin: 0;
+  font-size: 1.45rem;
+  line-height: 1.02;
+}
+
+/* ── DLC showcase notes ─────────────────────────────────────────── */
+.dlc-showcase-notes {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.03);
+  font-family: var(--font-body);
+  color: #ecdddd;
+}
+
+/* ── game-page-rich overrides (context prefix) ──────────────────── */
+.game-page-rich .dlc-showcase-card {
+  border-radius: 14px;
+}
+
+.game-page-rich .dlc-showcase-cover img {
+  border-radius: 10px;
+}
+
+.game-page-rich .dlc-showcase-body {
+  padding: 0.95rem;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 1120px) {
+  .dlc-gallery {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .dlc-showcase-cover {
+    aspect-ratio: 16 / 10;
+    padding: 0.85rem;
+  }
+
+  .dlc-showcase-fallback img {
+    max-width: min(70%, 190px);
+  }
+
+  .game-page-rich .dlc-showcase-body {
+    padding: 0.82rem;
+  }
+}
+
+} /* end @layer global */

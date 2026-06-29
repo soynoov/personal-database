@@ -1,0 +1,18 @@
+@import '../theme.css';
+
+/* ================================================================
+   game-detail/comments.css — sección Comentarios (texto libre)
+   Selectores: .detail-comments, .detail-comments-vault,
+   .detail-comments-empty
+   Los estilos base de .detail-comments viven en src/styles/detail.css;
+   aquí solo los sobreescrituras y variantes de contexto game-detail.
+   ================================================================ */
+
+@layer global {
+
+/* ── Detail comments ────────────────────────────────────────────── */
+/* Estilos base en detail.css; no se duplican aquí.
+   Este archivo sirve de punto de import para el componente
+   y como lugar para futuras sobreescrituras específicas. */
+
+} /* end @layer global */

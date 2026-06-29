@@ -1,9 +1,32 @@
 <script>
-  import { Chart, Filler, Tooltip, CategoryScale, LinearScale, LineController, LineElement, PointElement } from "chart.js";
+  import {
+    Chart,
+    Filler,
+    Tooltip,
+    CategoryScale,
+    LinearScale,
+    LineController,
+    LineElement,
+    PointElement,
+    BarController,
+    BarElement,
+  } from "chart.js";
 
-  Chart.register(Filler, Tooltip, CategoryScale, LinearScale, LineController, LineElement, PointElement);
+  Chart.register(
+    Filler,
+    Tooltip,
+    CategoryScale,
+    LinearScale,
+    LineController,
+    LineElement,
+    PointElement,
+    BarController,
+    BarElement,
+  );
 
   const charts = new Map();
+
+  /* ── Helpers ─────────────────────────────────────────────────── */
 
   const formatMetricValue = (metric, value) => {
     if (metric === "currency") return `${Number(value).toFixed(2)} EUR`;
@@ -16,19 +39,148 @@
     return gradient;
   };
 
+  const hexToRgba = (hex, alpha) => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    if (!result) return `rgba(150,150,150,${alpha})`;
+    return `rgba(${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)},${alpha})`;
+  };
+
   const readChartPayload = (canvasId) => {
     const canvas = document.getElementById(canvasId);
     if (!(canvas instanceof HTMLCanvasElement)) return null;
-
     try {
-      return {
-        canvas,
-        payload: JSON.parse(canvas.dataset.chart ?? "null"),
-      };
+      return { canvas, payload: JSON.parse(canvas.dataset.chart ?? "null") };
     } catch {
       return null;
     }
   };
+
+  /* ── Chart: Horas vs HLTB (barras + línea horizontal) ────────── */
+  /*
+   * Barras:  cada valor HLTB (Main, Main+Extras, Completionist)
+   * Línea:   mis horas — horizontal, mismo valor en todos los x
+   * Color línea:
+   *   verde  (#93c572) si mis horas ≥ Main+Extras
+   *   rojo   (#c51e3a) si mis horas < Main
+   *   naranja (#ff7518) si entre ambos
+   */
+  /*
+   * Plugin inline: dibuja una línea horizontal de borde a borde del área del chart.
+   * Se pasa por configuración en options.plugins.fullWidthLine
+   */
+  const fullWidthLinePlugin = {
+    id: "fullWidthLine",
+    afterDatasetsDraw(chart) {
+      const opts = chart.options.plugins?.fullWidthLine;
+      if (!opts || opts.value === null || opts.value === undefined) return;
+
+      const { ctx, chartArea: { left, right }, scales: { y } } = chart;
+      const yPixel = y.getPixelForValue(opts.value);
+
+      ctx.save();
+      ctx.strokeStyle = opts.color ?? "#ffffff";
+      ctx.lineWidth   = opts.lineWidth ?? 2;
+      ctx.setLineDash(opts.dash ?? []);
+      ctx.globalAlpha = opts.alpha ?? 1;
+      ctx.beginPath();
+      ctx.moveTo(left,  yPixel);
+      ctx.lineTo(right, yPixel);
+      ctx.stroke();
+      ctx.restore();
+    },
+  };
+
+  const renderHoursBarLineChart = (canvasId) => {
+    const chartData = readChartPayload(canvasId);
+    if (!chartData) return;
+
+    const { canvas, payload } = chartData;
+    if (payload?.type !== "hours-vs-hltb") return;
+
+    const { hltbBars, myHours, lineColor } = payload;
+    if (!Array.isArray(hltbBars) || hltbBars.length === 0) return;
+
+    charts.get(canvasId)?.destroy();
+
+    // Barras: HLTB + "Mis horas" al final con color dinámico
+    const allBars = [...hltbBars];
+    if (myHours !== null) {
+      allBars.push({ label: "Mis horas", value: Number(myHours), color: lineColor });
+    }
+
+    const labels     = allBars.map((b) => b.label);
+    const barValues  = allBars.map((b) => Number(b.value));
+    const barBorders = allBars.map((b) => b.color);
+    const barFills   = allBars.map((b) => hexToRgba(b.color, 0.28));
+
+    const datasets = [
+      {
+        type: "bar",
+        label: "Horas",
+        data: barValues,
+        backgroundColor: barFills,
+        borderColor: barBorders,
+        borderWidth: 2,
+        borderRadius: 6,
+        borderSkipped: false,
+      },
+    ];
+
+    const chart = new Chart(canvas, {
+      type: "bar",
+      plugins: [fullWidthLinePlugin],   // plugin inline — línea borde a borde
+      data: { labels, datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { intersect: false, mode: "index" },
+        plugins: {
+          legend: { display: false },
+          // Configuración del plugin de línea horizontal
+          fullWidthLine: myHours !== null
+            ? { value: Number(myHours), color: lineColor, lineWidth: 2, alpha: 0.85 }
+            : { value: null },
+          tooltip: {
+            displayColors: true,
+            backgroundColor: "rgba(13, 18, 26, 0.94)",
+            borderColor: "rgba(255, 255, 255, 0.1)",
+            borderWidth: 1,
+            padding: 12,
+            titleColor: "#f7f1ee",
+            bodyColor: "#dbe4ef",
+            callbacks: {
+              label(context) {
+                const val = Number(context.parsed.y);
+                const label = context.dataset.label ?? "";
+                return `${label}: ${val.toFixed(1)} h`;
+              },
+            },
+          },
+        },
+        scales: {
+          x: {
+            border: { display: false },
+            grid: { display: false },
+            ticks: { color: "rgba(218, 226, 236, 0.62)", font: { size: 11 } },
+          },
+          y: {
+            border: { display: false },
+            grid: { color: "rgba(132, 146, 166, 0.16)", drawTicks: false },
+            ticks: {
+              color: "rgba(218, 226, 236, 0.5)",
+              padding: 10,
+              font: { size: 11 },
+              callback: (value) => `${Number(value).toFixed(0)} h`,
+            },
+          },
+        },
+      },
+    });
+
+    charts.set(canvasId, chart);
+  };
+
+  /* ── Chart: Línea genérica (dinero) ───────────────────────────── */
 
   const renderLineChart = (canvasId, palette) => {
     const chartData = readChartPayload(canvasId);
@@ -69,14 +221,9 @@
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        interaction: {
-          intersect: false,
-          mode: "index",
-        },
+        interaction: { intersect: false, mode: "index" },
         plugins: {
-          legend: {
-            display: false,
-          },
+          legend: { display: false },
           tooltip: {
             displayColors: false,
             backgroundColor: "rgba(13, 18, 26, 0.94)",
@@ -94,33 +241,17 @@
         },
         scales: {
           x: {
-            border: {
-              display: false,
-            },
-            grid: {
-              display: false,
-            },
-            ticks: {
-              color: "rgba(218, 226, 236, 0.62)",
-              font: {
-                size: 11,
-              },
-            },
+            border: { display: false },
+            grid: { display: false },
+            ticks: { color: "rgba(218, 226, 236, 0.62)", font: { size: 11 } },
           },
           y: {
-            border: {
-              display: false,
-            },
-            grid: {
-              color: "rgba(132, 146, 166, 0.16)",
-              drawTicks: false,
-            },
+            border: { display: false },
+            grid: { color: "rgba(132, 146, 166, 0.16)", drawTicks: false },
             ticks: {
               color: "rgba(218, 226, 236, 0.5)",
               padding: 10,
-              font: {
-                size: 11,
-              },
+              font: { size: 11 },
               callback(value) {
                 return formatMetricValue(payload.metric, value);
               },
@@ -133,16 +264,13 @@
     charts.set(canvasId, chart);
   };
 
-  const renderAllCharts = () => {
-    renderLineChart("hours-detail-chart", {
-      stroke: "#c56cff",
-      fillFallback: "rgba(197, 108, 255, 0.18)",
-      fill: [
-        [0, "rgba(197, 108, 255, 0.32)"],
-        [1, "rgba(197, 108, 255, 0.03)"],
-      ],
-    });
+  /* ── Render all ───────────────────────────────────────────────── */
 
+  const renderAllCharts = () => {
+    // Horas: barras HLTB + línea mis horas
+    renderHoursBarLineChart("hours-detail-chart");
+
+    // Dinero: línea temporal de precios
     renderLineChart("money-detail-chart", {
       stroke: "#9bff83",
       fillFallback: "rgba(155, 255, 131, 0.18)",

@@ -1,0 +1,326 @@
+@import '../theme.css';
+
+/* ================================================================
+   game-detail/hero.css — sección Hero cinematográfica
+   Selectores: .game-hero-rich, .game-hero-cinematic (::before/::after),
+   .game-poster-panel, .game-poster-stack, .game-poster-image,
+   .game-intro-panel, .game-overview-card, .game-overview-card-cinematic,
+   .game-overview-media, .game-overview-copy, .game-overview-summary
+   Extraídos de src/styles/game-page.css
+   ================================================================ */
+
+@layer global {
+
+/* ── Hero wrapper ───────────────────────────────────────────────── */
+.game-hero-rich {
+  display: block;
+}
+
+.game-hero-cinematic {
+  position: relative;
+  overflow: hidden;
+  border-radius: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(30, 32, 40, 0.98),
+    rgba(15, 17, 22, 0.98)
+  );
+  min-height: 0;
+}
+
+.game-hero-cinematic::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(8, 10, 14, 0.74) 0%,
+      rgba(8, 10, 14, 0.38) 48%,
+      rgba(8, 10, 14, 0.8) 100%
+    ),
+    radial-gradient(
+      circle at top left,
+      rgba(186, 36, 38, 0.18),
+      transparent 28%
+    ),
+    var(--hero-cover);
+  background-size: cover;
+  background-position: center 28%;
+  filter: saturate(0.82) blur(0.5px);
+}
+
+.game-hero-cinematic::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 12, 16, 0.15), rgba(10, 12, 16, 0.72)),
+    radial-gradient(
+      circle at center,
+      transparent 20%,
+      rgba(10, 12, 16, 0.34) 100%
+    );
+  pointer-events: none;
+}
+
+/* ── Poster panel ───────────────────────────────────────────────── */
+.game-poster-panel {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 20, 26, 0.98),
+    rgba(14, 16, 22, 0.96)
+  );
+  box-shadow: var(--shadow);
+}
+
+.game-poster-stack {
+  display: block;
+}
+
+.game-poster-image {
+  width: 100%;
+  max-width: none;
+  height: auto;
+  display: block;
+  border-radius: 24px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.48);
+}
+
+/* ── Intro panel ────────────────────────────────────────────────── */
+.game-intro-panel {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 20, 26, 0.98),
+    rgba(14, 16, 22, 0.96)
+  );
+  box-shadow: var(--shadow);
+  padding: 1.8rem;
+}
+
+/* ── Overview card ──────────────────────────────────────────────── */
+.game-overview-card {
+  display: grid;
+  grid-template-columns: minmax(110px, 140px) minmax(0, 1fr);
+  gap: 1.7rem;
+  align-items: stretch;
+  min-height: 240px;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(186, 36, 38, 0.12),
+      transparent 28%
+    ),
+    linear-gradient(180deg, rgba(18, 20, 26, 0.98), rgba(14, 16, 22, 0.96));
+}
+
+.game-overview-card-cinematic {
+  position: relative;
+  z-index: 1;
+  min-height: 0;
+  padding: 2.2rem 2.6rem 1.6rem;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* ── Overview media ─────────────────────────────────────────────── */
+.game-overview-media {
+  align-self: stretch;
+  display: grid;
+}
+
+.game-overview-media .game-poster-stack {
+  height: 100%;
+  display: grid;
+}
+
+.game-overview-media .game-poster-image {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: contain;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.03),
+    rgba(255, 255, 255, 0.01)
+  );
+}
+
+.game-overview-card-cinematic .game-overview-media {
+  max-width: 94px;
+  align-self: start;
+  margin-top: 0.35rem;
+}
+
+.game-overview-card-cinematic .game-overview-media .game-poster-image {
+  border-radius: 18px;
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(8px);
+}
+
+/* ── Overview copy ──────────────────────────────────────────────── */
+.game-overview-copy {
+  display: grid;
+  align-content: center;
+  gap: 1.05rem;
+  padding-right: 0.5rem;
+}
+
+.game-overview-copy h1 {
+  margin: 0;
+  max-width: none;
+  font-family: var(--font-display);
+  font-size: clamp(2.7rem, 4.8vw, 4.9rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: 1px;
+}
+
+/* ── Overview summary ───────────────────────────────────────────── */
+.game-overview-summary {
+  margin: 0;
+  max-width: 64ch;
+  font-family: var(--font-body);
+  font-size: 0.96rem;
+  line-height: 1.45;
+  color: #cdc4c8;
+}
+
+/* ── game-page-rich overrides (context prefix) ──────────────────── */
+.game-page-rich .game-hero-cinematic {
+  border-radius: 18px;
+}
+
+.game-page-rich .game-hero-cinematic::before {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(8, 10, 14, 0.8) 0%,
+      rgba(8, 10, 14, 0.46) 48%,
+      rgba(8, 10, 14, 0.84) 100%
+    ),
+    radial-gradient(
+      circle at top left,
+      rgba(164, 174, 191, 0.1),
+      transparent 28%
+    ),
+    var(--hero-cover);
+  background-size: cover;
+  background-position: center 28%;
+}
+
+.game-page-rich .game-overview-card {
+  gap: 1rem;
+  min-height: 0;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(146, 154, 170, 0.08),
+      transparent 28%
+    ),
+    linear-gradient(180deg, rgba(18, 20, 26, 0.98), rgba(14, 16, 22, 0.96));
+}
+
+.game-page-rich .game-overview-card-cinematic {
+  padding: 1.25rem;
+}
+
+.game-page-rich .game-overview-card-cinematic .game-overview-media {
+  max-width: 88px;
+  margin-top: 0.1rem;
+}
+
+.game-page-rich .game-poster-image,
+.game-page-rich
+  .game-overview-card-cinematic
+  .game-overview-media
+  .game-poster-image,
+.game-page-rich .dlc-showcase-cover img {
+  border-radius: 10px;
+}
+
+.game-page-rich .game-overview-copy {
+  gap: 0.65rem;
+  padding-right: 0;
+}
+
+.game-page-rich .game-overview-summary {
+  max-width: 56ch;
+  font-size: 0.88rem;
+  line-height: 1.35;
+  color: #b8bdc7;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 1120px) {
+  .game-overview-card {
+    grid-template-columns: minmax(90px, 120px) minmax(0, 1fr);
+    gap: 1.2rem;
+  }
+
+  .game-overview-card-cinematic .game-overview-media {
+    max-width: 84px;
+  }
+}
+
+@media (max-width: 720px) {
+  .game-intro-panel {
+    padding: 1rem;
+  }
+
+  .game-overview-card {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    min-height: 0;
+  }
+
+  .game-overview-card-cinematic {
+    padding: 1.15rem;
+  }
+
+  .game-overview-media .game-poster-image {
+    max-height: 420px;
+  }
+
+  .game-overview-card-cinematic .game-overview-media {
+    max-width: 110px;
+  }
+
+  .game-poster-panel {
+    min-height: 480px;
+  }
+
+  .game-poster-image {
+    max-width: 280px;
+  }
+}
+
+@media (max-width: 720px) {
+  .game-page-rich .game-overview-card-cinematic {
+    padding: 0.88rem;
+  }
+
+  .game-page-rich .game-overview-card {
+    gap: 0.75rem;
+  }
+
+  .game-page-rich .game-overview-card-cinematic .game-overview-media {
+    max-width: 84px;
+  }
+
+  .game-page-rich .game-overview-media .game-poster-image {
+    max-height: 250px;
+  }
+
+  .game-page-rich .game-overview-copy h1 {
+    font-size: clamp(2.1rem, 11vw, 2.85rem);
+  }
+}
+
+} /* end @layer global */

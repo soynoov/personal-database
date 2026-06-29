@@ -1,0 +1,45 @@
+---
+/**
+ * GameDetailSummary.astro — Sección Resumen (4 tarjetas de estado, logros, cromos, DLCs).
+ * Datos: summaryCards computado en [slug].astro y recibido como prop.
+ */
+import '../../styles/game-detail/summary.css';
+
+interface Props {
+  summaryCards: Array<{
+    label: string;
+    value: string;
+    note: string;
+    className?: string;
+    progress?: number | null;
+  }>;
+}
+
+const { summaryCards } = Astro.props;
+---
+
+<section class="game-page-section game-summary-section">
+  <div class="section-title-row">
+    <div>
+      <h2>Resumen</h2>
+    </div>
+  </div>
+  <dl class="detail-grid detail-grid-4 summary-grid">
+    {summaryCards.map(({ label, value, note, className = "", progress = null }) => (
+      <div
+        class:list={[
+          "detail-item",
+          "summary-card",
+          className,
+          value === "-" && "detail-item-empty",
+          progress !== null && "detail-item-progress",
+        ]}
+        style={progress !== null ? `--progress:${progress}%` : undefined}
+      >
+        <dt>{label}</dt>
+        <dd>{value}</dd>
+        {note && <span class="detail-item-note">{note}</span>}
+      </div>
+    ))}
+  </dl>
+</section>

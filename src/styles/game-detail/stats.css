@@ -1,0 +1,62 @@
+@import '../theme.css';
+
+/* ================================================================
+   game-detail/stats.css — sección Estadísticas (metadatos en grupos)
+   Selectores: .game-data-groups, .data-group-card, .data-group-head
+   Extraídos de src/styles/game-page.css
+   ================================================================ */
+
+@layer global {
+
+/* ── Data groups grid ───────────────────────────────────────────── */
+.game-data-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.15rem;
+}
+
+/* ── Data group card ────────────────────────────────────────────── */
+.data-group-card {
+  padding: 1.2rem;
+  min-height: 100%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 20, 26, 0.98),
+    rgba(14, 16, 22, 0.96)
+  );
+  box-shadow: var(--shadow);
+}
+
+/* ── Data group head ────────────────────────────────────────────── */
+.data-group-head {
+  margin-bottom: 0.85rem;
+}
+
+.data-group-head h3 {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+}
+
+/* ── game-page-rich overrides (context prefix) ──────────────────── */
+.game-page-rich .data-group-card {
+  border-radius: 14px;
+  padding: 0.95rem;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 1180px) {
+  .game-data-groups {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .game-page-rich .data-group-card {
+    padding: 0.82rem;
+  }
+}
+
+} /* end @layer global */

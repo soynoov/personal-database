@@ -1,0 +1,403 @@
+@import '../theme.css';
+
+/* ================================================================
+   game-detail/shared.css — estilos compartidos entre secciones
+   Selectores: hero-analysis-grid, analysis-panel, analysis-head,
+   range-chart-card, chart-shell, chart-visual-card, chart-header,
+   chart-badge, chart-canvas-wrap, chart-empty, chart-metrics-grid,
+   chart-metric-card (y variantes de tono), compact-bar*, section-title-row,
+   section-subtitle, section-pill (y variantes de tono)
+   Extraídos de src/styles/game-page.css
+   ================================================================ */
+
+@layer global {
+
+/* ── Hero analysis grid ─────────────────────────────────────────── */
+.hero-analysis-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin-top: 0;
+}
+
+/* ── Analysis panel ─────────────────────────────────────────────── */
+.analysis-panel {
+  padding: 1.5rem;
+}
+
+.analysis-head {
+  margin-bottom: 0.9rem;
+}
+
+/* ── Range chart card ───────────────────────────────────────────── */
+.range-chart-card {
+  padding: 1.5rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+/* ── Chart shell ────────────────────────────────────────────────── */
+.chart-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.95fr);
+  align-items: stretch;   /* ambas columnas misma altura */
+  gap: 1rem;
+}
+
+/* ── Chart visual card ──────────────────────────────────────────── */
+.chart-visual-card {
+  display: grid;
+  gap: 0.85rem;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid rgba(132, 146, 166, 0.12);
+  border-radius: 20px;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(197, 108, 255, 0.12),
+      transparent 32%
+    ),
+    linear-gradient(180deg, rgba(17, 21, 29, 0.96), rgba(11, 14, 20, 0.94));
+}
+
+.chart-visual-card-money {
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(155, 255, 131, 0.12),
+      transparent 32%
+    ),
+    linear-gradient(180deg, rgba(17, 21, 29, 0.96), rgba(11, 14, 20, 0.94));
+}
+
+/* ── Chart header ───────────────────────────────────────────────── */
+.chart-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.9rem;
+}
+
+.chart-header strong {
+  display: block;
+  font-size: 0.92rem;
+  color: #f6f7fb;
+}
+
+.chart-header p {
+  margin: 0.28rem 0 0;
+  font-size: 0.79rem;
+  line-height: 1.35;
+  color: rgba(218, 226, 236, 0.7);
+}
+
+/* ── Chart badge ────────────────────────────────────────────────── */
+.chart-badge {
+  flex: 0 0 auto;
+  min-height: 30px;
+  padding: 0.32rem 0.72rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #e8edf3;
+  font-size: 0.72rem;
+}
+
+/* ── Chart canvas wrap ──────────────────────────────────────────── */
+.chart-canvas-wrap {
+  position: relative;
+  min-height: 310px;
+  padding: 0.4rem 0.1rem 0 0;
+}
+
+.chart-canvas-wrap canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── Chart empty state ──────────────────────────────────────────── */
+.chart-empty {
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+  padding: 1rem;
+  border: 1px dashed rgba(132, 146, 166, 0.18);
+  border-radius: 18px;
+  color: rgba(218, 226, 236, 0.68);
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+/* ── Chart metrics grid — bento ─────────────────────────────────── */
+/*
+ * Layout bento 2 columnas que llena la altura del chart:
+ *   [  card 1 — full width, destacada  ]
+ *   [  card 2  ] [  card 3  ]
+ *   [  card 4 — full width  ]
+ *
+ * align-content: stretch + height: 100% hacen que las filas
+ * se repartan el espacio disponible del panel lateral.
+ */
+.chart-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: auto 1fr auto;   /* fila central se estira */
+  gap: 0.65rem;
+  align-content: stretch;
+  height: 100%;
+}
+
+/* Primera card: destacada, ancho completo */
+.chart-metrics-grid > .chart-metric-card:first-child {
+  grid-column: 1 / -1;
+}
+
+/* Cuarta card: también ancho completo */
+.chart-metrics-grid > .chart-metric-card:last-child:nth-child(4) {
+  grid-column: 1 / -1;
+}
+
+/* ── Chart metric card ──────────────────────────────────────────── */
+.chart-metric-card {
+  display: grid;
+  align-content: center;   /* centra verticalmente cuando la card se estira */
+  gap: 0.3rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(132, 146, 166, 0.12);
+  border-radius: 18px;
+  background: linear-gradient(
+    180deg,
+    rgba(21, 26, 35, 0.95),
+    rgba(16, 19, 26, 0.92)
+  );
+}
+
+/* La primera card (destacada) conserva alineación arriba */
+.chart-metrics-grid > .chart-metric-card:first-child {
+  align-content: start;
+}
+
+.chart-metric-card span {
+  font-size: 0.74rem;
+  color: rgba(218, 226, 236, 0.62);
+}
+
+.chart-metric-card strong {
+  font-size: clamp(1.3rem, 2vw, 2rem);
+  line-height: 1;
+  color: #f7f1ee;
+}
+
+.chart-metric-card p {
+  margin: 0;
+  font-size: 0.77rem;
+  line-height: 1.35;
+  color: rgba(218, 226, 236, 0.68);
+}
+
+/* Tone variants */
+.chart-metric-card-hours {
+  box-shadow: inset 0 0 0 1px rgba(197, 108, 255, 0.14);
+}
+
+.chart-metric-card-money {
+  box-shadow: inset 0 0 0 1px rgba(155, 255, 131, 0.14);
+}
+
+.chart-metric-card-positive {
+  box-shadow: inset 0 0 0 1px rgba(96, 214, 120, 0.16);
+}
+
+.chart-metric-card-negative {
+  box-shadow: inset 0 0 0 1px rgba(214, 80, 80, 0.16);
+}
+
+.chart-metric-card-neutral {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+/* ── Compact bars ───────────────────────────────────────────────── */
+.compact-bars-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.95rem 1rem;
+}
+
+.compact-bar-card {
+  padding: 0.95rem 0.95rem 0.9rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(42, 46, 55, 0.72),
+    rgba(28, 31, 38, 0.62)
+  );
+}
+
+.compact-bar-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+  margin-bottom: 0.75rem;
+  font-family: var(--font-body);
+}
+
+.compact-bar-head strong {
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: #f0e8ea;
+}
+
+.compact-bar-head span {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f7f1ee;
+}
+
+.compact-bar-track {
+  position: relative;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(5, 7, 10, 0.7);
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.38);
+}
+
+.compact-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ef5759, #ba2426);
+}
+
+.compact-bar-fill-accent {
+  background: linear-gradient(90deg, rgba(239, 87, 89, 0.7), #ef5759);
+}
+
+.compact-bar-fill-muted,
+.compact-bar-fill-neutral {
+  background: linear-gradient(90deg, #8f98aa, #bcc7da);
+}
+
+.compact-bar-fill-positive {
+  background: linear-gradient(90deg, #5ccf7d, #83f2a1);
+}
+
+.compact-bar-fill-negative {
+  background: linear-gradient(90deg, #ef5759, #c73033);
+}
+
+.compact-bar-card p {
+  margin: 0.65rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  line-height: 1.4;
+  color: #cabfc3;
+}
+
+/* ── Section title row ──────────────────────────────────────────── */
+.section-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.section-title-row h2 {
+  margin: 0;
+}
+
+/* ── Section subtitle ───────────────────────────────────────────── */
+.section-subtitle {
+  margin: 0.2rem 0 0;
+  font-size: 0.9rem;
+  color: rgba(218, 226, 236, 0.6);
+}
+
+/* ── Section pill ───────────────────────────────────────────────── */
+.section-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0.28rem 0.72rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #e8edf3;
+  white-space: nowrap;
+}
+
+.section-pill-positive {
+  border-color: rgba(96, 214, 120, 0.2);
+  background: rgba(96, 214, 120, 0.08);
+  color: #a8f0b8;
+}
+
+.section-pill-negative {
+  border-color: rgba(214, 80, 80, 0.2);
+  background: rgba(214, 80, 80, 0.08);
+  color: #f5a0a2;
+}
+
+.section-pill-neutral {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #c8cdd6;
+}
+
+/* ── game-page-rich overrides (context prefix) ──────────────────── */
+.game-page-rich .analysis-head {
+  margin-bottom: 0.7rem;
+}
+
+.game-page-rich .compact-bar-card p,
+.game-page-rich .finance-timeline-head span {
+  font-size: 0.79rem;
+  line-height: 1.3;
+}
+
+.game-page-rich .section-subtitle {
+  display: none;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 1180px) {
+  .hero-analysis-grid,
+  .game-data-groups {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 920px) {
+  .chart-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-canvas-wrap {
+    min-height: 260px;
+  }
+}
+
+@media (max-width: 640px) {
+  .chart-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-metric-card {
+    min-height: 0;
+  }
+
+  .chart-header {
+    flex-direction: column;
+  }
+}
+
+} /* end @layer global */

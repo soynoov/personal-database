@@ -1,0 +1,156 @@
+@import '../theme.css';
+
+/* ================================================================
+   game-detail/summary.css — sección Resumen (4 tarjetas)
+   Selectores: .game-summary-section, .summary-grid, .summary-card
+   Extraídos de src/styles/game-page.css
+   ================================================================ */
+
+@layer global {
+
+/* ── Game summary section ───────────────────────────────────────── */
+.game-summary-section {
+  padding: 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 20, 26, 0.98),
+    rgba(14, 16, 22, 0.96)
+  );
+  box-shadow: var(--shadow);
+}
+
+.game-summary-section .detail-grid-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* ── Summary grid ───────────────────────────────────────────────── */
+.summary-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+/* ── Summary card ───────────────────────────────────────────────── */
+.summary-card {
+  min-width: 0;
+  min-height: 132px;
+  padding: 0.85rem;
+  display: grid;
+  align-content: start;
+  gap: 0.08rem;
+}
+
+.summary-card dt {
+  font-size: 0.72rem;
+  line-height: 1.15;
+}
+
+.summary-card dd {
+  margin-top: 0.28rem;
+  font-size: 0.96rem;
+  line-height: 1.02;
+}
+
+.summary-card .detail-item-note {
+  margin-top: 0.28rem;
+  font-size: 0.72rem;
+  line-height: 1.18;
+  color: rgba(244, 236, 236, 0.62);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── game-page-rich overrides (context prefix) ──────────────────── */
+.game-page-rich .game-summary-section {
+  border-radius: 14px;
+  padding: 0.95rem;
+}
+
+.game-page-rich .summary-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.game-page-rich .summary-grid .detail-item,
+.game-page-rich .summary-grid .detail-item:nth-child(1),
+.game-page-rich .summary-grid .detail-item:nth-child(2),
+.game-page-rich .summary-grid .detail-item:nth-child(3),
+.game-page-rich .summary-grid .detail-item:nth-child(4) {
+  grid-column: span 1;
+}
+
+.game-page-rich .summary-card {
+  min-width: 0;
+  min-height: 132px;
+  padding: 0.85rem;
+  display: grid;
+  align-content: start;
+  gap: 0.08rem;
+}
+
+.game-page-rich .summary-card dt {
+  font-size: 0.72rem;
+  line-height: 1.15;
+}
+
+.game-page-rich .summary-card dd {
+  margin-top: 0.28rem;
+  font-size: 0.96rem;
+  line-height: 1.02;
+}
+
+.game-page-rich .summary-card .detail-item-note {
+  margin-top: 0.28rem;
+  font-size: 0.72rem;
+  line-height: 1.18;
+  color: rgba(244, 236, 236, 0.62);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 1120px) {
+  .detail-grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .detail-grid-4,
+  .detail-grid-3,
+  .detail-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .game-page-rich .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .game-page-rich .summary-grid .detail-item:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .game-page-rich .summary-card {
+    min-height: 110px;
+    padding: 0.78rem;
+  }
+
+  .game-page-rich .summary-card dd {
+    font-size: 0.88rem;
+  }
+
+  .game-page-rich .summary-card .detail-item-note {
+    font-size: 0.68rem;
+  }
+
+  .game-page-rich .game-summary-section {
+    padding: 0.82rem;
+  }
+}
+
+} /* end @layer global */

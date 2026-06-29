@@ -1,0 +1,22 @@
+---
+/**
+ * GameDetailNav.astro — Barra de navegación sticky entre secciones.
+ * Muestra links a Overview, Horas, Dinero, Estadísticas y opcionalmente DLCs.
+ * Datos: hasDlcs computado en [slug].astro.
+ */
+import '../../styles/game-detail/nav.css';
+
+interface Props {
+  hasDlcs: boolean;
+}
+
+const { hasDlcs } = Astro.props;
+---
+
+<nav class="game-sections-nav" aria-label="Secciones del juego">
+  <a href="#overview">Overview</a>
+  <a href="#stats">Horas</a>
+  <a href="#finance">Dinero</a>
+  <a href="#technical">Estadísticas</a>
+  <a href="#dlcs">DLCs</a>
+</nav>
