@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { existsSync } from "node:fs";
 
@@ -15,6 +15,8 @@ export type LocalGame = {
   precio_actual?: number | null;
   precio_salida?: number | null;
   precio_minimo_historico?: number | null;
+  /** Gasto en compras dentro del juego (microtransacciones), aparte de precio_pagado. Relevante sobre todo en free-to-play. */
+  gasto_microtransacciones?: number | null;
   hltb?: number | null;
   hltb_breakdown?: {
     main?: number | null;
@@ -70,6 +72,17 @@ export async function readGames() {
   const raw = await readFile(gamesPath, "utf8");
   const normalized = raw.replace(/^\uFEFF/, "");
   return JSON.parse(normalized) as LocalGame[];
+}
+
+/**
+ * Escribe games.json en disco. Solo funciona en un filesystem con permiso
+ * de escritura (p. ej. `npm run dev` en local). En Vercel el filesystem del
+ * deploy es de solo lectura \u2014 quien llame a esto debe comprobar el entorno
+ * antes (ver src/pages/api/games/[slug]/edit.ts) y no asumir que escribe.
+ */
+export async function writeGames(games: LocalGame[]) {
+  const json = `${JSON.stringify(games, null, 2)}\n`;
+  await writeFile(gamesPath, json, "utf8");
 }
 
 export function slugifyGameTitle(title: string) {

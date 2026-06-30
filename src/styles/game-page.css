@@ -730,7 +730,81 @@
 /* app-mode overrides for game-page-rich */
 .game-page-rich {
   width: min(40cm, calc(100% - 1.5rem));
-  gap: 1rem;
+  gap: 1.4rem;
+}
+
+/* ── Identidad de sección: eyebrow + acento de color ──────────────
+   Cada bloque mayor de la ficha (Horas, Dinero, Resumen, Estadísticas,
+   DLCs, Comentarios) lleva una etiqueta pequeña en mayúsculas y una
+   franja de 3px arriba, coloreada por --section-accent. El color
+   reutiliza la paleta nominal de theme.css, nada nuevo. */
+
+.section-eyebrow {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--section-accent, rgba(255, 255, 255, 0.5));
+  opacity: 0.92;
+}
+
+.analysis-panel,
+#summary,
+#technical,
+#dlcs,
+.detail-comments-vault {
+  position: relative;
+}
+
+.analysis-panel::before,
+#summary::before,
+#technical::before,
+#dlcs::before,
+.detail-comments-vault::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 1.4rem;
+  right: 1.4rem;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
+  background: var(--section-accent, transparent);
+  opacity: 0.85;
+}
+
+.analysis-panel-hours {
+  --section-accent: var(--indigo);
+}
+
+.analysis-panel-money {
+  --section-accent: var(--pistachio);
+}
+
+#summary {
+  --section-accent: #ef5759;
+}
+
+#technical {
+  --section-accent: #9db4d6;
+}
+
+#dlcs {
+  --section-accent: var(--pumpkin);
+}
+
+.detail-comments-vault {
+  --section-accent: rgba(255, 255, 255, 0.26);
+}
+
+.detail-comments-head {
+  margin-bottom: 0.6rem;
+}
+
+.detail-comments-head dt {
+  margin: 0;
 }
 
 .game-hero-cinematic {
@@ -1222,6 +1296,15 @@
   .game-page-rich .range-chart-card,
   .game-page-rich .finance-timeline-card {
     padding: 0.82rem;
+  }
+
+  .analysis-panel::before,
+  #summary::before,
+  #technical::before,
+  #dlcs::before,
+  .detail-comments-vault::before {
+    left: 0.82rem;
+    right: 0.82rem;
   }
 
   .game-page-rich .finance-timeline-chart {

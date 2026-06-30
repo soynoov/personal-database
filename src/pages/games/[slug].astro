@@ -345,6 +345,10 @@ const currentPrice =
   game.precio_actual === null || game.precio_actual === undefined ? null : Number(game.precio_actual);
 const launchPrice =
   game.precio_salida === null || game.precio_salida === undefined ? null : Number(game.precio_salida);
+const microtransactionsSpend =
+  game.gasto_microtransacciones === null || game.gasto_microtransacciones === undefined
+    ? null
+    : Number(game.gasto_microtransacciones);
 
 const moneyScaleValues = [purchasePrice, currentPrice, launchPrice, historicalLowPrice].filter(
   (value): value is number => value !== null && !Number.isNaN(value),
@@ -550,6 +554,17 @@ const moneySnapshotCards = [
     note: hasFreeToPlayTag ? "Entrada gratuita" : pricePaidVisual.note || "Sin lectura financiera",
     tone: priceDeltaTone,
   },
+  {
+    label: "Microtransacciones",
+    value: formatCurrency(microtransactionsSpend),
+    note:
+      microtransactionsSpend !== null
+        ? "Gasto dentro del juego, aparte del precio pagado"
+        : hasFreeToPlayTag
+          ? "Free-to-play sin gasto registrado todavia"
+          : "Sin compras dentro del juego registradas",
+    tone: microtransactionsSpend !== null && microtransactionsSpend > 0 ? "negative" : "neutral",
+  },
 ];
 
 const heroCoverStyle = `--hero-cover:url("${coverUrl.replace(/"/g, '\\"')}")`;
@@ -644,6 +659,18 @@ const metadataGroups = [
 const statusBadge = { class: statusClassName(game.estado), label: formatValue(game.estado) };
 const launcherBadge = { class: launcherClassName(game.launcher), html: launcherBadgeContent(game.launcher) };
 const platformBadge = { class: platformClassName(game.plataforma), label: formatValue(game.plataforma) };
+
+const editValues = {
+  estado: game.estado,
+  horas: hoursValue,
+  fecha_inicio: game.fecha_inicio,
+  fecha_fin: game.fecha_fin,
+  precio_pagado: purchasePrice,
+  gasto_microtransacciones: microtransactionsSpend,
+  nota: game.nota ?? null,
+  comentarios: game.comentarios ?? null,
+  tags: Array.isArray(game.tags) ? game.tags : [],
+};
 ---
 
 <BaseLayout title={`${game.titulo} | Personal Database`}>
@@ -662,6 +689,8 @@ const platformBadge = { class: platformClassName(game.plataforma), label: format
       genres={genres}
       pricePaidNote={pricePaidVisual.note}
       soloLabel={formatSolo(game.solo)}
+      slug={Astro.params.slug ?? ''}
+      editValues={editValues}
     />
 
     <GameDetailNav hasDlcs={dlcTotal > 0} />

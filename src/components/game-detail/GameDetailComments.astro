@@ -21,6 +21,9 @@ const { comentarios } = Astro.props;
     comentarios === "-" && "detail-comments-empty",
   ]}
 >
-  <dt class="muted">Comentarios</dt>
+  <div class="detail-comments-head">
+    <span class="section-eyebrow">Notas</span>
+    <dt class="muted">Comentarios</dt>
+  </div>
   <dd>{comentarios}</dd>
 </section>

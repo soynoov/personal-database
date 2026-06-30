@@ -1,0 +1,226 @@
+@import '../theme.css';
+
+/* ================================================================
+   game-detail/edit.css — botón de edición + diálogo de la ficha
+   Selectores: .game-edit-trigger, .edit-dialog y derivados.
+   ================================================================ */
+
+@layer global {
+
+.game-edit-trigger {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(10, 12, 16, 0.55);
+  backdrop-filter: blur(6px);
+  color: #eef3f8;
+  cursor: pointer;
+  padding: 0;
+  transition:
+    background 140ms ease,
+    border-color 140ms ease,
+    transform 140ms ease;
+}
+
+.game-edit-trigger:hover,
+.game-edit-trigger:focus-visible {
+  background: rgba(24, 27, 34, 0.8);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.game-edit-trigger svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── Diálogo ─────────────────────────────────────────────────── */
+
+.edit-dialog {
+  width: min(560px, calc(100% - 1.5rem));
+  max-height: min(86vh, 760px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 0;
+  color: var(--text);
+  background:
+    linear-gradient(180deg, rgba(19, 23, 31, 0.98), rgba(16, 19, 26, 0.98)),
+    radial-gradient(circle at top left, rgba(186, 36, 38, 0.08), transparent 28%);
+}
+
+.edit-dialog::backdrop {
+  background: rgba(4, 7, 11, 0.78);
+  backdrop-filter: blur(4px);
+}
+
+.edit-dialog-body {
+  padding: 1.5rem 1.6rem 1.6rem;
+  overflow-y: auto;
+  max-height: inherit;
+}
+
+.edit-dialog-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.edit-dialog-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.6rem;
+}
+
+.edit-dialog-sub {
+  margin: 0 0 1.2rem;
+  font-size: 0.84rem;
+  color: var(--muted);
+}
+
+.edit-dialog-close {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.edit-field {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 0.95rem;
+}
+
+.edit-field label {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.edit-field input,
+.edit-field select,
+.edit-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  font: inherit;
+}
+
+.edit-field select {
+  color-scheme: dark;
+}
+
+.edit-field select option {
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+.edit-field-checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.92rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.edit-field-checkbox input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--pistachio);
+  cursor: pointer;
+}
+
+.edit-field-hint {
+  font-size: 0.74rem;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+p.edit-field-hint-price {
+  margin: -0.55rem 0 0.95rem;
+}
+
+.edit-field textarea {
+  min-height: 84px;
+  resize: vertical;
+}
+
+.edit-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+.edit-dialog-error {
+  margin: 0 0 0.95rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid var(--status-paused-line);
+  background: var(--status-paused-bg);
+  color: var(--text);
+  font-size: 0.86rem;
+}
+
+.edit-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.edit-dialog-actions button {
+  min-height: 44px;
+  padding: 0 1.1rem;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.edit-dialog-cancel {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+}
+
+.edit-dialog-submit {
+  border: 1px solid rgba(147, 197, 114, 0.4);
+  background: rgba(147, 197, 114, 0.16);
+  color: var(--pistachio);
+}
+
+.edit-dialog-submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+@media (max-width: 620px) {
+  .edit-field-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+} /* end @layer global */

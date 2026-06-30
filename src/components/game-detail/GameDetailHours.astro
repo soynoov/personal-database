@@ -31,9 +31,10 @@ const {
 } = Astro.props;
 ---
 
-<article class="analysis-panel">
+<article class="analysis-panel analysis-panel-hours" id="hours">
   <div class="section-title-row analysis-head">
     <div>
+      <span class="section-eyebrow">Progreso</span>
       <h2>Horas</h2>
     </div>
     {hoursDeltaLabel && (

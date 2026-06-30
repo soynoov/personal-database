@@ -12,6 +12,14 @@
 
 @layer global {
 
+/* La regla genérica de shared.css solo cubre la 4ª card cuando es la
+   última (4 cards en total). El panel de Dinero ahora puede tener 5
+   (se sumó "Microtransacciones") — esta regla extra cubre ese caso sin
+   tocar la regla compartida con el panel de Horas, que sigue en 4. */
+.chart-metrics-grid > .chart-metric-card:nth-child(5):last-child {
+  grid-column: 1 / -1;
+}
+
 /* ── Finance timeline card ──────────────────────────────────────── */
 .finance-timeline-card {
   margin-bottom: 1rem;

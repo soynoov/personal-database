@@ -29,10 +29,16 @@ const completedGames = games.filter((g) => {
 }).length;
 const totalLibraryValue = games.reduce((sum, g) => {
   const base = Number(g.precio_pagado ?? 0);
+  const microtransacciones = Number(g.gasto_microtransacciones ?? 0);
   const dlc = Array.isArray(g.dlcs?.items)
     ? g.dlcs.items.reduce((acc, d) => acc + Number(d.precio_pagado ?? 0), 0)
     : 0;
-  return sum + (Number.isNaN(base) ? 0 : base) + dlc;
+  return (
+    sum +
+    (Number.isNaN(base) ? 0 : base) +
+    (Number.isNaN(microtransacciones) ? 0 : microtransacciones) +
+    dlc
+  );
 }, 0);
 const formatMoney = (value: number) =>
   new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value);

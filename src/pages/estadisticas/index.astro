@@ -1,0 +1,365 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import '../../styles/estadisticas.css';
+import { getUniqueValues, readGames } from '../../lib/local-games';
+import { getAvailableYears, getDataQuality, getYearRecap } from '../../lib/recap';
+
+const games = await readGames();
+const estados = getUniqueValues(games, 'estado');
+const launchers = getUniqueValues(games, 'launcher');
+const plataformas = getUniqueValues(games, 'plataforma');
+
+const drawerEstadosOrdered = [
+  'Jugando', 'Terminado', 'Pendiente', 'Wishlist',
+  'Pausado', 'Abandonado', 'Retirado', 'Recurrente',
+];
+const estadosSet = new Set(estados.map((e) => e.toLowerCase()));
+const knownEstadoValues = new Set(drawerEstadosOrdered.map((d) => d.toLowerCase()));
+const orderedDrawerEstados = [
+  ...drawerEstadosOrdered.filter((d) => estadosSet.has(d.toLowerCase()) || d === 'Wishlist'),
+  ...estados.filter((e) => !knownEstadoValues.has(e.toLowerCase())),
+];
+
+const today = new Date();
+const currentYear = today.getFullYear();
+
+const availableYears = getAvailableYears(games);
+const requestedYear = Number(Astro.url.searchParams.get('year'));
+const year = availableYears.includes(requestedYear) ? requestedYear : currentYear;
+const isCurrentYear = year === currentYear;
+
+const recap = getYearRecap(games, year);
+const prevRecap = getYearRecap(games, year - 1);
+const quality = getDataQuality(games);
+
+const formatMoney = (value: number) =>
+  new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value);
+
+const formatHours = (value: number) => `${value.toLocaleString('es-ES', { maximumFractionDigits: 1 })} h`;
+
+const delta = (current: number, prev: number) => {
+  const diff = Number((current - prev).toFixed(1));
+  if (diff > 0) return { sign: '+', tone: 'up', value: diff };
+  if (diff < 0) return { sign: '', tone: 'down', value: diff };
+  return { sign: '', tone: 'flat', value: 0 };
+};
+
+const horasDelta = delta(recap.horasAtribuidas, prevRecap.horasAtribuidas);
+const gastoDelta = delta(recap.gastoAtribuido, prevRecap.gastoAtribuido);
+const completadosDelta = delta(recap.completados.length, prevRecap.completados.length);
+
+const isoDayOfYear = (() => {
+  const start = new Date(today.getFullYear(), 0, 0);
+  const diff = today.getTime() - start.getTime();
+  return Math.floor(diff / 86400000);
+})();
+const daysInYear = (today.getFullYear() % 4 === 0 && (today.getFullYear() % 100 !== 0 || today.getFullYear() % 400 === 0)) ? 366 : 365;
+const yearProgressPct = Math.round((isoDayOfYear / daysInYear) * 100);
+
+const monthLabels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+const chartPayload = {
+  labels: monthLabels,
+  values: recap.monthly.map((m) => m.horas),
+};
+
+const gapGroups = [
+  {
+    title: 'juegos "Terminado" sin fecha_fin',
+    hint: 'Bloquea que cuenten en "Completados" de cualquier año.',
+    items: quality.gaps.terminadosSinFecha,
+  },
+  {
+    title: 'juegos en curso o terminados sin fecha_inicio',
+    hint: 'Sin esa fecha no entran en horas, gasto, géneros ni launchers de ningún año.',
+    items: quality.gaps.sinFechaInicio,
+  },
+  {
+    title: 'juegos adquiridos sin precio_pagado',
+    hint: 'El gasto se estima con precio_actual (no es lo que pagaste) o se queda fuera si tampoco hay precio_actual.',
+    items: quality.gaps.sinPrecio,
+  },
+  {
+    title: 'juegos sin géneros registrados',
+    hint: 'No aparecen en el desglose "Dónde se fue el año".',
+    items: quality.gaps.sinGeneros,
+  },
+];
+---
+
+<BaseLayout title='Estadisticas — Personal Database'>
+  <main class='shell shell-app shell-desktop-app'>
+
+    <Sidebar
+      orderedDrawerEstados={orderedDrawerEstados}
+      plataformas={plataformas}
+      launchers={launchers}
+      active='estadisticas'
+    />
+
+    <div class='desktop-main'>
+
+      <!-- Hero -->
+      <section class='panel recap-hero'>
+        <div class='recap-hero-top'>
+          <div>
+            <span class='eyebrow'>Tu año en juegos</span>
+            <h1>Recap {year}</h1>
+            <p class='recap-hero-sub'>
+              {isCurrentYear
+                ? `En tiempo real: se recalcula con cada visita a partir de games.json. Vas por el día ${isoDayOfYear} de ${daysInYear} (${yearProgressPct}% del año).`
+                : `Resumen cerrado de ${year}. Cambia de año para comparar.`}
+            </p>
+          </div>
+          <div class='recap-year-pills'>
+            {availableYears.map((y) => (
+              <a class:list={['recap-year-pill', y === year && 'is-active']} href={`/estadisticas/?year=${y}`}>
+                {y}
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- Aviso de calidad de datos -->
+      <section class='panel recap-quality'>
+        <div class='recap-quality-head'>
+          <strong>Antes de creerte estas cifras</strong>
+        </div>
+        <div class='recap-quality-grid'>
+          <div class='recap-quality-metric'>
+            <strong>{quality.pctFechaFinCompleta}%</strong>
+            <span>de tus juegos "Terminado" tienen fecha_fin registrada ({quality.totalTerminados - quality.gaps.terminadosSinFecha.length}/{quality.totalTerminados}). El resto no cuenta en "Completados {year}", aunque los hayas terminado.</span>
+          </div>
+          <div class='recap-quality-metric'>
+            <strong>{quality.pctPrecioCompleto}%</strong>
+            <span>de tu librería tiene precio_pagado real ({quality.totalJuegos - quality.gaps.sinPrecio.length}/{quality.totalJuegos}). El resto se estima con el precio actual de tienda cuando aplica.</span>
+          </div>
+          <div class='recap-quality-metric'>
+            <strong>{recap.gastoEstimadoCount}</strong>
+            <span>juegos del gasto de {year} usan precio estimado, no lo que pagaste de verdad.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Qué te falta rellenar -->
+      <section class='panel recap-section recap-quality-detail'>
+        <h2>Qué te falta rellenar</h2>
+        <p class='recap-section-sub'>
+          Por cada hueco: cuántos juegos lo tienen vacío y cuáles son, por si te suena el dato y lo puedes meter en games.json.
+        </p>
+        <div class='recap-gap-groups'>
+          {gapGroups.map((group) => (
+            group.items.length > 0 ? (
+              <details class='recap-quality-list-wrap'>
+                <summary>
+                  <strong>{group.items.length}</strong> {group.title}
+                  <span class='recap-gap-hint'>{group.hint}</span>
+                </summary>
+                <div class='recap-quality-pills'>
+                  {group.items.slice(0, 40).map((g) => (
+                    <a class='recap-quality-pill' href={`/games/${g.slug}`}>{g.titulo}</a>
+                  ))}
+                  {group.items.length > 40 && (
+                    <span class='recap-quality-pill recap-quality-pill-more'>+{group.items.length - 40} más</span>
+                  )}
+                </div>
+              </details>
+            ) : (
+              <p class='recap-gap-clear'>✓ Sin huecos en {group.title}.</p>
+            )
+          ))}
+        </div>
+      </section>
+
+      <!-- Stat cards -->
+      <section class='recap-stats'>
+        <article class='panel recap-stat recap-stat-accent'>
+          <span>Completados en {year}</span>
+          <strong data-stat-completados>{recap.completados.length}</strong>
+          <span class='recap-stat-note'>
+            <span class:list={['recap-delta', `recap-delta-${completadosDelta.tone}`]}>
+              {completadosDelta.sign}{completadosDelta.value} vs {year - 1}
+            </span>
+            · fecha_fin estricta
+          </span>
+        </article>
+
+        <article class='panel recap-stat recap-stat-accent-alt'>
+          <span>Horas jugadas en {year}</span>
+          <strong data-stat-horas>{formatHours(recap.horasAtribuidas)}</strong>
+          <span class='recap-stat-note'>
+            <span class:list={['recap-delta', `recap-delta-${horasDelta.tone}`]}>
+              {horasDelta.sign}{formatHours(Math.abs(horasDelta.value))} vs {year - 1}
+            </span>
+            · aproximado por fecha_inicio
+          </span>
+        </article>
+
+        <article class='panel recap-stat'>
+          <span>Gastado en {year}</span>
+          <strong data-stat-gasto>{formatMoney(recap.gastoAtribuido)}</strong>
+          <span class='recap-stat-note'>
+            <span class:list={['recap-delta', `recap-delta-${gastoDelta.tone}`]}>
+              {gastoDelta.sign}{formatMoney(Math.abs(gastoDelta.value))} vs {year - 1}
+            </span>
+            · aproximado, {recap.gastoEstimadoCount} estimados
+          </span>
+        </article>
+
+        <article class='panel recap-stat recap-stat-accent-warn'>
+          <span>Juegos empezados en {year}</span>
+          <strong data-stat-iniciados>{recap.iniciados.length}</strong>
+          <span class='recap-stat-note'>{recap.promedioHorasPorJuego} h de media por juego</span>
+        </article>
+      </section>
+
+      <!-- Géneros y launchers -->
+      <section class='panel recap-section'>
+        <h2>Dónde se fue el año</h2>
+        <p class='recap-section-sub'>Calculado sobre los {recap.iniciados.length} juegos con fecha_inicio en {year}.</p>
+
+        {recap.iniciados.length === 0 ? (
+          <p class='recap-empty'>Ningún juego tiene fecha_inicio en {year}. Sin esa fecha no hay nada que repartir por género, launcher o mes.</p>
+        ) : (
+          <div class='recap-two-col'>
+            <div>
+              <div class='recap-chart-card'>
+                <canvas id='recap-monthly-chart' data-chart={JSON.stringify(chartPayload)}></canvas>
+              </div>
+            </div>
+            <div class='recap-bar-list'>
+              {recap.generosTop.length > 0 ? recap.generosTop.map((g) => (
+                <div class='recap-bar-row'>
+                  <div class='recap-bar-row-label'>
+                    <span>{g.name}</span>
+                    <span>{g.count} · {g.pct}%</span>
+                  </div>
+                  <div class='recap-bar-track'>
+                    <div class='recap-bar-fill' style={`width:${g.pct}%`}></div>
+                  </div>
+                </div>
+              )) : <p class='recap-empty'>Sin géneros registrados para {year}.</p>}
+            </div>
+          </div>
+        )}
+      </section>
+
+      <!-- Launchers + destacado -->
+      {recap.iniciados.length > 0 && (
+        <section class='panel recap-section'>
+          <h2>Launchers y destacado del año</h2>
+          <div class='recap-two-col'>
+            <div class='recap-bar-list'>
+              {recap.launchersTop.map((l) => (
+                <div class='recap-bar-row'>
+                  <div class='recap-bar-row-label'>
+                    <span>{l.name}</span>
+                    <span>{l.count} · {l.pct}%</span>
+                  </div>
+                  <div class='recap-bar-track'>
+                    <div class='recap-bar-fill' style={`width:${l.pct}%`}></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div class='recap-highlight'>
+              <span>Más horas en {year}</span>
+              {recap.juegoConMasHoras ? (
+                <>
+                  <a href={`/games/${recap.juegoConMasHoras.slug}`}>{recap.juegoConMasHoras.titulo}</a>
+                  <span>{formatHours(Number(recap.juegoConMasHoras.horas ?? 0))}</span>
+                </>
+              ) : <span>Sin datos.</span>}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <!-- Lista de completados -->
+      <section class='panel recap-section'>
+        <h2>Lo que terminaste en {year}</h2>
+        {recap.completados.length === 0 ? (
+          <p class='recap-empty'>
+            Ningún juego con fecha_fin en {year}. Si has terminado algo este año, añade fecha_fin en games.json para que aparezca aquí.
+          </p>
+        ) : (
+          <div class='recap-completados-list'>
+            {recap.completados.map((g) => (
+              <a class='recap-completados-row' href={`/games/${g.slug}`}>
+                <strong>{g.titulo}</strong>
+                <span>{g.fecha_fin} · {formatHours(Number(g.horas ?? 0))}</span>
+              </a>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <!-- Metodología -->
+      <section class='panel recap-section'>
+        <h2>Cómo se calcula esto</h2>
+        <p class='recap-methodology'>
+          <strong>Completados:</strong> estado "Terminado"/"Completado" con fecha_fin dentro del año. Si fecha_fin está vacía, no cuenta, sin importar el estado.<br />
+          <strong>Horas y gasto:</strong> se atribuyen al año de fecha_inicio (proxy de actividad, no de fecha de compra real). Un juego que sigue en curso al cambiar de año cuenta entero en el año en que lo empezaste.<br />
+          <strong>Gasto:</strong> usa precio_pagado si existe; si falta y el launcher no es "Pirata", se estima con precio_actual (marcado en el contador de estimados).<br />
+          Esta página lee games.json en cada visita — en cuanto rellenes una fecha o un precio, el recap se actualiza solo.
+        </p>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip } from 'chart.js';
+
+    Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip);
+
+    const canvas = document.getElementById('recap-monthly-chart');
+    if (canvas instanceof HTMLCanvasElement) {
+      const payload = JSON.parse(canvas.dataset.chart ?? '{"labels":[],"values":[]}');
+      new Chart(canvas, {
+        type: 'bar',
+        data: {
+          labels: payload.labels,
+          datasets: [
+            {
+              label: 'Horas',
+              data: payload.values,
+              backgroundColor: 'rgba(201, 168, 255, 0.35)',
+              borderColor: '#c9a8ff',
+              borderWidth: 1.5,
+              borderRadius: 5,
+              borderSkipped: false,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: 'rgba(13, 18, 26, 0.94)',
+              borderColor: 'rgba(255, 255, 255, 0.1)',
+              borderWidth: 1,
+              padding: 10,
+              callbacks: {
+                label: (ctx: any) => `${Number(ctx.parsed.y).toFixed(1)} h`,
+              },
+            },
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { color: 'rgba(218, 226, 236, 0.62)', font: { size: 11 } },
+            },
+            y: {
+              grid: { color: 'rgba(132, 146, 166, 0.16)' },
+              ticks: { color: 'rgba(218, 226, 236, 0.5)', font: { size: 11 } },
+            },
+          },
+        },
+      });
+    }
+  </script>
+</BaseLayout>
