@@ -20,13 +20,20 @@
   padding: 1.2rem;
   min-height: 100%;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--radius-2);
   background: linear-gradient(
     180deg,
     rgba(18, 20, 26, 0.98),
     rgba(14, 16, 22, 0.96)
   );
   box-shadow: var(--shadow);
+}
+
+/* Radio por anidación: .detail-item genérico vive en detail.css y es
+   compartido con el modal de vista rápida del catálogo, así que aquí
+   se sobreescribe solo cuando cuelga de .data-group-card (nivel 3). */
+.data-group-card .detail-item {
+  border-radius: var(--radius-3);
 }
 
 /* ── Data group head ────────────────────────────────────────────── */
@@ -42,7 +49,7 @@
 
 /* ── game-page-rich overrides (context prefix) ──────────────────── */
 .game-page-rich .data-group-card {
-  border-radius: 14px;
+  border-radius: var(--radius-2);
   padding: 0.95rem;
 }
 

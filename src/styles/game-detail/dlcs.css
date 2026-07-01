@@ -23,7 +23,7 @@
   grid-template-columns: 1fr;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--radius-2);
   background: linear-gradient(
     180deg,
     rgba(18, 20, 26, 0.98),
@@ -51,7 +51,7 @@
   max-height: none;
   object-fit: contain;
   display: block;
-  border-radius: 18px;
+  border-radius: var(--radius-4);
 }
 
 /* ── DLC showcase fallback ──────────────────────────────────────── */
@@ -79,7 +79,7 @@
   align-items: center;
   min-height: 28px;
   padding: 0.28rem 0.65rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(15, 17, 22, 0.9);
   font-family: var(--font-body);
@@ -104,11 +104,18 @@
   line-height: 1.02;
 }
 
+/* Radio por anidación: .detail-item genérico vive en detail.css y es
+   compartido con el modal de vista rápida del catálogo, así que aquí
+   se sobreescribe solo cuando cuelga de .dlc-showcase-body (nivel 3). */
+.dlc-showcase-body .detail-item {
+  border-radius: var(--radius-3);
+}
+
 /* ── DLC showcase notes ─────────────────────────────────────────── */
 .dlc-showcase-notes {
   margin: 0;
   padding: 0.9rem 1rem;
-  border-radius: 16px;
+  border-radius: var(--radius-3);
   border: 1px solid rgba(255, 255, 255, 0.07);
   background: rgba(255, 255, 255, 0.03);
   font-family: var(--font-body);
@@ -117,11 +124,11 @@
 
 /* ── game-page-rich overrides (context prefix) ──────────────────── */
 .game-page-rich .dlc-showcase-card {
-  border-radius: 14px;
+  border-radius: var(--radius-2);
 }
 
 .game-page-rich .dlc-showcase-cover img {
-  border-radius: 10px;
+  border-radius: var(--radius-4);
 }
 
 .game-page-rich .dlc-showcase-body {

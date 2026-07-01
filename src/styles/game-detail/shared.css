@@ -52,7 +52,7 @@
   min-width: 0;
   padding: 1rem;
   border: 1px solid rgba(132, 146, 166, 0.12);
-  border-radius: 20px;
+  border-radius: var(--radius-3);
   background:
     radial-gradient(
       circle at top right,
@@ -99,7 +99,7 @@
   min-height: 30px;
   padding: 0.32rem 0.72rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgba(255, 255, 255, 0.03);
   color: #e8edf3;
   font-size: 0.72rem;
@@ -125,7 +125,7 @@
   min-height: 220px;
   padding: 1rem;
   border: 1px dashed rgba(132, 146, 166, 0.18);
-  border-radius: 18px;
+  border-radius: var(--radius-4);
   color: rgba(218, 226, 236, 0.68);
   text-align: center;
   font-size: 0.85rem;
@@ -167,7 +167,7 @@
   gap: 0.3rem;
   padding: 0.9rem;
   border: 1px solid rgba(132, 146, 166, 0.12);
-  border-radius: 18px;
+  border-radius: var(--radius-3);
   background: linear-gradient(
     180deg,
     rgba(21, 26, 35, 0.95),
@@ -228,7 +228,7 @@
 
 .compact-bar-card {
   padding: 0.95rem 0.95rem 0.9rem;
-  border-radius: 16px;
+  border-radius: var(--radius-2);
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: linear-gradient(
     180deg,
@@ -261,7 +261,7 @@
 .compact-bar-track {
   position: relative;
   height: 12px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgba(5, 7, 10, 0.7);
   overflow: hidden;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.38);
@@ -325,7 +325,7 @@
   align-items: center;
   min-height: 28px;
   padding: 0.28rem 0.72rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.05);
   font-family: var(--font-body);

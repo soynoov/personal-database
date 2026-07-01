@@ -69,6 +69,19 @@
   --app-radius-lg: 24px;
   --app-radius-md: 18px;
 
+  /* ── Radio del tema: regla de anidación ─────────────────────
+     Contenedor de primer nivel: 1rem. Cada contenedor anidado
+     dentro de otro contenedor visible (con su propio borde/fondo)
+     reduce el radio a la mitad. Excepción: badges/pills y botones
+     de icono circulares, que usan --radius-pill (10rem) o círculo.
+     Nivel 1 (1rem) → Nivel 2 (.5rem) → Nivel 3 (.25rem) → Nivel 4 (.125rem)
+  ─────────────────────────────────────────────────────────── */
+  --radius-1: 1rem;
+  --radius-2: 0.5rem;
+  --radius-3: 0.25rem;
+  --radius-4: 0.125rem;
+  --radius-pill: 10rem;
+
   /* ── Superficies de la app ──────────────────────────────── */
   --app-surface-1: rgba(20, 20, 24, 0.96);
   --app-surface-2: rgba(29, 31, 38, 0.94);

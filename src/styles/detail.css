@@ -692,10 +692,20 @@
 }
 
 .game-hero-cover,
-.game-hero-body,
-.game-page-section {
+.game-hero-body {
   border: 1px solid var(--line);
   border-radius: 24px;
+  background: linear-gradient(
+    180deg,
+    rgba(30, 35, 44, 0.95),
+    rgba(24, 28, 35, 0.95)
+  );
+  box-shadow: var(--shadow);
+}
+
+.game-page-section {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-1);
   background: linear-gradient(
     180deg,
     rgba(30, 35, 44, 0.95),
@@ -836,7 +846,7 @@
   align-items: center;
   min-height: 42px;
   padding: 0.55rem 0.9rem;
-  border-radius: 12px;
+  border-radius: var(--radius-pill);
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.04);
   font-family: var(--font-body);

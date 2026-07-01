@@ -24,7 +24,7 @@
 .finance-timeline-card {
   margin-bottom: 1rem;
   padding: 1rem;
-  border-radius: 24px;
+  border-radius: var(--radius-2);
   border: 1px solid rgba(255, 255, 255, 0.08);
   background:
     radial-gradient(
@@ -97,7 +97,7 @@
   width: 100%;
   height: 250px;
   display: block;
-  border-radius: 16px;
+  border-radius: var(--radius-3);
   background:
     linear-gradient(
       180deg,
@@ -239,7 +239,7 @@
 /* ── Finance timeline stop ──────────────────────────────────────── */
 .finance-timeline-stop {
   padding: 0.85rem 0.9rem;
-  border-radius: 18px;
+  border-radius: var(--radius-3);
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.03);
 }
@@ -269,7 +269,7 @@
   display: grid;
   place-items: center;
   min-height: 220px;
-  border-radius: 16px;
+  border-radius: var(--radius-3);
   border: 1px dashed rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.02);
   font-family: var(--font-body);
@@ -281,7 +281,7 @@
 /* ── game-page-rich overrides (context prefix) ──────────────────── */
 .game-page-rich .finance-timeline-chart {
   height: 210px;
-  border-radius: 12px;
+  border-radius: var(--radius-3);
 }
 
 /* ── Responsive ─────────────────────────────────────────────────── */
@@ -309,7 +309,7 @@
 
   .finance-timeline-chart {
     height: 172px;
-    border-radius: 14px;
+    border-radius: var(--radius-3);
     padding: 0.2rem;
   }
 
@@ -323,7 +323,7 @@
 
   .finance-timeline-stop {
     padding: 0.68rem 0.58rem 0.7rem;
-    border-radius: 14px;
+    border-radius: var(--radius-3);
   }
 
   .finance-timeline-stop-label {

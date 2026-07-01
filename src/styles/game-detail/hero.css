@@ -19,7 +19,7 @@
 .game-hero-cinematic {
   position: relative;
   overflow: hidden;
-  border-radius: 34px;
+  border-radius: var(--radius-1);
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: linear-gradient(
     180deg,
@@ -68,7 +68,7 @@
 /* ── Poster panel ───────────────────────────────────────────────── */
 .game-poster-panel {
   border: 1px solid var(--line);
-  border-radius: 24px;
+  border-radius: var(--radius-1);
   background: linear-gradient(
     180deg,
     rgba(18, 20, 26, 0.98),
@@ -86,14 +86,14 @@
   max-width: none;
   height: auto;
   display: block;
-  border-radius: 24px;
+  border-radius: var(--radius-2);
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.48);
 }
 
 /* ── Intro panel ────────────────────────────────────────────────── */
 .game-intro-panel {
   border: 1px solid var(--line);
-  border-radius: 24px;
+  border-radius: var(--radius-2);
   background: linear-gradient(
     180deg,
     rgba(18, 20, 26, 0.98),
@@ -159,7 +159,7 @@
 }
 
 .game-overview-card-cinematic .game-overview-media .game-poster-image {
-  border-radius: 18px;
+  border-radius: var(--radius-3);
   box-shadow: 0 24px 56px rgba(0, 0, 0, 0.42);
   backdrop-filter: blur(8px);
 }
@@ -194,7 +194,7 @@
 
 /* ── game-page-rich overrides (context prefix) ──────────────────── */
 .game-page-rich .game-hero-cinematic {
-  border-radius: 18px;
+  border-radius: var(--radius-1);
 }
 
 .game-page-rich .game-hero-cinematic::before {
@@ -240,9 +240,12 @@
 .game-page-rich
   .game-overview-card-cinematic
   .game-overview-media
-  .game-poster-image,
+  .game-poster-image {
+  border-radius: var(--radius-3);
+}
+
 .game-page-rich .dlc-showcase-cover img {
-  border-radius: 10px;
+  border-radius: var(--radius-4);
 }
 
 .game-page-rich .game-overview-copy {

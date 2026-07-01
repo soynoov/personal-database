@@ -15,4 +15,15 @@
    Este archivo sirve de punto de import para el componente
    y como lugar para futuras sobreescrituras específicas. */
 
+/* Radio por anidación: .detail-comments-vault es propio de la ficha
+   (el catálogo usa .detail-comments a secas, sin -vault), así que se
+   puede tokenizar aquí sin afectar al modal de vista rápida. */
+.detail-comments-vault {
+  border-radius: var(--radius-1);
+}
+
+.detail-comments-vault dd {
+  border-radius: var(--radius-2);
+}
+
 } /* end @layer global */
