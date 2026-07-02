@@ -1,23 +1,26 @@
 ---
 /**
  * GameDetailDLCs.astro — Sección DLCs (galería de expansiones).
- * Muestra las tarjetas de cada DLC con portada fallback, precios y notas.
+ * Muestra las tarjetas de cada DLC con su propia portada (o un estado
+ * "sin portada" si no hay cover_url o la imagen rompe), precios y notas.
  * Las funciones de formato (formatDate, formatValue, formatCurrency) se pasan
  * como props desde [slug].astro porque los datos DLC no se pre-formatean.
- * Datos: dlcItems, dlcTotal, coverUrl computados en [slug].astro.
+ * Datos: dlcItems, dlcTotal computados en [slug].astro.
  */
 import '../../styles/game-detail/dlcs.css';
+import '../../styles/game-detail/edit.css';
 
 interface Props {
+  slug: string;
   dlcItems: any[];
   dlcTotal: number;
-  coverUrl: string;
   formatDate: (value: unknown) => string;
   formatValue: (value: unknown, fallback?: string) => string;
   formatCurrency: (value: unknown, fallback?: string) => string;
 }
 
-const { dlcItems, dlcTotal, coverUrl, formatDate, formatValue, formatCurrency } = Astro.props;
+const { slug, dlcItems, dlcTotal, formatDate, formatValue, formatCurrency } = Astro.props;
+const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dlc.fecha_adquisicion !== undefined).length;
 ---
 
 <section class="game-page-section" id="dlcs">
@@ -26,7 +29,15 @@ const { dlcItems, dlcTotal, coverUrl, formatDate, formatValue, formatCurrency } 
       <span class="section-eyebrow">Expansiones</span>
       <h2>DLCs</h2>
     </div>
-    <span class="section-pill">{dlcTotal > 0 ? `${dlcTotal} registrados` : "Sin DLCs"}</span>
+    <div class="section-title-actions">
+      <span class="section-pill">{dlcTotal > 0 ? `${ownedCount}/${dlcTotal} adquiridos` : "Sin DLCs"}</span>
+      <button class="game-edit-trigger game-edit-trigger-sm" id="dlcs-edit-trigger" type="button" aria-label="Editar DLCs">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+        </svg>
+      </button>
+    </div>
   </div>
 
   {dlcTotal === 0 ? (
@@ -34,17 +45,32 @@ const { dlcItems, dlcTotal, coverUrl, formatDate, formatValue, formatCurrency } 
   ) : dlcItems.length > 0 ? (
     <div class="dlc-gallery">
       {dlcItems.map((dlc) => (
-        <article class="dlc-showcase-card">
+        <article class:list={["dlc-showcase-card", !dlc.fecha_adquisicion && "dlc-showcase-card-unowned"]}>
           <div class="dlc-showcase-cover">
-            <div class="dlc-showcase-fallback">
-              <img src={coverUrl} alt="" aria-hidden="true" loading="lazy" />
-              <span class="dlc-showcase-fallback-badge">Sin portada propia</span>
+            {dlc.cover_url ? (
+              <img
+                class="dlc-showcase-own-cover"
+                src={dlc.cover_url}
+                alt=""
+                loading="lazy"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+              />
+            ) : null}
+            <div class="dlc-showcase-cover-empty" style={dlc.cover_url ? "display:none" : undefined}>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 15 15 9"></path>
+                <path d="M10.5 5.5 12.5 3.5a3 3 0 1 1 4 4l-2 2"></path>
+                <path d="M13.5 18.5 11.5 20.5a3 3 0 1 1-4-4l2-2"></path>
+                <path d="M3 3 21 21"></path>
+              </svg>
+              <span>Sin portada</span>
             </div>
+            {!dlc.fecha_adquisicion && <span class="dlc-showcase-unowned-badge">No adquirido</span>}
           </div>
 
           <div class="dlc-showcase-body">
             <h3>{formatValue(dlc.titulo, "DLC sin nombre")}</h3>
-            <dl class="detail-grid detail-grid-2">
+            <dl class="detail-grid dlc-showcase-facts">
               <div class:list={["detail-item", formatDate(dlc.fecha_adquisicion) === "-" && "detail-item-empty"]}>
                 <dt>Adquirido</dt>
                 <dd>{formatDate(dlc.fecha_adquisicion)}</dd>
@@ -52,22 +78,6 @@ const { dlcItems, dlcTotal, coverUrl, formatDate, formatValue, formatCurrency } 
               <div class:list={["detail-item", (dlc.precio_pagado === null || dlc.precio_pagado === undefined) && "detail-item-empty"]}>
                 <dt>Precio pagado</dt>
                 <dd>{formatCurrency(dlc.precio_pagado)}</dd>
-              </div>
-              <div class:list={["detail-item", (dlc.precio_actual === null || dlc.precio_actual === undefined) && "detail-item-empty"]}>
-                <dt>Precio actual</dt>
-                <dd>{formatCurrency(dlc.precio_actual)}</dd>
-              </div>
-              <div class:list={["detail-item", (dlc.precio_salida === null || dlc.precio_salida === undefined) && "detail-item-empty"]}>
-                <dt>Precio salida</dt>
-                <dd>{formatCurrency(dlc.precio_salida)}</dd>
-              </div>
-              <div class:list={["detail-item", formatValue(dlc.tamano) === "-" && "detail-item-empty"]}>
-                <dt>Tamano</dt>
-                <dd>{formatValue(dlc.tamano)}</dd>
-              </div>
-              <div class:list={["detail-item", formatValue(dlc.cover_source) === "-" && "detail-item-empty"]}>
-                <dt>Fuente portada</dt>
-                <dd>{dlc.cover_source ? dlc.cover_source : "Fallback del juego"}</dd>
               </div>
             </dl>
             {formatValue(dlc.notas) !== "-" && (
@@ -81,3 +91,183 @@ const { dlcItems, dlcTotal, coverUrl, formatDate, formatValue, formatCurrency } 
     <div class="detail-dlc-empty">Hay DLCs contabilizados, pero aun no tienen ficha individual.</div>
   )}
 </section>
+
+<dialog class="edit-dialog edit-dialog-wide" id="dlcs-edit-dialog">
+  <div class="edit-dialog-body">
+    <div class="edit-dialog-head">
+      <div>
+        <h2>Editar DLCs</h2>
+        <p class="edit-dialog-sub">Marca los que tienes y cuánto pagaste. Escribe directo en games.json, solo en local.</p>
+      </div>
+      <button class="edit-dialog-close" id="dlcs-edit-close" type="button" aria-label="Cerrar">×</button>
+    </div>
+
+    <p class="edit-dialog-error" id="dlcs-edit-error" hidden></p>
+
+    <div class="dlc-edit-sync-row">
+      <button class="edit-dialog-cancel" id="dlcs-sync-button" type="button" data-slug={slug}>
+        Actualizar desde Steam
+      </button>
+      <span class="edit-field-hint" id="dlcs-sync-status">
+        Busca DLCs nuevos en Steam y los añade como "no adquirido".
+      </span>
+    </div>
+
+    <form id="dlcs-edit-form" data-slug={slug}>
+      <div class="dlc-edit-list">
+        {dlcItems.length === 0 && (
+          <p class="edit-field-hint">Todavía no hay DLCs registrados. Prueba "Actualizar desde Steam".</p>
+        )}
+        {dlcItems.map((dlc, i) => (
+          <div class="dlc-edit-row">
+            <span class="dlc-edit-row-title">{formatValue(dlc.titulo, "DLC sin nombre")}</span>
+            <label class="dlc-edit-row-owned">
+              <input
+                type="checkbox"
+                class="dlc-edit-owned-checkbox"
+                data-row={i}
+                checked={dlc.fecha_adquisicion !== null && dlc.fecha_adquisicion !== undefined}
+              />
+              Lo tengo
+            </label>
+            <input
+              type="number"
+              step="0.01"
+              min="0"
+              class="dlc-edit-price-input"
+              data-row={i}
+              placeholder="Precio pagado"
+              value={dlc.precio_pagado ?? ''}
+              disabled={dlc.fecha_adquisicion === null || dlc.fecha_adquisicion === undefined}
+            />
+          </div>
+        ))}
+      </div>
+
+      <div class="edit-dialog-actions">
+        <button class="edit-dialog-cancel" id="dlcs-edit-cancel" type="button">Cancelar</button>
+        <button class="edit-dialog-submit" id="dlcs-edit-submit" type="submit">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<script>
+  const trigger = document.getElementById('dlcs-edit-trigger');
+  const dialog = document.getElementById('dlcs-edit-dialog');
+  const form = document.getElementById('dlcs-edit-form');
+  const closeBtn = document.getElementById('dlcs-edit-close');
+  const cancelBtn = document.getElementById('dlcs-edit-cancel');
+  const errorBox = document.getElementById('dlcs-edit-error');
+  const submitBtn = document.getElementById('dlcs-edit-submit');
+  const syncBtn = document.getElementById('dlcs-sync-button');
+  const syncStatus = document.getElementById('dlcs-sync-status');
+
+  if (
+    trigger instanceof HTMLButtonElement &&
+    dialog instanceof HTMLDialogElement &&
+    form instanceof HTMLFormElement &&
+    errorBox instanceof HTMLElement &&
+    submitBtn instanceof HTMLButtonElement
+  ) {
+    const hideError = () => errorBox.setAttribute('hidden', '');
+    const showError = (message: string) => {
+      errorBox.textContent = message;
+      errorBox.removeAttribute('hidden');
+    };
+
+    trigger.addEventListener('click', () => {
+      hideError();
+      dialog.showModal();
+    });
+
+    closeBtn?.addEventListener('click', () => dialog.close());
+    cancelBtn?.addEventListener('click', () => dialog.close());
+
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    // Al desmarcar "Lo tengo" se deshabilita (no se borra) el precio, para
+    // que quede claro que ese campo no aplica sin perder lo que hubiera
+    // escrito si el usuario lo vuelve a marcar antes de guardar.
+    form.querySelectorAll('.dlc-edit-owned-checkbox').forEach((checkbox) => {
+      checkbox.addEventListener('change', () => {
+        if (!(checkbox instanceof HTMLInputElement)) return;
+        const row = checkbox.dataset.row;
+        const priceInput = form.querySelector(`.dlc-edit-price-input[data-row="${row}"]`);
+        if (priceInput instanceof HTMLInputElement) {
+          priceInput.disabled = !checkbox.checked;
+        }
+      });
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      hideError();
+
+      const slug = form.dataset.slug ?? '';
+      const checkboxes = Array.from(form.querySelectorAll('.dlc-edit-owned-checkbox'));
+      const items = checkboxes.map((checkbox) => {
+        if (!(checkbox instanceof HTMLInputElement)) return { owned: false, precio_pagado: null };
+        const row = checkbox.dataset.row;
+        const priceInput = form.querySelector(`.dlc-edit-price-input[data-row="${row}"]`);
+        return {
+          owned: checkbox.checked,
+          precio_pagado: priceInput instanceof HTMLInputElement ? priceInput.value : null,
+        };
+      });
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Guardando…';
+
+      try {
+        const response = await fetch(`/api/games/${slug}/dlcs/edit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items }),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) {
+          throw new Error(result.error || `No se pudo guardar (HTTP ${response.status}).`);
+        }
+        window.location.reload();
+      } catch (error) {
+        showError(error instanceof Error ? error.message : 'No se pudo guardar.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Guardar cambios';
+      }
+    });
+  }
+
+  if (syncBtn instanceof HTMLButtonElement && syncStatus instanceof HTMLElement) {
+    const defaultStatusText = syncStatus.textContent ?? '';
+
+    syncBtn.addEventListener('click', async () => {
+      const slug = syncBtn.dataset.slug ?? '';
+      syncBtn.disabled = true;
+      syncStatus.textContent = 'Consultando Steam…';
+
+      try {
+        const response = await fetch(`/api/games/${slug}/dlcs/sync`, { method: 'POST' });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) {
+          throw new Error(result.error || `No se pudo consultar Steam (HTTP ${response.status}).`);
+        }
+        if (result.added > 0 || result.backfilled > 0) {
+          const parts = [];
+          if (result.added > 0) parts.push(`${result.added} nuevo(s)`);
+          if (result.backfilled > 0) parts.push(`${result.backfilled} completado(s) con su portada`);
+          syncStatus.textContent = `Steam: ${parts.join(', ')}. Recargando…`;
+          window.location.reload();
+        } else {
+          syncStatus.textContent = 'No hay DLCs nuevos en Steam.';
+          syncBtn.disabled = false;
+        }
+      } catch (error) {
+        syncStatus.textContent = error instanceof Error ? error.message : 'No se pudo consultar Steam.';
+        syncBtn.disabled = false;
+      }
+    });
+  }
+</script>

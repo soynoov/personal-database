@@ -1,0 +1,26 @@
+@import '../theme.css';
+
+/* ================================================================
+   game-detail/topbar.css — barra superior de la ficha
+   Selectores: .game-page-topbar, .back-link (override de ancho)
+   .game-page-rich es display:grid, así que sus hijos directos se
+   estiran a lo ancho por defecto (justify-items normal). Este wrapper
+   flex es lo que evita que .back-link ocupe todo el ancho y permite
+   colocar volver a la izquierda y el lápiz general a la derecha.
+   ================================================================ */
+
+@layer global {
+
+.game-page-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.game-page-topbar .back-link {
+  margin-bottom: 0;
+  flex: 0 0 auto;
+}
+
+} /* end @layer global */

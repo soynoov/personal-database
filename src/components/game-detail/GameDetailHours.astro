@@ -63,7 +63,7 @@ const {
 
       <div class="chart-metrics-grid">
         {hoursSnapshotCards.map(({ label, value, note, tone }) => (
-          <article class:list={["chart-metric-card", `chart-metric-card-${tone}`]}>
+          <article class:list={["chart-metric-card", `chart-metric-card-${tone}`, value === "-" && "chart-metric-card-empty"]}>
             <span>{label}</span>
             <strong>{value}</strong>
             <p>{note}</p>

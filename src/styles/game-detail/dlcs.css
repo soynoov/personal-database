@@ -3,8 +3,8 @@
 /* ================================================================
    game-detail/dlcs.css — sección DLCs (galería de expansiones)
    Selectores: .dlc-gallery, .dlc-showcase-card, .dlc-showcase-cover,
-   .dlc-showcase-body, .dlc-showcase-notes, .dlc-showcase-fallback,
-   .dlc-showcase-fallback-badge
+   .dlc-showcase-cover-empty, .dlc-showcase-own-cover, .dlc-showcase-body,
+   .dlc-showcase-notes
    Extraídos de src/styles/game-page.css
    ================================================================ */
 
@@ -13,14 +13,16 @@
 /* ── DLC gallery ────────────────────────────────────────────────── */
 .dlc-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.25rem;
+  min-width: 0;
 }
 
 /* ── DLC showcase card ──────────────────────────────────────────── */
 .dlc-showcase-card {
   display: grid;
   grid-template-columns: 1fr;
+  min-width: 0;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--radius-2);
@@ -33,62 +35,75 @@
 }
 
 /* ── DLC showcase cover ─────────────────────────────────────────── */
+/* display:grid sin place-items: los items (la imagen o el estado vacío)
+   deben ESTIRARSE a ocupar toda la celda (comportamiento por defecto,
+   "stretch"). place-items:center rompía esto — con height:100% en un
+   grid item centrado, el alto de la fila "auto" se calculaba contra un
+   porcentaje indefinido y la imagen caía a su tamaño intrínseco en vez
+   de cubrir la caja. El centrado del icono "sin portada" ya lo resuelve
+   .dlc-showcase-cover-empty por su cuenta con su propio grid interno. */
 .dlc-showcase-cover {
   position: relative;
   min-height: 0;
   aspect-ratio: 16 / 9;
-  padding: 1rem;
   display: grid;
-  place-items: center;
   background:
     radial-gradient(circle at top, rgba(186, 36, 38, 0.14), transparent 44%),
     linear-gradient(180deg, rgba(27, 31, 39, 0.98), rgba(18, 21, 28, 0.98));
 }
 
+/* Sin padding: la portada llega a los 4 bordes de la caja (edge-to-edge,
+   como una capsule de Steam). El redondeo lo aporta .dlc-showcase-card
+   con overflow:hidden, no la imagen. */
 .dlc-showcase-cover img {
   width: 100%;
   height: 100%;
   max-height: none;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
-  border-radius: var(--radius-4);
 }
 
-/* ── DLC showcase fallback ──────────────────────────────────────── */
-.dlc-showcase-fallback {
-  position: relative;
+/* Portada propia del DLC (Steam). Ya no hay una capa de fallback debajo
+   (se quitó por frágil: el letterbox de object-fit:contain dejaba
+   transparentarse la portada del juego base) — ahora, si la imagen rompe,
+   el onerror inline la oculta y muestra su hermano .dlc-showcase-cover-empty.
+   Como uno de los dos siempre está en display:none, no hace falta
+   posicionamiento absoluto: el que queda visible ocupa toda la celda del
+   grid de .dlc-showcase-cover sin solaparse con nada. */
+.dlc-showcase-own-cover {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── DLC showcase cover — estado sin portada ───────────────────────
+   Se muestra cuando el DLC no tiene cover_url o cuando la imagen rompe
+   al cargar (onerror). Icono de "enlace roto" en línea, sin depender de
+   ninguna librería de iconos externa. */
+.dlc-showcase-cover-empty {
   width: 100%;
   height: 100%;
   display: grid;
   place-items: center;
+  justify-items: center;
+  gap: 0.5rem;
+  color: rgba(218, 226, 236, 0.42);
+  text-align: center;
 }
 
-.dlc-showcase-fallback img {
-  width: auto;
-  max-width: min(72%, 230px);
-  height: 100%;
-  max-height: calc(100% - 1rem);
+.dlc-showcase-cover-empty svg {
+  width: 34px;
+  height: 34px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.dlc-showcase-fallback-badge,
-.dlc-showcase-fallback-empty {
-  position: absolute;
-  left: 1rem;
-  top: 1rem;
-  display: inline-flex;
-  align-items: center;
-  min-height: 28px;
-  padding: 0.28rem 0.65rem;
-  border-radius: var(--radius-pill);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(15, 17, 22, 0.9);
+.dlc-showcase-cover-empty span {
   font-family: var(--font-body);
   font-size: 0.75rem;
-  color: #d6c8cc;
-}
-
-.dlc-showcase-fallback-empty {
-  position: static;
+  color: rgba(218, 226, 236, 0.5);
 }
 
 /* ── DLC showcase body ──────────────────────────────────────────── */
@@ -96,12 +111,31 @@
   padding: 1.15rem;
   display: grid;
   gap: 0.95rem;
+  min-width: 0;
 }
 
+/* Altura reservada a 2 líneas siempre (min-height + line-clamp), para que
+   los títulos cortos y largos dejen el resto del contenido (fechas,
+   precio, notas) arrancando en la misma fila entre cards vecinas. */
 .dlc-showcase-body h3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
   margin: 0;
-  font-size: 1.45rem;
-  line-height: 1.02;
+  min-height: calc(1.2rem * 1.2 * 2);
+  font-size: 1.2rem;
+  line-height: 1.2;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Solo 2 campos por card (Adquirido, Precio pagado) — el resto de datos
+   del DLC (precio actual, salida, tamaño, fuente portada) vive en el
+   lápiz de edición, no ocupando sitio en cada tarjeta. */
+.dlc-showcase-facts {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
 }
 
 /* Radio por anidación: .detail-item genérico vive en detail.css y es
@@ -122,13 +156,120 @@
   color: #ecdddd;
 }
 
+/* ── DLC no adquirido (sin fecha_adquisicion) ─────────────────────── */
+/* Mismo lenguaje visual que .detail-item-empty (detail.css): opacidad
+   0.52 + desaturar. Aquí además se apaga la portada a escala de grises
+   para que se note de un vistazo, sin leer las fechas de cada card. */
+.dlc-showcase-card-unowned {
+  opacity: 0.52;
+}
+
+.dlc-showcase-card-unowned .dlc-showcase-cover {
+  filter: grayscale(1);
+}
+
+.dlc-showcase-card-unowned:hover {
+  opacity: 0.82;
+}
+
+.dlc-showcase-card-unowned .dlc-showcase-cover:hover {
+  filter: grayscale(0.35);
+}
+
+.dlc-showcase-unowned-badge {
+  position: absolute;
+  right: 0.75rem;
+  top: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0.24rem 0.6rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(15, 17, 22, 0.82);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: #d6c8cc;
+}
+
+/* ── Diálogo de edición de DLCs (lista + sync de Steam) ───────────── */
+.dlc-edit-sync-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.dlc-edit-list {
+  display: grid;
+  gap: 0.15rem;
+  max-height: min(48vh, 420px);
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  padding-right: 0.3rem;
+}
+
+.dlc-edit-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 140px;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.6rem 0.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dlc-edit-row-title {
+  min-width: 0;
+  overflow-wrap: break-word;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--text);
+}
+
+.dlc-edit-row-owned {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.dlc-edit-row-owned input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--pistachio);
+  cursor: pointer;
+}
+
+.dlc-edit-price-input {
+  width: 100%;
+  padding: 0.4rem 0.55rem;
+  border-radius: var(--radius-3);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.84rem;
+}
+
+.dlc-edit-price-input:disabled {
+  opacity: 0.4;
+}
+
+@media (max-width: 560px) {
+  .dlc-edit-row {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+}
+
 /* ── game-page-rich overrides (context prefix) ──────────────────── */
 .game-page-rich .dlc-showcase-card {
   border-radius: var(--radius-2);
-}
-
-.game-page-rich .dlc-showcase-cover img {
-  border-radius: var(--radius-4);
 }
 
 .game-page-rich .dlc-showcase-body {
@@ -145,11 +286,11 @@
 @media (max-width: 720px) {
   .dlc-showcase-cover {
     aspect-ratio: 16 / 10;
-    padding: 0.85rem;
   }
 
-  .dlc-showcase-fallback img {
-    max-width: min(70%, 190px);
+  .dlc-showcase-cover-empty svg {
+    width: 28px;
+    height: 28px;
   }
 
   .game-page-rich .dlc-showcase-body {

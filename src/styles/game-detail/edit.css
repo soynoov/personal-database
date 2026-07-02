@@ -8,10 +8,6 @@
 @layer global {
 
 .game-edit-trigger {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 5;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -47,7 +43,25 @@
   stroke-linejoin: round;
 }
 
+/* ── Lápiz de sección (Dinero, DLCs, Comentarios...) ─────────────── */
+/* Igual que .game-edit-trigger pero más pequeño, pensado para vivir
+   dentro de un .section-title-row junto al <h2>, no en la topbar. */
+.game-edit-trigger-sm {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.game-edit-trigger-sm svg {
+  width: 15px;
+  height: 15px;
+}
+
 /* ── Diálogo ─────────────────────────────────────────────────── */
+
+.edit-dialog.edit-dialog-wide {
+  width: min(680px, calc(100% - 1.5rem));
+}
 
 .edit-dialog {
   width: min(560px, calc(100% - 1.5rem));

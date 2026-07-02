@@ -65,6 +65,32 @@
   pointer-events: none;
 }
 
+/* ── Variante "banner" (híbrido) ────────────────────────────────────
+   Cuando hay --hero-banner (Steam library_hero, panorámico nativo),
+   el ::before usa esa imagen nítida en vez del --hero-cover recortado
+   a la fuerza desde la portada portrait. El blur/saturate de la regla
+   base existía para disimular ese mal encaje — con un asset pensado
+   para ser ancho ya no hace falta. El poster pequeño (.game-overview-media)
+   se mantiene igual encima, como tarjeta flotante. */
+.game-hero-cinematic-banner::before {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(8, 10, 14, 0.74) 0%,
+      rgba(8, 10, 14, 0.32) 48%,
+      rgba(8, 10, 14, 0.8) 100%
+    ),
+    radial-gradient(
+      circle at top left,
+      rgba(186, 36, 38, 0.14),
+      transparent 30%
+    ),
+    var(--hero-banner);
+  background-size: cover;
+  background-position: center 32%;
+  filter: saturate(0.94);
+}
+
 /* ── Poster panel ───────────────────────────────────────────────── */
 .game-poster-panel {
   border: 1px solid var(--line);
@@ -129,10 +155,25 @@
   box-shadow: none;
 }
 
-/* ── Overview media ─────────────────────────────────────────────── */
+/* ── Overview media (portada) ─────────────────────────────────────
+   Celda bento propia: nivel 2 dentro de .game-hero-cinematic (nivel 1).
+   Sin padding: la portada llega a los 4 bordes de la celda (edge-to-edge).
+   El redondeo lo aporta el overflow:hidden de la propia celda, no la
+   imagen — así no hay descuadre entre el radio del contenedor y el de
+   la imagen en las esquinas. object-fit:cover llena la caja entera,
+   recortando lo que sobre en vez de dejar márgenes vacíos. */
 .game-overview-media {
   align-self: stretch;
   display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-2);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.42);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.04),
+    rgba(255, 255, 255, 0.015)
+  );
 }
 
 .game-overview-media .game-poster-stack {
@@ -144,24 +185,11 @@
   width: 100%;
   height: 100%;
   max-height: none;
-  object-fit: contain;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.03),
-    rgba(255, 255, 255, 0.01)
-  );
+  object-fit: cover;
 }
 
 .game-overview-card-cinematic .game-overview-media {
-  max-width: 94px;
-  align-self: start;
-  margin-top: 0.35rem;
-}
-
-.game-overview-card-cinematic .game-overview-media .game-poster-image {
-  border-radius: var(--radius-3);
-  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.42);
-  backdrop-filter: blur(8px);
+  max-width: 126px;
 }
 
 /* ── Overview copy ──────────────────────────────────────────────── */
@@ -215,6 +243,27 @@
   background-position: center 28%;
 }
 
+/* Misma especificidad que la regla de arriba (0,2,1) — va después a
+   propósito para ganarle por orden de fuente cuando hay banner nítido. */
+.game-page-rich .game-hero-cinematic-banner::before {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(8, 10, 14, 0.76) 0%,
+      rgba(8, 10, 14, 0.3) 48%,
+      rgba(8, 10, 14, 0.8) 100%
+    ),
+    radial-gradient(
+      circle at top left,
+      rgba(164, 174, 191, 0.1),
+      transparent 30%
+    ),
+    var(--hero-banner);
+  background-size: cover;
+  background-position: center 32%;
+  filter: saturate(0.94);
+}
+
 .game-page-rich .game-overview-card {
   gap: 1rem;
   min-height: 0;
@@ -232,20 +281,7 @@
 }
 
 .game-page-rich .game-overview-card-cinematic .game-overview-media {
-  max-width: 88px;
-  margin-top: 0.1rem;
-}
-
-.game-page-rich .game-poster-image,
-.game-page-rich
-  .game-overview-card-cinematic
-  .game-overview-media
-  .game-poster-image {
-  border-radius: var(--radius-3);
-}
-
-.game-page-rich .dlc-showcase-cover img {
-  border-radius: var(--radius-4);
+  max-width: 110px;
 }
 
 .game-page-rich .game-overview-copy {
@@ -268,7 +304,7 @@
   }
 
   .game-overview-card-cinematic .game-overview-media {
-    max-width: 84px;
+    max-width: 108px;
   }
 }
 
@@ -287,12 +323,8 @@
     padding: 1.15rem;
   }
 
-  .game-overview-media .game-poster-image {
-    max-height: 420px;
-  }
-
   .game-overview-card-cinematic .game-overview-media {
-    max-width: 110px;
+    max-width: 140px;
   }
 
   .game-poster-panel {
@@ -314,11 +346,7 @@
   }
 
   .game-page-rich .game-overview-card-cinematic .game-overview-media {
-    max-width: 84px;
-  }
-
-  .game-page-rich .game-overview-media .game-poster-image {
-    max-height: 250px;
+    max-width: 108px;
   }
 
   .game-page-rich .game-overview-copy h1 {

@@ -80,21 +80,30 @@ export const POST: APIRoute = async ({ params, request }) => {
 
   const index = games.findIndex((g) => slugifyGameTitle(g.titulo) === slug);
 
-  const updated = {
-    ...game,
-    estado: toNullableString(body.estado) ?? game.estado,
-    horas: toNullableNumber(body.horas),
-    fecha_inicio: toNullableString(body.fecha_inicio),
-    fecha_fin: toNullableString(body.fecha_fin),
-    precio_pagado: toNullableNumber(body.precio_pagado),
-    gasto_microtransacciones: toNullableNumber(body.gasto_microtransacciones),
-    nota: toNullableNumber(body.nota),
-    comentarios: toNullableString(body.comentarios),
-    // Tags: el formulario solo manda free_to_play (booleano). Si por algún
-    // otro camino llega body.tags como array/string, se respeta tal cual.
-    tags:
-      body.tags !== undefined ? toTagsArray(body.tags) : toggleFreeToPlayTag(game.tags, body.free_to_play),
-  };
+  // Partial patch: cada mini-formulario (general, dinero, comentarios) solo
+  // manda sus propios campos. Si un campo no viene en el body, se conserva
+  // el valor que ya tenía el juego — nunca se pisa con null por omisión.
+  const updated = { ...game };
+
+  if (body.estado !== undefined) updated.estado = toNullableString(body.estado) ?? game.estado;
+  if (body.horas !== undefined) updated.horas = toNullableNumber(body.horas);
+  if (body.fecha_inicio !== undefined) updated.fecha_inicio = toNullableString(body.fecha_inicio);
+  if (body.fecha_fin !== undefined) updated.fecha_fin = toNullableString(body.fecha_fin);
+  if (body.precio_pagado !== undefined) updated.precio_pagado = toNullableNumber(body.precio_pagado);
+  if (body.gasto_microtransacciones !== undefined) {
+    updated.gasto_microtransacciones = toNullableNumber(body.gasto_microtransacciones);
+  }
+  if (body.nota !== undefined) updated.nota = toNullableNumber(body.nota);
+  if (body.comentarios !== undefined) updated.comentarios = toNullableString(body.comentarios);
+
+  // Tags: el checkbox free_to_play solo se aplica si el formulario lo manda
+  // explícitamente (junto al precio, desde el lápiz de Dinero). Si llega
+  // body.tags como array/string por otro camino, se respeta tal cual.
+  if (body.tags !== undefined) {
+    updated.tags = toTagsArray(body.tags);
+  } else if (body.free_to_play !== undefined) {
+    updated.tags = toggleFreeToPlayTag(game.tags, body.free_to_play);
+  }
 
   games[index] = updated;
 

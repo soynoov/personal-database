@@ -7,22 +7,35 @@
  */
 import '../../styles/game-detail/shared.css';
 import '../../styles/game-detail/finance.css';
+import '../../styles/game-detail/edit.css';
+
+interface MoneyEditValues {
+  precio_pagado: number | null;
+  gasto_microtransacciones: number | null;
+  tags: string[];
+}
 
 interface Props {
+  slug: string;
   moneyChartPayload: object;
   moneyChartPoints: Array<{ label: string; value: number }>;
   priceDeltaLabel: string;
   priceDeltaTone: string;
   moneySnapshotCards: Array<{ label: string; value: string; note: string; tone: string }>;
+  editValues: MoneyEditValues;
 }
 
 const {
+  slug,
   moneyChartPayload,
   moneyChartPoints,
   priceDeltaLabel,
   priceDeltaTone,
   moneySnapshotCards,
+  editValues,
 } = Astro.props;
+
+const isFreeToPlay = editValues.tags.includes('free-to-play');
 ---
 
 <article class="analysis-panel analysis-panel-money" id="finance">
@@ -31,9 +44,17 @@ const {
       <span class="section-eyebrow">Finanzas</span>
       <h2>Dinero</h2>
     </div>
-    {priceDeltaLabel && (
-      <span class:list={["section-pill", `section-pill-${priceDeltaTone}`]}>{priceDeltaLabel}</span>
-    )}
+    <div class="section-title-actions">
+      {priceDeltaLabel && (
+        <span class:list={["section-pill", `section-pill-${priceDeltaTone}`]}>{priceDeltaLabel}</span>
+      )}
+      <button class="game-edit-trigger game-edit-trigger-sm" id="money-edit-trigger" type="button" aria-label="Editar precio y microtransacciones">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+        </svg>
+      </button>
+    </div>
   </div>
 
   <div class="range-chart-card">
@@ -57,7 +78,7 @@ const {
 
       <div class="chart-metrics-grid">
         {moneySnapshotCards.map(({ label, value, note, tone }) => (
-          <article class:list={["chart-metric-card", `chart-metric-card-${tone}`]}>
+          <article class:list={["chart-metric-card", `chart-metric-card-${tone}`, value === "-" && "chart-metric-card-empty"]}>
             <span>{label}</span>
             <strong>{value}</strong>
             <p>{note}</p>
@@ -67,3 +88,155 @@ const {
     </div>
   </div>
 </article>
+
+<dialog class="edit-dialog" id="money-edit-dialog">
+  <div class="edit-dialog-body">
+    <div class="edit-dialog-head">
+      <div>
+        <h2>Editar Dinero</h2>
+        <p class="edit-dialog-sub">Escribe directo en games.json. Solo funciona en local (npm run dev).</p>
+      </div>
+      <button class="edit-dialog-close" id="money-edit-close" type="button" aria-label="Cerrar">×</button>
+    </div>
+
+    <p class="edit-dialog-error" id="money-edit-error" hidden></p>
+
+    <form id="money-edit-form" data-slug={slug}>
+      <div class="edit-field edit-field-checkbox">
+        <label for="money-edit-free-to-play">
+          <input
+            id="money-edit-free-to-play"
+            name="free_to_play"
+            type="checkbox"
+            checked={isFreeToPlay}
+          />
+          Free to play
+        </label>
+        <span class="edit-field-hint">
+          Marca esto si el juego es gratis de base. Cambia el badge y sustituye el campo "Precio pagado" por "Microtransacciones".
+        </span>
+      </div>
+
+      <div class="edit-field" id="money-field-precio-pagado" hidden={isFreeToPlay}>
+        <label for="money-edit-precio">Precio pagado (EUR)</label>
+        <input id="money-edit-precio" name="precio_pagado" type="number" step="0.01" min="0" value={editValues.precio_pagado ?? ''} />
+      </div>
+      <div class="edit-field" id="money-field-microtransacciones" hidden={!isFreeToPlay}>
+        <label for="money-edit-microtransacciones">Microtransacciones (EUR)</label>
+        <input
+          id="money-edit-microtransacciones"
+          name="gasto_microtransacciones"
+          type="number"
+          step="0.01"
+          min="0"
+          value={editValues.gasto_microtransacciones ?? ''}
+        />
+      </div>
+      <p class="edit-field-hint edit-field-hint-price" id="money-price-field-hint">
+        {isFreeToPlay
+          ? 'Free to play: el precio del juego es 0. Esto es lo gastado dentro, en compras o DLC sueltas.'
+          : 'Lo que pagaste por el juego en sí.'}
+      </p>
+
+      <div class="edit-dialog-actions">
+        <button class="edit-dialog-cancel" id="money-edit-cancel" type="button">Cancelar</button>
+        <button class="edit-dialog-submit" id="money-edit-submit" type="submit">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<script>
+  const trigger = document.getElementById('money-edit-trigger');
+  const dialog = document.getElementById('money-edit-dialog');
+  const form = document.getElementById('money-edit-form');
+  const closeBtn = document.getElementById('money-edit-close');
+  const cancelBtn = document.getElementById('money-edit-cancel');
+  const errorBox = document.getElementById('money-edit-error');
+  const submitBtn = document.getElementById('money-edit-submit');
+
+  if (
+    trigger instanceof HTMLButtonElement &&
+    dialog instanceof HTMLDialogElement &&
+    form instanceof HTMLFormElement &&
+    errorBox instanceof HTMLElement &&
+    submitBtn instanceof HTMLButtonElement
+  ) {
+    const hideError = () => errorBox.setAttribute('hidden', '');
+    const showError = (message: string) => {
+      errorBox.textContent = message;
+      errorBox.removeAttribute('hidden');
+    };
+
+    const freeToPlayCheckbox = document.getElementById('money-edit-free-to-play');
+    const precioField = document.getElementById('money-field-precio-pagado');
+    const microtransaccionesField = document.getElementById('money-field-microtransacciones');
+    const priceHint = document.getElementById('money-price-field-hint');
+
+    const syncPriceFields = () => {
+      if (
+        !(freeToPlayCheckbox instanceof HTMLInputElement) ||
+        !(precioField instanceof HTMLElement) ||
+        !(microtransaccionesField instanceof HTMLElement)
+      ) {
+        return;
+      }
+      const isFreeToPlayNow = freeToPlayCheckbox.checked;
+      precioField.hidden = isFreeToPlayNow;
+      microtransaccionesField.hidden = !isFreeToPlayNow;
+      if (priceHint instanceof HTMLElement) {
+        priceHint.textContent = isFreeToPlayNow
+          ? 'Free to play: el precio del juego es 0. Esto es lo gastado dentro, en compras o DLC sueltas.'
+          : 'Lo que pagaste por el juego en sí.';
+      }
+    };
+
+    freeToPlayCheckbox?.addEventListener('change', syncPriceFields);
+
+    trigger.addEventListener('click', () => {
+      hideError();
+      dialog.showModal();
+    });
+
+    closeBtn?.addEventListener('click', () => dialog.close());
+    cancelBtn?.addEventListener('click', () => dialog.close());
+
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      hideError();
+
+      const slug = form.dataset.slug ?? '';
+      const data = new FormData(form);
+      const freeToPlayInput = document.getElementById('money-edit-free-to-play');
+      const payload = {
+        precio_pagado: data.get('precio_pagado'),
+        gasto_microtransacciones: data.get('gasto_microtransacciones'),
+        free_to_play: freeToPlayInput instanceof HTMLInputElement ? freeToPlayInput.checked : false,
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Guardando…';
+
+      try {
+        const response = await fetch(`/api/games/${slug}/edit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) {
+          throw new Error(result.error || `No se pudo guardar (HTTP ${response.status}).`);
+        }
+        window.location.reload();
+      } catch (error) {
+        showError(error instanceof Error ? error.message : 'No se pudo guardar.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Guardar cambios';
+      }
+    });
+  }
+</script>

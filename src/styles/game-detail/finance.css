@@ -12,13 +12,15 @@
 
 @layer global {
 
-/* La regla genérica de shared.css solo cubre la 4ª card cuando es la
-   última (4 cards en total). El panel de Dinero ahora puede tener 5
-   (se sumó "Microtransacciones") — esta regla extra cubre ese caso sin
-   tocar la regla compartida con el panel de Horas, que sigue en 4. */
-.chart-metrics-grid > .chart-metric-card:nth-child(5):last-child {
-  grid-column: 1 / -1;
-}
+/* La regla genérica de shared.css hace que la 1ª card ocupe todo el
+   ancho y que la 4ª también lo haga SOLO si es la última (caso de 4
+   cards, panel de Horas). Con 5 cards (Dinero, tras sumar
+   "Microtransacciones") esa condición ya no se cumple, así que las
+   4 cards restantes caen solas en un grid 2x2 sin huecos — no hace
+   falta ninguna regla adicional. (Antes había una regla aquí que
+   forzaba la 5ª card a ancho completo dejando la 4ª sola a media
+   anchura con un hueco vacío al lado: era el bug del "contenedor
+   suelto". Se quita.) */
 
 /* ── Finance timeline card ──────────────────────────────────────── */
 .finance-timeline-card {

@@ -87,13 +87,30 @@ const WARMUP_TIMEOUT_MS = 30_000;
 const WARMUP_BATCH_SIZE = 50; // appIds por llamada (URL length safety)
 const WARMUP_BATCH_DELAY_MS = 300; // pausa entre batches para no saturar Steam
 
-type CacheEntry = { url: string | null; expiresAt: number };
+type CacheEntry = {
+  capsuleUrl: string | null;
+  heroUrl: string | null;
+  expiresAt: number;
+};
 const coverCache = new Map<number, CacheEntry>();
 
 function buildUrl(fmt: string, filename: string): string {
   // ${FILENAME} primero: si fuera al revés, replace('{FILENAME}') consume el {FILENAME}
   // de ${FILENAME} y deja el $ suelto en la URL resultante.
   return CDN_BASE + fmt.replace('${FILENAME}', filename).replace('{FILENAME}', filename);
+}
+
+// library_capsule (600x900, portrait) y library_hero (~3840x1240, banner
+// panorámico) vienen en el mismo objeto `assets` de IStoreBrowseService, así
+// que se resuelven y cachean juntos en una sola llamada por appId.
+function buildEntryFromAssets(assets: StoreAssets | undefined): Omit<CacheEntry, 'expiresAt'> {
+  const fmt = assets?.asset_url_format;
+  const lc = assets?.library_capsule;
+  const lh = assets?.library_hero;
+  return {
+    capsuleUrl: fmt && lc ? buildUrl(fmt, lc) : null,
+    heroUrl: fmt && lh ? buildUrl(fmt, lh) : null,
+  };
 }
 
 // ─── Steam IStoreBrowseService/GetItems/v1 ────────────────────────────────────
@@ -142,19 +159,26 @@ async function fetchIStoreBrowse(
 
 // ─── Per-request resolver (fallback si el appId no está en cache) ─────────────
 
-async function fetchSteamLibraryCapsule(appId: number): Promise<string | null> {
+async function fetchSteamAssetsCached(appId: number): Promise<CacheEntry> {
   const now = Date.now();
   const cached = coverCache.get(appId);
-  if (cached && cached.expiresAt > now) return cached.url;
+  if (cached && cached.expiresAt > now) return cached;
 
   const items = await fetchIStoreBrowse([appId], PER_REQUEST_TIMEOUT_MS);
-  const assets = items[0]?.assets;
-  const fmt = assets?.asset_url_format;
-  const lc = assets?.library_capsule;
+  const entry: CacheEntry = {
+    ...buildEntryFromAssets(items[0]?.assets),
+    expiresAt: now + TWENTY_FOUR_HOURS_MS,
+  };
+  coverCache.set(appId, entry);
+  return entry;
+}
 
-  const url = fmt && lc ? buildUrl(fmt, lc) : null;
-  coverCache.set(appId, { url, expiresAt: now + TWENTY_FOUR_HOURS_MS });
-  return url;
+async function fetchSteamLibraryCapsule(appId: number): Promise<string | null> {
+  return (await fetchSteamAssetsCached(appId)).capsuleUrl;
+}
+
+async function fetchSteamLibraryHero(appId: number): Promise<string | null> {
+  return (await fetchSteamAssetsCached(appId)).heroUrl;
 }
 
 // ─── Warmup: batch al inicio + cada 24h ──────────────────────────────────────
@@ -197,11 +221,9 @@ async function runWarmup(): Promise<void> {
 
     for (const item of items) {
       if (!item.appid) continue;
-      const fmt = item.assets?.asset_url_format;
-      const lc = item.assets?.library_capsule;
-      const url = fmt && lc ? buildUrl(fmt, lc) : null;
-      coverCache.set(item.appid, { url, expiresAt: now + TWENTY_FOUR_HOURS_MS });
-      if (url) cached++;
+      const entry: CacheEntry = { ...buildEntryFromAssets(item.assets), expiresAt: now + TWENTY_FOUR_HOURS_MS };
+      coverCache.set(item.appid, entry);
+      if (entry.capsuleUrl) cached++;
     }
 
     // Pausa entre batches para no saturar Steam
@@ -223,6 +245,21 @@ export async function resolveGameCover(game: CoverLookupGame): Promise<CoverResu
   const url = await fetchSteamLibraryCapsule(game.steam_appid);
   return url
     ? { url, source: 'Steam library capsule' }
+    : { url: null, source: 'Steam API unavailable' };
+}
+
+// library_hero: banner panorámico (~3840x1240) que Steam usa para la cabecera
+// de la página de cada juego en su propio cliente. No todos los juegos lo
+// tienen curado — si no existe, el llamador debe caer al tratamiento actual
+// (fondo borroso a partir de la portada portrait).
+export async function resolveGameHero(game: CoverLookupGame): Promise<CoverResult> {
+  if (!game.steam_appid) {
+    return { url: null, source: 'No steam_appid' };
+  }
+
+  const url = await fetchSteamLibraryHero(game.steam_appid);
+  return url
+    ? { url, source: 'Steam library hero' }
     : { url: null, source: 'Steam API unavailable' };
 }
 

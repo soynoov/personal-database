@@ -36,7 +36,6 @@
 }
 
 .game-page-rich .data-group-card,
-.game-page-rich .dlc-showcase-card,
 .game-page-rich .range-chart-card,
 .game-page-rich .finance-timeline-card,
 .game-page-rich .compact-bar-card {
@@ -51,7 +50,6 @@
 .game-page-rich .analysis-panel,
 .game-page-rich .game-summary-section,
 .game-page-rich .data-group-card,
-.game-page-rich .dlc-showcase-body,
 .game-page-rich .range-chart-card,
 .game-page-rich .finance-timeline-card {
   padding: 0.95rem;
@@ -84,10 +82,6 @@
   .game-overview-media
   .game-poster-image {
   border-radius: var(--radius-3);
-}
-
-.game-page-rich .dlc-showcase-cover img {
-  border-radius: var(--radius-4);
 }
 
 .game-page-rich .game-overview-copy {
@@ -185,50 +179,11 @@
   display: block;
 }
 
-.game-hero-cinematic {
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--radius-1);
-  min-height: 0;
-}
+/* .game-hero-cinematic (+ ::before/::after) y .game-poster-panel migrados
+   por completo a src/styles/game-detail/hero.css — no dejar copias aquí
+   (causaba exactamente el mismo problema de cascada que .dlc-showcase-*:
+   esta hoja se importa después y sus valores viejos ganaban). */
 
-.game-hero-cinematic::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(8, 10, 14, 0.74) 0%,
-      rgba(8, 10, 14, 0.38) 48%,
-      rgba(8, 10, 14, 0.8) 100%
-    ),
-    radial-gradient(
-      circle at top left,
-      rgba(186, 36, 38, 0.18),
-      transparent 28%
-    ),
-    var(--hero-cover);
-  background-size: cover;
-  background-position: center 28%;
-  filter: saturate(0.82) blur(0.5px);
-}
-
-.game-hero-cinematic::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(10, 12, 16, 0.15), rgba(10, 12, 16, 0.72)),
-    radial-gradient(
-      circle at center,
-      transparent 20%,
-      rgba(10, 12, 16, 0.34) 100%
-    );
-  pointer-events: none;
-}
-
-.game-poster-panel,
 .analysis-panel {
   border: 1px solid var(--line);
   border-radius: var(--radius-1);
@@ -241,8 +196,7 @@
 }
 
 .game-intro-panel,
-.data-group-card,
-.dlc-showcase-card {
+.data-group-card {
   border: 1px solid var(--line);
   border-radius: var(--radius-2);
   background: linear-gradient(
@@ -251,19 +205,6 @@
     rgba(14, 16, 22, 0.96)
   );
   box-shadow: var(--shadow);
-}
-
-.game-poster-stack {
-  display: block;
-}
-
-.game-poster-image {
-  width: 100%;
-  max-width: none;
-  height: auto;
-  display: block;
-  border-radius: var(--radius-2);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.48);
 }
 
 .game-intro-panel {
@@ -309,90 +250,8 @@
   background: #ef5759;
 }
 
-.game-overview-card {
-  display: grid;
-  grid-template-columns: minmax(110px, 140px) minmax(0, 1fr);
-  gap: 1.7rem;
-  align-items: stretch;
-  min-height: 240px;
-  background:
-    radial-gradient(
-      circle at top left,
-      rgba(186, 36, 38, 0.12),
-      transparent 28%
-    ),
-    linear-gradient(180deg, rgba(18, 20, 26, 0.98), rgba(14, 16, 22, 0.96));
-}
-
-.game-overview-card-cinematic {
-  position: relative;
-  z-index: 1;
-  min-height: 0;
-  padding: 2.2rem 2.6rem 1.6rem;
-  border: none;
-  background: transparent;
-  box-shadow: none;
-}
-
-.game-overview-media {
-  align-self: stretch;
-  display: grid;
-}
-
-.game-overview-media .game-poster-stack {
-  height: 100%;
-  display: grid;
-}
-
-.game-overview-media .game-poster-image {
-  width: 100%;
-  height: 100%;
-  max-height: none;
-  object-fit: contain;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.03),
-    rgba(255, 255, 255, 0.01)
-  );
-}
-
-.game-overview-card-cinematic .game-overview-media {
-  max-width: 94px;
-  align-self: start;
-  margin-top: 0.35rem;
-}
-
-.game-overview-card-cinematic .game-overview-media .game-poster-image {
-  border-radius: var(--radius-3);
-  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.42);
-  backdrop-filter: blur(8px);
-}
-
-.game-overview-copy {
-  display: grid;
-  align-content: center;
-  gap: 1.05rem;
-  padding-right: 0.5rem;
-}
-
-.game-overview-copy h1 {
-  margin: 0;
-  max-width: none;
-  font-family: var(--font-display);
-  font-size: clamp(2.7rem, 4.8vw, 4.9rem);
-  font-weight: 400;
-  line-height: 0.95;
-  letter-spacing: 1px;
-}
-
-.game-overview-summary {
-  margin: 0;
-  max-width: 64ch;
-  font-family: var(--font-body);
-  font-size: 0.96rem;
-  line-height: 1.45;
-  color: #cdc4c8;
-}
+/* .game-overview-* (card/media/copy/summary) migrados por completo a
+   src/styles/game-detail/hero.css — no dejar copias aquí. */
 
 .hero-analysis-grid {
   display: grid;
@@ -655,96 +514,11 @@
   font-size: 1.05rem;
 }
 
-.dlc-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 1.25rem;
-}
-
-.dlc-showcase-card {
-  display: grid;
-  grid-template-columns: 1fr;
-  overflow: hidden;
-}
-
-.dlc-showcase-cover {
-  position: relative;
-  min-height: 0;
-  aspect-ratio: 16 / 9;
-  padding: 1rem;
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(circle at top, rgba(186, 36, 38, 0.14), transparent 44%),
-    linear-gradient(180deg, rgba(27, 31, 39, 0.98), rgba(18, 21, 28, 0.98));
-}
-
-.dlc-showcase-cover img {
-  width: 100%;
-  height: 100%;
-  max-height: none;
-  object-fit: contain;
-  display: block;
-  border-radius: var(--radius-4);
-}
-
-.dlc-showcase-fallback {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: grid;
-  place-items: center;
-}
-
-.dlc-showcase-fallback img {
-  width: auto;
-  max-width: min(72%, 230px);
-  height: 100%;
-  max-height: calc(100% - 1rem);
-}
-
-.dlc-showcase-fallback-badge,
-.dlc-showcase-fallback-empty {
-  position: absolute;
-  left: 1rem;
-  top: 1rem;
-  display: inline-flex;
-  align-items: center;
-  min-height: 28px;
-  padding: 0.28rem 0.65rem;
-  border-radius: var(--radius-pill);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(15, 17, 22, 0.9);
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  color: #d6c8cc;
-}
-
-.dlc-showcase-fallback-empty {
-  position: static;
-}
-
-.dlc-showcase-body {
-  padding: 1.15rem;
-  display: grid;
-  gap: 0.95rem;
-}
-
-.dlc-showcase-body h3 {
-  margin: 0;
-  font-size: 1.45rem;
-  line-height: 1.02;
-}
-
-.dlc-showcase-notes {
-  margin: 0;
-  padding: 0.9rem 1rem;
-  border-radius: var(--radius-3);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  background: rgba(255, 255, 255, 0.03);
-  font-family: var(--font-body);
-  color: #ecdddd;
-}
+/* Estilos de DLC (.dlc-gallery, .dlc-showcase-*) migrados por completo a
+   src/styles/game-detail/dlcs.css — mantener ambas copias vivas causaba
+   conflictos de cascada (esta hoja se importa después y ganaba con
+   valores obsoletos: padding, object-fit:contain, fallback ya eliminado).
+   No dejar reglas .dlc-showcase-* aquí. */
 
 /* app-mode overrides for game-page-rich */
 .game-page-rich {
@@ -819,21 +593,15 @@
 }
 
 .detail-comments-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
   margin-bottom: 0.6rem;
 }
 
 .detail-comments-head dt {
   margin: 0;
-}
-
-.game-hero-cinematic {
-  border-radius: var(--radius-1);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(
-    180deg,
-    rgba(30, 32, 40, 0.98),
-    rgba(15, 17, 22, 0.98)
-  );
 }
 
 .game-sections-nav {
@@ -1210,14 +978,6 @@
     grid-template-columns: minmax(90px, 120px) minmax(0, 1fr);
     gap: 1.2rem;
   }
-
-  .game-overview-card-cinematic .game-overview-media {
-    max-width: 84px;
-  }
-
-  .dlc-gallery {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
 }
 
 @media (max-width: 920px) {
@@ -1250,40 +1010,11 @@
     min-height: 0;
   }
 
-  .game-overview-card-cinematic {
-    padding: 1.15rem;
-  }
-
-  .game-overview-media .game-poster-image {
-    max-height: 420px;
-  }
-
-  .game-overview-card-cinematic .game-overview-media {
-    max-width: 110px;
-  }
-
   .compact-bars-grid,
   .detail-grid-4,
   .detail-grid-3,
   .detail-grid-2 {
     grid-template-columns: 1fr;
-  }
-
-  .game-poster-panel {
-    min-height: 480px;
-  }
-
-  .game-poster-image {
-    max-width: 280px;
-  }
-
-  .dlc-showcase-cover {
-    aspect-ratio: 16 / 10;
-    padding: 0.85rem;
-  }
-
-  .dlc-showcase-fallback img {
-    max-width: min(70%, 190px);
   }
 }
 
@@ -1296,14 +1027,6 @@
     gap: 0.75rem;
   }
 
-  .game-page-rich .game-overview-card-cinematic .game-overview-media {
-    max-width: 84px;
-  }
-
-  .game-page-rich .game-overview-media .game-poster-image {
-    max-height: 250px;
-  }
-
   .game-page-rich .game-overview-copy h1 {
     font-size: clamp(2.1rem, 11vw, 2.85rem);
   }
@@ -1311,7 +1034,6 @@
   .game-page-rich .analysis-panel,
   .game-page-rich .game-summary-section,
   .game-page-rich .data-group-card,
-  .game-page-rich .dlc-showcase-body,
   .game-page-rich .range-chart-card,
   .game-page-rich .finance-timeline-card {
     padding: 0.82rem;

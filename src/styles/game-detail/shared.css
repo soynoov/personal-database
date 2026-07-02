@@ -32,7 +32,7 @@
 /* ── Range chart card ───────────────────────────────────────────── */
 .range-chart-card {
   padding: 1.5rem;
-  border-radius: 18px;
+  border-radius: var(--radius-2);
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.025);
 }
@@ -219,6 +219,16 @@
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
+/* Igual que .detail-item-empty: opacidad reducida en toda la card y
+   blur sutil solo en el valor, el label se queda legible. */
+.chart-metric-card-empty {
+  opacity: 0.52;
+}
+
+.chart-metric-card-empty strong {
+  filter: blur(1.5px);
+}
+
 /* ── Compact bars ───────────────────────────────────────────────── */
 .compact-bars-grid {
   display: grid;
@@ -310,6 +320,14 @@
 
 .section-title-row h2 {
   margin: 0;
+}
+
+/* Agrupa el section-pill (si lo hay) y el lápiz de sección a la derecha,
+   para que .section-title-row los reparta como un único bloque. */
+.section-title-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
 /* ── Section subtitle ───────────────────────────────────────────── */

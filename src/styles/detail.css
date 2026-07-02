@@ -194,6 +194,12 @@
   opacity: 0.52;
 }
 
+/* Blur sutil solo en el valor — el label (dt) se queda nítido para que
+   siga siendo legible qué dato es el que falta. */
+.detail-item-empty dd {
+  filter: blur(1.5px);
+}
+
 .detail-item-price-free {
   border-color: var(--tag-free-line);
   background: linear-gradient(
@@ -666,6 +672,7 @@
 
 .detail-comments-empty dd {
   color: rgba(244, 236, 236, 0.55);
+  filter: blur(1.5px);
 }
 
 .detail-comments-vault dd {

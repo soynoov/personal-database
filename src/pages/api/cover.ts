@@ -1,6 +1,7 @@
 import {
   buildCoverFallbackSvg,
   resolveGameCover,
+  resolveGameHero,
 } from '../../lib/cover-resolver';
 
 const IMAGE_TIMEOUT_MS = 8000;
@@ -30,11 +31,38 @@ export async function GET({ url }: { url: URL }) {
   const platform = url.searchParams.get('platform');
   const steamAppIdParam = url.searchParams.get('steamAppId');
   const coverUrlParam = url.searchParams.get('coverUrl');
+  const variant = url.searchParams.get('variant'); // 'hero' | null (default: portada)
 
   const steamAppId =
     steamAppIdParam && Number.isFinite(Number(steamAppIdParam))
       ? Number(steamAppIdParam)
       : null;
+
+  // Variante "hero": banner panorámico opcional. Si Steam no lo tiene
+  // curado para este juego, 404 en vez de caer a SVG — es decorativo, no
+  // imprescindible, y el llamador (CSS) ya tiene su propio fallback borroso.
+  if (variant === 'hero') {
+    const heroResult = await resolveGameHero({ titulo: title, steam_appid: steamAppId });
+    if (heroResult.url) {
+      try {
+        const imageResponse = await fetchImageWithTimeout(heroResult.url);
+        if (imageResponse.ok && imageResponse.body) {
+          return new Response(imageResponse.body, {
+            status: 200,
+            headers: {
+              'Content-Type': imageResponse.headers.get('content-type') ?? 'image/jpeg',
+              'Cache-Control': 'no-store',
+              'X-Cover-Source': heroResult.source,
+              'X-Cover-Url': heroResult.url,
+            },
+          });
+        }
+      } catch {
+        // cae al 404 de abajo
+      }
+    }
+    return new Response(null, { status: 404 });
+  }
 
   const result = await resolveGameCover({
     titulo: title,

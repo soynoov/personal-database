@@ -47,6 +47,7 @@ export type LocalGame = {
     items?: Array<{
       titulo: string;
       cover_source?: string | null;
+      cover_url?: string | null;
       steam_appid?: number | null;
       fecha_adquisicion?: string | null;
       precio_pagado?: number | null;

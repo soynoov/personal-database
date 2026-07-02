@@ -5,24 +5,12 @@
  * Datos: todos computados en [slug].astro y recibidos como props.
  */
 import '../../styles/game-detail/hero.css';
-import '../../styles/game-detail/edit.css';
-
-interface EditValues {
-  estado: string | null;
-  horas: number | null;
-  fecha_inicio: string | null;
-  fecha_fin: string | null;
-  precio_pagado: number | null;
-  gasto_microtransacciones: number | null;
-  nota: number | null;
-  comentarios: string | null;
-  tags: string[];
-}
 
 interface Props {
   title: string;
   coverUrl: string;
   heroCoverStyle: string;
+  heroBannerUrl: string | null;
   statusBadge: { class: string; label: string };
   launcherBadge: { class: string; html: string };
   platformBadge: { class: string; label: string };
@@ -31,14 +19,13 @@ interface Props {
   genres: string;
   pricePaidNote: string;
   soloLabel: string;
-  slug: string;
-  editValues: EditValues;
 }
 
 const {
   title,
   coverUrl,
   heroCoverStyle,
+  heroBannerUrl,
   statusBadge,
   launcherBadge,
   platformBadge,
@@ -47,25 +34,16 @@ const {
   genres,
   pricePaidNote,
   soloLabel,
-  slug,
-  editValues,
 } = Astro.props;
-
-const KNOWN_ESTADOS = ['Jugando', 'Terminado', 'Pendiente', 'Wishlist', 'Pausado', 'Abandonado', 'Retirado', 'Recurrente'];
-const estadoOptions =
-  editValues.estado && !KNOWN_ESTADOS.includes(editValues.estado)
-    ? [...KNOWN_ESTADOS, editValues.estado]
-    : KNOWN_ESTADOS;
 ---
 
-<section class="game-hero-rich game-hero-cinematic" id="overview" style={heroCoverStyle}>
-  <button class="game-edit-trigger" id="game-edit-trigger" type="button" aria-label="Editar datos de este juego">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 20h9"></path>
-      <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
-    </svg>
-  </button>
-
+<section
+  class:list={["game-hero-rich", "game-hero-cinematic", heroBannerUrl && "game-hero-cinematic-banner"]}
+  id="overview"
+  style={heroBannerUrl
+    ? `${heroCoverStyle};--hero-banner:url("${heroBannerUrl.replace(/"/g, '\\"')}")`
+    : heroCoverStyle}
+>
   <section class="game-intro-panel game-overview-card game-overview-card-cinematic">
     <div class="game-overview-media">
       <div class="game-poster-stack">
@@ -95,197 +73,3 @@ const estadoOptions =
     </div>
   </section>
 </section>
-
-<dialog class="edit-dialog" id="game-edit-dialog">
-  <div class="edit-dialog-body">
-    <div class="edit-dialog-head">
-      <div>
-        <h2>Editar {title}</h2>
-        <p class="edit-dialog-sub">Escribe directo en games.json. Solo funciona en local (npm run dev).</p>
-      </div>
-      <button class="edit-dialog-close" id="game-edit-close" type="button" aria-label="Cerrar">×</button>
-    </div>
-
-    <p class="edit-dialog-error" id="game-edit-error" hidden></p>
-
-    <form id="game-edit-form" data-slug={slug}>
-      <div class="edit-field">
-        <label for="edit-estado">Estado</label>
-        <select id="edit-estado" name="estado">
-          {estadoOptions.map((estado) => (
-            <option value={estado} selected={estado === editValues.estado}>{estado}</option>
-          ))}
-        </select>
-      </div>
-
-      <div class="edit-field edit-field-checkbox">
-        <label for="edit-free-to-play">
-          <input
-            id="edit-free-to-play"
-            name="free_to_play"
-            type="checkbox"
-            checked={editValues.tags.includes('free-to-play')}
-          />
-          Free to play
-        </label>
-        <span class="edit-field-hint">
-          Marca esto si el juego es gratis de base. Cambia el badge y sustituye el campo "Precio pagado" por "Microtransacciones".
-        </span>
-      </div>
-
-      <div class="edit-field-row">
-        <div class="edit-field">
-          <label for="edit-horas">Horas</label>
-          <input id="edit-horas" name="horas" type="number" step="0.1" min="0" value={editValues.horas ?? ''} />
-        </div>
-        <div class="edit-field" id="field-precio-pagado" hidden={editValues.tags.includes('free-to-play')}>
-          <label for="edit-precio">Precio pagado (EUR)</label>
-          <input id="edit-precio" name="precio_pagado" type="number" step="0.01" min="0" value={editValues.precio_pagado ?? ''} />
-        </div>
-        <div class="edit-field" id="field-microtransacciones" hidden={!editValues.tags.includes('free-to-play')}>
-          <label for="edit-microtransacciones">Microtransacciones (EUR)</label>
-          <input
-            id="edit-microtransacciones"
-            name="gasto_microtransacciones"
-            type="number"
-            step="0.01"
-            min="0"
-            value={editValues.gasto_microtransacciones ?? ''}
-          />
-        </div>
-      </div>
-      <p class="edit-field-hint edit-field-hint-price" id="price-field-hint">
-        {editValues.tags.includes('free-to-play')
-          ? 'Free to play: el precio del juego es 0. Esto es lo gastado dentro, en compras o DLC sueltas.'
-          : 'Lo que pagaste por el juego en sí.'}
-      </p>
-
-      <div class="edit-field-row">
-        <div class="edit-field">
-          <label for="edit-fecha-inicio">Fecha inicio</label>
-          <input id="edit-fecha-inicio" name="fecha_inicio" type="date" value={editValues.fecha_inicio ?? ''} />
-        </div>
-        <div class="edit-field">
-          <label for="edit-fecha-fin">Fecha fin</label>
-          <input id="edit-fecha-fin" name="fecha_fin" type="date" value={editValues.fecha_fin ?? ''} />
-        </div>
-      </div>
-
-      <div class="edit-field">
-        <label for="edit-nota">Nota</label>
-        <input id="edit-nota" name="nota" type="number" step="0.1" min="0" max="10" value={editValues.nota ?? ''} />
-      </div>
-
-      <div class="edit-field">
-        <label for="edit-comentarios">Comentarios</label>
-        <textarea id="edit-comentarios" name="comentarios">{editValues.comentarios ?? ''}</textarea>
-      </div>
-
-      <div class="edit-dialog-actions">
-        <button class="edit-dialog-cancel" id="game-edit-cancel" type="button">Cancelar</button>
-        <button class="edit-dialog-submit" id="game-edit-submit" type="submit">Guardar cambios</button>
-      </div>
-    </form>
-  </div>
-</dialog>
-
-<script>
-  const trigger = document.getElementById('game-edit-trigger');
-  const dialog = document.getElementById('game-edit-dialog');
-  const form = document.getElementById('game-edit-form');
-  const closeBtn = document.getElementById('game-edit-close');
-  const cancelBtn = document.getElementById('game-edit-cancel');
-  const errorBox = document.getElementById('game-edit-error');
-  const submitBtn = document.getElementById('game-edit-submit');
-
-  if (
-    trigger instanceof HTMLButtonElement &&
-    dialog instanceof HTMLDialogElement &&
-    form instanceof HTMLFormElement &&
-    errorBox instanceof HTMLElement &&
-    submitBtn instanceof HTMLButtonElement
-  ) {
-    const hideError = () => errorBox.setAttribute('hidden', '');
-    const showError = (message: string) => {
-      errorBox.textContent = message;
-      errorBox.removeAttribute('hidden');
-    };
-
-    const freeToPlayCheckbox = document.getElementById('edit-free-to-play');
-    const precioField = document.getElementById('field-precio-pagado');
-    const microtransaccionesField = document.getElementById('field-microtransacciones');
-    const priceHint = document.getElementById('price-field-hint');
-
-    const syncPriceFields = () => {
-      if (
-        !(freeToPlayCheckbox instanceof HTMLInputElement) ||
-        !(precioField instanceof HTMLElement) ||
-        !(microtransaccionesField instanceof HTMLElement)
-      ) {
-        return;
-      }
-      const isFreeToPlay = freeToPlayCheckbox.checked;
-      precioField.hidden = isFreeToPlay;
-      microtransaccionesField.hidden = !isFreeToPlay;
-      if (priceHint instanceof HTMLElement) {
-        priceHint.textContent = isFreeToPlay
-          ? 'Free to play: el precio del juego es 0. Esto es lo gastado dentro, en compras o DLC sueltas.'
-          : 'Lo que pagaste por el juego en sí.';
-      }
-    };
-
-    freeToPlayCheckbox?.addEventListener('change', syncPriceFields);
-
-    trigger.addEventListener('click', () => {
-      hideError();
-      dialog.showModal();
-    });
-
-    closeBtn?.addEventListener('click', () => dialog.close());
-    cancelBtn?.addEventListener('click', () => dialog.close());
-
-    dialog.addEventListener('click', (event) => {
-      if (event.target === dialog) dialog.close();
-    });
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      hideError();
-
-      const slug = form.dataset.slug ?? '';
-      const data = new FormData(form);
-      const freeToPlayInput = document.getElementById('edit-free-to-play');
-      const payload = {
-        estado: data.get('estado'),
-        horas: data.get('horas'),
-        fecha_inicio: data.get('fecha_inicio'),
-        fecha_fin: data.get('fecha_fin'),
-        precio_pagado: data.get('precio_pagado'),
-        gasto_microtransacciones: data.get('gasto_microtransacciones'),
-        nota: data.get('nota'),
-        comentarios: data.get('comentarios'),
-        free_to_play: freeToPlayInput instanceof HTMLInputElement ? freeToPlayInput.checked : false,
-      };
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Guardando…';
-
-      try {
-        const response = await fetch(`/api/games/${slug}/edit`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        const result = await response.json().catch(() => ({}));
-        if (!response.ok || !result.ok) {
-          throw new Error(result.error || `No se pudo guardar (HTTP ${response.status}).`);
-        }
-        window.location.reload();
-      } catch (error) {
-        showError(error instanceof Error ? error.message : 'No se pudo guardar.');
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Guardar cambios';
-      }
-    });
-  }
-</script>

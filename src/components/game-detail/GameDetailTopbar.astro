@@ -1,0 +1,165 @@
+---
+/**
+ * GameDetailTopbar.astro — Barra superior de la ficha: volver a la izquierda,
+ * lápiz general a la derecha. El lápiz general edita solo lo que no tiene
+ * un lápiz propio en otra sección (estado, horas, fechas, nota). Precio,
+ * microtransacciones y comentarios se editan desde sus paneles respectivos.
+ */
+import '../../styles/game-detail/topbar.css';
+import '../../styles/game-detail/edit.css';
+
+interface EditValues {
+  estado: string | null;
+  horas: number | null;
+  fecha_inicio: string | null;
+  fecha_fin: string | null;
+  nota: number | null;
+}
+
+interface Props {
+  slug: string;
+  editValues: EditValues;
+}
+
+const { slug, editValues } = Astro.props;
+
+const KNOWN_ESTADOS = ['Jugando', 'Terminado', 'Pendiente', 'Wishlist', 'Pausado', 'Abandonado', 'Retirado', 'Recurrente'];
+const estadoOptions =
+  editValues.estado && !KNOWN_ESTADOS.includes(editValues.estado)
+    ? [...KNOWN_ESTADOS, editValues.estado]
+    : KNOWN_ESTADOS;
+---
+
+<div class="game-page-topbar">
+  <a class="back-link" href="/">Volver a la biblioteca</a>
+
+  <button class="game-edit-trigger" id="game-edit-trigger" type="button" aria-label="Editar datos generales de este juego">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 20h9"></path>
+      <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+    </svg>
+  </button>
+</div>
+
+<dialog class="edit-dialog" id="game-edit-dialog">
+  <div class="edit-dialog-body">
+    <div class="edit-dialog-head">
+      <div>
+        <h2>Editar datos generales</h2>
+        <p class="edit-dialog-sub">Escribe directo en games.json. Solo funciona en local (npm run dev).</p>
+      </div>
+      <button class="edit-dialog-close" id="game-edit-close" type="button" aria-label="Cerrar">×</button>
+    </div>
+
+    <p class="edit-dialog-error" id="game-edit-error" hidden></p>
+
+    <form id="game-edit-form" data-slug={slug}>
+      <div class="edit-field">
+        <label for="edit-estado">Estado</label>
+        <select id="edit-estado" name="estado">
+          {estadoOptions.map((estado) => (
+            <option value={estado} selected={estado === editValues.estado}>{estado}</option>
+          ))}
+        </select>
+      </div>
+
+      <div class="edit-field-row">
+        <div class="edit-field">
+          <label for="edit-horas">Horas jugadas</label>
+          <input id="edit-horas" name="horas" type="number" step="0.1" min="0" value={editValues.horas ?? ''} />
+        </div>
+        <div class="edit-field">
+          <label for="edit-nota">Nota</label>
+          <input id="edit-nota" name="nota" type="number" step="0.1" min="0" max="10" value={editValues.nota ?? ''} />
+        </div>
+      </div>
+
+      <div class="edit-field-row">
+        <div class="edit-field">
+          <label for="edit-fecha-inicio">Fecha inicio</label>
+          <input id="edit-fecha-inicio" name="fecha_inicio" type="date" value={editValues.fecha_inicio ?? ''} />
+        </div>
+        <div class="edit-field">
+          <label for="edit-fecha-fin">Fecha fin</label>
+          <input id="edit-fecha-fin" name="fecha_fin" type="date" value={editValues.fecha_fin ?? ''} />
+        </div>
+      </div>
+
+      <div class="edit-dialog-actions">
+        <button class="edit-dialog-cancel" id="game-edit-cancel" type="button">Cancelar</button>
+        <button class="edit-dialog-submit" id="game-edit-submit" type="submit">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<script>
+  const trigger = document.getElementById('game-edit-trigger');
+  const dialog = document.getElementById('game-edit-dialog');
+  const form = document.getElementById('game-edit-form');
+  const closeBtn = document.getElementById('game-edit-close');
+  const cancelBtn = document.getElementById('game-edit-cancel');
+  const errorBox = document.getElementById('game-edit-error');
+  const submitBtn = document.getElementById('game-edit-submit');
+
+  if (
+    trigger instanceof HTMLButtonElement &&
+    dialog instanceof HTMLDialogElement &&
+    form instanceof HTMLFormElement &&
+    errorBox instanceof HTMLElement &&
+    submitBtn instanceof HTMLButtonElement
+  ) {
+    const hideError = () => errorBox.setAttribute('hidden', '');
+    const showError = (message: string) => {
+      errorBox.textContent = message;
+      errorBox.removeAttribute('hidden');
+    };
+
+    trigger.addEventListener('click', () => {
+      hideError();
+      dialog.showModal();
+    });
+
+    closeBtn?.addEventListener('click', () => dialog.close());
+    cancelBtn?.addEventListener('click', () => dialog.close());
+
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      hideError();
+
+      const slug = form.dataset.slug ?? '';
+      const data = new FormData(form);
+      const payload = {
+        estado: data.get('estado'),
+        horas: data.get('horas'),
+        fecha_inicio: data.get('fecha_inicio'),
+        fecha_fin: data.get('fecha_fin'),
+        nota: data.get('nota'),
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Guardando…';
+
+      try {
+        const response = await fetch(`/api/games/${slug}/edit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) {
+          throw new Error(result.error || `No se pudo guardar (HTTP ${response.status}).`);
+        }
+        window.location.reload();
+      } catch (error) {
+        showError(error instanceof Error ? error.message : 'No se pudo guardar.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Guardar cambios';
+      }
+    });
+  }
+</script>
