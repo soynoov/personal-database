@@ -27,6 +27,7 @@
 }
 
 html {
+  scroll-behavior: smooth;
   color-scheme: dark;
   background:
     linear-gradient(rgba(8, 10, 14, 0.62), rgba(8, 10, 14, 0.82)),

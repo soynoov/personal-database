@@ -10,7 +10,6 @@ interface Props {
   title: string;
   coverUrl: string;
   heroCoverStyle: string;
-  heroBannerUrl: string | null;
   statusBadge: { class: string; label: string };
   launcherBadge: { class: string; html: string };
   platformBadge: { class: string; label: string };
@@ -25,7 +24,6 @@ const {
   title,
   coverUrl,
   heroCoverStyle,
-  heroBannerUrl,
   statusBadge,
   launcherBadge,
   platformBadge,
@@ -37,13 +35,7 @@ const {
 } = Astro.props;
 ---
 
-<section
-  class:list={["game-hero-rich", "game-hero-cinematic", heroBannerUrl && "game-hero-cinematic-banner"]}
-  id="overview"
-  style={heroBannerUrl
-    ? `${heroCoverStyle};--hero-banner:url("${heroBannerUrl.replace(/"/g, '\\"')}")`
-    : heroCoverStyle}
->
+<section class="game-hero-rich game-hero-cinematic" id="overview" style={heroCoverStyle}>
   <section class="game-intro-panel game-overview-card game-overview-card-cinematic">
     <div class="game-overview-media">
       <div class="game-poster-stack">

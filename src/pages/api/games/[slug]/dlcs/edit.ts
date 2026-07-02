@@ -20,6 +20,16 @@ function todayIso() {
   return new Date().toISOString().slice(0, 10);
 }
 
+const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+// <input type="date"> manda "" cuando está vacío y "YYYY-MM-DD" cuando no.
+// null/undefined/"" se tratan igual: "el usuario no tocó este campo".
+function toNullableIsoDate(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  return ISO_DATE_RE.test(trimmed) ? trimmed : null;
+}
+
 /**
  * Patchea precio_pagado y fecha_adquisicion de cada DLC ya registrado en
  * games.json (por posición en el array, mismo orden que se renderizó en
@@ -71,7 +81,7 @@ export const POST: APIRoute = async ({ params, request }) => {
   }
 
   const nextItems = existingItems.map((item, i) => {
-    const patch = items[i] as { owned?: unknown; precio_pagado?: unknown } | undefined;
+    const patch = items[i] as { owned?: unknown; fecha_adquisicion?: unknown; precio_pagado?: unknown } | undefined;
     if (!patch) return item;
 
     const wasOwned = item.fecha_adquisicion !== null && item.fecha_adquisicion !== undefined;
@@ -81,11 +91,15 @@ export const POST: APIRoute = async ({ params, request }) => {
       return { ...item, fecha_adquisicion: null, precio_pagado: null };
     }
 
+    // Fecha: prioridad a la que mandó el usuario en el input. Si la dejó
+    // vacía, se conserva la que ya hubiera (no se pisa con la de hoy solo
+    // por reguardar el precio). Si nunca tuvo ninguna, hoy como aproximación.
+    const patchedDate = toNullableIsoDate(patch.fecha_adquisicion);
+    const fecha_adquisicion = patchedDate ?? (wasOwned ? item.fecha_adquisicion : todayIso());
+
     return {
       ...item,
-      // Si ya tenía fecha, se conserva (no se pisa con la de hoy solo por
-      // reguardar el precio). Si no tenía, se marca hoy como aproximación.
-      fecha_adquisicion: wasOwned ? item.fecha_adquisicion : todayIso(),
+      fecha_adquisicion,
       precio_pagado: toNullableNumber(patch.precio_pagado),
     };
   });

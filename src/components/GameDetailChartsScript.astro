@@ -279,8 +279,21 @@
         [1, "rgba(155, 255, 131, 0.03)"],
       ],
     });
+
+    // DLC prices: se renderiza si el acordeón ya está abierto
+    renderDlcPricesChart("dlc-finance-chart");
   };
 
   renderAllCharts();
   window.addEventListener("resize", renderAllCharts);
+
+  // Reinicializar el chart DLC cuando se abre el acordeón por primera vez
+  const dlcAccordion = document.querySelector(".dlc-finance-accordion");
+  if (dlcAccordion instanceof HTMLDetailsElement) {
+    dlcAccordion.addEventListener("toggle", () => {
+      if (dlcAccordion.open) {
+        renderDlcPricesChart("dlc-finance-chart");
+      }
+    });
+  }
 </script>

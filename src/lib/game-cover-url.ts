@@ -22,19 +22,3 @@ export function buildGameCoverUrl(game: CoverLookupGame) {
 
   return `/api/cover?${params.toString()}`;
 }
-
-// Banner panorámico (Steam library_hero) para el fondo nítido del hero de
-// la ficha. Solo tiene sentido con steam_appid — sin él ni se pide.
-export function buildGameHeroUrl(game: CoverLookupGame) {
-  const params = new URLSearchParams();
-
-  params.set('title', game.titulo);
-  params.set('variant', 'hero');
-  if (game.steam_appid != null) {
-    params.set('steamAppId', String(game.steam_appid));
-  }
-
-  params.set('nocache', String(Date.now()));
-
-  return `/api/cover?${params.toString()}`;
-}

@@ -1,0 +1,286 @@
+---
+/**
+ * DLCCard.astro — Tarjeta individual de DLC.
+ *
+ * Portada directa (cover_url) o estado "Sin portada", badge "No adquirido",
+ * fecha de adquisición, precio pagado y notas opcionales.
+ * Las funciones de formato vienen de GameDetailDLCs.astro.
+ */
+
+interface DLCItem {
+  titulo: string;
+  fecha_adquisicion?: string | null;
+  precio_pagado?: number | null;
+  cover_url?: string | null;
+  notas?: string | null;
+}
+
+interface Props {
+  dlc: DLCItem;
+  formatDate: (value: unknown) => string;
+  formatValue: (value: unknown, fallback?: string) => string;
+  formatCurrency: (value: unknown, fallback?: string) => string;
+}
+
+const { dlc, formatDate, formatValue, formatCurrency } = Astro.props;
+---
+
+<article
+  class:list={[
+    'dlc-showcase-card',
+    !dlc.fecha_adquisicion && 'dlc-showcase-card-unowned',
+  ]}
+  data-price={dlc.precio_pagado ?? ''}
+  data-owned={dlc.fecha_adquisicion ? '1' : '0'}
+  data-date={dlc.fecha_adquisicion ?? ''}
+  data-title={formatValue(dlc.titulo, 'DLC sin nombre').toLowerCase()}
+>
+  <div class='dlc-showcase-cover'>
+    {
+      dlc.cover_url ? (
+        <img
+          class='dlc-showcase-own-cover'
+          src={dlc.cover_url}
+          alt=''
+          loading='lazy'
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+        />
+      ) : null
+    }
+    <div
+      class='dlc-showcase-cover-empty'
+      style={dlc.cover_url ? 'display:none' : undefined}
+    >
+      <svg viewBox='0 0 24 24' aria-hidden='true'>
+        <path d='M9 15 15 9'></path>
+        <path d='M10.5 5.5 12.5 3.5a3 3 0 1 1 4 4l-2 2'></path>
+        <path d='M13.5 18.5 11.5 20.5a3 3 0 1 1-4-4l2-2'></path>
+        <path d='M3 3 21 21'></path>
+      </svg>
+      <span>Sin portada</span>
+    </div>
+    {
+      !dlc.fecha_adquisicion && (
+        <span class='dlc-showcase-unowned-badge'>No adquirido</span>
+      )
+    }
+  </div>
+
+  <div class='dlc-showcase-body'>
+    <h3>{formatValue(dlc.titulo, 'DLC sin nombre')}</h3>
+    <dl class='detail-grid dlc-showcase-facts'>
+      <div
+        class:list={[
+          'detail-item',
+          formatDate(dlc.fecha_adquisicion) === '-' && 'detail-item-empty',
+        ]}
+      >
+        <dt>Adquirido</dt>
+        <dd>{formatDate(dlc.fecha_adquisicion)}</dd>
+      </div>
+      <div
+        class:list={[
+          'detail-item',
+          (dlc.precio_pagado === null || dlc.precio_pagado === undefined) &&
+            'detail-item-empty',
+        ]}
+      >
+        <dt>Precio pagado</dt>
+        <dd>{formatCurrency(dlc.precio_pagado)}</dd>
+      </div>
+    </dl>
+  </div>
+</article>
+
+<style>
+  /* ── Card ───────────────────────────────────────────────────────── */
+  .dlc-showcase-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-2);
+    background: linear-gradient(
+      180deg,
+      rgba(18, 20, 26, 0.98),
+      rgba(14, 16, 22, 0.96)
+    );
+    box-shadow: var(--shadow);
+  }
+
+  /* ── Cover ──────────────────────────────────────────────────────── */
+  /* display:grid sin place-items: la img o el estado vacío se estiran
+     a cubrir toda la celda (stretch por defecto).
+     place-items:center rompía esto: height:100% en un grid item centrado
+     resolvía el % contra una fila "auto" indefinida y la imagen caía a
+     su tamaño intrínseco en vez de cubrir la caja. */
+  .dlc-showcase-cover {
+    position: relative;
+    min-height: 0;
+    height: 5cm;
+    display: grid;
+    background:
+      radial-gradient(circle at top, rgba(186, 36, 38, 0.14), transparent 44%),
+      linear-gradient(180deg, rgba(27, 31, 39, 0.98), rgba(18, 21, 28, 0.98));
+  }
+
+  .dlc-showcase-cover img {
+    width: 100%;
+    height: 5cm;
+    max-height: none;
+    object-fit: fill;
+    display: block;
+  }
+
+  .dlc-showcase-own-cover {
+    width: 100%;
+    height: 5cm;
+    transition: filter 200ms ease;
+  }
+
+  /* ── Sin portada ────────────────────────────────────────────────── */
+  /* Se muestra cuando cover_url es null o cuando la imagen rompe (onerror). */
+  .dlc-showcase-cover-empty {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    justify-items: center;
+    gap: 0.5rem;
+    color: rgba(218, 226, 236, 0.42);
+    text-align: center;
+    transition: filter 200ms ease;
+  }
+
+  .dlc-showcase-cover-empty svg {
+    width: 34px;
+    height: 34px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .dlc-showcase-cover-empty span {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: rgba(218, 226, 236, 0.5);
+  }
+
+  /* ── Badge "No adquirido" ───────────────────────────────────────── */
+  .dlc-showcase-unowned-badge {
+    position: absolute;
+    right: 0.75rem;
+    top: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 0.24rem 0.6rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(15, 17, 22, 0.82);
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    color: #d6c8cc;
+  }
+
+  /* ── Card no adquirida ──────────────────────────────────────────── */
+  /* Blur va en img/estado-vacío, NO en .dlc-showcase-cover entero:
+     el badge "No adquirido" también vive ahí y emborronarlo lo haría
+     ilegible, justo el texto que explica por qué está apagado. */
+  .dlc-showcase-card-unowned {
+    opacity: 0.5;
+  }
+
+  .dlc-showcase-card-unowned .dlc-showcase-own-cover,
+  .dlc-showcase-card-unowned .dlc-showcase-cover-empty {
+    filter: grayscale(1) blur(2.5px);
+  }
+
+  .dlc-showcase-card-unowned:hover {
+    opacity: 0.75;
+  }
+
+  .dlc-showcase-card-unowned:hover .dlc-showcase-cover .dlc-showcase-own-cover,
+  .dlc-showcase-card-unowned:hover
+    .dlc-showcase-cover
+    .dlc-showcase-cover-empty {
+    filter: grayscale(0) blur(0.5px);
+  }
+
+  /* ── Body ───────────────────────────────────────────────────────── */
+  .dlc-showcase-body {
+    padding: 1.15rem;
+    display: grid;
+    gap: 0.95rem;
+    min-width: 0;
+  }
+
+  /* min-height reservado a 2 líneas para que títulos cortos y largos
+     dejen el resto del contenido arrancando en la misma fila en cards
+     vecinas. */
+  .dlc-showcase-body h3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    margin: 0;
+    min-height: calc(1.2rem * 1.2 * 2);
+    font-size: 1.2rem;
+    line-height: 1.2;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .dlc-showcase-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.7rem;
+  }
+
+  /* Override de radio cuando .detail-item cuelga de esta card
+     (vs. el modal de vista rápida del catálogo donde tiene otro radio). */
+  .dlc-showcase-body .detail-item {
+    border-radius: var(--radius-3);
+  }
+
+  /* ── Notes ──────────────────────────────────────────────────────── */
+  .dlc-showcase-notes {
+    margin: 0;
+    padding: 0.9rem 1rem;
+    border-radius: var(--radius-3);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.03);
+    font-family: var(--font-body);
+    color: #ecdddd;
+  }
+
+  /* ── Responsive ─────────────────────────────────────────────────── */
+  @media (max-width: 720px) {
+    .dlc-showcase-cover {
+      aspect-ratio: 16 / 10;
+    }
+
+    .dlc-showcase-cover-empty svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  /* ── Overrides de contexto (.game-page-rich) ────────────────────── */
+  /* .game-page-rich está en el padre, fuera de este componente. */
+  :global(.game-page-rich) .dlc-showcase-card {
+    border-radius: var(--radius-2);
+  }
+
+  :global(.game-page-rich) .dlc-showcase-body {
+    padding: 0.95rem;
+  }
+
+  @media (max-width: 720px) {
+    :global(.game-page-rich) .dlc-showcase-body {
+      padding: 0.82rem;
+    }
+  }
+</style>

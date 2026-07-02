@@ -9,6 +9,7 @@
  */
 import '../../styles/game-detail/dlcs.css';
 import '../../styles/game-detail/edit.css';
+import DLCCard from './DLCCard.astro';
 
 interface Props {
   slug: string;
@@ -31,6 +32,22 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
     </div>
     <div class="section-title-actions">
       <span class="section-pill">{dlcTotal > 0 ? `${ownedCount}/${dlcTotal} adquiridos` : "Sin DLCs"}</span>
+      {dlcItems.length > 1 && (
+        <>
+          <select class="dlc-sort-select" id="dlc-sort-select" aria-label="Ordenar DLCs">
+            <option value="date-desc">Fecha: más reciente</option>
+            <option value="price-desc">Precio: mayor a menor</option>
+            <option value="price-asc">Precio: menor a mayor</option>
+            <option value="owned-first">Adquiridos primero</option>
+            <option value="unowned-first">No adquiridos primero</option>
+            <option value="alpha">Nombre A-Z</option>
+          </select>
+          <label class="dlc-filter-label">
+            <input type="checkbox" id="dlc-filter-owned" checked />
+            No adquiridos
+          </label>
+        </>
+      )}
       <button class="game-edit-trigger game-edit-trigger-sm" id="dlcs-edit-trigger" type="button" aria-label="Editar DLCs">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M12 20h9"></path>
@@ -43,50 +60,16 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
   {dlcTotal === 0 ? (
     <div class="detail-dlc-empty">No hay DLCs registrados para este juego.</div>
   ) : dlcItems.length > 0 ? (
-    <div class="dlc-gallery">
-      {dlcItems.map((dlc) => (
-        <article class:list={["dlc-showcase-card", !dlc.fecha_adquisicion && "dlc-showcase-card-unowned"]}>
-          <div class="dlc-showcase-cover">
-            {dlc.cover_url ? (
-              <img
-                class="dlc-showcase-own-cover"
-                src={dlc.cover_url}
-                alt=""
-                loading="lazy"
-                onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
-              />
-            ) : null}
-            <div class="dlc-showcase-cover-empty" style={dlc.cover_url ? "display:none" : undefined}>
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M9 15 15 9"></path>
-                <path d="M10.5 5.5 12.5 3.5a3 3 0 1 1 4 4l-2 2"></path>
-                <path d="M13.5 18.5 11.5 20.5a3 3 0 1 1-4-4l2-2"></path>
-                <path d="M3 3 21 21"></path>
-              </svg>
-              <span>Sin portada</span>
-            </div>
-            {!dlc.fecha_adquisicion && <span class="dlc-showcase-unowned-badge">No adquirido</span>}
-          </div>
-
-          <div class="dlc-showcase-body">
-            <h3>{formatValue(dlc.titulo, "DLC sin nombre")}</h3>
-            <dl class="detail-grid dlc-showcase-facts">
-              <div class:list={["detail-item", formatDate(dlc.fecha_adquisicion) === "-" && "detail-item-empty"]}>
-                <dt>Adquirido</dt>
-                <dd>{formatDate(dlc.fecha_adquisicion)}</dd>
-              </div>
-              <div class:list={["detail-item", (dlc.precio_pagado === null || dlc.precio_pagado === undefined) && "detail-item-empty"]}>
-                <dt>Precio pagado</dt>
-                <dd>{formatCurrency(dlc.precio_pagado)}</dd>
-              </div>
-            </dl>
-            {formatValue(dlc.notas) !== "-" && (
-              <p class="dlc-showcase-notes">{formatValue(dlc.notas)}</p>
-            )}
-          </div>
-        </article>
-      ))}
-    </div>
+    <>
+      <div class="dlc-gallery" id="dlc-gallery">
+        {dlcItems.map((dlc) => (
+          <DLCCard dlc={dlc} {formatDate} {formatValue} {formatCurrency} />
+        ))}
+      </div>
+      <div class="dlc-load-more-row" id="dlc-load-more-row" style="display:none">
+        <button type="button" class="dlc-load-more-btn" id="dlc-load-more">Ver más</button>
+      </div>
+    </>
   ) : (
     <div class="detail-dlc-empty">Hay DLCs contabilizados, pero aun no tienen ficha individual.</div>
   )}
@@ -113,13 +96,41 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
       </span>
     </div>
 
+    {dlcItems.length > 0 && (
+      <input
+        type="search"
+        class="dlc-edit-search"
+        id="dlcs-edit-search"
+        placeholder="Buscar DLC por nombre…"
+        aria-label="Buscar DLC por nombre"
+      />
+    )}
+
     <form id="dlcs-edit-form" data-slug={slug}>
       <div class="dlc-edit-list">
         {dlcItems.length === 0 && (
           <p class="edit-field-hint">Todavía no hay DLCs registrados. Prueba "Actualizar desde Steam".</p>
         )}
         {dlcItems.map((dlc, i) => (
-          <div class="dlc-edit-row">
+          <div class="dlc-edit-row" data-search-text={formatValue(dlc.titulo, "DLC sin nombre").toLowerCase()}>
+            {dlc.cover_url ? (
+              <img
+                class="dlc-edit-row-thumb"
+                src={dlc.cover_url}
+                alt=""
+                loading="lazy"
+                onerror="this.style.visibility='hidden';"
+              />
+            ) : (
+              <span class="dlc-edit-row-thumb dlc-edit-row-thumb-empty" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M9 15 15 9"></path>
+                  <path d="M10.5 5.5 12.5 3.5a3 3 0 1 1 4 4l-2 2"></path>
+                  <path d="M13.5 18.5 11.5 20.5a3 3 0 1 1-4-4l2-2"></path>
+                  <path d="M3 3 21 21"></path>
+                </svg>
+              </span>
+            )}
             <span class="dlc-edit-row-title">{formatValue(dlc.titulo, "DLC sin nombre")}</span>
             <label class="dlc-edit-row-owned">
               <input
@@ -130,6 +141,13 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
               />
               Lo tengo
             </label>
+            <input
+              type="date"
+              class="dlc-edit-date-input"
+              data-row={i}
+              value={dlc.fecha_adquisicion ?? ''}
+              disabled={dlc.fecha_adquisicion === null || dlc.fecha_adquisicion === undefined}
+            />
             <input
               type="number"
               step="0.01"
@@ -188,14 +206,18 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
       if (event.target === dialog) dialog.close();
     });
 
-    // Al desmarcar "Lo tengo" se deshabilita (no se borra) el precio, para
-    // que quede claro que ese campo no aplica sin perder lo que hubiera
-    // escrito si el usuario lo vuelve a marcar antes de guardar.
+    // Al desmarcar "Lo tengo" se deshabilita (no se borra) fecha y precio,
+    // para que quede claro que esos campos no aplican sin perder lo que
+    // hubiera escrito si el usuario lo vuelve a marcar antes de guardar.
     form.querySelectorAll('.dlc-edit-owned-checkbox').forEach((checkbox) => {
       checkbox.addEventListener('change', () => {
         if (!(checkbox instanceof HTMLInputElement)) return;
         const row = checkbox.dataset.row;
+        const dateInput = form.querySelector(`.dlc-edit-date-input[data-row="${row}"]`);
         const priceInput = form.querySelector(`.dlc-edit-price-input[data-row="${row}"]`);
+        if (dateInput instanceof HTMLInputElement) {
+          dateInput.disabled = !checkbox.checked;
+        }
         if (priceInput instanceof HTMLInputElement) {
           priceInput.disabled = !checkbox.checked;
         }
@@ -209,11 +231,13 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
       const slug = form.dataset.slug ?? '';
       const checkboxes = Array.from(form.querySelectorAll('.dlc-edit-owned-checkbox'));
       const items = checkboxes.map((checkbox) => {
-        if (!(checkbox instanceof HTMLInputElement)) return { owned: false, precio_pagado: null };
+        if (!(checkbox instanceof HTMLInputElement)) return { owned: false, fecha_adquisicion: null, precio_pagado: null };
         const row = checkbox.dataset.row;
+        const dateInput = form.querySelector(`.dlc-edit-date-input[data-row="${row}"]`);
         const priceInput = form.querySelector(`.dlc-edit-price-input[data-row="${row}"]`);
         return {
           owned: checkbox.checked,
+          fecha_adquisicion: dateInput instanceof HTMLInputElement ? dateInput.value : null,
           precio_pagado: priceInput instanceof HTMLInputElement ? priceInput.value : null,
         };
       });
@@ -237,6 +261,113 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
         submitBtn.disabled = false;
         submitBtn.textContent = 'Guardar cambios';
       }
+    });
+  }
+
+  const searchInput = document.getElementById('dlcs-edit-search');
+  if (searchInput instanceof HTMLInputElement && form instanceof HTMLFormElement) {
+    const rows = Array.from(form.querySelectorAll('.dlc-edit-row'));
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim().toLowerCase();
+      rows.forEach((row) => {
+        if (!(row instanceof HTMLElement)) return;
+        const text = row.dataset.searchText ?? '';
+        row.style.display = query === '' || text.includes(query) ? '' : 'none';
+      });
+    });
+  }
+
+  // ── Galería: orden, filtro y paginación ─────────────────────────────
+  const sortSelect = document.getElementById('dlc-sort-select');
+  const gallery = document.getElementById('dlc-gallery');
+  const filterOwned = document.getElementById('dlc-filter-owned');
+  const loadMoreRow = document.getElementById('dlc-load-more-row');
+  const loadMoreBtn = document.getElementById('dlc-load-more');
+
+  if (gallery instanceof HTMLElement) {
+    const ITEMS_PER_PAGE = 8;
+    let currentLimit = ITEMS_PER_PAGE;
+
+    const allCards = Array.from(gallery.querySelectorAll('.dlc-showcase-card'))
+      .filter((c): c is HTMLElement => c instanceof HTMLElement);
+
+    allCards.forEach((card, i) => { card.dataset.index = String(i); });
+
+    const parsePrice = (card: HTMLElement) => {
+      const raw = card.dataset.price ?? '';
+      const num = Number(raw);
+      return raw !== '' && Number.isFinite(num) ? num : null;
+    };
+
+    function getSorted(mode: string): HTMLElement[] {
+      return [...allCards].sort((a, b) => {
+        switch (mode) {
+          case 'date-desc': {
+            const da = a.dataset.date ?? '';
+            const db = b.dataset.date ?? '';
+            if (!da && !db) return 0;
+            if (!da) return 1;
+            if (!db) return -1;
+            return db.localeCompare(da);
+          }
+          case 'price-desc':
+            return (parsePrice(b) ?? -Infinity) - (parsePrice(a) ?? -Infinity);
+          case 'price-asc':
+            return (parsePrice(a) ?? Infinity) - (parsePrice(b) ?? Infinity);
+          case 'owned-first':
+            return Number(b.dataset.owned) - Number(a.dataset.owned);
+          case 'unowned-first':
+            return Number(a.dataset.owned) - Number(b.dataset.owned);
+          case 'alpha':
+            return (a.dataset.title ?? '').localeCompare(b.dataset.title ?? '');
+          default:
+            return Number(a.dataset.index) - Number(b.dataset.index);
+        }
+      });
+    }
+
+    function render() {
+      const mode = sortSelect instanceof HTMLSelectElement ? sortSelect.value : 'date-desc';
+      const showUnowned = !(filterOwned instanceof HTMLInputElement) || filterOwned.checked;
+
+      const sorted = getSorted(mode);
+      sorted.forEach(card => gallery.appendChild(card));
+
+      const filtered = showUnowned
+        ? sorted
+        : sorted.filter(c => c.dataset.owned !== '0');
+
+      let shown = 0;
+      sorted.forEach(card => {
+        const passes = showUnowned || card.dataset.owned !== '0';
+        if (passes) {
+          shown++;
+          card.style.display = shown <= currentLimit ? '' : 'none';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (loadMoreRow instanceof HTMLElement) {
+        loadMoreRow.style.display = filtered.length > currentLimit ? '' : 'none';
+      }
+    }
+
+    render();
+
+    sortSelect?.addEventListener('change', () => {
+      currentLimit = ITEMS_PER_PAGE;
+      render();
+    });
+
+    filterOwned?.addEventListener('change', () => {
+      currentLimit = ITEMS_PER_PAGE;
+      render();
+    });
+
+    loadMoreBtn?.addEventListener('click', () => {
+      currentLimit += ITEMS_PER_PAGE;
+      render();
     });
   }
 

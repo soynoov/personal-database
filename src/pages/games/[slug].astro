@@ -10,8 +10,7 @@ import GameDetailSummary from "../../components/game-detail/GameDetailSummary.as
 import GameDetailStats from "../../components/game-detail/GameDetailStats.astro";
 import GameDetailDLCs from "../../components/game-detail/GameDetailDLCs.astro";
 import GameDetailComments from "../../components/game-detail/GameDetailComments.astro";
-import { buildGameCoverUrl, buildGameHeroUrl } from "../../lib/game-cover-url";
-import { resolveGameHero } from "../../lib/cover-resolver";
+import { buildGameCoverUrl } from "../../lib/game-cover-url";
 import { findGameBySlug, readGames } from "../../lib/local-games";
 
 const game = findGameBySlug(await readGames(), Astro.params.slug ?? "");
@@ -21,13 +20,6 @@ if (!game) {
 }
 
 const coverUrl = buildGameCoverUrl(game);
-
-// library_hero (banner panorámico) es opcional — no todos los juegos de
-// Steam lo tienen curado, y los que no son de Steam no tienen appid. Se
-// resuelve aquí (SSR) para decidir en el render si hay banner nítido o si
-// GameDetailHero debe caer al tratamiento borroso de siempre.
-const heroCheck = await resolveGameHero({ titulo: game.titulo, steam_appid: game.steam_appid ?? null });
-const heroBannerUrl = heroCheck.url ? buildGameHeroUrl(game) : null;
 
 const formatValue = (value: unknown, fallback = "-") => {
   if (value === null || value === undefined || value === "") return fallback;
@@ -337,6 +329,46 @@ const genres = Array.isArray(game.generos) && game.generos.length > 0 ? game.gen
 const tags = Array.isArray(game.tags) && game.tags.length > 0 ? game.tags.join(", ") : "-";
 const dlcItems = Array.isArray(game.dlcs?.items) ? game.dlcs.items : [];
 const dlcTotal = Number(game.dlcs?.total ?? dlcItems.length ?? 0);
+
+// DLCs adquiridos vs pendientes
+const dlcOwnedItems  = dlcItems.filter((dlc: any) => dlc.fecha_adquisicion !== null && dlc.fecha_adquisicion !== undefined);
+const dlcPendingItems = dlcItems.filter((dlc: any) => dlc.fecha_adquisicion === null || dlc.fecha_adquisicion === undefined);
+
+// Gastado (precio_pagado de los adquiridos)
+const dlcSpendItems = dlcOwnedItems.filter((dlc: any) =>
+  dlc.precio_pagado !== null && dlc.precio_pagado !== undefined && Number.isFinite(Number(dlc.precio_pagado))
+);
+const dlcSpend = dlcSpendItems.reduce((sum: number, dlc: any) => sum + Number(dlc.precio_pagado), 0);
+
+// Precio de salida total (adquiridos con precio_salida conocido)
+const dlcSalidaItems = dlcOwnedItems.filter((dlc: any) =>
+  dlc.precio_salida !== null && dlc.precio_salida !== undefined && Number.isFinite(Number(dlc.precio_salida))
+);
+const dlcSalidaTotal = dlcSalidaItems.reduce((sum: number, dlc: any) => sum + Number(dlc.precio_salida), 0);
+
+// Valor actual total (adquiridos con precio_actual conocido)
+const dlcActualItems = dlcOwnedItems.filter((dlc: any) =>
+  dlc.precio_actual !== null && dlc.precio_actual !== undefined && Number.isFinite(Number(dlc.precio_actual))
+);
+const dlcActualTotal = dlcActualItems.reduce((sum: number, dlc: any) => sum + Number(dlc.precio_actual), 0);
+
+// Coste para adquirir los pendientes (precio_actual de los no adquiridos)
+const dlcPendingPriceItems = dlcPendingItems.filter((dlc: any) =>
+  dlc.precio_actual !== null && dlc.precio_actual !== undefined && Number.isFinite(Number(dlc.precio_actual))
+);
+const dlcPendingTotal = dlcPendingPriceItems.reduce((sum: number, dlc: any) => sum + Number(dlc.precio_actual), 0);
+
+// DLC chart — línea de totales agregados (mismo formato que moneyChartPayload)
+const dlcChartPoints: Array<{ label: string; value: number }> = [];
+if (dlcSalidaItems.length > 0)  dlcChartPoints.push({ label: 'P. de salida', value: +dlcSalidaTotal.toFixed(2) });
+if (dlcSpendItems.length > 0)   dlcChartPoints.push({ label: 'Lo que pagué', value: +dlcSpend.toFixed(2) });
+if (dlcActualItems.length > 0)  dlcChartPoints.push({ label: 'Valor actual', value: +dlcActualTotal.toFixed(2) });
+
+const dlcChartPayload = dlcChartPoints.length >= 2 ? {
+  points: dlcChartPoints,
+  seriesLabel: 'Contenido adicional',
+  metric: 'currency',
+} : null;
 const historicalLowPrice =
   game.precio_minimo_historico === null || game.precio_minimo_historico === undefined
     ? null
@@ -563,15 +595,52 @@ const moneySnapshotCards = [
     note: hasFreeToPlayTag ? "Entrada gratuita" : pricePaidVisual.note || "Sin lectura financiera",
     tone: priceDeltaTone,
   },
+];
+
+// Cards para el acordeón "Contenido Adicional" — primera card = bento destacada (ancho completo)
+const additionalContentCards = [
+  {
+    label: "Lo que has gastado",
+    value: dlcSpendItems.length > 0 ? formatCurrency(dlcSpend) : "-",
+    note: dlcSpendItems.length > 0
+      ? `${dlcSpendItems.length} DLC${dlcSpendItems.length !== 1 ? 's' : ''} con precio pagado`
+      : "Sin gastos en DLCs registrados",
+    tone: dlcSpend > 0 ? "money" : "neutral",
+  },
+  {
+    label: "Precio de salida total",
+    value: dlcSalidaItems.length > 0 ? formatCurrency(dlcSalidaTotal) : "-",
+    note: dlcSalidaItems.length > 0
+      ? `${dlcSalidaItems.length} DLCs con precio de salida`
+      : "Sin precios de salida registrados",
+    tone: dlcSalidaItems.length > 0 ? "money" : "neutral",
+  },
+  {
+    label: "Valor actual total",
+    value: dlcActualItems.length > 0 ? formatCurrency(dlcActualTotal) : "-",
+    note: dlcActualItems.length > 0
+      ? `${dlcActualItems.length} DLCs con precio actual`
+      : "Sin precios actuales — usa Actualizar precios",
+    tone: dlcActualItems.length > 0 ? "money" : "neutral",
+  },
+  {
+    label: "Pendiente de adquirir",
+    value: dlcPendingPriceItems.length > 0 ? formatCurrency(dlcPendingTotal) : "-",
+    note: dlcPendingPriceItems.length > 0
+      ? `${dlcPendingPriceItems.length} DLCs sin adquirir con precio conocido`
+      : dlcPendingItems.length > 0
+        ? `${dlcPendingItems.length} DLCs sin adquirir — sin precio actual`
+        : "Tienes todos los DLCs",
+    tone: dlcPendingTotal > 0 ? "negative" : "neutral",
+  },
   {
     label: "Microtransacciones",
     value: formatCurrency(microtransactionsSpend),
-    note:
-      microtransactionsSpend !== null
-        ? "Gasto dentro del juego, aparte del precio pagado"
-        : hasFreeToPlayTag
-          ? "Free-to-play sin gasto registrado todavia"
-          : "Sin compras dentro del juego registradas",
+    note: microtransactionsSpend !== null
+      ? "Gasto dentro del juego"
+      : hasFreeToPlayTag
+        ? "Free-to-play sin gasto registrado"
+        : "Sin compras dentro del juego",
     tone: microtransactionsSpend !== null && microtransactionsSpend > 0 ? "negative" : "neutral",
   },
 ];
@@ -701,7 +770,6 @@ const commentsEditValues = {
       title={game.titulo}
       coverUrl={coverUrl}
       heroCoverStyle={heroCoverStyle}
-      heroBannerUrl={heroBannerUrl}
       statusBadge={statusBadge}
       launcherBadge={launcherBadge}
       platformBadge={platformBadge}
@@ -733,6 +801,10 @@ const commentsEditValues = {
         priceDeltaLabel={pricePaidVisual.deltaLabel}
         priceDeltaTone={priceDeltaTone}
         moneySnapshotCards={moneySnapshotCards}
+        additionalContentCards={additionalContentCards}
+        dlcChartPayload={dlcChartPayload}
+        dlcChartPoints={dlcChartPoints}
+        hasDlcs={dlcTotal > 0}
         editValues={moneyEditValues}
       />
     </section>

@@ -1,11 +1,10 @@
 @import '../theme.css';
 
 /* ================================================================
-   game-detail/dlcs.css — sección DLCs (galería de expansiones)
-   Selectores: .dlc-gallery, .dlc-showcase-card, .dlc-showcase-cover,
-   .dlc-showcase-cover-empty, .dlc-showcase-own-cover, .dlc-showcase-body,
-   .dlc-showcase-notes
-   Extraídos de src/styles/game-page.css
+   game-detail/dlcs.css — sección DLCs
+   Estilos de la GALERÍA y del DIÁLOGO DE EDICIÓN.
+   Los estilos de la card individual (.dlc-showcase-card, etc.)
+   viven en DLCCard.astro como <style> con scope de componente.
    ================================================================ */
 
 @layer global {
@@ -13,192 +12,120 @@
 /* ── DLC gallery ────────────────────────────────────────────────── */
 .dlc-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.25rem;
   min-width: 0;
 }
 
-/* ── DLC showcase card ──────────────────────────────────────────── */
-.dlc-showcase-card {
-  display: grid;
-  grid-template-columns: 1fr;
-  min-width: 0;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-2);
-  background: linear-gradient(
-    180deg,
-    rgba(18, 20, 26, 0.98),
-    rgba(14, 16, 22, 0.96)
-  );
-  box-shadow: var(--shadow);
-}
-
-/* ── DLC showcase cover ─────────────────────────────────────────── */
-/* display:grid sin place-items: los items (la imagen o el estado vacío)
-   deben ESTIRARSE a ocupar toda la celda (comportamiento por defecto,
-   "stretch"). place-items:center rompía esto — con height:100% en un
-   grid item centrado, el alto de la fila "auto" se calculaba contra un
-   porcentaje indefinido y la imagen caía a su tamaño intrínseco en vez
-   de cubrir la caja. El centrado del icono "sin portada" ya lo resuelve
-   .dlc-showcase-cover-empty por su cuenta con su propio grid interno. */
-.dlc-showcase-cover {
-  position: relative;
-  min-height: 0;
-  aspect-ratio: 16 / 9;
-  display: grid;
-  background:
-    radial-gradient(circle at top, rgba(186, 36, 38, 0.14), transparent 44%),
-    linear-gradient(180deg, rgba(27, 31, 39, 0.98), rgba(18, 21, 28, 0.98));
-}
-
-/* Sin padding: la portada llega a los 4 bordes de la caja (edge-to-edge,
-   como una capsule de Steam). El redondeo lo aporta .dlc-showcase-card
-   con overflow:hidden, no la imagen. */
-.dlc-showcase-cover img {
-  width: 100%;
-  height: 100%;
-  max-height: none;
-  object-fit: cover;
-  display: block;
-}
-
-/* Portada propia del DLC (Steam). Ya no hay una capa de fallback debajo
-   (se quitó por frágil: el letterbox de object-fit:contain dejaba
-   transparentarse la portada del juego base) — ahora, si la imagen rompe,
-   el onerror inline la oculta y muestra su hermano .dlc-showcase-cover-empty.
-   Como uno de los dos siempre está en display:none, no hace falta
-   posicionamiento absoluto: el que queda visible ocupa toda la celda del
-   grid de .dlc-showcase-cover sin solaparse con nada. */
-.dlc-showcase-own-cover {
-  width: 100%;
-  height: 100%;
-}
-
-/* ── DLC showcase cover — estado sin portada ───────────────────────
-   Se muestra cuando el DLC no tiene cover_url o cuando la imagen rompe
-   al cargar (onerror). Icono de "enlace roto" en línea, sin depender de
-   ninguna librería de iconos externa. */
-.dlc-showcase-cover-empty {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  place-items: center;
-  justify-items: center;
-  gap: 0.5rem;
-  color: rgba(218, 226, 236, 0.42);
-  text-align: center;
-}
-
-.dlc-showcase-cover-empty svg {
-  width: 34px;
-  height: 34px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.dlc-showcase-cover-empty span {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  color: rgba(218, 226, 236, 0.5);
-}
-
-/* ── DLC showcase body ──────────────────────────────────────────── */
-.dlc-showcase-body {
-  padding: 1.15rem;
-  display: grid;
-  gap: 0.95rem;
-  min-width: 0;
-}
-
-/* Altura reservada a 2 líneas siempre (min-height + line-clamp), para que
-   los títulos cortos y largos dejen el resto del contenido (fechas,
-   precio, notas) arrancando en la misma fila entre cards vecinas. */
-.dlc-showcase-body h3 {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-  margin: 0;
-  min-height: calc(1.2rem * 1.2 * 2);
-  font-size: 1.2rem;
-  line-height: 1.2;
-  overflow-wrap: break-word;
-  word-break: break-word;
-}
-
-/* Solo 2 campos por card (Adquirido, Precio pagado) — el resto de datos
-   del DLC (precio actual, salida, tamaño, fuente portada) vive en el
-   lápiz de edición, no ocupando sitio en cada tarjeta. */
-.dlc-showcase-facts {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.7rem;
-}
-
-/* Radio por anidación: .detail-item genérico vive en detail.css y es
-   compartido con el modal de vista rápida del catálogo, así que aquí
-   se sobreescribe solo cuando cuelga de .dlc-showcase-body (nivel 3). */
-.dlc-showcase-body .detail-item {
-  border-radius: var(--radius-3);
-}
-
-/* ── DLC showcase notes ─────────────────────────────────────────── */
-.dlc-showcase-notes {
-  margin: 0;
-  padding: 0.9rem 1rem;
-  border-radius: var(--radius-3);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  background: rgba(255, 255, 255, 0.03);
-  font-family: var(--font-body);
-  color: #ecdddd;
-}
-
-/* ── DLC no adquirido (sin fecha_adquisicion) ─────────────────────── */
-/* Mismo lenguaje visual que .detail-item-empty (detail.css): opacidad
-   0.52 + desaturar. Aquí además se apaga la portada a escala de grises
-   para que se note de un vistazo, sin leer las fechas de cada card. */
-.dlc-showcase-card-unowned {
-  opacity: 0.52;
-}
-
-.dlc-showcase-card-unowned .dlc-showcase-cover {
-  filter: grayscale(1);
-}
-
-.dlc-showcase-card-unowned:hover {
-  opacity: 0.82;
-}
-
-.dlc-showcase-card-unowned .dlc-showcase-cover:hover {
-  filter: grayscale(0.35);
-}
-
-.dlc-showcase-unowned-badge {
-  position: absolute;
-  right: 0.75rem;
-  top: 0.75rem;
+/* ── Orden de la galería ────────────────────────────────────────── */
+/* Mismo lenguaje visual que .section-pill (shared.css), pero
+   interactivo: un <select> nativo junto al pill de conteo. */
+.dlc-sort-select {
   display: inline-flex;
   align-items: center;
-  min-height: 26px;
-  padding: 0.24rem 0.6rem;
+  min-height: 28px;
+  padding: 0.28rem 1.6rem 0.28rem 0.72rem;
   border-radius: var(--radius-pill);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(15, 17, 22, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c8cdd6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")
+      no-repeat right 0.5rem center / 12px;
+  appearance: none;
   font-family: var(--font-body);
-  font-size: 0.7rem;
-  color: #d6c8cc;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #e8edf3;
+  cursor: pointer;
 }
 
-/* ── Diálogo de edición de DLCs (lista + sync de Steam) ───────────── */
+.dlc-sort-select:hover,
+.dlc-sort-select:focus-visible {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.dlc-sort-select option {
+  background: #1b2029;
+  color: var(--text);
+}
+
+/* ── Checkbox "mostrar no adquiridos" ───────────────────────────── */
+.dlc-filter-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 28px;
+  padding: 0.28rem 0.72rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05));
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #e8edf3;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dlc-filter-label:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.dlc-filter-label input[type='checkbox'] {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--pistachio);
+  cursor: pointer;
+  margin: 0;
+}
+
+/* ── Ver más ────────────────────────────────────────────────────── */
+.dlc-load-more-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.dlc-load-more-btn {
+  padding: 0.6rem 2.2rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: #e8edf3;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+
+.dlc-load-more-btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* ── Diálogo de edición (lista + sync de Steam) ─────────────────── */
 .dlc-edit-sync-row {
   display: flex;
   align-items: center;
   gap: 0.8rem;
   margin-bottom: 1rem;
   flex-wrap: wrap;
+}
+
+/* Buscador por nombre — necesario en juegos con muchos DLCs (DBD: 41),
+   donde encontrar la fila correcta a ojo en una lista de solo texto es
+   lento. Filtra .dlc-edit-row por su data-search-text. */
+.dlc-edit-search {
+  width: 100%;
+  margin-bottom: 0.8rem;
+  padding: 0.55rem 0.8rem;
+  border-radius: var(--radius-3);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.86rem;
 }
 
 .dlc-edit-list {
@@ -212,11 +139,37 @@
 
 .dlc-edit-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto 140px;
+  grid-template-columns: 40px minmax(0, 1fr) auto 140px 140px;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.7rem;
   padding: 0.6rem 0.2rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Miniatura para identificar el DLC de un vistazo en listas largas. */
+.dlc-edit-row-thumb {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: var(--radius-4);
+  object-fit: cover;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.dlc-edit-row-thumb-empty {
+  display: grid;
+  place-items: center;
+  color: rgba(218, 226, 236, 0.35);
+}
+
+.dlc-edit-row-thumb-empty svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .dlc-edit-row-title {
@@ -245,6 +198,7 @@
   cursor: pointer;
 }
 
+.dlc-edit-date-input,
 .dlc-edit-price-input {
   width: 100%;
   padding: 0.4rem 0.55rem;
@@ -256,45 +210,38 @@
   font-size: 0.84rem;
 }
 
+/* El date picker nativo hereda mal el color de texto en fondo oscuro
+   si no se fuerza color-scheme en el propio input. */
+.dlc-edit-date-input {
+  color-scheme: dark;
+}
+
+.dlc-edit-date-input:disabled,
 .dlc-edit-price-input:disabled {
   opacity: 0.4;
 }
 
 @media (max-width: 560px) {
   .dlc-edit-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: 40px 1fr;
+    grid-template-areas:
+      "thumb title"
+      "owned owned"
+      "date  price";
     gap: 0.4rem;
   }
+
+  .dlc-edit-row-thumb  { grid-area: thumb; }
+  .dlc-edit-row-title  { grid-area: title; }
+  .dlc-edit-row-owned  { grid-area: owned; }
+  .dlc-edit-date-input { grid-area: date; }
+  .dlc-edit-price-input { grid-area: price; }
 }
 
-/* ── game-page-rich overrides (context prefix) ──────────────────── */
-.game-page-rich .dlc-showcase-card {
-  border-radius: var(--radius-2);
-}
-
-.game-page-rich .dlc-showcase-body {
-  padding: 0.95rem;
-}
-
-/* ── Responsive ─────────────────────────────────────────────────── */
+/* ── Responsive galería ─────────────────────────────────────────── */
 @media (max-width: 1120px) {
   .dlc-gallery {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
-}
-
-@media (max-width: 720px) {
-  .dlc-showcase-cover {
-    aspect-ratio: 16 / 10;
-  }
-
-  .dlc-showcase-cover-empty svg {
-    width: 28px;
-    height: 28px;
-  }
-
-  .game-page-rich .dlc-showcase-body {
-    padding: 0.82rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 }
 

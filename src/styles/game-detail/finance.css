@@ -348,4 +348,130 @@
   }
 }
 
+/* ── Acordeón "Contenido Adicional" ────────────────────────────── */
+.dlc-finance-accordion {
+  margin-top: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-2);
+  background: linear-gradient(180deg, rgba(20, 22, 28, 0.96), rgba(15, 17, 22, 0.96));
+  overflow: hidden;
+}
+
+.dlc-finance-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1.1rem;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #e8edf3;
+  transition: background 140ms ease;
+}
+
+.dlc-finance-summary::-webkit-details-marker { display: none; }
+
+.dlc-finance-summary:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.dlc-finance-chevron {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 200ms ease;
+  opacity: 0.7;
+}
+
+.dlc-finance-accordion[open] .dlc-finance-chevron {
+  transform: rotate(180deg);
+}
+
+.dlc-finance-body {
+  padding: 0 1.1rem 1.1rem;
+  display: grid;
+  gap: 1rem;
+}
+
+/* Fila con botón "Actualizar precios" + status */
+.dlc-finance-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.dlc-sync-prices-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0.3rem 0.9rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: #e8edf3;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease;
+  white-space: nowrap;
+}
+
+.dlc-sync-prices-btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.dlc-sync-prices-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dlc-sync-prices-status {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: rgba(200, 205, 215, 0.7);
+}
+
+/* El acordeón DLC usa chart-shell igual que el bloque base,
+   por lo que dlc-finance-grid hereda bento de chart-metrics-grid
+   sin necesidad de overrides de columnas. */
+
+/* Fondo tono azul-morado para el chart visual del acordeón DLC */
+.chart-visual-card-dlc {
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(122, 176, 232, 0.10),
+      transparent 32%
+    ),
+    linear-gradient(180deg, rgba(17, 21, 29, 0.96), rgba(11, 14, 20, 0.94));
+}
+
+/* Canvas DLC: barras horizontales — altura dinámica mínima mayor que el base */
+.chart-canvas-wrap-dlc {
+  min-height: 420px;
+}
+
+@media (max-width: 720px) {
+  .dlc-finance-summary {
+    padding: 0.72rem 0.9rem;
+    font-size: 0.86rem;
+  }
+
+  .dlc-finance-body {
+    padding: 0 0.9rem 0.9rem;
+  }
+}
+
 } /* end @layer global */

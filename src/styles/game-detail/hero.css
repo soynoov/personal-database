@@ -65,32 +65,6 @@
   pointer-events: none;
 }
 
-/* ── Variante "banner" (híbrido) ────────────────────────────────────
-   Cuando hay --hero-banner (Steam library_hero, panorámico nativo),
-   el ::before usa esa imagen nítida en vez del --hero-cover recortado
-   a la fuerza desde la portada portrait. El blur/saturate de la regla
-   base existía para disimular ese mal encaje — con un asset pensado
-   para ser ancho ya no hace falta. El poster pequeño (.game-overview-media)
-   se mantiene igual encima, como tarjeta flotante. */
-.game-hero-cinematic-banner::before {
-  background:
-    linear-gradient(
-      90deg,
-      rgba(8, 10, 14, 0.74) 0%,
-      rgba(8, 10, 14, 0.32) 48%,
-      rgba(8, 10, 14, 0.8) 100%
-    ),
-    radial-gradient(
-      circle at top left,
-      rgba(186, 36, 38, 0.14),
-      transparent 30%
-    ),
-    var(--hero-banner);
-  background-size: cover;
-  background-position: center 32%;
-  filter: saturate(0.94);
-}
-
 /* ── Poster panel ───────────────────────────────────────────────── */
 .game-poster-panel {
   border: 1px solid var(--line);
@@ -241,27 +215,6 @@
     var(--hero-cover);
   background-size: cover;
   background-position: center 28%;
-}
-
-/* Misma especificidad que la regla de arriba (0,2,1) — va después a
-   propósito para ganarle por orden de fuente cuando hay banner nítido. */
-.game-page-rich .game-hero-cinematic-banner::before {
-  background:
-    linear-gradient(
-      90deg,
-      rgba(8, 10, 14, 0.76) 0%,
-      rgba(8, 10, 14, 0.3) 48%,
-      rgba(8, 10, 14, 0.8) 100%
-    ),
-    radial-gradient(
-      circle at top left,
-      rgba(164, 174, 191, 0.1),
-      transparent 30%
-    ),
-    var(--hero-banner);
-  background-size: cover;
-  background-position: center 32%;
-  filter: saturate(0.94);
 }
 
 .game-page-rich .game-overview-card {

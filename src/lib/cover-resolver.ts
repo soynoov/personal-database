@@ -89,7 +89,6 @@ const WARMUP_BATCH_DELAY_MS = 300; // pausa entre batches para no saturar Steam
 
 type CacheEntry = {
   capsuleUrl: string | null;
-  heroUrl: string | null;
   expiresAt: number;
 };
 const coverCache = new Map<number, CacheEntry>();
@@ -100,16 +99,11 @@ function buildUrl(fmt: string, filename: string): string {
   return CDN_BASE + fmt.replace('${FILENAME}', filename).replace('{FILENAME}', filename);
 }
 
-// library_capsule (600x900, portrait) y library_hero (~3840x1240, banner
-// panorámico) vienen en el mismo objeto `assets` de IStoreBrowseService, así
-// que se resuelven y cachean juntos en una sola llamada por appId.
 function buildEntryFromAssets(assets: StoreAssets | undefined): Omit<CacheEntry, 'expiresAt'> {
   const fmt = assets?.asset_url_format;
   const lc = assets?.library_capsule;
-  const lh = assets?.library_hero;
   return {
     capsuleUrl: fmt && lc ? buildUrl(fmt, lc) : null,
-    heroUrl: fmt && lh ? buildUrl(fmt, lh) : null,
   };
 }
 
@@ -177,10 +171,6 @@ async function fetchSteamLibraryCapsule(appId: number): Promise<string | null> {
   return (await fetchSteamAssetsCached(appId)).capsuleUrl;
 }
 
-async function fetchSteamLibraryHero(appId: number): Promise<string | null> {
-  return (await fetchSteamAssetsCached(appId)).heroUrl;
-}
-
 // ─── Warmup: batch al inicio + cada 24h ──────────────────────────────────────
 
 function chunk<T>(array: T[], size: number): T[][] {
@@ -242,25 +232,16 @@ export async function resolveGameCover(game: CoverLookupGame): Promise<CoverResu
     return { url: null, source: 'No steam_appid' };
   }
 
-  const url = await fetchSteamLibraryCapsule(game.steam_appid);
-  return url
-    ? { url, source: 'Steam library capsule' }
-    : { url: null, source: 'Steam API unavailable' };
-}
-
-// library_hero: banner panorámico (~3840x1240) que Steam usa para la cabecera
-// de la página de cada juego en su propio cliente. No todos los juegos lo
-// tienen curado — si no existe, el llamador debe caer al tratamiento actual
-// (fondo borroso a partir de la portada portrait).
-export async function resolveGameHero(game: CoverLookupGame): Promise<CoverResult> {
-  if (!game.steam_appid) {
-    return { url: null, source: 'No steam_appid' };
+  const capsuleUrl = await fetchSteamLibraryCapsule(game.steam_appid);
+  if (capsuleUrl) {
+    return { url: capsuleUrl, source: 'Steam library capsule' };
   }
 
-  const url = await fetchSteamLibraryHero(game.steam_appid);
-  return url
-    ? { url, source: 'Steam library hero' }
-    : { url: null, source: 'Steam API unavailable' };
+  // Fallback para DLCs: library_capsule siempre es null en IStoreBrowseService para DLCs.
+  // Intentamos header.jpg sin hash (funciona en CDN para apps antiguas y muchos DLCs).
+  // Si la URL falla (DLCs nuevos con hash en el path), cover.ts cae al coverUrlParam.
+  const headerUrl = `${CDN_BASE}steam/apps/${game.steam_appid}/header.jpg`;
+  return { url: headerUrl, source: 'Steam header' };
 }
 
 // ─── Scheduler (solo en modo servidor, no en script directo) ─────────────────
