@@ -685,7 +685,19 @@
       "Free to Play"
     ],
     "steam_store_name": "Marvel Rivals",
-    "steam_last_sync_at": "2026-07-05T11:24:11.397Z"
+    "steam_last_sync_at": "2026-07-05T11:24:11.397Z",
+    "gasto_microtransacciones": 134.42,
+    "microtransacciones_detalle": [
+      { "fecha": "2024-12-06", "concepto": "2180 Lattices", "precio_eur": 18.9 },
+      { "fecha": "2025-03-30", "concepto": "Pick-Up Bundle", "precio_eur": 2.77 },
+      { "fecha": "2025-04-11", "concepto": "2180 Lattices", "precio_eur": 17.99 },
+      { "fecha": "2025-07-11", "concepto": "2180 Lattices", "precio_eur": 17.08 },
+      { "fecha": "2025-08-01", "concepto": "2180 Lattices", "precio_eur": 17.52 },
+      { "fecha": "2025-08-29", "concepto": "2180 Lattices", "precio_eur": 17.14 },
+      { "fecha": "2025-10-17", "concepto": "1000 Lattices", "precio_eur": 8.57 },
+      { "fecha": "2025-11-24", "concepto": "2180 Lattices", "precio_eur": 17.37 },
+      { "fecha": "2026-04-25", "concepto": "2180 Lattices", "precio_eur": 17.08 }
+    ]
   },
   {
     "titulo": "Muse Dash",
@@ -1428,7 +1440,19 @@
       "Indie"
     ],
     "steam_store_name": "Rocket League®",
-    "steam_last_sync_at": "2026-07-05T11:24:22.597Z"
+    "steam_last_sync_at": "2026-07-05T11:24:22.597Z",
+    "gasto_microtransacciones": 40.91,
+    "microtransacciones_detalle": [
+      { "fecha": "2016-06-24", "concepto": "Chaos Run + Supersonic Fury DLC Pack", "precio_eur": 16.77 },
+      { "fecha": "2016-06-28", "concepto": "Revenge of the Battle-Cars DLC Pack", "precio_eur": 2.39 },
+      { "fecha": "2017-07-19", "concepto": "Llave para Desbloquear cajas x1", "precio_eur": 1.49 },
+      { "fecha": "2017-12-29", "concepto": "Llave para Desbloquear cajas x1", "precio_eur": 1.26 },
+      { "fecha": "2018-01-04", "concepto": "Llave para Desbloquear cajas x2", "precio_eur": 2.52 },
+      { "fecha": "2018-01-26", "concepto": "Llave para Desbloquear cajas x1", "precio_eur": 1.26 },
+      { "fecha": "2018-05-08", "concepto": "Llave para Desbloquear cajas x1", "precio_eur": 1.26 },
+      { "fecha": "2018-11-19", "concepto": "Back to the Future + Batman v Superman + Masamune + Hot Wheels Twin Mill III packs", "precio_eur": 3.96 },
+      { "fecha": "2022-12-08", "concepto": "Rocket League Credits x1100", "precio_eur": 10 }
+    ]
   },
   {
     "titulo": "Sekiro: Shadows Die Twice",
@@ -2695,7 +2719,17 @@
       "Free to Play"
     ],
     "steam_store_name": "Counter-Strike 2",
-    "steam_last_sync_at": "2026-07-05T11:24:38.453Z"
+    "steam_last_sync_at": "2026-07-05T11:24:38.453Z",
+    "gasto_microtransacciones": 34.82,
+    "microtransacciones_detalle": [
+      { "fecha": "2020-02-08", "concepto": "Llave de caja Gamma + Llave de caja de Guantes", "precio_eur": 4.4 },
+      { "fecha": "2021-03-25", "concepto": "Music Kit | Scarlxrd, CHAINSAW.LXADXUT", "precio_eur": 4.25 },
+      { "fecha": "2021-04-19", "concepto": "Llave de caja Prisma + Clutch x2", "precio_eur": 6.3 },
+      { "fecha": "2021-04-20", "concepto": "Llave de caja Horizonte", "precio_eur": 2.1 },
+      { "fecha": "2021-04-21", "concepto": "Llave de caja Danger Zone", "precio_eur": 2.1 },
+      { "fecha": "2021-04-23", "concepto": "Llave de caja Espectro 2 + CS20 + Revólver", "precio_eur": 6.3 },
+      { "fecha": "2017-06-22", "concepto": "Actualización a estatus Prime", "precio_eur": 9.37 }
+    ]
   },
   {
     "titulo": "Cyberpunk 2077",
@@ -3268,7 +3302,11 @@
       "Acción"
     ],
     "steam_store_name": "Dead by Daylight",
-    "steam_last_sync_at": "2026-07-05T11:24:39.441Z"
+    "steam_last_sync_at": "2026-07-05T11:24:39.441Z",
+    "gasto_microtransacciones": 5,
+    "microtransacciones_detalle": [
+      { "fecha": "2020-10-17", "concepto": "500 Auric Cells", "precio_eur": 5 }
+    ]
   },
   {
     "titulo": "Destiny 2",
@@ -4230,7 +4268,16 @@
       "Estrategia"
     ],
     "steam_store_name": "MARVEL SNAP",
-    "steam_last_sync_at": "2026-07-05T11:24:52.030Z"
+    "steam_last_sync_at": "2026-07-05T11:24:52.030Z",
+    "gasto_microtransacciones": 72.94,
+    "microtransacciones_detalle": [
+      { "fecha": "2023-12-14", "concepto": "BundleDecemberSnow", "precio_eur": 16.99 },
+      { "fecha": "2024-02-06", "concepto": "Seasonal Pass", "precio_eur": 10.99 },
+      { "fecha": "2024-02-23", "concepto": "BundleFebruary2024Hellfire", "precio_eur": 10.99 },
+      { "fecha": "2024-03-12", "concepto": "Gold Pass", "precio_eur": 5.99 },
+      { "fecha": "2024-07-09", "concepto": "Seasonal Pass", "precio_eur": 10.99 },
+      { "fecha": "2025-02-14", "concepto": "Bundle1499", "precio_eur": 16.99 }
+    ]
   },
   {
     "titulo": "A Game About Digging A Hole",
@@ -4929,7 +4976,18 @@
       "Indie"
     ],
     "steam_store_name": "Brawlhalla",
-    "steam_last_sync_at": "2026-07-05T11:24:56.850Z"
+    "steam_last_sync_at": "2026-07-05T11:24:56.850Z",
+    "gasto_microtransacciones": 83.41,
+    "microtransacciones_detalle": [
+      { "fecha": "2020-03-31", "concepto": "340 Mammoth Coins", "precio_eur": 12.99 },
+      { "fecha": "2020-04-12", "concepto": "340 Mammoth Coins", "precio_eur": 12.99 },
+      { "fecha": "2020-04-26", "concepto": "340 Mammoth Coins", "precio_eur": 12.99 },
+      { "fecha": "2020-05-11", "concepto": "340 Mammoth Coins", "precio_eur": 12.99 },
+      { "fecha": "2020-05-28", "concepto": "Battle Pass Season 1", "precio_eur": 13.48 },
+      { "fecha": "2020-06-13", "concepto": "140 Mammoth Coins", "precio_eur": 5.99 },
+      { "fecha": "2020-07-10", "concepto": "140 Mammoth Coins", "precio_eur": 5.99 },
+      { "fecha": "2020-07-22", "concepto": "140 Mammoth Coins", "precio_eur": 5.99 }
+    ]
   },
   {
     "titulo": "Paladins",
@@ -5431,6 +5489,324 @@
       "Estrategia"
     ],
     "steam_store_name": "Company of Heroes 2",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "The You Quiz",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2025,
+    "solo": null,
+    "hltb": null,
+    "cover_url": null,
+    "steam_appid": 3669740,
+    "generos": [
+      "Casual",
+      "Indie",
+      "Estrategia"
+    ],
+    "precio_pagado": 9.99,
+    "precio_actual": 5.99,
+    "precio_salida": 9.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": null,
+      "main_plus": null,
+      "completionist": null
+    },
+    "steam_store_genres": [
+      "Casual",
+      "Indie"
+    ],
+    "steam_store_name": "The You Quiz",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "Hextech Mayhem: A League of Legends Story",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 5.5,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2021,
+    "solo": "x",
+    "hltb": 5.5,
+    "cover_url": null,
+    "steam_appid": 1651960,
+    "generos": [
+      "Acción",
+      "Indie"
+    ],
+    "precio_pagado": 8.99,
+    "precio_actual": 2.24,
+    "precio_salida": 8.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 5.5,
+      "main_plus": 7,
+      "completionist": 12
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Indie"
+    ],
+    "steam_store_name": "Hextech Mayhem: A League of Legends Story™",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "Wallpaper Engine",
+    "estado": "Recurrente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": "Aplicación de fondos de pantalla animados, no un juego tradicional.",
+    "lanzamiento": 2018,
+    "solo": null,
+    "hltb": null,
+    "cover_url": null,
+    "steam_appid": 431960,
+    "generos": [
+      "Casual",
+      "Indie"
+    ],
+    "precio_pagado": 3.99,
+    "precio_actual": 3.99,
+    "precio_salida": 3.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": null,
+      "main_plus": null,
+      "completionist": null
+    },
+    "steam_store_genres": [
+      "Casual",
+      "Indie"
+    ],
+    "steam_store_name": "Wallpaper Engine",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "Seek Girl",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": "Comprado en bundle junto a Seek Girl II y III (1,89€ total, split estimado a partes iguales).",
+    "lanzamiento": 2019,
+    "solo": "x",
+    "hltb": null,
+    "cover_url": null,
+    "steam_appid": 998930,
+    "generos": [
+      "Acción",
+      "Casual",
+      "Indie"
+    ],
+    "precio_pagado": 0.63,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": null,
+      "main_plus": null,
+      "completionist": null
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Casual"
+    ],
+    "steam_store_name": "Seek Girl",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "Seek Girl II",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": "Comprado en bundle junto a Seek Girl y III (1,89€ total, split estimado a partes iguales).",
+    "lanzamiento": 2019,
+    "solo": "x",
+    "hltb": null,
+    "cover_url": null,
+    "steam_appid": 1149660,
+    "generos": [
+      "Casual",
+      "Indie"
+    ],
+    "precio_pagado": 0.63,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": null,
+      "main_plus": null,
+      "completionist": null
+    },
+    "steam_store_genres": [
+      "Casual",
+      "Indie"
+    ],
+    "steam_store_name": "Seek Girl Ⅱ",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "Seek Girl III",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": "Comprado en bundle junto a Seek Girl y II (1,89€ total, split estimado a partes iguales).",
+    "lanzamiento": 2020,
+    "solo": "x",
+    "hltb": null,
+    "cover_url": null,
+    "steam_appid": 1191210,
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Casual",
+      "Indie",
+      "Rol",
+      "Estrategia"
+    ],
+    "precio_pagado": 0.63,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": null,
+      "main_plus": null,
+      "completionist": null
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Seek Girl Ⅲ",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "Grand Theft Auto IV",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 27,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": "Comprado en bundle junto a GTA: San Andreas (EU) por 8,99€ total, split estimado a partes iguales.",
+    "lanzamiento": 2008,
+    "solo": "x",
+    "hltb": 27,
+    "cover_url": null,
+    "steam_appid": 12210,
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
+    "precio_pagado": 4.5,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 27,
+      "main_plus": 38,
+      "completionist": 62
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Grand Theft Auto IV: The Complete Edition",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "Grand Theft Auto: San Andreas",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 32,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": "Comprado en bundle junto a GTA IV (EU) por 8,99€ total, split estimado a partes iguales.",
+    "lanzamiento": 2004,
+    "solo": "x",
+    "hltb": 32,
+    "cover_url": null,
+    "steam_appid": 12120,
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
+    "precio_pagado": 4.5,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 32,
+      "main_plus": 54,
+      "completionist": 74
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Grand Theft Auto: San Andreas",
     "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
   }
 ]
