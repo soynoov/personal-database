@@ -511,7 +511,7 @@
       "Indie",
       "Estrategia"
     ],
-    "precio_pagado": null,
+    "precio_pagado": 28.99,
     "precio_actual": 23.19,
     "precio_salida": 28.99,
     "tags": [],
@@ -751,7 +751,7 @@
       "Indie",
       "Acceso anticipado"
     ],
-    "precio_pagado": null,
+    "precio_pagado": 8.69,
     "precio_actual": 18.99,
     "precio_salida": 18.99,
     "tags": [],
@@ -790,7 +790,7 @@
       "Acción",
       "Acceso anticipado"
     ],
-    "precio_pagado": null,
+    "precio_pagado": 12.66,
     "precio_actual": 6.64,
     "precio_salida": 9.49,
     "tags": [],
@@ -873,7 +873,7 @@
       "Estrategia",
       "Acceso anticipado"
     ],
-    "precio_pagado": null,
+    "precio_pagado": 19.5,
     "precio_actual": 19.5,
     "precio_salida": 19.5,
     "tags": [],
@@ -1655,7 +1655,7 @@
       "Rol",
       "Simuladores"
     ],
-    "precio_pagado": null,
+    "precio_pagado": 8.39,
     "precio_actual": 13.99,
     "precio_salida": 13.99,
     "tags": [],
@@ -2003,7 +2003,7 @@
       "Acción",
       "Free to Play"
     ],
-    "precio_pagado": null,
+    "precio_pagado": 7.99,
     "precio_actual": null,
     "precio_salida": null,
     "tags": [
@@ -2123,7 +2123,7 @@
       "Indie",
       "Rol"
     ],
-    "precio_pagado": null,
+    "precio_pagado": 9.99,
     "precio_actual": 2.49,
     "precio_salida": 9.99,
     "tags": [],
@@ -2246,7 +2246,7 @@
     "generos": [
       "Estrategia"
     ],
-    "precio_pagado": null,
+    "precio_pagado": 6.9,
     "precio_actual": 19.99,
     "precio_salida": 19.99,
     "tags": [],
@@ -2446,7 +2446,7 @@
       "Aventura",
       "Rol"
     ],
-    "precio_pagado": null,
+    "precio_pagado": 19.8,
     "precio_actual": 59.99,
     "precio_salida": 59.99,
     "tags": [],
@@ -3378,7 +3378,7 @@
       "Simuladores",
       "Estrategia"
     ],
-    "precio_pagado": null,
+    "precio_pagado": 9.74,
     "precio_actual": 1.49,
     "precio_salida": 14.99,
     "tags": [],
@@ -3617,7 +3617,7 @@
       "Indie",
       "Simuladores"
     ],
-    "precio_pagado": null,
+    "precio_pagado": 9.99,
     "precio_actual": 4.99,
     "precio_salida": 9.99,
     "tags": [],
@@ -3811,7 +3811,7 @@
     "solo": "x",
     "steam_appid": 271590,
     "generos": null,
-    "precio_pagado": null,
+    "precio_pagado": 14.99,
     "precio_actual": null,
     "precio_salida": null,
     "tags": [],
@@ -4092,7 +4092,7 @@
       "Acción",
       "Aventura"
     ],
-    "precio_pagado": null,
+    "precio_pagado": 2.99,
     "precio_actual": 19.99,
     "precio_salida": 19.99,
     "tags": [],
@@ -4130,7 +4130,7 @@
     "generos": [
       "Acción"
     ],
-    "precio_pagado": null,
+    "precio_pagado": 1.99,
     "precio_actual": 9.75,
     "precio_salida": 9.75,
     "tags": [],
@@ -5042,6 +5042,395 @@
       "Aventura"
     ],
     "steam_store_name": "River City Girls 2",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "Star Wars Outlaws",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 15,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2024,
+    "solo": "x",
+    "hltb": 15,
+    "cover_url": null,
+    "steam_appid": 2842040,
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
+    "precio_pagado": 20.99,
+    "precio_actual": 17.49,
+    "precio_salida": 69.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 15,
+      "main_plus": 21,
+      "completionist": 33
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Star Wars Outlaws",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "Ultimate Chicken Horse",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 7,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2016,
+    "solo": "-",
+    "hltb": 7,
+    "cover_url": null,
+    "steam_appid": 386940,
+    "generos": [
+      "Acción",
+      "Casual"
+    ],
+    "precio_pagado": 6.24,
+    "precio_actual": 4.54,
+    "precio_salida": 12.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 7,
+      "main_plus": 10,
+      "completionist": 15
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Casual"
+    ],
+    "steam_store_name": "Ultimate Chicken Horse",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "Figment",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 6,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2017,
+    "solo": "x",
+    "hltb": 6,
+    "cover_url": null,
+    "steam_appid": 493540,
+    "generos": [
+      "Aventura",
+      "Acción",
+      "Indie"
+    ],
+    "precio_pagado": null,
+    "precio_actual": 3.99,
+    "precio_salida": 19.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 6,
+      "main_plus": 7.5,
+      "completionist": 10
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Acción"
+    ],
+    "steam_store_name": "Figment",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "Titan Souls",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 3,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2015,
+    "solo": "x",
+    "hltb": 3,
+    "cover_url": null,
+    "steam_appid": 297130,
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Indie"
+    ],
+    "precio_pagado": null,
+    "precio_actual": 1.47,
+    "precio_salida": 14.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 3,
+      "main_plus": 4,
+      "completionist": 7
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Titan Souls",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "Graveyard Keeper",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 45,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2018,
+    "solo": "x",
+    "hltb": 45,
+    "cover_url": null,
+    "steam_appid": 599140,
+    "generos": [
+      "Simuladores",
+      "Rol",
+      "Indie"
+    ],
+    "precio_pagado": null,
+    "precio_actual": 3.9,
+    "precio_salida": 19.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 45,
+      "main_plus": 66,
+      "completionist": 108
+    },
+    "steam_store_genres": [
+      "Simuladores",
+      "Rol"
+    ],
+    "steam_store_name": "Graveyard Keeper",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "A Story About My Uncle",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 3,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2014,
+    "solo": "x",
+    "hltb": 3,
+    "cover_url": null,
+    "steam_appid": 278360,
+    "generos": [
+      "Aventura",
+      "Indie"
+    ],
+    "precio_pagado": null,
+    "precio_actual": 2.99,
+    "precio_salida": 14.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 3,
+      "main_plus": 4,
+      "completionist": 9
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Indie"
+    ],
+    "steam_store_name": "A Story About My Uncle",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "HITMAN",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 11,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2016,
+    "solo": "x",
+    "hltb": 11,
+    "cover_url": null,
+    "steam_appid": 236870,
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 11,
+      "main_plus": 20,
+      "completionist": 60
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "HITMAN",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "Spec Ops: The Line",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 6,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2012,
+    "solo": "x",
+    "hltb": 6,
+    "cover_url": null,
+    "steam_appid": 50300,
+    "generos": [
+      "Acción"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 6,
+      "main_plus": 7,
+      "completionist": 16
+    },
+    "steam_store_genres": [
+      "Acción"
+    ],
+    "steam_store_name": "Spec Ops: The Line",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "SteamWorld Dig",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 5,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2013,
+    "solo": "x",
+    "hltb": 5,
+    "cover_url": null,
+    "steam_appid": 252410,
+    "generos": [
+      "Aventura",
+      "Indie"
+    ],
+    "precio_pagado": null,
+    "precio_actual": 1.49,
+    "precio_salida": 9.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 5,
+      "main_plus": 6.5,
+      "completionist": 8.5
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Indie"
+    ],
+    "steam_store_name": "SteamWorld Dig",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "Company of Heroes 2",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 14,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2013,
+    "solo": null,
+    "hltb": 14,
+    "cover_url": null,
+    "steam_appid": 231430,
+    "generos": [
+      "Estrategia"
+    ],
+    "precio_pagado": null,
+    "precio_actual": 4.62,
+    "precio_salida": 18.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 14,
+      "main_plus": 20,
+      "completionist": 35
+    },
+    "steam_store_genres": [
+      "Estrategia"
+    ],
+    "steam_store_name": "Company of Heroes 2",
     "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
   }
 ]
