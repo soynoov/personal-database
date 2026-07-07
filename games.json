@@ -38,7 +38,7 @@
       "Indie"
     ],
     "steam_store_name": "MiSide",
-    "steam_last_sync_at": "2026-06-28T11:24:56.854Z"
+    "steam_last_sync_at": "2026-07-05T11:24:03.741Z"
   },
   {
     "titulo": "Stray",
@@ -68,7 +68,13 @@
       "main": 5.1,
       "main_plus": 6.7,
       "completionist": 10.3
-    }
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Indie"
+    ],
+    "steam_store_name": "Stray",
+    "steam_last_sync_at": "2026-07-05T11:24:04.251Z"
   },
   {
     "titulo": "Firewatch",
@@ -98,7 +104,13 @@
       "main": 4.1,
       "main_plus": 4.7,
       "completionist": 5.2
-    }
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Indie"
+    ],
+    "steam_store_name": "Firewatch",
+    "steam_last_sync_at": "2026-07-05T11:24:04.729Z"
   },
   {
     "titulo": "Ori and the Blind Forest",
@@ -128,7 +140,12 @@
       "main": 8.2,
       "main_plus": 10.4,
       "completionist": 11.8
-    }
+    },
+    "steam_store_genres": [
+      "Acción"
+    ],
+    "steam_store_name": "Ori and the Blind Forest: Definitive Edition",
+    "steam_last_sync_at": "2026-07-05T11:24:05.220Z"
   },
   {
     "titulo": "Ori and the Will of the Wisps",
@@ -158,7 +175,12 @@
       "main": 12,
       "main_plus": 15.7,
       "completionist": 18.3
-    }
+    },
+    "steam_store_genres": [
+      "Acción"
+    ],
+    "steam_store_name": "Ori and the Will of the Wisps",
+    "steam_last_sync_at": "2026-07-05T11:24:05.705Z"
   },
   {
     "titulo": "A Plague Tale: Innocence",
@@ -188,7 +210,13 @@
       "main": 10.9,
       "main_plus": 12.6,
       "completionist": 15.9
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "A Plague Tale: Innocence",
+    "steam_last_sync_at": "2026-07-05T11:24:06.219Z"
   },
   {
     "titulo": "A Plague Tale: Requiem",
@@ -218,7 +246,13 @@
       "main": 17,
       "main_plus": 19.6,
       "completionist": 27.4
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "A Plague Tale: Requiem",
+    "steam_last_sync_at": "2026-07-05T11:24:06.700Z"
   },
   {
     "titulo": "Resonance: A Plague Tale Legacy",
@@ -317,7 +351,7 @@
       "Acceso anticipado"
     ],
     "steam_store_name": "Paralives",
-    "steam_last_sync_at": "2026-06-28T11:24:57.347Z"
+    "steam_last_sync_at": "2026-07-05T11:24:07.181Z"
   },
   {
     "titulo": "Baldur's Gate 3",
@@ -357,7 +391,7 @@
       "Rol"
     ],
     "steam_store_name": "Baldur's Gate 3",
-    "steam_last_sync_at": "2026-06-28T11:24:57.858Z"
+    "steam_last_sync_at": "2026-07-05T11:24:07.723Z"
   },
   {
     "titulo": "Cult of the Lamb",
@@ -398,7 +432,7 @@
       "Aventura"
     ],
     "steam_store_name": "Cult of the Lamb",
-    "steam_last_sync_at": "2026-06-28T11:24:58.461Z"
+    "steam_last_sync_at": "2026-07-05T11:24:08.251Z"
   },
   {
     "titulo": "Cuphead",
@@ -449,7 +483,7 @@
       "Indie"
     ],
     "steam_store_name": "Cuphead",
-    "steam_last_sync_at": "2026-06-28T11:24:59.008Z"
+    "steam_last_sync_at": "2026-07-05T11:24:08.780Z"
   },
   {
     "titulo": "Dispatch",
@@ -491,7 +525,7 @@
       "Aventura"
     ],
     "steam_store_name": "Dispatch",
-    "steam_last_sync_at": "2026-06-28T11:24:59.527Z"
+    "steam_last_sync_at": "2026-07-05T11:24:09.257Z"
   },
   {
     "titulo": "Farming Simulator 22",
@@ -528,7 +562,7 @@
       "Simuladores"
     ],
     "steam_store_name": "Farming Simulator 22",
-    "steam_last_sync_at": "2026-06-28T11:25:00.099Z"
+    "steam_last_sync_at": "2026-07-05T11:24:09.797Z"
   },
   {
     "titulo": "Forager",
@@ -569,7 +603,7 @@
       "Aventura"
     ],
     "steam_store_name": "Forager",
-    "steam_last_sync_at": "2026-06-28T11:25:00.627Z"
+    "steam_last_sync_at": "2026-07-05T11:24:10.320Z"
   },
   {
     "titulo": "Grand Theft Auto V Enhanced",
@@ -609,7 +643,7 @@
       "Aventura"
     ],
     "steam_store_name": "Grand Theft Auto V Enhanced",
-    "steam_last_sync_at": "2026-06-28T11:25:01.140Z"
+    "steam_last_sync_at": "2026-07-05T11:24:10.854Z"
   },
   {
     "titulo": "Marvel Rivals",
@@ -651,7 +685,7 @@
       "Free to Play"
     ],
     "steam_store_name": "Marvel Rivals",
-    "steam_last_sync_at": "2026-06-28T11:25:01.642Z"
+    "steam_last_sync_at": "2026-07-05T11:24:11.397Z"
   },
   {
     "titulo": "Muse Dash",
@@ -691,7 +725,7 @@
       "Casual"
     ],
     "steam_store_name": "Muse Dash",
-    "steam_last_sync_at": "2026-06-28T11:25:02.106Z"
+    "steam_last_sync_at": "2026-07-05T11:24:11.884Z"
   },
   {
     "titulo": "Phasmophobia",
@@ -731,7 +765,7 @@
       "Indie"
     ],
     "steam_store_name": "Phasmophobia",
-    "steam_last_sync_at": "2026-06-28T11:25:02.646Z"
+    "steam_last_sync_at": "2026-07-05T11:24:12.359Z"
   },
   {
     "titulo": "R.E.P.O.",
@@ -770,7 +804,7 @@
       "Acceso anticipado"
     ],
     "steam_store_name": "R.E.P.O.",
-    "steam_last_sync_at": "2026-06-28T11:25:03.136Z"
+    "steam_last_sync_at": "2026-07-05T11:24:12.838Z"
   },
   {
     "titulo": "Satisfactory",
@@ -811,7 +845,7 @@
       "Indie"
     ],
     "steam_store_name": "Satisfactory",
-    "steam_last_sync_at": "2026-06-28T11:25:03.598Z"
+    "steam_last_sync_at": "2026-07-05T11:24:13.314Z"
   },
   {
     "titulo": "Schedule I",
@@ -853,7 +887,7 @@
       "Indie"
     ],
     "steam_store_name": "Schedule I",
-    "steam_last_sync_at": "2026-06-28T11:25:04.115Z"
+    "steam_last_sync_at": "2026-07-05T11:24:13.801Z"
   },
   {
     "titulo": "Star Birds",
@@ -895,7 +929,7 @@
       "Indie"
     ],
     "steam_store_name": "Star Birds",
-    "steam_last_sync_at": "2026-06-28T11:25:04.585Z"
+    "steam_last_sync_at": "2026-07-05T11:24:14.284Z"
   },
   {
     "titulo": "Metro: Last Light Complete Edition",
@@ -924,7 +958,12 @@
       "main": 10.3,
       "main_plus": 13.7,
       "completionist": 36.8
-    }
+    },
+    "steam_store_genres": [
+      "Acción"
+    ],
+    "steam_store_name": "Metro: Last Light Redux",
+    "steam_last_sync_at": "2026-07-05T11:24:14.744Z"
   },
   {
     "titulo": "Mini Airways",
@@ -1001,7 +1040,7 @@
       "Simuladores"
     ],
     "steam_store_name": "Mini Motorways",
-    "steam_last_sync_at": "2026-06-28T11:25:05.590Z"
+    "steam_last_sync_at": "2026-07-05T11:24:15.841Z"
   },
   {
     "titulo": "Monster Hunter: World",
@@ -1038,7 +1077,7 @@
       "Acción"
     ],
     "steam_store_name": "Monster Hunter: World",
-    "steam_last_sync_at": "2026-06-28T11:25:06.623Z"
+    "steam_last_sync_at": "2026-07-05T11:24:16.815Z"
   },
   {
     "titulo": "MultiVersus",
@@ -1068,7 +1107,13 @@
       "main": 6.5,
       "main_plus": 56.3,
       "completionist": 86.7
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Free to Play"
+    ],
+    "steam_store_name": "MultiVersus",
+    "steam_last_sync_at": "2026-07-05T11:24:17.615Z"
   },
   {
     "titulo": "Outlast",
@@ -1108,7 +1153,7 @@
       "Aventura"
     ],
     "steam_store_name": "Outlast",
-    "steam_last_sync_at": "2026-06-28T11:25:07.095Z"
+    "steam_last_sync_at": "2026-07-05T11:24:18.080Z"
   },
   {
     "titulo": "PAYDAY 2",
@@ -1147,7 +1192,7 @@
       "Rol"
     ],
     "steam_store_name": "PAYDAY 2",
-    "steam_last_sync_at": "2026-06-28T11:25:07.807Z"
+    "steam_last_sync_at": "2026-07-05T11:24:18.768Z"
   },
   {
     "titulo": "Plague Inc: Evolved",
@@ -1188,7 +1233,7 @@
       "Indie"
     ],
     "steam_store_name": "Plague Inc: Evolved",
-    "steam_last_sync_at": "2026-06-28T11:25:08.388Z"
+    "steam_last_sync_at": "2026-07-05T11:24:19.849Z"
   },
   {
     "titulo": "Portal 2",
@@ -1227,7 +1272,7 @@
       "Aventura"
     ],
     "steam_store_name": "Portal 2",
-    "steam_last_sync_at": "2026-06-28T11:25:08.855Z"
+    "steam_last_sync_at": "2026-07-05T11:24:20.391Z"
   },
   {
     "titulo": "Potion Craft: Alchemist Simulator",
@@ -1266,7 +1311,7 @@
       "Simuladores"
     ],
     "steam_store_name": "Potion Craft: Alchemist Simulator",
-    "steam_last_sync_at": "2026-06-28T11:25:09.398Z"
+    "steam_last_sync_at": "2026-07-05T11:24:20.851Z"
   },
   {
     "titulo": "Raft",
@@ -1306,7 +1351,7 @@
       "Indie"
     ],
     "steam_store_name": "Raft",
-    "steam_last_sync_at": "2026-06-28T11:25:09.905Z"
+    "steam_last_sync_at": "2026-07-05T11:24:21.424Z"
   },
   {
     "titulo": "Reigns: Her Majesty",
@@ -1346,7 +1391,7 @@
       "Indie"
     ],
     "steam_store_name": "Reigns: Her Majesty",
-    "steam_last_sync_at": "2026-06-28T11:25:10.439Z"
+    "steam_last_sync_at": "2026-07-05T11:24:21.998Z"
   },
   {
     "titulo": "Rocket League",
@@ -1383,7 +1428,7 @@
       "Indie"
     ],
     "steam_store_name": "Rocket League®",
-    "steam_last_sync_at": "2026-06-28T11:25:11.003Z"
+    "steam_last_sync_at": "2026-07-05T11:24:22.597Z"
   },
   {
     "titulo": "Sekiro: Shadows Die Twice",
@@ -1422,7 +1467,7 @@
       "Aventura"
     ],
     "steam_store_name": "Sekiro™: Shadows Die Twice - GOTY Edition",
-    "steam_last_sync_at": "2026-06-28T11:25:11.498Z"
+    "steam_last_sync_at": "2026-07-05T11:24:23.146Z"
   },
   {
     "titulo": "Sid Meier's Civilization VI",
@@ -1459,7 +1504,7 @@
       "Estrategia"
     ],
     "steam_store_name": "Sid Meier’s Civilization® VI",
-    "steam_last_sync_at": "2026-06-28T11:25:11.994Z"
+    "steam_last_sync_at": "2026-07-05T11:24:23.683Z"
   },
   {
     "titulo": "Slime Rancher 2",
@@ -1501,7 +1546,7 @@
       "Aventura"
     ],
     "steam_store_name": "Slime Rancher 2",
-    "steam_last_sync_at": "2026-06-28T11:25:12.502Z"
+    "steam_last_sync_at": "2026-07-05T11:24:24.145Z"
   },
   {
     "titulo": "Soulworker",
@@ -1544,7 +1589,7 @@
       "Multijugador masivo"
     ],
     "steam_store_name": "Soulworker",
-    "steam_last_sync_at": "2026-06-28T11:25:12.941Z"
+    "steam_last_sync_at": "2026-07-05T11:24:24.589Z"
   },
   {
     "titulo": "Stacklands",
@@ -1584,7 +1629,7 @@
       "Indie"
     ],
     "steam_store_name": "Stacklands",
-    "steam_last_sync_at": "2026-06-28T11:25:13.402Z"
+    "steam_last_sync_at": "2026-07-05T11:24:25.054Z"
   },
   {
     "titulo": "Stardew Valley",
@@ -1624,7 +1669,7 @@
       "Rol"
     ],
     "steam_store_name": "Stardew Valley",
-    "steam_last_sync_at": "2026-06-28T11:25:13.862Z"
+    "steam_last_sync_at": "2026-07-05T11:24:25.497Z"
   },
   {
     "titulo": "Surviving Mars",
@@ -1663,7 +1708,7 @@
       "Estrategia"
     ],
     "steam_store_name": "Surviving Mars: Relaunched",
-    "steam_last_sync_at": "2026-06-28T11:25:14.360Z"
+    "steam_last_sync_at": "2026-07-05T11:24:25.988Z"
   },
   {
     "titulo": "Terraria",
@@ -1704,7 +1749,7 @@
       "Aventura"
     ],
     "steam_store_name": "Terraria",
-    "steam_last_sync_at": "2026-06-28T11:25:14.894Z"
+    "steam_last_sync_at": "2026-07-05T11:24:26.465Z"
   },
   {
     "titulo": "The Binding of Isaac: Rebirth",
@@ -1741,7 +1786,7 @@
       "Acción"
     ],
     "steam_store_name": "The Binding of Isaac: Rebirth",
-    "steam_last_sync_at": "2026-06-28T11:25:15.377Z"
+    "steam_last_sync_at": "2026-07-05T11:24:27.049Z"
   },
   {
     "titulo": "The Elder Scrolls V: Skyrim",
@@ -1778,7 +1823,7 @@
       "Rol"
     ],
     "steam_store_name": "The Elder Scrolls V: Skyrim Special Edition",
-    "steam_last_sync_at": "2026-06-28T11:25:15.877Z"
+    "steam_last_sync_at": "2026-07-05T11:24:27.554Z"
   },
   {
     "titulo": "The Escapists",
@@ -1820,7 +1865,7 @@
       "Aventura"
     ],
     "steam_store_name": "The Escapists",
-    "steam_last_sync_at": "2026-06-28T11:25:16.359Z"
+    "steam_last_sync_at": "2026-07-05T11:24:28.068Z"
   },
   {
     "titulo": "The Walking Dead: The Telltale Definitive Series",
@@ -1857,7 +1902,7 @@
       "Aventura"
     ],
     "steam_store_name": "The Walking Dead: The Telltale Definitive Series",
-    "steam_last_sync_at": "2026-06-28T11:25:16.833Z"
+    "steam_last_sync_at": "2026-07-05T11:24:28.534Z"
   },
   {
     "titulo": "The Witcher 3: Wild Hunt",
@@ -1894,7 +1939,7 @@
       "Rol"
     ],
     "steam_store_name": "The Witcher 3: Wild Hunt",
-    "steam_last_sync_at": "2026-06-28T11:25:17.351Z"
+    "steam_last_sync_at": "2026-07-05T11:24:29.057Z"
   },
   {
     "titulo": "The Witness",
@@ -1933,7 +1978,7 @@
       "Indie"
     ],
     "steam_store_name": "The Witness",
-    "steam_last_sync_at": "2026-06-28T11:25:17.828Z"
+    "steam_last_sync_at": "2026-07-05T11:24:29.522Z"
   },
   {
     "titulo": "Tom Clancy's Rainbow Six Siege",
@@ -1974,7 +2019,7 @@
       "Free to Play"
     ],
     "steam_store_name": "Tom Clancy's Rainbow Six Siege",
-    "steam_last_sync_at": "2026-06-28T11:25:18.527Z"
+    "steam_last_sync_at": "2026-07-05T11:24:30.060Z"
   },
   {
     "titulo": "Tomb Raider",
@@ -2013,7 +2058,7 @@
       "Aventura"
     ],
     "steam_store_name": "Tomb Raider Game of the Year",
-    "steam_last_sync_at": "2026-06-28T11:25:19.086Z"
+    "steam_last_sync_at": "2026-07-05T11:24:30.584Z"
   },
   {
     "titulo": "Townscaper",
@@ -2053,7 +2098,7 @@
       "Indie"
     ],
     "steam_store_name": "Townscaper",
-    "steam_last_sync_at": "2026-06-28T11:25:19.550Z"
+    "steam_last_sync_at": "2026-07-05T11:24:31.036Z"
   },
   {
     "titulo": "Undertale",
@@ -2092,7 +2137,7 @@
       "Rol"
     ],
     "steam_store_name": "Undertale",
-    "steam_last_sync_at": "2026-06-28T11:25:20.044Z"
+    "steam_last_sync_at": "2026-07-05T11:24:31.485Z"
   },
   {
     "titulo": "Unpacking",
@@ -2132,7 +2177,7 @@
       "Indie"
     ],
     "steam_store_name": "Unpacking",
-    "steam_last_sync_at": "2026-06-28T11:25:20.541Z"
+    "steam_last_sync_at": "2026-07-05T11:24:31.954Z"
   },
   {
     "titulo": "Urban Rivals",
@@ -2177,7 +2222,7 @@
       "Indie"
     ],
     "steam_store_name": "Urban Rivals",
-    "steam_last_sync_at": "2026-06-28T11:25:21.002Z"
+    "steam_last_sync_at": "2026-07-05T11:24:32.416Z"
   },
   {
     "titulo": "XCOM 2",
@@ -2214,7 +2259,7 @@
       "Estrategia"
     ],
     "steam_store_name": "XCOM® 2",
-    "steam_last_sync_at": "2026-06-28T11:25:21.533Z"
+    "steam_last_sync_at": "2026-07-05T11:24:32.895Z"
   },
   {
     "titulo": "60 Seconds! Reatomized",
@@ -2256,7 +2301,7 @@
       "Casual"
     ],
     "steam_store_name": "60 Seconds! Reatomized",
-    "steam_last_sync_at": "2026-06-28T11:25:22.040Z"
+    "steam_last_sync_at": "2026-07-05T11:24:33.373Z"
   },
   {
     "titulo": "Amnesia: The Dark Descent",
@@ -2296,7 +2341,7 @@
       "Aventura"
     ],
     "steam_store_name": "Amnesia: The Dark Descent",
-    "steam_last_sync_at": "2026-06-28T11:25:22.516Z"
+    "steam_last_sync_at": "2026-07-05T11:24:33.855Z"
   },
   {
     "titulo": "Among Us",
@@ -2333,7 +2378,7 @@
       "Casual"
     ],
     "steam_store_name": "Among Us",
-    "steam_last_sync_at": "2026-06-28T11:25:22.984Z"
+    "steam_last_sync_at": "2026-07-05T11:24:34.331Z"
   },
   {
     "titulo": "Apex Legends",
@@ -2375,7 +2420,7 @@
       "Aventura"
     ],
     "steam_store_name": "Apex Legends™",
-    "steam_last_sync_at": "2026-06-28T11:25:23.559Z"
+    "steam_last_sync_at": "2026-07-05T11:24:34.941Z"
   },
   {
     "titulo": "Atomic Heart",
@@ -2415,7 +2460,7 @@
       "Aventura"
     ],
     "steam_store_name": "Atomic Heart",
-    "steam_last_sync_at": "2026-06-28T11:25:24.137Z"
+    "steam_last_sync_at": "2026-07-05T11:24:35.454Z"
   },
   {
     "titulo": "Bandle Tale: A League of Legends Story",
@@ -2454,7 +2499,7 @@
       "Simuladores"
     ],
     "steam_store_name": "Bandle Tale: A League of Legends Story",
-    "steam_last_sync_at": "2026-06-28T11:25:24.612Z"
+    "steam_last_sync_at": "2026-07-05T11:24:35.927Z"
   },
   {
     "titulo": "Beyond: Two Souls",
@@ -2493,7 +2538,7 @@
       "Aventura"
     ],
     "steam_store_name": "Beyond: Two Souls",
-    "steam_last_sync_at": "2026-06-28T11:25:25.112Z"
+    "steam_last_sync_at": "2026-07-05T11:24:36.385Z"
   },
   {
     "titulo": "Borderlands 2",
@@ -2532,7 +2577,7 @@
       "Rol"
     ],
     "steam_store_name": "Borderlands 2",
-    "steam_last_sync_at": "2026-06-28T11:25:25.673Z"
+    "steam_last_sync_at": "2026-07-05T11:24:36.987Z"
   },
   {
     "titulo": "Catherine Classic",
@@ -2569,7 +2614,7 @@
       "Aventura"
     ],
     "steam_store_name": "Catherine Classic",
-    "steam_last_sync_at": "2026-06-28T11:25:26.188Z"
+    "steam_last_sync_at": "2026-07-05T11:24:37.468Z"
   },
   {
     "titulo": "Celeste",
@@ -2609,7 +2654,7 @@
       "Aventura"
     ],
     "steam_store_name": "Celeste",
-    "steam_last_sync_at": "2026-06-28T11:25:26.766Z"
+    "steam_last_sync_at": "2026-07-05T11:24:37.929Z"
   },
   {
     "titulo": "Counter-Strike 2",
@@ -2650,7 +2695,7 @@
       "Free to Play"
     ],
     "steam_store_name": "Counter-Strike 2",
-    "steam_last_sync_at": "2026-06-28T11:25:27.339Z"
+    "steam_last_sync_at": "2026-07-05T11:24:38.453Z"
   },
   {
     "titulo": "Cyberpunk 2077",
@@ -2686,7 +2731,7 @@
       "Rol"
     ],
     "steam_store_name": "Cyberpunk 2077",
-    "steam_last_sync_at": "2026-06-28T11:25:27.830Z"
+    "steam_last_sync_at": "2026-07-05T11:24:38.913Z"
   },
   {
     "titulo": "Dead by Daylight",
@@ -3223,7 +3268,7 @@
       "Acción"
     ],
     "steam_store_name": "Dead by Daylight",
-    "steam_last_sync_at": "2026-06-28T11:25:28.424Z"
+    "steam_last_sync_at": "2026-07-05T11:24:39.441Z"
   },
   {
     "titulo": "Destiny 2",
@@ -3265,7 +3310,7 @@
       "Aventura"
     ],
     "steam_store_name": "Destiny 2",
-    "steam_last_sync_at": "2026-06-28T11:25:28.975Z"
+    "steam_last_sync_at": "2026-07-05T11:24:39.984Z"
   },
   {
     "titulo": "Detroit: Become Human",
@@ -3304,7 +3349,7 @@
       "Aventura"
     ],
     "steam_store_name": "Detroit: Become Human",
-    "steam_last_sync_at": "2026-06-28T11:25:29.449Z"
+    "steam_last_sync_at": "2026-07-05T11:24:40.437Z"
   },
   {
     "titulo": "Don't Starve Together",
@@ -3347,7 +3392,7 @@
       "Aventura"
     ],
     "steam_store_name": "Don't Starve Together",
-    "steam_last_sync_at": "2026-06-28T11:25:30.039Z"
+    "steam_last_sync_at": "2026-07-05T11:24:40.973Z"
   },
   {
     "titulo": "Dying Light",
@@ -3383,10 +3428,10 @@
     },
     "steam_store_genres": [
       "Acción",
-      "Rol"
+      "Aventura"
     ],
     "steam_store_name": "Dying Light",
-    "steam_last_sync_at": "2026-06-28T11:25:30.730Z"
+    "steam_last_sync_at": "2026-07-05T11:24:41.582Z"
   },
   {
     "titulo": "Eternal Return",
@@ -3428,7 +3473,7 @@
       "Estrategia"
     ],
     "steam_store_name": "Eternal Return",
-    "steam_last_sync_at": "2026-06-28T11:25:31.223Z"
+    "steam_last_sync_at": "2026-07-05T11:24:42.086Z"
   },
   {
     "titulo": "Euro Truck Simulator 2",
@@ -3467,7 +3512,7 @@
       "Simuladores"
     ],
     "steam_store_name": "Euro Truck Simulator 2",
-    "steam_last_sync_at": "2026-06-28T11:25:31.830Z"
+    "steam_last_sync_at": "2026-07-05T11:24:42.666Z"
   },
   {
     "titulo": "Fallout 4",
@@ -3504,7 +3549,7 @@
       "Rol"
     ],
     "steam_store_name": "Fallout 4",
-    "steam_last_sync_at": "2026-06-28T11:25:32.417Z"
+    "steam_last_sync_at": "2026-07-05T11:24:43.191Z"
   },
   {
     "titulo": "Fallout Shelter",
@@ -3546,7 +3591,7 @@
       "Simuladores"
     ],
     "steam_store_name": "Fallout Shelter",
-    "steam_last_sync_at": "2026-06-28T11:25:32.900Z"
+    "steam_last_sync_at": "2026-07-05T11:24:43.656Z"
   },
   {
     "titulo": "Garry's Mod",
@@ -3586,7 +3631,7 @@
       "Indie"
     ],
     "steam_store_name": "Garry's Mod",
-    "steam_last_sync_at": "2026-06-28T11:25:33.520Z"
+    "steam_last_sync_at": "2026-07-05T11:24:44.103Z"
   },
   {
     "titulo": "Ghost of Tsushima Director's Cut",
@@ -3625,7 +3670,7 @@
       "Aventura"
     ],
     "steam_store_name": "Ghost of Tsushima: VERSIÓN DEL DIRECTOR",
-    "steam_last_sync_at": "2026-06-28T11:25:34.088Z"
+    "steam_last_sync_at": "2026-07-05T11:24:45.068Z"
   },
   {
     "titulo": "Gotham Knights",
@@ -3665,7 +3710,7 @@
       "Aventura"
     ],
     "steam_store_name": "Gotham Knights",
-    "steam_last_sync_at": "2026-06-28T11:25:34.616Z"
+    "steam_last_sync_at": "2026-07-05T11:24:45.565Z"
   },
   {
     "titulo": "Governor of Poker 3",
@@ -3708,7 +3753,7 @@
       "Multijugador masivo"
     ],
     "steam_store_name": "Governor of Poker 3",
-    "steam_last_sync_at": "2026-06-28T11:25:35.152Z"
+    "steam_last_sync_at": "2026-07-05T11:24:46.018Z"
   },
   {
     "titulo": "Grand Theft Auto IV: The Complete Edition",
@@ -3747,7 +3792,7 @@
       "Aventura"
     ],
     "steam_store_name": "Grand Theft Auto IV: The Complete Edition",
-    "steam_last_sync_at": "2026-06-28T11:25:35.737Z"
+    "steam_last_sync_at": "2026-07-05T11:24:46.515Z"
   },
   {
     "titulo": "Grand Theft Auto V Legacy",
@@ -3776,7 +3821,13 @@
       "main": 32,
       "main_plus": 51.5,
       "completionist": 88.8
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Grand Theft Auto V Legacy",
+    "steam_last_sync_at": "2026-07-05T11:24:46.995Z"
   },
   {
     "titulo": "GRIS",
@@ -3815,7 +3866,7 @@
       "Indie"
     ],
     "steam_store_name": "GRIS",
-    "steam_last_sync_at": "2026-06-28T11:25:36.216Z"
+    "steam_last_sync_at": "2026-07-05T11:24:47.488Z"
   },
   {
     "titulo": "Hades",
@@ -3855,7 +3906,7 @@
       "Indie"
     ],
     "steam_store_name": "Hades",
-    "steam_last_sync_at": "2026-06-28T11:25:36.793Z"
+    "steam_last_sync_at": "2026-07-05T11:24:47.960Z"
   },
   {
     "titulo": "Heartopia",
@@ -3897,7 +3948,7 @@
       "Simuladores"
     ],
     "steam_store_name": "Heartopia",
-    "steam_last_sync_at": "2026-06-28T11:25:37.431Z"
+    "steam_last_sync_at": "2026-07-05T11:24:48.407Z"
   },
   {
     "titulo": "Hogwarts Legacy",
@@ -3937,7 +3988,7 @@
       "Aventura"
     ],
     "steam_store_name": "Hogwarts Legacy",
-    "steam_last_sync_at": "2026-06-28T11:25:37.904Z"
+    "steam_last_sync_at": "2026-07-05T11:24:48.913Z"
   },
   {
     "titulo": "Hollow Knight",
@@ -3977,7 +4028,7 @@
       "Aventura"
     ],
     "steam_store_name": "Hollow Knight",
-    "steam_last_sync_at": "2026-06-28T11:25:38.386Z"
+    "steam_last_sync_at": "2026-07-05T11:24:49.457Z"
   },
   {
     "titulo": "It Takes Two",
@@ -4016,7 +4067,7 @@
       "Aventura"
     ],
     "steam_store_name": "It Takes Two",
-    "steam_last_sync_at": "2026-06-28T11:25:38.963Z"
+    "steam_last_sync_at": "2026-07-05T11:24:49.969Z"
   },
   {
     "titulo": "Just Cause 3",
@@ -4055,7 +4106,7 @@
       "Aventura"
     ],
     "steam_store_name": "Just Cause™ 3",
-    "steam_last_sync_at": "2026-06-28T11:25:39.439Z"
+    "steam_last_sync_at": "2026-07-05T11:24:50.477Z"
   },
   {
     "titulo": "Left 4 Dead 2",
@@ -4092,7 +4143,7 @@
       "Acción"
     ],
     "steam_store_name": "Left 4 Dead 2",
-    "steam_last_sync_at": "2026-06-28T11:25:39.918Z"
+    "steam_last_sync_at": "2026-07-05T11:24:51.018Z"
   },
   {
     "titulo": "Little Nightmares",
@@ -4129,7 +4180,7 @@
       "Aventura"
     ],
     "steam_store_name": "Little Nightmares",
-    "steam_last_sync_at": "2026-06-28T11:25:40.549Z"
+    "steam_last_sync_at": "2026-07-05T11:24:51.566Z"
   },
   {
     "titulo": "MARVEL SNAP",
@@ -4179,7 +4230,7 @@
       "Estrategia"
     ],
     "steam_store_name": "MARVEL SNAP",
-    "steam_last_sync_at": "2026-06-28T11:25:41.171Z"
+    "steam_last_sync_at": "2026-07-05T11:24:52.030Z"
   },
   {
     "titulo": "A Game About Digging A Hole",
@@ -4209,7 +4260,13 @@
       "main": 1.8,
       "main_plus": 2.8,
       "completionist": 4.3
-    }
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Indie"
+    ],
+    "steam_store_name": "A Game About Digging A Hole™",
+    "steam_last_sync_at": "2026-07-05T11:24:52.533Z"
   },
   {
     "titulo": "Metaphor: ReFantazio",
@@ -4249,7 +4306,7 @@
       "Aventura"
     ],
     "steam_store_name": "Metaphor: ReFantazio",
-    "steam_last_sync_at": "2026-06-28T11:25:41.896Z"
+    "steam_last_sync_at": "2026-07-05T11:24:53.011Z"
   },
   {
     "titulo": "Metro 2033",
@@ -4286,7 +4343,7 @@
       "Acción"
     ],
     "steam_store_name": "Metro 2033 Redux",
-    "steam_last_sync_at": "2026-06-28T11:25:42.417Z"
+    "steam_last_sync_at": "2026-07-05T11:24:53.486Z"
   },
   {
     "titulo": "Valorant",
@@ -4523,7 +4580,7 @@
       "Casual"
     ],
     "steam_store_name": "Sea of Remnants",
-    "steam_last_sync_at": "2026-06-28T11:25:42.884Z"
+    "steam_last_sync_at": "2026-07-05T11:24:53.953Z"
   },
   {
     "titulo": "Goblin Cleanup",
@@ -4538,7 +4595,7 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "Registro recurrente. 6.9 horas acumuladas a 2026-06-14.",
+    "comentarios": "Registro recurrente. 6.9 horas acumuladas a 2026-06-14. Compra registrada 05/07/2026 15:57 vía Revolut Pay.",
     "lanzamiento": 2025,
     "solo": null,
     "cover_url": "https://howlongtobeat.com/games/152293_Goblin_Cleanup.jpg",
@@ -4550,7 +4607,7 @@
       "Simuladores",
       "Acceso anticipado"
     ],
-    "precio_pagado": null,
+    "precio_pagado": 10.29,
     "precio_actual": 12.99,
     "precio_salida": 19.99,
     "tags": [],
@@ -4565,7 +4622,7 @@
       "Casual"
     ],
     "steam_store_name": "Goblin Cleanup",
-    "steam_last_sync_at": "2026-06-28T11:25:43.373Z"
+    "steam_last_sync_at": "2026-07-05T11:24:54.442Z"
   },
   {
     "titulo": "Genshin Impact",
@@ -4725,7 +4782,13 @@
       "main": 50.5,
       "main_plus": 110.6,
       "completionist": 128.1
-    }
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Zenless Zone Zero",
+    "steam_last_sync_at": "2026-07-05T11:24:54.883Z"
   },
   {
     "titulo": "Two Point Museum",
@@ -4761,7 +4824,7 @@
       "Indie"
     ],
     "steam_store_name": "Two Point Museum",
-    "steam_last_sync_at": "2026-06-28T11:25:43.849Z"
+    "steam_last_sync_at": "2026-07-05T11:24:55.342Z"
   },
   {
     "titulo": "The Lift Playtest",
@@ -4794,7 +4857,7 @@
     },
     "steam_store_genres": [],
     "steam_store_name": "The Lift Playtest",
-    "steam_last_sync_at": "2026-06-28T11:25:44.342Z"
+    "steam_last_sync_at": "2026-07-05T11:24:55.801Z"
   },
   {
     "titulo": "Banana",
@@ -4824,7 +4887,13 @@
       "main": null,
       "main_plus": null,
       "completionist": null
-    }
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Casual"
+    ],
+    "steam_store_name": "Banana",
+    "steam_last_sync_at": "2026-07-05T11:24:56.251Z"
   },
   {
     "titulo": "Brawlhalla",
@@ -4860,7 +4929,7 @@
       "Indie"
     ],
     "steam_store_name": "Brawlhalla",
-    "steam_last_sync_at": "2026-06-28T11:25:45.394Z"
+    "steam_last_sync_at": "2026-07-05T11:24:56.850Z"
   },
   {
     "titulo": "Paladins",
@@ -4896,6 +4965,83 @@
       "Aventura"
     ],
     "steam_store_name": "Paladins®",
-    "steam_last_sync_at": "2026-06-28T11:25:45.892Z"
+    "steam_last_sync_at": "2026-07-05T11:24:57.404Z"
+  },
+  {
+    "titulo": "River City Girls",
+    "estado": "Pendiente",
+    "launcher": "Epic Games",
+    "plataforma": "PC",
+    "horas": 7,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2019,
+    "solo": "x",
+    "hltb": 7,
+    "cover_url": null,
+    "steam_appid": 1049320,
+    "generos": [
+      "Acción"
+    ],
+    "precio_pagado": 0,
+    "precio_actual": 29.99,
+    "precio_salida": 29.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 7,
+      "main_plus": 9,
+      "completionist": 16
+    },
+    "steam_store_genres": [
+      "Acción"
+    ],
+    "steam_store_name": "River City Girls",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+  },
+  {
+    "titulo": "River City Girls 2",
+    "estado": "Pendiente",
+    "launcher": "Epic Games",
+    "plataforma": "PC",
+    "horas": 13,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2022,
+    "solo": "x",
+    "hltb": 13,
+    "cover_url": null,
+    "steam_appid": 1920480,
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Rol"
+    ],
+    "precio_pagado": 0,
+    "precio_actual": 39.99,
+    "precio_salida": 39.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 13,
+      "main_plus": 16,
+      "completionist": 24
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "River City Girls 2",
+    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
   }
 ]
