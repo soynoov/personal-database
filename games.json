@@ -4969,7 +4969,7 @@
   },
   {
     "titulo": "River City Girls",
-    "estado": "Pendiente",
+    "estado": "Terminado",
     "launcher": "Epic Games",
     "plataforma": "PC",
     "horas": 7,
@@ -5009,7 +5009,7 @@
     "estado": "Pendiente",
     "launcher": "Epic Games",
     "plataforma": "PC",
-    "horas": 13,
+    "horas": 0,
     "fecha_inicio": null,
     "fecha_fin": null,
     "logros": {
