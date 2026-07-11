@@ -156,32 +156,18 @@
 
   .desktop-sidebar-brandmark {
     display: inline-flex;
-    align-items: flex-end;
-    gap: 0.24rem;
-    width: auto;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
     height: 30px;
     color: #eef3f8;
   }
 
-  .desktop-sidebar-brandmark svg {
-    width: 24px;
-    height: 24px;
-    stroke: #eef3f8;
-    fill: none;
-    stroke-width: 1.7;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .desktop-sidebar-brandmark svg.icon-solid {
-    width: 0.9rem;
-    height: 1.5rem;
-    fill: currentColor;
-    stroke: none;
-  }
-
-  .desktop-sidebar-brandmark svg.icon-solid:last-child {
-    width: 1rem;
+  .desktop-sidebar-brandmark img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 
   .desktop-sidebar-title {
@@ -392,6 +378,13 @@
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.mobile-brandmark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 .mobile-drawer-close {
   background: none;

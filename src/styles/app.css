@@ -1619,6 +1619,7 @@
     height: 20px;
   }
 
+  .mobile-brandmark img,
   .mobile-brandmark svg,
   .mobile-brandmark svg.icon-solid,
   .mobile-brandmark svg.icon-solid:last-child {
