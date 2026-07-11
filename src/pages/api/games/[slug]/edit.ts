@@ -22,6 +22,16 @@ function toNullableString(value: unknown): string | null {
   return str === "" ? null : str;
 }
 
+function toNullableBoolean(value: unknown): boolean | null {
+  if (value === null || value === undefined) return null;
+  if (typeof value === "boolean") return value;
+  const normalized = String(value).trim().toLowerCase();
+  if (normalized === "") return null;
+  if (normalized === "true") return true;
+  if (normalized === "false") return false;
+  return null;
+}
+
 function toTagsArray(value: unknown): string[] {
   if (Array.isArray(value)) {
     return value.map((tag) => String(tag).trim()).filter(Boolean);
@@ -89,6 +99,7 @@ export const POST: APIRoute = async ({ params, request }) => {
   if (body.horas !== undefined) updated.horas = toNullableNumber(body.horas);
   if (body.fecha_inicio !== undefined) updated.fecha_inicio = toNullableString(body.fecha_inicio);
   if (body.fecha_fin !== undefined) updated.fecha_fin = toNullableString(body.fecha_fin);
+  if (body.solo !== undefined) updated.solo = toNullableBoolean(body.solo);
   if (body.precio_pagado !== undefined) updated.precio_pagado = toNullableNumber(body.precio_pagado);
   if (body.gasto_microtransacciones !== undefined) {
     updated.gasto_microtransacciones = toNullableNumber(body.gasto_microtransacciones);

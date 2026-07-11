@@ -5,16 +5,16 @@
     "launcher": "Steam",
     "plataforma": "PC",
     "horas": 4.7,
-    "fecha_inicio": null,
+    "fecha_inicio": "2026-05-25",
     "fecha_fin": "2025-03-02",
     "logros": {
       "actual": 13,
       "total": 26
     },
-    "nota": null,
+    "nota": 8,
     "comentarios": null,
     "lanzamiento": 2024,
-    "solo": "x",
+    "solo": true,
     "hltb": 4.2,
     "cover_url": "https://howlongtobeat.com/games/131878_MiSide.jpg",
     "steam_appid": 2527500,
@@ -38,7 +38,7 @@
       "Indie"
     ],
     "steam_store_name": "MiSide",
-    "steam_last_sync_at": "2026-07-05T11:24:03.741Z"
+    "steam_last_sync_at": "2026-07-11T11:24:03.086Z"
   },
   {
     "titulo": "Stray",
@@ -55,11 +55,14 @@
     "nota": null,
     "comentarios": "Completado en su dÃƒÆ’Ã‚Â­a (horas no registradas).",
     "lanzamiento": 2022,
-    "solo": "-",
+    "solo": false,
     "hltb": 5.1,
     "cover_url": "https://howlongtobeat.com/games/79790_Stray_(2021).jpg",
     "steam_appid": 1332010,
-    "generos": null,
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
     "precio_pagado": 0,
     "precio_actual": 39.99,
     "precio_salida": 39.99,
@@ -74,7 +77,7 @@
       "Indie"
     ],
     "steam_store_name": "Stray",
-    "steam_last_sync_at": "2026-07-05T11:24:04.251Z"
+    "steam_last_sync_at": "2026-07-11T11:24:03.621Z"
   },
   {
     "titulo": "Firewatch",
@@ -91,7 +94,7 @@
     "nota": null,
     "comentarios": "Completado en su dÃƒÆ’Ã‚Â­a (horas no registradas).",
     "lanzamiento": 2016,
-    "solo": null,
+    "solo": true,
     "hltb": 4.1,
     "cover_url": "https://howlongtobeat.com/games/Firewatch_maxresdefault.jpg",
     "steam_appid": 383870,
@@ -110,7 +113,7 @@
       "Indie"
     ],
     "steam_store_name": "Firewatch",
-    "steam_last_sync_at": "2026-07-05T11:24:04.729Z"
+    "steam_last_sync_at": "2026-07-11T11:24:04.084Z"
   },
   {
     "titulo": "Ori and the Blind Forest",
@@ -127,7 +130,7 @@
     "nota": null,
     "comentarios": "Completado en su dÃƒÆ’Ã‚Â­a (horas no registradas).",
     "lanzamiento": 2015,
-    "solo": null,
+    "solo": true,
     "hltb": 8.2,
     "cover_url": "https://howlongtobeat.com/games/Ori_and_the_Blind_Forest_Logo.jpg",
     "steam_appid": 387290,
@@ -145,7 +148,7 @@
       "Acción"
     ],
     "steam_store_name": "Ori and the Blind Forest: Definitive Edition",
-    "steam_last_sync_at": "2026-07-05T11:24:05.220Z"
+    "steam_last_sync_at": "2026-07-11T11:24:04.564Z"
   },
   {
     "titulo": "Ori and the Will of the Wisps",
@@ -180,28 +183,31 @@
       "Acción"
     ],
     "steam_store_name": "Ori and the Will of the Wisps",
-    "steam_last_sync_at": "2026-07-05T11:24:05.705Z"
+    "steam_last_sync_at": "2026-07-11T11:24:05.030Z"
   },
   {
     "titulo": "A Plague Tale: Innocence",
-    "estado": "Jugando",
+    "estado": "Terminado",
     "launcher": "Epic Games",
     "plataforma": "PC",
-    "horas": 8.75,
-    "fecha_inicio": null,
-    "fecha_fin": null,
+    "horas": 10.87,
+    "fecha_inicio": "2026-05-25",
+    "fecha_fin": "2026-07-11",
     "logros": {
       "actual": null,
       "total": null
     },
-    "nota": null,
+    "nota": 8,
     "comentarios": null,
     "lanzamiento": 2019,
-    "solo": "-",
+    "solo": true,
     "hltb": 10.9,
     "cover_url": "https://howlongtobeat.com/games/65080_A_Plague_Tale_Innocence.jpeg",
     "steam_appid": 752590,
-    "generos": null,
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
     "precio_pagado": 0,
     "precio_actual": 39.99,
     "precio_salida": 39.99,
@@ -216,7 +222,7 @@
       "Aventura"
     ],
     "steam_store_name": "A Plague Tale: Innocence",
-    "steam_last_sync_at": "2026-07-05T11:24:06.219Z"
+    "steam_last_sync_at": "2026-07-11T11:24:05.492Z"
   },
   {
     "titulo": "A Plague Tale: Requiem",
@@ -233,7 +239,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2022,
-    "solo": "-",
+    "solo": false,
     "hltb": 17,
     "cover_url": "https://howlongtobeat.com/games/93945_A_Plague_Tale_Requiem.jpg",
     "steam_appid": 1182900,
@@ -252,7 +258,7 @@
       "Aventura"
     ],
     "steam_store_name": "A Plague Tale: Requiem",
-    "steam_last_sync_at": "2026-07-05T11:24:06.700Z"
+    "steam_last_sync_at": "2026-07-11T11:24:06.000Z"
   },
   {
     "titulo": "Resonance: A Plague Tale Legacy",
@@ -269,7 +275,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2026,
-    "solo": "-",
+    "solo": false,
     "hltb": null,
     "cover_url": "https://howlongtobeat.com/games/169336_Resonance_A_Plague_Tale_Legacy.jpg",
     "steam_appid": null,
@@ -300,7 +306,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2024,
-    "solo": "x",
+    "solo": true,
     "cover_url": "https://howlongtobeat.com/games/149627_Oddsparks_An_Automation_Adventure.jpg",
     "steam_appid": null,
     "generos": null,
@@ -351,7 +357,7 @@
       "Acceso anticipado"
     ],
     "steam_store_name": "Paralives",
-    "steam_last_sync_at": "2026-07-05T11:24:07.181Z"
+    "steam_last_sync_at": "2026-07-11T11:24:06.450Z"
   },
   {
     "titulo": "Baldur's Gate 3",
@@ -368,7 +374,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2020,
-    "solo": "x",
+    "solo": true,
     "hltb": 72.9,
     "cover_url": "https://howlongtobeat.com/games/68033_Baldurs_Gate_3.jpg",
     "steam_appid": 1086940,
@@ -391,7 +397,7 @@
       "Rol"
     ],
     "steam_store_name": "Baldur's Gate 3",
-    "steam_last_sync_at": "2026-07-05T11:24:07.723Z"
+    "steam_last_sync_at": "2026-07-11T11:24:06.934Z"
   },
   {
     "titulo": "Cult of the Lamb",
@@ -408,7 +414,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2022,
-    "solo": "x",
+    "solo": true,
     "hltb": 14.7,
     "cover_url": "https://howlongtobeat.com/games/97313_Cult_of_the_Lamb.jpg",
     "steam_appid": 1313140,
@@ -432,7 +438,7 @@
       "Aventura"
     ],
     "steam_store_name": "Cult of the Lamb",
-    "steam_last_sync_at": "2026-07-05T11:24:08.251Z"
+    "steam_last_sync_at": "2026-07-11T11:24:07.423Z"
   },
   {
     "titulo": "Cuphead",
@@ -449,7 +455,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2017,
-    "solo": "x",
+    "solo": true,
     "hltb": 10.5,
     "cover_url": "https://howlongtobeat.com/games/cuphead-250.jpg",
     "steam_appid": 268910,
@@ -483,7 +489,7 @@
       "Indie"
     ],
     "steam_store_name": "Cuphead",
-    "steam_last_sync_at": "2026-07-05T11:24:08.780Z"
+    "steam_last_sync_at": "2026-07-11T11:24:07.916Z"
   },
   {
     "titulo": "Dispatch",
@@ -525,7 +531,7 @@
       "Aventura"
     ],
     "steam_store_name": "Dispatch",
-    "steam_last_sync_at": "2026-07-05T11:24:09.257Z"
+    "steam_last_sync_at": "2026-07-11T11:24:08.425Z"
   },
   {
     "titulo": "Farming Simulator 22",
@@ -562,7 +568,7 @@
       "Simuladores"
     ],
     "steam_store_name": "Farming Simulator 22",
-    "steam_last_sync_at": "2026-07-05T11:24:09.797Z"
+    "steam_last_sync_at": "2026-07-11T11:24:08.967Z"
   },
   {
     "titulo": "Forager",
@@ -579,7 +585,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2019,
-    "solo": "x",
+    "solo": true,
     "hltb": 15.4,
     "cover_url": "https://howlongtobeat.com/games/62412_Forager.jpg",
     "steam_appid": 751780,
@@ -603,7 +609,7 @@
       "Aventura"
     ],
     "steam_store_name": "Forager",
-    "steam_last_sync_at": "2026-07-05T11:24:10.320Z"
+    "steam_last_sync_at": "2026-07-11T11:24:09.449Z"
   },
   {
     "titulo": "Grand Theft Auto V Enhanced",
@@ -620,7 +626,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2025,
-    "solo": "x",
+    "solo": true,
     "hltb": 32,
     "cover_url": "https://howlongtobeat.com/games/4064_Grand_Theft_Auto_V.jpg",
     "steam_appid": 3240220,
@@ -643,7 +649,7 @@
       "Aventura"
     ],
     "steam_store_name": "Grand Theft Auto V Enhanced",
-    "steam_last_sync_at": "2026-07-05T11:24:10.854Z"
+    "steam_last_sync_at": "2026-07-11T11:24:09.924Z"
   },
   {
     "titulo": "Marvel Rivals",
@@ -661,7 +667,7 @@
     "comentarios": "Hero shooter competitivo. Top rango: Diamante 3.",
     "rango_maximo": "Diamante 3",
     "lanzamiento": 2024,
-    "solo": "-",
+    "solo": false,
     "hltb": 18.2,
     "cover_url": "https://howlongtobeat.com/games/147712_Marvel_Rivals.jpg",
     "steam_appid": 2767030,
@@ -685,18 +691,54 @@
       "Free to Play"
     ],
     "steam_store_name": "Marvel Rivals",
-    "steam_last_sync_at": "2026-07-05T11:24:11.397Z",
+    "steam_last_sync_at": "2026-07-11T11:24:10.408Z",
     "gasto_microtransacciones": 134.42,
     "microtransacciones_detalle": [
-      { "fecha": "2024-12-06", "concepto": "2180 Lattices", "precio_eur": 18.9 },
-      { "fecha": "2025-03-30", "concepto": "Pick-Up Bundle", "precio_eur": 2.77 },
-      { "fecha": "2025-04-11", "concepto": "2180 Lattices", "precio_eur": 17.99 },
-      { "fecha": "2025-07-11", "concepto": "2180 Lattices", "precio_eur": 17.08 },
-      { "fecha": "2025-08-01", "concepto": "2180 Lattices", "precio_eur": 17.52 },
-      { "fecha": "2025-08-29", "concepto": "2180 Lattices", "precio_eur": 17.14 },
-      { "fecha": "2025-10-17", "concepto": "1000 Lattices", "precio_eur": 8.57 },
-      { "fecha": "2025-11-24", "concepto": "2180 Lattices", "precio_eur": 17.37 },
-      { "fecha": "2026-04-25", "concepto": "2180 Lattices", "precio_eur": 17.08 }
+      {
+        "fecha": "2024-12-06",
+        "concepto": "2180 Lattices",
+        "precio_eur": 18.9
+      },
+      {
+        "fecha": "2025-03-30",
+        "concepto": "Pick-Up Bundle",
+        "precio_eur": 2.77
+      },
+      {
+        "fecha": "2025-04-11",
+        "concepto": "2180 Lattices",
+        "precio_eur": 17.99
+      },
+      {
+        "fecha": "2025-07-11",
+        "concepto": "2180 Lattices",
+        "precio_eur": 17.08
+      },
+      {
+        "fecha": "2025-08-01",
+        "concepto": "2180 Lattices",
+        "precio_eur": 17.52
+      },
+      {
+        "fecha": "2025-08-29",
+        "concepto": "2180 Lattices",
+        "precio_eur": 17.14
+      },
+      {
+        "fecha": "2025-10-17",
+        "concepto": "1000 Lattices",
+        "precio_eur": 8.57
+      },
+      {
+        "fecha": "2025-11-24",
+        "concepto": "2180 Lattices",
+        "precio_eur": 17.37
+      },
+      {
+        "fecha": "2026-04-25",
+        "concepto": "2180 Lattices",
+        "precio_eur": 17.08
+      }
     ]
   },
   {
@@ -737,7 +779,7 @@
       "Casual"
     ],
     "steam_store_name": "Muse Dash",
-    "steam_last_sync_at": "2026-07-05T11:24:11.884Z"
+    "steam_last_sync_at": "2026-07-11T11:24:10.883Z"
   },
   {
     "titulo": "Phasmophobia",
@@ -754,7 +796,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2020,
-    "solo": "-",
+    "solo": false,
     "hltb": 20.1,
     "cover_url": "https://howlongtobeat.com/games/83704_Phasmophobia.jpg",
     "steam_appid": 739630,
@@ -777,7 +819,7 @@
       "Indie"
     ],
     "steam_store_name": "Phasmophobia",
-    "steam_last_sync_at": "2026-07-05T11:24:12.359Z"
+    "steam_last_sync_at": "2026-07-11T11:24:11.350Z"
   },
   {
     "titulo": "R.E.P.O.",
@@ -794,7 +836,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2025,
-    "solo": "-",
+    "solo": false,
     "hltb": 9.8,
     "cover_url": "https://howlongtobeat.com/games/164698_repo.jpg",
     "steam_appid": 3241660,
@@ -816,7 +858,7 @@
       "Acceso anticipado"
     ],
     "steam_store_name": "R.E.P.O.",
-    "steam_last_sync_at": "2026-07-05T11:24:12.838Z"
+    "steam_last_sync_at": "2026-07-11T11:24:11.801Z"
   },
   {
     "titulo": "Satisfactory",
@@ -857,7 +899,7 @@
       "Indie"
     ],
     "steam_store_name": "Satisfactory",
-    "steam_last_sync_at": "2026-07-05T11:24:13.314Z"
+    "steam_last_sync_at": "2026-07-11T11:24:12.280Z"
   },
   {
     "titulo": "Schedule I",
@@ -874,7 +916,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2025,
-    "solo": "x",
+    "solo": true,
     "hltb": 16.6,
     "cover_url": "https://howlongtobeat.com/games/165767_Schedule_I.jpg",
     "steam_appid": 3164500,
@@ -899,7 +941,7 @@
       "Indie"
     ],
     "steam_store_name": "Schedule I",
-    "steam_last_sync_at": "2026-07-05T11:24:13.801Z"
+    "steam_last_sync_at": "2026-07-11T11:24:12.741Z"
   },
   {
     "titulo": "Star Birds",
@@ -941,7 +983,7 @@
       "Indie"
     ],
     "steam_store_name": "Star Birds",
-    "steam_last_sync_at": "2026-07-05T11:24:14.284Z"
+    "steam_last_sync_at": "2026-07-11T11:24:13.233Z"
   },
   {
     "titulo": "Metro: Last Light Complete Edition",
@@ -957,7 +999,7 @@
     },
     "nota": null,
     "comentarios": null,
-    "solo": "x",
+    "solo": true,
     "hltb": 10.3,
     "cover_url": "https://howlongtobeat.com/games/5947_Metro_Last_Light.jpg",
     "steam_appid": 287390,
@@ -975,7 +1017,7 @@
       "Acción"
     ],
     "steam_store_name": "Metro: Last Light Redux",
-    "steam_last_sync_at": "2026-07-05T11:24:14.744Z"
+    "steam_last_sync_at": "2026-07-11T11:24:13.709Z"
   },
   {
     "titulo": "Mini Airways",
@@ -992,7 +1034,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2024,
-    "solo": "x",
+    "solo": true,
     "hltb": 5.6,
     "cover_url": "https://howlongtobeat.com/games/151136_Mini_Airways.jpg",
     "steam_appid": 2554700,
@@ -1052,7 +1094,7 @@
       "Simuladores"
     ],
     "steam_store_name": "Mini Motorways",
-    "steam_last_sync_at": "2026-07-05T11:24:15.841Z"
+    "steam_last_sync_at": "2026-07-11T11:24:14.700Z"
   },
   {
     "titulo": "Monster Hunter: World",
@@ -1089,7 +1131,7 @@
       "Acción"
     ],
     "steam_store_name": "Monster Hunter: World",
-    "steam_last_sync_at": "2026-07-05T11:24:16.815Z"
+    "steam_last_sync_at": "2026-07-11T11:24:15.304Z"
   },
   {
     "titulo": "MultiVersus",
@@ -1106,7 +1148,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2022,
-    "solo": "-",
+    "solo": false,
     "hltb": 6.5,
     "cover_url": "https://howlongtobeat.com/games/100706_MultiVersus.jpg",
     "steam_appid": 1818750,
@@ -1125,7 +1167,7 @@
       "Free to Play"
     ],
     "steam_store_name": "MultiVersus",
-    "steam_last_sync_at": "2026-07-05T11:24:17.615Z"
+    "steam_last_sync_at": "2026-07-11T11:24:15.917Z"
   },
   {
     "titulo": "Outlast",
@@ -1142,7 +1184,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2013,
-    "solo": "-",
+    "solo": false,
     "hltb": 5.1,
     "cover_url": "https://howlongtobeat.com/games/Outlast_cover.jpg",
     "steam_appid": 238320,
@@ -1165,7 +1207,7 @@
       "Aventura"
     ],
     "steam_store_name": "Outlast",
-    "steam_last_sync_at": "2026-07-05T11:24:18.080Z"
+    "steam_last_sync_at": "2026-07-11T11:24:16.445Z"
   },
   {
     "titulo": "PAYDAY 2",
@@ -1182,7 +1224,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2013,
-    "solo": "-",
+    "solo": false,
     "hltb": 27.1,
     "cover_url": "https://howlongtobeat.com/games/12649_Payday_2.jpg",
     "steam_appid": 218620,
@@ -1204,7 +1246,7 @@
       "Rol"
     ],
     "steam_store_name": "PAYDAY 2",
-    "steam_last_sync_at": "2026-07-05T11:24:18.768Z"
+    "steam_last_sync_at": "2026-07-11T11:24:17.245Z"
   },
   {
     "titulo": "Plague Inc: Evolved",
@@ -1245,7 +1287,7 @@
       "Indie"
     ],
     "steam_store_name": "Plague Inc: Evolved",
-    "steam_last_sync_at": "2026-07-05T11:24:19.849Z"
+    "steam_last_sync_at": "2026-07-11T11:24:17.731Z"
   },
   {
     "titulo": "Portal 2",
@@ -1262,7 +1304,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2011,
-    "solo": "x",
+    "solo": true,
     "hltb": 8.5,
     "cover_url": "https://howlongtobeat.com/games/Portal2cover.jpg",
     "steam_appid": 620,
@@ -1284,7 +1326,7 @@
       "Aventura"
     ],
     "steam_store_name": "Portal 2",
-    "steam_last_sync_at": "2026-07-05T11:24:20.391Z"
+    "steam_last_sync_at": "2026-07-11T11:24:18.228Z"
   },
   {
     "titulo": "Potion Craft: Alchemist Simulator",
@@ -1301,7 +1343,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2021,
-    "solo": "x",
+    "solo": true,
     "hltb": 17.8,
     "cover_url": "https://howlongtobeat.com/games/92845_Potion_Craft_Alchemist_Simulator.jpg",
     "steam_appid": 1210320,
@@ -1323,7 +1365,7 @@
       "Simuladores"
     ],
     "steam_store_name": "Potion Craft: Alchemist Simulator",
-    "steam_last_sync_at": "2026-07-05T11:24:20.851Z"
+    "steam_last_sync_at": "2026-07-11T11:24:18.727Z"
   },
   {
     "titulo": "Raft",
@@ -1363,7 +1405,7 @@
       "Indie"
     ],
     "steam_store_name": "Raft",
-    "steam_last_sync_at": "2026-07-05T11:24:21.424Z"
+    "steam_last_sync_at": "2026-07-11T11:24:19.204Z"
   },
   {
     "titulo": "Reigns: Her Majesty",
@@ -1380,7 +1422,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2017,
-    "solo": "x",
+    "solo": true,
     "hltb": 3.5,
     "cover_url": "https://howlongtobeat.com/games/51322_Reigns_Her_Majesty.jpg",
     "steam_appid": 717640,
@@ -1403,7 +1445,7 @@
       "Indie"
     ],
     "steam_store_name": "Reigns: Her Majesty",
-    "steam_last_sync_at": "2026-07-05T11:24:21.998Z"
+    "steam_last_sync_at": "2026-07-11T11:24:19.689Z"
   },
   {
     "titulo": "Rocket League",
@@ -1421,7 +1463,7 @@
     "comentarios": "Juego competitivo recurrente. Top rango: Diamante 4.",
     "rango_maximo": "Diamante 4",
     "lanzamiento": 2015,
-    "solo": "-",
+    "solo": false,
     "hltb": 4.7,
     "cover_url": "https://howlongtobeat.com/games/Rocket_League_header.jpg",
     "steam_appid": 252950,
@@ -1440,18 +1482,54 @@
       "Indie"
     ],
     "steam_store_name": "Rocket League®",
-    "steam_last_sync_at": "2026-07-05T11:24:22.597Z",
+    "steam_last_sync_at": "2026-07-11T11:24:20.234Z",
     "gasto_microtransacciones": 40.91,
     "microtransacciones_detalle": [
-      { "fecha": "2016-06-24", "concepto": "Chaos Run + Supersonic Fury DLC Pack", "precio_eur": 16.77 },
-      { "fecha": "2016-06-28", "concepto": "Revenge of the Battle-Cars DLC Pack", "precio_eur": 2.39 },
-      { "fecha": "2017-07-19", "concepto": "Llave para Desbloquear cajas x1", "precio_eur": 1.49 },
-      { "fecha": "2017-12-29", "concepto": "Llave para Desbloquear cajas x1", "precio_eur": 1.26 },
-      { "fecha": "2018-01-04", "concepto": "Llave para Desbloquear cajas x2", "precio_eur": 2.52 },
-      { "fecha": "2018-01-26", "concepto": "Llave para Desbloquear cajas x1", "precio_eur": 1.26 },
-      { "fecha": "2018-05-08", "concepto": "Llave para Desbloquear cajas x1", "precio_eur": 1.26 },
-      { "fecha": "2018-11-19", "concepto": "Back to the Future + Batman v Superman + Masamune + Hot Wheels Twin Mill III packs", "precio_eur": 3.96 },
-      { "fecha": "2022-12-08", "concepto": "Rocket League Credits x1100", "precio_eur": 10 }
+      {
+        "fecha": "2016-06-24",
+        "concepto": "Chaos Run + Supersonic Fury DLC Pack",
+        "precio_eur": 16.77
+      },
+      {
+        "fecha": "2016-06-28",
+        "concepto": "Revenge of the Battle-Cars DLC Pack",
+        "precio_eur": 2.39
+      },
+      {
+        "fecha": "2017-07-19",
+        "concepto": "Llave para Desbloquear cajas x1",
+        "precio_eur": 1.49
+      },
+      {
+        "fecha": "2017-12-29",
+        "concepto": "Llave para Desbloquear cajas x1",
+        "precio_eur": 1.26
+      },
+      {
+        "fecha": "2018-01-04",
+        "concepto": "Llave para Desbloquear cajas x2",
+        "precio_eur": 2.52
+      },
+      {
+        "fecha": "2018-01-26",
+        "concepto": "Llave para Desbloquear cajas x1",
+        "precio_eur": 1.26
+      },
+      {
+        "fecha": "2018-05-08",
+        "concepto": "Llave para Desbloquear cajas x1",
+        "precio_eur": 1.26
+      },
+      {
+        "fecha": "2018-11-19",
+        "concepto": "Back to the Future + Batman v Superman + Masamune + Hot Wheels Twin Mill III packs",
+        "precio_eur": 3.96
+      },
+      {
+        "fecha": "2022-12-08",
+        "concepto": "Rocket League Credits x1100",
+        "precio_eur": 10
+      }
     ]
   },
   {
@@ -1469,7 +1547,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2019,
-    "solo": "x",
+    "solo": true,
     "hltb": 30.2,
     "cover_url": "https://howlongtobeat.com/games/57415_Sekiro_Shadows_Die_Twice.jpg",
     "steam_appid": 814380,
@@ -1491,7 +1569,7 @@
       "Aventura"
     ],
     "steam_store_name": "Sekiro™: Shadows Die Twice - GOTY Edition",
-    "steam_last_sync_at": "2026-07-05T11:24:23.146Z"
+    "steam_last_sync_at": "2026-07-11T11:24:20.702Z"
   },
   {
     "titulo": "Sid Meier's Civilization VI",
@@ -1528,7 +1606,7 @@
       "Estrategia"
     ],
     "steam_store_name": "Sid Meier’s Civilization® VI",
-    "steam_last_sync_at": "2026-07-05T11:24:23.683Z"
+    "steam_last_sync_at": "2026-07-11T11:24:21.215Z"
   },
   {
     "titulo": "Slime Rancher 2",
@@ -1570,7 +1648,7 @@
       "Aventura"
     ],
     "steam_store_name": "Slime Rancher 2",
-    "steam_last_sync_at": "2026-07-05T11:24:24.145Z"
+    "steam_last_sync_at": "2026-07-11T11:24:21.682Z"
   },
   {
     "titulo": "Soulworker",
@@ -1613,7 +1691,7 @@
       "Multijugador masivo"
     ],
     "steam_store_name": "Soulworker",
-    "steam_last_sync_at": "2026-07-05T11:24:24.589Z"
+    "steam_last_sync_at": "2026-07-11T11:24:22.192Z"
   },
   {
     "titulo": "Stacklands",
@@ -1653,7 +1731,7 @@
       "Indie"
     ],
     "steam_store_name": "Stacklands",
-    "steam_last_sync_at": "2026-07-05T11:24:25.054Z"
+    "steam_last_sync_at": "2026-07-11T11:24:22.677Z"
   },
   {
     "titulo": "Stardew Valley",
@@ -1670,7 +1748,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2016,
-    "solo": "x",
+    "solo": true,
     "hltb": 53.4,
     "cover_url": "https://howlongtobeat.com/games/34716_Stardew_Valley.jpg",
     "steam_appid": 413150,
@@ -1693,7 +1771,7 @@
       "Rol"
     ],
     "steam_store_name": "Stardew Valley",
-    "steam_last_sync_at": "2026-07-05T11:24:25.497Z"
+    "steam_last_sync_at": "2026-07-11T11:24:23.152Z"
   },
   {
     "titulo": "Surviving Mars",
@@ -1710,7 +1788,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2018,
-    "solo": "x",
+    "solo": true,
     "hltb": 22.2,
     "cover_url": "https://howlongtobeat.com/games/45951_Surviving_Mars.jpg",
     "steam_appid": 3215050,
@@ -1732,7 +1810,7 @@
       "Estrategia"
     ],
     "steam_store_name": "Surviving Mars: Relaunched",
-    "steam_last_sync_at": "2026-07-05T11:24:25.988Z"
+    "steam_last_sync_at": "2026-07-11T11:24:23.635Z"
   },
   {
     "titulo": "Terraria",
@@ -1749,7 +1827,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2011,
-    "solo": "x",
+    "solo": true,
     "hltb": 51.8,
     "cover_url": "https://howlongtobeat.com/games/9705_Terraria.jpg",
     "steam_appid": 105600,
@@ -1773,7 +1851,7 @@
       "Aventura"
     ],
     "steam_store_name": "Terraria",
-    "steam_last_sync_at": "2026-07-05T11:24:26.465Z"
+    "steam_last_sync_at": "2026-07-11T11:24:24.143Z"
   },
   {
     "titulo": "The Binding of Isaac: Rebirth",
@@ -1790,7 +1868,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2014,
-    "solo": "x",
+    "solo": true,
     "hltb": 5.6,
     "cover_url": "https://howlongtobeat.com/games/TheBindingofIsaacRebirth.jpg",
     "steam_appid": 250900,
@@ -1810,7 +1888,7 @@
       "Acción"
     ],
     "steam_store_name": "The Binding of Isaac: Rebirth",
-    "steam_last_sync_at": "2026-07-05T11:24:27.049Z"
+    "steam_last_sync_at": "2026-07-11T11:24:24.750Z"
   },
   {
     "titulo": "The Elder Scrolls V: Skyrim",
@@ -1847,7 +1925,7 @@
       "Rol"
     ],
     "steam_store_name": "The Elder Scrolls V: Skyrim Special Edition",
-    "steam_last_sync_at": "2026-07-05T11:24:27.554Z"
+    "steam_last_sync_at": "2026-07-11T11:24:25.333Z"
   },
   {
     "titulo": "The Escapists",
@@ -1889,7 +1967,7 @@
       "Aventura"
     ],
     "steam_store_name": "The Escapists",
-    "steam_last_sync_at": "2026-07-05T11:24:28.068Z"
+    "steam_last_sync_at": "2026-07-11T11:24:25.832Z"
   },
   {
     "titulo": "The Walking Dead: The Telltale Definitive Series",
@@ -1906,7 +1984,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2019,
-    "solo": "-",
+    "solo": false,
     "hltb": 42.2,
     "cover_url": "https://howlongtobeat.com/games/69341_The_Walking_Dead_The_Telltale_Definitive_Series.jpg",
     "steam_appid": 1449690,
@@ -1926,7 +2004,7 @@
       "Aventura"
     ],
     "steam_store_name": "The Walking Dead: The Telltale Definitive Series",
-    "steam_last_sync_at": "2026-07-05T11:24:28.534Z"
+    "steam_last_sync_at": "2026-07-11T11:24:26.282Z"
   },
   {
     "titulo": "The Witcher 3: Wild Hunt",
@@ -1963,7 +2041,7 @@
       "Rol"
     ],
     "steam_store_name": "The Witcher 3: Wild Hunt",
-    "steam_last_sync_at": "2026-07-05T11:24:29.057Z"
+    "steam_last_sync_at": "2026-07-11T11:24:27.130Z"
   },
   {
     "titulo": "The Witness",
@@ -2002,7 +2080,7 @@
       "Indie"
     ],
     "steam_store_name": "The Witness",
-    "steam_last_sync_at": "2026-07-05T11:24:29.522Z"
+    "steam_last_sync_at": "2026-07-11T11:24:27.609Z"
   },
   {
     "titulo": "Tom Clancy's Rainbow Six Siege",
@@ -2019,7 +2097,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2015,
-    "solo": "-",
+    "solo": false,
     "hltb": 3.3,
     "cover_url": "https://howlongtobeat.com/games/Rainbow_Six_siege_photo_2014-06-14_17-51.jpg",
     "steam_appid": 359550,
@@ -2043,7 +2121,7 @@
       "Free to Play"
     ],
     "steam_store_name": "Tom Clancy's Rainbow Six Siege",
-    "steam_last_sync_at": "2026-07-05T11:24:30.060Z"
+    "steam_last_sync_at": "2026-07-11T11:24:28.137Z"
   },
   {
     "titulo": "Tomb Raider",
@@ -2060,7 +2138,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 1996,
-    "solo": "x",
+    "solo": true,
     "hltb": 11.3,
     "cover_url": "https://howlongtobeat.com/games/256px-Tr2011cover.jpg",
     "steam_appid": 203160,
@@ -2082,7 +2160,7 @@
       "Aventura"
     ],
     "steam_store_name": "Tomb Raider Game of the Year",
-    "steam_last_sync_at": "2026-07-05T11:24:30.584Z"
+    "steam_last_sync_at": "2026-07-11T11:24:28.685Z"
   },
   {
     "titulo": "Townscaper",
@@ -2122,7 +2200,7 @@
       "Indie"
     ],
     "steam_store_name": "Townscaper",
-    "steam_last_sync_at": "2026-07-05T11:24:31.036Z"
+    "steam_last_sync_at": "2026-07-11T11:24:29.143Z"
   },
   {
     "titulo": "Undertale",
@@ -2161,7 +2239,7 @@
       "Rol"
     ],
     "steam_store_name": "Undertale",
-    "steam_last_sync_at": "2026-07-05T11:24:31.485Z"
+    "steam_last_sync_at": "2026-07-11T11:24:29.628Z"
   },
   {
     "titulo": "Unpacking",
@@ -2178,7 +2256,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2021,
-    "solo": "x",
+    "solo": true,
     "hltb": 3.6,
     "cover_url": "https://howlongtobeat.com/games/69666_Unpacking_(2021).jpg",
     "steam_appid": 1135690,
@@ -2201,7 +2279,7 @@
       "Indie"
     ],
     "steam_store_name": "Unpacking",
-    "steam_last_sync_at": "2026-07-05T11:24:31.954Z"
+    "steam_last_sync_at": "2026-07-11T11:24:30.120Z"
   },
   {
     "titulo": "Urban Rivals",
@@ -2218,7 +2296,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2006,
-    "solo": "-",
+    "solo": false,
     "cover_url": "https://howlongtobeat.com/games/57112_Urban_Rivals.jpg",
     "steam_appid": 715310,
     "generos": [
@@ -2246,7 +2324,7 @@
       "Indie"
     ],
     "steam_store_name": "Urban Rivals",
-    "steam_last_sync_at": "2026-07-05T11:24:32.416Z"
+    "steam_last_sync_at": "2026-07-11T11:24:30.594Z"
   },
   {
     "titulo": "XCOM 2",
@@ -2263,7 +2341,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2016,
-    "solo": "x",
+    "solo": true,
     "hltb": 33.2,
     "cover_url": "https://howlongtobeat.com/games/XCOM_2_2015.jpg",
     "steam_appid": 268500,
@@ -2283,7 +2361,7 @@
       "Estrategia"
     ],
     "steam_store_name": "XCOM® 2",
-    "steam_last_sync_at": "2026-07-05T11:24:32.895Z"
+    "steam_last_sync_at": "2026-07-11T11:24:31.103Z"
   },
   {
     "titulo": "60 Seconds! Reatomized",
@@ -2325,7 +2403,7 @@
       "Casual"
     ],
     "steam_store_name": "60 Seconds! Reatomized",
-    "steam_last_sync_at": "2026-07-05T11:24:33.373Z"
+    "steam_last_sync_at": "2026-07-11T11:24:31.632Z"
   },
   {
     "titulo": "Amnesia: The Dark Descent",
@@ -2342,7 +2420,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2010,
-    "solo": "-",
+    "solo": false,
     "hltb": 8,
     "cover_url": "https://howlongtobeat.com/games/440_Amnesia_The_Dark_Descent.jpg",
     "steam_appid": 57300,
@@ -2365,7 +2443,7 @@
       "Aventura"
     ],
     "steam_store_name": "Amnesia: The Dark Descent",
-    "steam_last_sync_at": "2026-07-05T11:24:33.855Z"
+    "steam_last_sync_at": "2026-07-11T11:24:32.135Z"
   },
   {
     "titulo": "Among Us",
@@ -2382,7 +2460,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2018,
-    "solo": "-",
+    "solo": false,
     "hltb": 9,
     "cover_url": "https://howlongtobeat.com/games/74207_Among_Us.jpg",
     "steam_appid": 945360,
@@ -2402,7 +2480,7 @@
       "Casual"
     ],
     "steam_store_name": "Among Us",
-    "steam_last_sync_at": "2026-07-05T11:24:34.331Z"
+    "steam_last_sync_at": "2026-07-11T11:24:32.725Z"
   },
   {
     "titulo": "Apex Legends",
@@ -2419,7 +2497,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2019,
-    "solo": "-",
+    "solo": false,
     "hltb": 33.2,
     "cover_url": "https://howlongtobeat.com/games/64753_Apex_Legends.jpg",
     "steam_appid": 1172470,
@@ -2444,7 +2522,7 @@
       "Aventura"
     ],
     "steam_store_name": "Apex Legends™",
-    "steam_last_sync_at": "2026-07-05T11:24:34.941Z"
+    "steam_last_sync_at": "2026-07-11T11:24:33.350Z"
   },
   {
     "titulo": "Atomic Heart",
@@ -2484,7 +2562,7 @@
       "Aventura"
     ],
     "steam_store_name": "Atomic Heart",
-    "steam_last_sync_at": "2026-07-05T11:24:35.454Z"
+    "steam_last_sync_at": "2026-07-11T11:24:33.942Z"
   },
   {
     "titulo": "Bandle Tale: A League of Legends Story",
@@ -2501,7 +2579,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2024,
-    "solo": "x",
+    "solo": true,
     "hltb": 27.2,
     "cover_url": "https://howlongtobeat.com/games/137788_Bandle_Tale_A_League_of_Legends_Story.jpg",
     "steam_appid": 1759380,
@@ -2523,7 +2601,7 @@
       "Simuladores"
     ],
     "steam_store_name": "Bandle Tale: A League of Legends Story",
-    "steam_last_sync_at": "2026-07-05T11:24:35.927Z"
+    "steam_last_sync_at": "2026-07-11T11:24:34.455Z"
   },
   {
     "titulo": "Beyond: Two Souls",
@@ -2540,7 +2618,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2013,
-    "solo": "-",
+    "solo": false,
     "hltb": 10.6,
     "cover_url": "https://howlongtobeat.com/games/1023_Beyond_Two_Souls.jpg",
     "steam_appid": 960990,
@@ -2562,7 +2640,7 @@
       "Aventura"
     ],
     "steam_store_name": "Beyond: Two Souls",
-    "steam_last_sync_at": "2026-07-05T11:24:36.385Z"
+    "steam_last_sync_at": "2026-07-11T11:24:34.949Z"
   },
   {
     "titulo": "Borderlands 2",
@@ -2601,7 +2679,7 @@
       "Rol"
     ],
     "steam_store_name": "Borderlands 2",
-    "steam_last_sync_at": "2026-07-05T11:24:36.987Z"
+    "steam_last_sync_at": "2026-07-11T11:24:35.496Z"
   },
   {
     "titulo": "Catherine Classic",
@@ -2618,7 +2696,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2011,
-    "solo": "x",
+    "solo": true,
     "hltb": 13.2,
     "cover_url": "https://howlongtobeat.com/games/250px-Catherine_Cover_Art.png",
     "steam_appid": 893180,
@@ -2638,7 +2716,7 @@
       "Aventura"
     ],
     "steam_store_name": "Catherine Classic",
-    "steam_last_sync_at": "2026-07-05T11:24:37.468Z"
+    "steam_last_sync_at": "2026-07-11T11:24:36.007Z"
   },
   {
     "titulo": "Celeste",
@@ -2655,7 +2733,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2018,
-    "solo": "x",
+    "solo": true,
     "hltb": 8.3,
     "cover_url": "https://howlongtobeat.com/games/42818_Celeste.jpg",
     "steam_appid": 504230,
@@ -2678,7 +2756,7 @@
       "Aventura"
     ],
     "steam_store_name": "Celeste",
-    "steam_last_sync_at": "2026-07-05T11:24:37.929Z"
+    "steam_last_sync_at": "2026-07-11T11:24:36.492Z"
   },
   {
     "titulo": "Counter-Strike 2",
@@ -2695,7 +2773,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2023,
-    "solo": "-",
+    "solo": false,
     "hltb": 145.5,
     "cover_url": "https://howlongtobeat.com/games/1957_Counter-Strike_2.jpg",
     "steam_appid": 730,
@@ -2719,16 +2797,44 @@
       "Free to Play"
     ],
     "steam_store_name": "Counter-Strike 2",
-    "steam_last_sync_at": "2026-07-05T11:24:38.453Z",
+    "steam_last_sync_at": "2026-07-11T11:24:37.010Z",
     "gasto_microtransacciones": 34.82,
     "microtransacciones_detalle": [
-      { "fecha": "2020-02-08", "concepto": "Llave de caja Gamma + Llave de caja de Guantes", "precio_eur": 4.4 },
-      { "fecha": "2021-03-25", "concepto": "Music Kit | Scarlxrd, CHAINSAW.LXADXUT", "precio_eur": 4.25 },
-      { "fecha": "2021-04-19", "concepto": "Llave de caja Prisma + Clutch x2", "precio_eur": 6.3 },
-      { "fecha": "2021-04-20", "concepto": "Llave de caja Horizonte", "precio_eur": 2.1 },
-      { "fecha": "2021-04-21", "concepto": "Llave de caja Danger Zone", "precio_eur": 2.1 },
-      { "fecha": "2021-04-23", "concepto": "Llave de caja Espectro 2 + CS20 + Revólver", "precio_eur": 6.3 },
-      { "fecha": "2017-06-22", "concepto": "Actualización a estatus Prime", "precio_eur": 9.37 }
+      {
+        "fecha": "2020-02-08",
+        "concepto": "Llave de caja Gamma + Llave de caja de Guantes",
+        "precio_eur": 4.4
+      },
+      {
+        "fecha": "2021-03-25",
+        "concepto": "Music Kit | Scarlxrd, CHAINSAW.LXADXUT",
+        "precio_eur": 4.25
+      },
+      {
+        "fecha": "2021-04-19",
+        "concepto": "Llave de caja Prisma + Clutch x2",
+        "precio_eur": 6.3
+      },
+      {
+        "fecha": "2021-04-20",
+        "concepto": "Llave de caja Horizonte",
+        "precio_eur": 2.1
+      },
+      {
+        "fecha": "2021-04-21",
+        "concepto": "Llave de caja Danger Zone",
+        "precio_eur": 2.1
+      },
+      {
+        "fecha": "2021-04-23",
+        "concepto": "Llave de caja Espectro 2 + CS20 + Revólver",
+        "precio_eur": 6.3
+      },
+      {
+        "fecha": "2017-06-22",
+        "concepto": "Actualización a estatus Prime",
+        "precio_eur": 9.37
+      }
     ]
   },
   {
@@ -2746,7 +2852,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2020,
-    "solo": "-",
+    "solo": false,
     "hltb": 26,
     "steam_appid": 1091500,
     "generos": [
@@ -2765,7 +2871,7 @@
       "Rol"
     ],
     "steam_store_name": "Cyberpunk 2077",
-    "steam_last_sync_at": "2026-07-05T11:24:38.913Z"
+    "steam_last_sync_at": "2026-07-11T11:24:37.566Z"
   },
   {
     "titulo": "Dead by Daylight",
@@ -2783,7 +2889,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2016,
-    "solo": "-",
+    "solo": false,
     "hltb": 78.6,
     "generos": [
       "Acción"
@@ -3302,10 +3408,14 @@
       "Acción"
     ],
     "steam_store_name": "Dead by Daylight",
-    "steam_last_sync_at": "2026-07-05T11:24:39.441Z",
+    "steam_last_sync_at": "2026-07-11T11:24:38.377Z",
     "gasto_microtransacciones": 5,
     "microtransacciones_detalle": [
-      { "fecha": "2020-10-17", "concepto": "500 Auric Cells", "precio_eur": 5 }
+      {
+        "fecha": "2020-10-17",
+        "concepto": "500 Auric Cells",
+        "precio_eur": 5
+      }
     ]
   },
   {
@@ -3323,7 +3433,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2017,
-    "solo": "-",
+    "solo": false,
     "hltb": 12.2,
     "cover_url": "https://howlongtobeat.com/games/43894_Destiny_2.png",
     "steam_appid": 1085660,
@@ -3348,7 +3458,7 @@
       "Aventura"
     ],
     "steam_store_name": "Destiny 2",
-    "steam_last_sync_at": "2026-07-05T11:24:39.984Z"
+    "steam_last_sync_at": "2026-07-11T11:24:38.967Z"
   },
   {
     "titulo": "Detroit: Become Human",
@@ -3365,7 +3475,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2018,
-    "solo": "-",
+    "solo": false,
     "hltb": 12.1,
     "cover_url": "https://howlongtobeat.com/games/31388_Detroit_Become_Human.jpg",
     "steam_appid": 1222140,
@@ -3387,7 +3497,7 @@
       "Aventura"
     ],
     "steam_store_name": "Detroit: Become Human",
-    "steam_last_sync_at": "2026-07-05T11:24:40.437Z"
+    "steam_last_sync_at": "2026-07-11T11:24:39.482Z"
   },
   {
     "titulo": "Don't Starve Together",
@@ -3404,7 +3514,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2014,
-    "solo": "-",
+    "solo": false,
     "hltb": 34.1,
     "cover_url": "https://howlongtobeat.com/games/23828_Dont_Starve_Together.jpg",
     "steam_appid": 322330,
@@ -3430,7 +3540,7 @@
       "Aventura"
     ],
     "steam_store_name": "Don't Starve Together",
-    "steam_last_sync_at": "2026-07-05T11:24:40.973Z"
+    "steam_last_sync_at": "2026-07-11T11:24:40.043Z"
   },
   {
     "titulo": "Dying Light",
@@ -3469,7 +3579,7 @@
       "Aventura"
     ],
     "steam_store_name": "Dying Light",
-    "steam_last_sync_at": "2026-07-05T11:24:41.582Z"
+    "steam_last_sync_at": "2026-07-11T11:24:40.630Z"
   },
   {
     "titulo": "Eternal Return",
@@ -3486,7 +3596,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2017,
-    "solo": "-",
+    "solo": false,
     "cover_url": "https://howlongtobeat.com/games/50597_Eternal_Return.jpg",
     "steam_appid": 1049590,
     "generos": [
@@ -3506,12 +3616,9 @@
       "main_plus": null,
       "completionist": null
     },
-    "steam_store_genres": [
-      "Indie",
-      "Estrategia"
-    ],
+    "steam_store_genres": [],
     "steam_store_name": "Eternal Return",
-    "steam_last_sync_at": "2026-07-05T11:24:42.086Z"
+    "steam_last_sync_at": "2026-07-11T11:24:41.198Z"
   },
   {
     "titulo": "Euro Truck Simulator 2",
@@ -3550,7 +3657,7 @@
       "Simuladores"
     ],
     "steam_store_name": "Euro Truck Simulator 2",
-    "steam_last_sync_at": "2026-07-05T11:24:42.666Z"
+    "steam_last_sync_at": "2026-07-11T11:24:41.728Z"
   },
   {
     "titulo": "Fallout 4",
@@ -3587,7 +3694,7 @@
       "Rol"
     ],
     "steam_store_name": "Fallout 4",
-    "steam_last_sync_at": "2026-07-05T11:24:43.191Z"
+    "steam_last_sync_at": "2026-07-11T11:24:42.251Z"
   },
   {
     "titulo": "Fallout Shelter",
@@ -3629,7 +3736,7 @@
       "Simuladores"
     ],
     "steam_store_name": "Fallout Shelter",
-    "steam_last_sync_at": "2026-07-05T11:24:43.656Z"
+    "steam_last_sync_at": "2026-07-11T11:24:42.711Z"
   },
   {
     "titulo": "Garry's Mod",
@@ -3646,7 +3753,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2006,
-    "solo": "-",
+    "solo": false,
     "hltb": 51.4,
     "cover_url": "https://howlongtobeat.com/games/GarrysMod_292x136.jpg",
     "steam_appid": 4000,
@@ -3669,7 +3776,7 @@
       "Indie"
     ],
     "steam_store_name": "Garry's Mod",
-    "steam_last_sync_at": "2026-07-05T11:24:44.103Z"
+    "steam_last_sync_at": "2026-07-11T11:24:43.169Z"
   },
   {
     "titulo": "Ghost of Tsushima Director's Cut",
@@ -3708,7 +3815,7 @@
       "Aventura"
     ],
     "steam_store_name": "Ghost of Tsushima: VERSIÓN DEL DIRECTOR",
-    "steam_last_sync_at": "2026-07-05T11:24:45.068Z"
+    "steam_last_sync_at": "2026-07-11T11:24:43.663Z"
   },
   {
     "titulo": "Gotham Knights",
@@ -3748,7 +3855,7 @@
       "Aventura"
     ],
     "steam_store_name": "Gotham Knights",
-    "steam_last_sync_at": "2026-07-05T11:24:45.565Z"
+    "steam_last_sync_at": "2026-07-11T11:24:44.151Z"
   },
   {
     "titulo": "Governor of Poker 3",
@@ -3791,7 +3898,7 @@
       "Multijugador masivo"
     ],
     "steam_store_name": "Governor of Poker 3",
-    "steam_last_sync_at": "2026-07-05T11:24:46.018Z"
+    "steam_last_sync_at": "2026-07-11T11:24:44.597Z"
   },
   {
     "titulo": "Grand Theft Auto IV: The Complete Edition",
@@ -3830,7 +3937,7 @@
       "Aventura"
     ],
     "steam_store_name": "Grand Theft Auto IV: The Complete Edition",
-    "steam_last_sync_at": "2026-07-05T11:24:46.515Z"
+    "steam_last_sync_at": "2026-07-11T11:24:45.079Z"
   },
   {
     "titulo": "Grand Theft Auto V Legacy",
@@ -3846,7 +3953,7 @@
     },
     "nota": null,
     "comentarios": null,
-    "solo": "x",
+    "solo": true,
     "steam_appid": 271590,
     "generos": null,
     "precio_pagado": 14.99,
@@ -3865,7 +3972,7 @@
       "Aventura"
     ],
     "steam_store_name": "Grand Theft Auto V Legacy",
-    "steam_last_sync_at": "2026-07-05T11:24:46.995Z"
+    "steam_last_sync_at": "2026-07-11T11:24:45.544Z"
   },
   {
     "titulo": "GRIS",
@@ -3882,7 +3989,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2018,
-    "solo": "x",
+    "solo": true,
     "hltb": 3.6,
     "cover_url": "https://howlongtobeat.com/games/62257_Gris.jpg",
     "steam_appid": 683320,
@@ -3904,7 +4011,7 @@
       "Indie"
     ],
     "steam_store_name": "GRIS",
-    "steam_last_sync_at": "2026-07-05T11:24:47.488Z"
+    "steam_last_sync_at": "2026-07-11T11:24:46.024Z"
   },
   {
     "titulo": "Hades",
@@ -3921,7 +4028,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2018,
-    "solo": "x",
+    "solo": true,
     "hltb": 23.4,
     "cover_url": "https://howlongtobeat.com/games/62941_Hades.jpg",
     "steam_appid": 1145360,
@@ -3944,7 +4051,7 @@
       "Indie"
     ],
     "steam_store_name": "Hades",
-    "steam_last_sync_at": "2026-07-05T11:24:47.960Z"
+    "steam_last_sync_at": "2026-07-11T11:24:46.540Z"
   },
   {
     "titulo": "Heartopia",
@@ -3986,7 +4093,7 @@
       "Simuladores"
     ],
     "steam_store_name": "Heartopia",
-    "steam_last_sync_at": "2026-07-05T11:24:48.407Z"
+    "steam_last_sync_at": "2026-07-11T11:24:46.987Z"
   },
   {
     "titulo": "Hogwarts Legacy",
@@ -4003,7 +4110,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2023,
-    "solo": "x",
+    "solo": true,
     "hltb": 26.7,
     "cover_url": "https://howlongtobeat.com/games/83145_Hogwarts_Legacy.jpg",
     "steam_appid": 990080,
@@ -4026,7 +4133,7 @@
       "Aventura"
     ],
     "steam_store_name": "Hogwarts Legacy",
-    "steam_last_sync_at": "2026-07-05T11:24:48.913Z"
+    "steam_last_sync_at": "2026-07-11T11:24:47.500Z"
   },
   {
     "titulo": "Hollow Knight",
@@ -4043,7 +4150,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2017,
-    "solo": "x",
+    "solo": true,
     "hltb": 27,
     "cover_url": "https://howlongtobeat.com/games/26286_Hollow_Knight.jpg",
     "steam_appid": 367520,
@@ -4066,7 +4173,7 @@
       "Aventura"
     ],
     "steam_store_name": "Hollow Knight",
-    "steam_last_sync_at": "2026-07-05T11:24:49.457Z"
+    "steam_last_sync_at": "2026-07-11T11:24:47.962Z"
   },
   {
     "titulo": "It Takes Two",
@@ -4083,7 +4190,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2021,
-    "solo": "-",
+    "solo": false,
     "hltb": 12.8,
     "cover_url": "https://howlongtobeat.com/games/80199_It_Takes_Two.jpg",
     "steam_appid": 1426210,
@@ -4105,7 +4212,7 @@
       "Aventura"
     ],
     "steam_store_name": "It Takes Two",
-    "steam_last_sync_at": "2026-07-05T11:24:49.969Z"
+    "steam_last_sync_at": "2026-07-11T11:24:48.436Z"
   },
   {
     "titulo": "Just Cause 3",
@@ -4144,7 +4251,7 @@
       "Aventura"
     ],
     "steam_store_name": "Just Cause™ 3",
-    "steam_last_sync_at": "2026-07-05T11:24:50.477Z"
+    "steam_last_sync_at": "2026-07-11T11:24:48.953Z"
   },
   {
     "titulo": "Left 4 Dead 2",
@@ -4161,7 +4268,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2009,
-    "solo": "-",
+    "solo": false,
     "hltb": 10.2,
     "cover_url": "https://howlongtobeat.com/games/250px-Left4Dead2.jpg",
     "steam_appid": 550,
@@ -4181,7 +4288,7 @@
       "Acción"
     ],
     "steam_store_name": "Left 4 Dead 2",
-    "steam_last_sync_at": "2026-07-05T11:24:51.018Z"
+    "steam_last_sync_at": "2026-07-11T11:24:49.420Z"
   },
   {
     "titulo": "Little Nightmares",
@@ -4198,7 +4305,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2017,
-    "solo": "-",
+    "solo": false,
     "hltb": 3.6,
     "cover_url": "https://howlongtobeat.com/games/39417_Little_Nightmares.jpg",
     "steam_appid": 424840,
@@ -4218,7 +4325,7 @@
       "Aventura"
     ],
     "steam_store_name": "Little Nightmares",
-    "steam_last_sync_at": "2026-07-05T11:24:51.566Z"
+    "steam_last_sync_at": "2026-07-11T11:24:49.904Z"
   },
   {
     "titulo": "MARVEL SNAP",
@@ -4268,15 +4375,39 @@
       "Estrategia"
     ],
     "steam_store_name": "MARVEL SNAP",
-    "steam_last_sync_at": "2026-07-05T11:24:52.030Z",
+    "steam_last_sync_at": "2026-07-11T11:24:50.362Z",
     "gasto_microtransacciones": 72.94,
     "microtransacciones_detalle": [
-      { "fecha": "2023-12-14", "concepto": "BundleDecemberSnow", "precio_eur": 16.99 },
-      { "fecha": "2024-02-06", "concepto": "Seasonal Pass", "precio_eur": 10.99 },
-      { "fecha": "2024-02-23", "concepto": "BundleFebruary2024Hellfire", "precio_eur": 10.99 },
-      { "fecha": "2024-03-12", "concepto": "Gold Pass", "precio_eur": 5.99 },
-      { "fecha": "2024-07-09", "concepto": "Seasonal Pass", "precio_eur": 10.99 },
-      { "fecha": "2025-02-14", "concepto": "Bundle1499", "precio_eur": 16.99 }
+      {
+        "fecha": "2023-12-14",
+        "concepto": "BundleDecemberSnow",
+        "precio_eur": 16.99
+      },
+      {
+        "fecha": "2024-02-06",
+        "concepto": "Seasonal Pass",
+        "precio_eur": 10.99
+      },
+      {
+        "fecha": "2024-02-23",
+        "concepto": "BundleFebruary2024Hellfire",
+        "precio_eur": 10.99
+      },
+      {
+        "fecha": "2024-03-12",
+        "concepto": "Gold Pass",
+        "precio_eur": 5.99
+      },
+      {
+        "fecha": "2024-07-09",
+        "concepto": "Seasonal Pass",
+        "precio_eur": 10.99
+      },
+      {
+        "fecha": "2025-02-14",
+        "concepto": "Bundle1499",
+        "precio_eur": 16.99
+      }
     ]
   },
   {
@@ -4313,7 +4444,7 @@
       "Indie"
     ],
     "steam_store_name": "A Game About Digging A Hole™",
-    "steam_last_sync_at": "2026-07-05T11:24:52.533Z"
+    "steam_last_sync_at": "2026-07-11T11:24:50.857Z"
   },
   {
     "titulo": "Metaphor: ReFantazio",
@@ -4330,7 +4461,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2024,
-    "solo": "x",
+    "solo": true,
     "hltb": 65.3,
     "cover_url": "https://howlongtobeat.com/games/129956_Metaphor_ReFantazio.jpg",
     "steam_appid": 2679460,
@@ -4353,7 +4484,7 @@
       "Aventura"
     ],
     "steam_store_name": "Metaphor: ReFantazio",
-    "steam_last_sync_at": "2026-07-05T11:24:53.011Z"
+    "steam_last_sync_at": "2026-07-11T11:24:51.374Z"
   },
   {
     "titulo": "Metro 2033",
@@ -4370,7 +4501,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2010,
-    "solo": "x",
+    "solo": true,
     "hltb": 9.5,
     "cover_url": "https://howlongtobeat.com/games/5946_Metro_2033.jpg",
     "steam_appid": 286690,
@@ -4390,7 +4521,7 @@
       "Acción"
     ],
     "steam_store_name": "Metro 2033 Redux",
-    "steam_last_sync_at": "2026-07-05T11:24:53.486Z"
+    "steam_last_sync_at": "2026-07-11T11:24:51.837Z"
   },
   {
     "titulo": "Valorant",
@@ -4408,7 +4539,7 @@
     "comentarios": "Shooter competitivo recurrente. Top rango: Oro 1.",
     "rango_maximo": "Oro 1",
     "lanzamiento": 2020,
-    "solo": "-",
+    "solo": false,
     "hltb": 106.4,
     "cover_url": "https://howlongtobeat.com/games/76906_Valorant.jpg",
     "steam_appid": null,
@@ -4441,7 +4572,7 @@
     "comentarios": "MOBA competitivo recurrente. Top rango: Bronze 1.",
     "rango_maximo": "Bronze 1",
     "lanzamiento": 2009,
-    "solo": "-",
+    "solo": false,
     "hltb": 1163.3,
     "cover_url": "https://howlongtobeat.com/games/5203_League_of_Legends.jpg",
     "steam_appid": null,
@@ -4473,7 +4604,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2019,
-    "solo": "-",
+    "solo": false,
     "hltb": 45.6,
     "cover_url": "https://howlongtobeat.com/games/68778_Teamfight_Tactics.jpg",
     "steam_appid": null,
@@ -4505,7 +4636,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2020,
-    "solo": "-",
+    "solo": false,
     "hltb": 21,
     "cover_url": "https://howlongtobeat.com/games/86110_League_of_Legends_Wild_Rift.jpg",
     "steam_appid": null,
@@ -4535,7 +4666,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2020,
-    "solo": "-",
+    "solo": false,
     "hltb": 39.2,
     "cover_url": "https://howlongtobeat.com/games/71303_Legends_of_Runeterra.jpg",
     "steam_appid": null,
@@ -4567,7 +4698,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2026,
-    "solo": "-",
+    "solo": false,
     "hltb": 4.4,
     "cover_url": "https://howlongtobeat.com/games/145926_2XKO.png",
     "steam_appid": null,
@@ -4627,7 +4758,7 @@
       "Casual"
     ],
     "steam_store_name": "Sea of Remnants",
-    "steam_last_sync_at": "2026-07-05T11:24:53.953Z"
+    "steam_last_sync_at": "2026-07-11T11:24:52.307Z"
   },
   {
     "titulo": "Goblin Cleanup",
@@ -4669,7 +4800,7 @@
       "Casual"
     ],
     "steam_store_name": "Goblin Cleanup",
-    "steam_last_sync_at": "2026-07-05T11:24:54.442Z"
+    "steam_last_sync_at": "2026-07-11T11:24:52.775Z"
   },
   {
     "titulo": "Genshin Impact",
@@ -4686,7 +4817,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2020,
-    "solo": "x",
+    "solo": true,
     "hltb": 69.2,
     "cover_url": "https://howlongtobeat.com/games/68133_Genshin_Impact.jpg",
     "steam_appid": null,
@@ -4750,7 +4881,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2023,
-    "solo": "x",
+    "solo": true,
     "hltb": 25.6,
     "cover_url": "https://howlongtobeat.com/games/109100_Honkai_Star_Rail.png",
     "steam_appid": null,
@@ -4814,7 +4945,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2024,
-    "solo": "x",
+    "solo": true,
     "hltb": 50.5,
     "cover_url": "https://howlongtobeat.com/games/109101_Zenless_Zone_Zero.png",
     "steam_appid": 4162040,
@@ -4835,7 +4966,7 @@
       "Aventura"
     ],
     "steam_store_name": "Zenless Zone Zero",
-    "steam_last_sync_at": "2026-07-05T11:24:54.883Z"
+    "steam_last_sync_at": "2026-07-11T11:24:53.221Z"
   },
   {
     "titulo": "Two Point Museum",
@@ -4871,7 +5002,7 @@
       "Indie"
     ],
     "steam_store_name": "Two Point Museum",
-    "steam_last_sync_at": "2026-07-05T11:24:55.342Z"
+    "steam_last_sync_at": "2026-07-11T11:24:53.755Z"
   },
   {
     "titulo": "The Lift Playtest",
@@ -4904,7 +5035,7 @@
     },
     "steam_store_genres": [],
     "steam_store_name": "The Lift Playtest",
-    "steam_last_sync_at": "2026-07-05T11:24:55.801Z"
+    "steam_last_sync_at": "2026-07-11T11:24:54.212Z"
   },
   {
     "titulo": "Banana",
@@ -4940,7 +5071,7 @@
       "Casual"
     ],
     "steam_store_name": "Banana",
-    "steam_last_sync_at": "2026-07-05T11:24:56.251Z"
+    "steam_last_sync_at": "2026-07-11T11:24:54.720Z"
   },
   {
     "titulo": "Brawlhalla",
@@ -4976,17 +5107,49 @@
       "Indie"
     ],
     "steam_store_name": "Brawlhalla",
-    "steam_last_sync_at": "2026-07-05T11:24:56.850Z",
+    "steam_last_sync_at": "2026-07-11T11:24:55.406Z",
     "gasto_microtransacciones": 83.41,
     "microtransacciones_detalle": [
-      { "fecha": "2020-03-31", "concepto": "340 Mammoth Coins", "precio_eur": 12.99 },
-      { "fecha": "2020-04-12", "concepto": "340 Mammoth Coins", "precio_eur": 12.99 },
-      { "fecha": "2020-04-26", "concepto": "340 Mammoth Coins", "precio_eur": 12.99 },
-      { "fecha": "2020-05-11", "concepto": "340 Mammoth Coins", "precio_eur": 12.99 },
-      { "fecha": "2020-05-28", "concepto": "Battle Pass Season 1", "precio_eur": 13.48 },
-      { "fecha": "2020-06-13", "concepto": "140 Mammoth Coins", "precio_eur": 5.99 },
-      { "fecha": "2020-07-10", "concepto": "140 Mammoth Coins", "precio_eur": 5.99 },
-      { "fecha": "2020-07-22", "concepto": "140 Mammoth Coins", "precio_eur": 5.99 }
+      {
+        "fecha": "2020-03-31",
+        "concepto": "340 Mammoth Coins",
+        "precio_eur": 12.99
+      },
+      {
+        "fecha": "2020-04-12",
+        "concepto": "340 Mammoth Coins",
+        "precio_eur": 12.99
+      },
+      {
+        "fecha": "2020-04-26",
+        "concepto": "340 Mammoth Coins",
+        "precio_eur": 12.99
+      },
+      {
+        "fecha": "2020-05-11",
+        "concepto": "340 Mammoth Coins",
+        "precio_eur": 12.99
+      },
+      {
+        "fecha": "2020-05-28",
+        "concepto": "Battle Pass Season 1",
+        "precio_eur": 13.48
+      },
+      {
+        "fecha": "2020-06-13",
+        "concepto": "140 Mammoth Coins",
+        "precio_eur": 5.99
+      },
+      {
+        "fecha": "2020-07-10",
+        "concepto": "140 Mammoth Coins",
+        "precio_eur": 5.99
+      },
+      {
+        "fecha": "2020-07-22",
+        "concepto": "140 Mammoth Coins",
+        "precio_eur": 5.99
+      }
     ]
   },
   {
@@ -5023,7 +5186,7 @@
       "Aventura"
     ],
     "steam_store_name": "Paladins®",
-    "steam_last_sync_at": "2026-07-05T11:24:57.404Z"
+    "steam_last_sync_at": "2026-07-11T11:24:55.985Z"
   },
   {
     "titulo": "River City Girls",
@@ -5040,7 +5203,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2019,
-    "solo": "x",
+    "solo": true,
     "hltb": 7,
     "cover_url": null,
     "steam_appid": 1049320,
@@ -5060,7 +5223,7 @@
       "Acción"
     ],
     "steam_store_name": "River City Girls",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:24:56.434Z"
   },
   {
     "titulo": "River City Girls 2",
@@ -5077,7 +5240,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2022,
-    "solo": "x",
+    "solo": true,
     "hltb": 13,
     "cover_url": null,
     "steam_appid": 1920480,
@@ -5100,7 +5263,7 @@
       "Aventura"
     ],
     "steam_store_name": "River City Girls 2",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:24:56.894Z"
   },
   {
     "titulo": "Star Wars Outlaws",
@@ -5117,7 +5280,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2024,
-    "solo": "x",
+    "solo": true,
     "hltb": 15,
     "cover_url": null,
     "steam_appid": 2842040,
@@ -5139,7 +5302,7 @@
       "Aventura"
     ],
     "steam_store_name": "Star Wars Outlaws",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:24:57.410Z"
   },
   {
     "titulo": "Ultimate Chicken Horse",
@@ -5156,7 +5319,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2016,
-    "solo": "-",
+    "solo": false,
     "hltb": 7,
     "cover_url": null,
     "steam_appid": 386940,
@@ -5178,7 +5341,7 @@
       "Casual"
     ],
     "steam_store_name": "Ultimate Chicken Horse",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:24:57.881Z"
   },
   {
     "titulo": "Figment",
@@ -5195,7 +5358,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2017,
-    "solo": "x",
+    "solo": true,
     "hltb": 6,
     "cover_url": null,
     "steam_appid": 493540,
@@ -5214,11 +5377,11 @@
       "completionist": 10
     },
     "steam_store_genres": [
-      "Aventura",
-      "Acción"
+      "Acción",
+      "Aventura"
     ],
     "steam_store_name": "Figment",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:24:58.388Z"
   },
   {
     "titulo": "Titan Souls",
@@ -5235,7 +5398,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2015,
-    "solo": "x",
+    "solo": true,
     "hltb": 3,
     "cover_url": null,
     "steam_appid": 297130,
@@ -5258,7 +5421,7 @@
       "Aventura"
     ],
     "steam_store_name": "Titan Souls",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:24:58.837Z"
   },
   {
     "titulo": "Graveyard Keeper",
@@ -5275,7 +5438,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2018,
-    "solo": "x",
+    "solo": true,
     "hltb": 45,
     "cover_url": null,
     "steam_appid": 599140,
@@ -5294,11 +5457,11 @@
       "completionist": 108
     },
     "steam_store_genres": [
-      "Simuladores",
-      "Rol"
+      "Aventura",
+      "Indie"
     ],
     "steam_store_name": "Graveyard Keeper",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:24:59.318Z"
   },
   {
     "titulo": "A Story About My Uncle",
@@ -5315,7 +5478,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2014,
-    "solo": "x",
+    "solo": true,
     "hltb": 3,
     "cover_url": null,
     "steam_appid": 278360,
@@ -5334,10 +5497,10 @@
     },
     "steam_store_genres": [
       "Aventura",
-      "Indie"
+      "Casual"
     ],
     "steam_store_name": "A Story About My Uncle",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:24:59.788Z"
   },
   {
     "titulo": "HITMAN",
@@ -5354,7 +5517,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2016,
-    "solo": "x",
+    "solo": true,
     "hltb": 11,
     "cover_url": null,
     "steam_appid": 236870,
@@ -5372,11 +5535,10 @@
       "completionist": 60
     },
     "steam_store_genres": [
-      "Acción",
-      "Aventura"
+      "Acción"
     ],
-    "steam_store_name": "HITMAN",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_store_name": "HITMAN™",
+    "steam_last_sync_at": "2026-07-11T11:25:00.318Z"
   },
   {
     "titulo": "Spec Ops: The Line",
@@ -5393,7 +5555,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2012,
-    "solo": "x",
+    "solo": true,
     "hltb": 6,
     "cover_url": null,
     "steam_appid": 50300,
@@ -5410,10 +5572,11 @@
       "completionist": 16
     },
     "steam_store_genres": [
-      "Acción"
+      "Acción",
+      "Aventura"
     ],
     "steam_store_name": "Spec Ops: The Line",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:25:00.793Z"
   },
   {
     "titulo": "SteamWorld Dig",
@@ -5430,7 +5593,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2013,
-    "solo": "x",
+    "solo": true,
     "hltb": 5,
     "cover_url": null,
     "steam_appid": 252410,
@@ -5448,11 +5611,11 @@
       "completionist": 8.5
     },
     "steam_store_genres": [
-      "Aventura",
-      "Indie"
+      "Acción",
+      "Aventura"
     ],
     "steam_store_name": "SteamWorld Dig",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:25:01.272Z"
   },
   {
     "titulo": "Company of Heroes 2",
@@ -5489,7 +5652,7 @@
       "Estrategia"
     ],
     "steam_store_name": "Company of Heroes 2",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:25:02.011Z"
   },
   {
     "titulo": "The You Quiz",
@@ -5529,7 +5692,7 @@
       "Indie"
     ],
     "steam_store_name": "The You Quiz",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:25:02.571Z"
   },
   {
     "titulo": "Hextech Mayhem: A League of Legends Story",
@@ -5546,7 +5709,7 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2021,
-    "solo": "x",
+    "solo": true,
     "hltb": 5.5,
     "cover_url": null,
     "steam_appid": 1651960,
@@ -5568,7 +5731,7 @@
       "Indie"
     ],
     "steam_store_name": "Hextech Mayhem: A League of Legends Story™",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:25:03.092Z"
   },
   {
     "titulo": "Wallpaper Engine",
@@ -5607,7 +5770,7 @@
       "Indie"
     ],
     "steam_store_name": "Wallpaper Engine",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:25:03.532Z"
   },
   {
     "titulo": "Seek Girl",
@@ -5624,7 +5787,7 @@
     "nota": null,
     "comentarios": "Comprado en bundle junto a Seek Girl II y III (1,89€ total, split estimado a partes iguales).",
     "lanzamiento": 2019,
-    "solo": "x",
+    "solo": true,
     "hltb": null,
     "cover_url": null,
     "steam_appid": 998930,
@@ -5647,7 +5810,7 @@
       "Casual"
     ],
     "steam_store_name": "Seek Girl",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:25:04.064Z"
   },
   {
     "titulo": "Seek Girl II",
@@ -5664,7 +5827,7 @@
     "nota": null,
     "comentarios": "Comprado en bundle junto a Seek Girl y III (1,89€ total, split estimado a partes iguales).",
     "lanzamiento": 2019,
-    "solo": "x",
+    "solo": true,
     "hltb": null,
     "cover_url": null,
     "steam_appid": 1149660,
@@ -5686,7 +5849,7 @@
       "Indie"
     ],
     "steam_store_name": "Seek Girl Ⅱ",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:25:04.564Z"
   },
   {
     "titulo": "Seek Girl III",
@@ -5703,7 +5866,7 @@
     "nota": null,
     "comentarios": "Comprado en bundle junto a Seek Girl y II (1,89€ total, split estimado a partes iguales).",
     "lanzamiento": 2020,
-    "solo": "x",
+    "solo": true,
     "hltb": null,
     "cover_url": null,
     "steam_appid": 1191210,
@@ -5729,7 +5892,7 @@
       "Aventura"
     ],
     "steam_store_name": "Seek Girl Ⅲ",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:25:05.116Z"
   },
   {
     "titulo": "Grand Theft Auto IV",
@@ -5746,7 +5909,7 @@
     "nota": null,
     "comentarios": "Comprado en bundle junto a GTA: San Andreas (EU) por 8,99€ total, split estimado a partes iguales.",
     "lanzamiento": 2008,
-    "solo": "x",
+    "solo": true,
     "hltb": 27,
     "cover_url": null,
     "steam_appid": 12210,
@@ -5768,7 +5931,7 @@
       "Aventura"
     ],
     "steam_store_name": "Grand Theft Auto IV: The Complete Edition",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:25:05.579Z"
   },
   {
     "titulo": "Grand Theft Auto: San Andreas",
@@ -5785,7 +5948,7 @@
     "nota": null,
     "comentarios": "Comprado en bundle junto a GTA IV (EU) por 8,99€ total, split estimado a partes iguales.",
     "lanzamiento": 2004,
-    "solo": "x",
+    "solo": true,
     "hltb": 32,
     "cover_url": null,
     "steam_appid": 12120,
@@ -5803,10 +5966,10 @@
       "completionist": 74
     },
     "steam_store_genres": [
-      "Acción",
-      "Aventura"
+      "Acción"
     ],
     "steam_store_name": "Grand Theft Auto: San Andreas",
-    "steam_last_sync_at": "2026-07-07T00:00:00.000Z"
+    "steam_last_sync_at": "2026-07-11T11:25:06.097Z"
   }
 ]
+

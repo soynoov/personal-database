@@ -36,7 +36,7 @@ export type LocalGame = {
   nota?: number | null;
   comentarios?: string | null;
   lanzamiento?: number | null;
-  solo?: string | null;
+  solo?: boolean | null;
   cover_source?: string | null;
   steam_store_name?: string | null;
   steam_store_genres?: string[] | null;
@@ -109,6 +109,13 @@ export function filterGames(
     solo?: string | null;
   } = {},
 ) {
+  const matchesSoloFilter = (value: boolean | null | undefined, filter?: string | null) => {
+    if (!filter) return true;
+    if (filter === "true") return value === true;
+    if (filter === "false") return value === false;
+    return false;
+  };
+
   return games.filter((game) => {
     const searchMatches =
       containsText(game.titulo, filters.search) ||
@@ -121,7 +128,7 @@ export function filterGames(
       containsText(game.estado, filters.estado) &&
       containsText(game.launcher, filters.launcher) &&
       containsText(game.plataforma, filters.plataforma) &&
-      (filters.solo ? String(game.solo ?? "") === filters.solo : true)
+      matchesSoloFilter(game.solo, filters.solo)
     );
   });
 }

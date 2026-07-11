@@ -27,8 +27,8 @@ const formatValue = (value: unknown, fallback = "-") => {
 };
 
 const formatSolo = (value: unknown) => {
-  if (value === "x") return "Si";
-  if (value === "-") return "No";
+  if (value === true) return "Si";
+  if (value === false) return "No";
   return "-";
 };
 
@@ -163,6 +163,71 @@ const formatDate = (value: unknown) => {
     month: "long",
     year: "numeric",
   }).format(date);
+};
+
+const parseLocalDate = (value: unknown) => {
+  if (typeof value !== "string" || !value) return null;
+  const date = new Date(`${value}T00:00:00`);
+  return Number.isNaN(date.getTime()) ? null : date;
+};
+
+const formatElapsedCalendarTime = (startValue: unknown, endValue: unknown) => {
+  const start = parseLocalDate(startValue);
+  const end = parseLocalDate(endValue);
+
+  if (!start || !end) return null;
+  if (end < start) {
+    return {
+      value: "Fechas invalidas",
+      note: "La fecha de fin es anterior al inicio",
+    };
+  }
+
+  let cursor = new Date(start);
+  let months = 0;
+  while (true) {
+    const next = new Date(cursor);
+    next.setMonth(next.getMonth() + 1);
+    if (next <= end) {
+      cursor = next;
+      months++;
+      continue;
+    }
+    break;
+  }
+
+  const msPerDay = 1000 * 60 * 60 * 24;
+  const days = Math.round((end.getTime() - cursor.getTime()) / msPerDay);
+  const totalDays = Math.round((end.getTime() - start.getTime()) / msPerDay);
+
+  if (months === 0) {
+    return {
+      value: `${totalDays} ${totalDays === 1 ? "dia" : "dias"}`,
+      note: "Tiempo transcurrido entre inicio y fin",
+    };
+  }
+
+  if (days === 0) {
+    return {
+      value: `${months} ${months === 1 ? "mes" : "meses"}`,
+      note: `Equivale a ${totalDays} ${totalDays === 1 ? "dia" : "dias"}`,
+    };
+  }
+
+  return {
+    value: `${months} ${months === 1 ? "mes" : "meses"} y ${days} ${days === 1 ? "dia" : "dias"}`,
+    note: `Equivale a ${totalDays} ${totalDays === 1 ? "dia" : "dias"} en total`,
+  };
+};
+
+const formatTrackedHours = (value: number | null) => {
+  if (value === null || Number.isNaN(value)) return "-";
+  const totalMinutes = Math.round(value * 60);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  if (minutes === 0) return `${hours} h`;
+  return `${hours} h ${minutes} min`;
 };
 
 const statusClassName = (value: unknown) => {
@@ -498,7 +563,8 @@ const summaryCards = [
   },
 ];
 
-const formatHoursValue = (value: number | null) => (value !== null ? `${value.toFixed(1)} h` : "-");
+const formatHoursValue = (value: number | null) => formatTrackedHours(value);
+const elapsedCalendarTime = formatElapsedCalendarTime(game.fecha_inicio, game.fecha_fin);
 
 // Barras HLTB: escala cromática Blanco → Rosa → Morado → (Dinámico = Mis horas)
 const hltbBars = [
@@ -726,6 +792,19 @@ const metadataGroups = [
       { label: "Lanzamiento", value: formatValue(game.lanzamiento) },
       { label: "Fecha inicio", value: formatDate(game.fecha_inicio) },
       { label: "Fecha fin", value: formatDate(game.fecha_fin) },
+      {
+        label: "Tiempo en pasarlo",
+        value:
+          elapsedCalendarTime?.value ??
+          (game.fecha_inicio || game.fecha_fin ? "-" : "Sin fechas"),
+        note:
+          elapsedCalendarTime?.note ??
+          (game.fecha_inicio && !game.fecha_fin
+            ? "Falta fecha de fin para calcularlo"
+            : !game.fecha_inicio && game.fecha_fin
+              ? "Falta fecha de inicio para calcularlo"
+              : "Necesita fecha_inicio y fecha_fin"),
+      },
       { label: "Solo", value: formatSolo(game.solo) },
       { label: "Nota", value: formatValue(game.nota) },
       { label: "Caratula", value: "Dinamica" },

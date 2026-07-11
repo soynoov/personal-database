@@ -29,7 +29,7 @@ interface LocalGame {
   nota?: number | null;
   comentarios?: string | null;
   lanzamiento?: number | null;
-  solo?: string | null;
+  solo?: boolean | null;
   steam_appid?: number | null;
   dlcs?: { total?: number | null; items?: Array<{ precio_pagado?: number | null }> } | null;
 }
@@ -67,9 +67,16 @@ const slugify = (value: unknown): string =>
     .replace(/^-+|-+$/g, '');
 
 const formatSolo = (value: unknown): string => {
-  if (value === 'x') return 'Si';
-  if (value === '-') return 'No';
+  if (value === true) return 'Si';
+  if (value === false) return 'No';
   return '-';
+};
+
+const matchesSoloFilter = (value: boolean | null | undefined, filter: string): boolean => {
+  if (!filter) return true;
+  if (filter === 'true') return value === true;
+  if (filter === 'false') return value === false;
+  return false;
 };
 
 const formatDate = (value: unknown): string => {
@@ -497,7 +504,7 @@ export function initCatalog(allGames: LocalGame[]): void {
           textMatch(game.launcher, filters.launcher) &&
           textMatch(game.plataforma, filters.plataforma) &&
           (filters.precio ? getPriceFilterBucket(game) === filters.precio : true) &&
-          (filters.solo ? String(game.solo ?? '') === filters.solo : true)
+          matchesSoloFilter(game.solo, filters.solo)
         );
       })
       .sort((a, b) => {
