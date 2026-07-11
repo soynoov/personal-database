@@ -371,6 +371,67 @@
   color: #c8cdd6;
 }
 
+.compact-detail-card {
+  container-type: inline-size;
+  min-width: 0;
+  min-height: clamp(108px, 10vw, 132px);
+  height: 100%;
+  padding: clamp(0.78rem, 1.1vw, 0.95rem);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  align-content: stretch;
+  gap: clamp(0.08rem, 0.32vw, 0.16rem);
+  overflow: hidden;
+}
+
+.compact-detail-card dt {
+  font-size: clamp(0.68rem, 0.55rem + 0.36vw, 0.78rem);
+  line-height: 1.12;
+}
+
+.compact-detail-card dd {
+  margin-top: 0.28rem;
+  font-size: clamp(0.9rem, 0.62rem + 0.7vw, 1.05rem);
+  line-height: 1.06;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-wrap: balance;
+}
+
+.compact-detail-card .detail-item-note {
+  margin-top: 0.28rem;
+  font-size: clamp(0.66rem, 0.54rem + 0.34vw, 0.76rem);
+  line-height: 1.18;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@container (max-width: 250px) {
+  .compact-detail-card {
+    min-height: 98px;
+    padding: 0.68rem;
+  }
+
+  .compact-detail-card dt {
+    font-size: 0.64rem;
+    letter-spacing: 0.06em;
+  }
+
+  .compact-detail-card dd {
+    font-size: 0.82rem;
+    -webkit-line-clamp: 3;
+  }
+
+  .compact-detail-card .detail-item-note {
+    font-size: 0.62rem;
+    -webkit-line-clamp: 1;
+  }
+}
+
 /* ── game-page-rich overrides (context prefix) ──────────────────── */
 .game-page-rich .analysis-head {
   margin-bottom: 0.7rem;

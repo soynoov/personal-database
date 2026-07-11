@@ -1,21 +1,18 @@
 @import '../theme.css';
 
 /* ================================================================
-   game-detail/stats.css — sección Estadísticas (metadatos en grupos)
+   game-detail/stats.css - seccion Estadisticas (metadatos en grupos)
    Selectores: .game-data-groups, .data-group-card, .data-group-head
-   Extraídos de src/styles/game-page.css
    ================================================================ */
 
 @layer global {
 
-/* ── Data groups grid ───────────────────────────────────────────── */
 .game-data-groups {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.15rem;
 }
 
-/* ── Data group card ────────────────────────────────────────────── */
 .data-group-card {
   padding: 1.2rem;
   min-height: 100%;
@@ -29,14 +26,15 @@
   box-shadow: var(--shadow);
 }
 
-/* Radio por anidación: .detail-item genérico vive en detail.css y es
-   compartido con el modal de vista rápida del catálogo, así que aquí
-   se sobreescribe solo cuando cuelga de .data-group-card (nivel 3). */
+.data-group-card .detail-grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+}
+
 .data-group-card .detail-item {
   border-radius: var(--radius-3);
 }
 
-/* ── Data group head ────────────────────────────────────────────── */
 .data-group-head {
   margin-bottom: 0.85rem;
 }
@@ -47,13 +45,11 @@
   font-size: 1.05rem;
 }
 
-/* ── game-page-rich overrides (context prefix) ──────────────────── */
 .game-page-rich .data-group-card {
   border-radius: var(--radius-2);
   padding: 0.95rem;
 }
 
-/* ── Responsive ─────────────────────────────────────────────────── */
 @media (max-width: 1180px) {
   .game-data-groups {
     grid-template-columns: 1fr;
@@ -63,6 +59,10 @@
 @media (max-width: 720px) {
   .game-page-rich .data-group-card {
     padding: 0.82rem;
+  }
+
+  .data-group-card .detail-grid-2 {
+    grid-template-columns: 1fr;
   }
 }
 

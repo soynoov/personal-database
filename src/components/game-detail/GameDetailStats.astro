@@ -35,7 +35,7 @@ const { metadataGroups } = Astro.props;
         </div>
         <dl class="detail-grid detail-grid-2">
           {group.items.map(({ label, value, className = "", note = "" }) => (
-            <div class:list={["detail-item", className, value === "-" && "detail-item-empty"]}>
+            <div class:list={["detail-item", "compact-detail-card", className, value === "-" && "detail-item-empty"]}>
               <dt>{label}</dt>
               <dd>{value}</dd>
               {note && <span class="detail-item-note">{note}</span>}
