@@ -28,7 +28,6 @@
 
 .data-group-card .detail-grid-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-rows: minmax(0, 1fr);
 }
 
 .data-group-card .detail-item {

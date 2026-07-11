@@ -374,12 +374,10 @@
 .compact-detail-card {
   container-type: inline-size;
   min-width: 0;
-  min-height: clamp(108px, 10vw, 132px);
-  height: 100%;
-  padding: clamp(0.78rem, 1.1vw, 0.95rem);
+  min-height: 0;
+  padding: clamp(0.72rem, 1vw, 0.9rem);
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  align-content: stretch;
+  align-content: start;
   gap: clamp(0.08rem, 0.32vw, 0.16rem);
   overflow: hidden;
 }
@@ -412,8 +410,7 @@
 
 @container (max-width: 250px) {
   .compact-detail-card {
-    min-height: 98px;
-    padding: 0.68rem;
+    padding: 0.66rem;
   }
 
   .compact-detail-card dt {
