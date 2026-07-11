@@ -32,6 +32,27 @@ const formatSolo = (value: unknown) => {
   return "-";
 };
 
+const getCoverSourceMeta = () => {
+  if (game.steam_appid) {
+    return {
+      value: "Steam",
+      note: "Library capsule si existe; si no, header de Steam",
+    };
+  }
+
+  if (game.cover_url) {
+    return {
+      value: "HLTB",
+      note: "Usa la portada guardada en cover_url",
+    };
+  }
+
+  return {
+    value: "Fallback local",
+    note: "SVG generado cuando no hay fuente externa",
+  };
+};
+
 const hasFreeToPlayTag =
   Array.isArray(game.tags) && game.tags.some((tag: string) => String(tag).toLowerCase() === "free-to-play");
 
@@ -565,6 +586,7 @@ const summaryCards = [
 
 const formatHoursValue = (value: number | null) => formatTrackedHours(value);
 const elapsedCalendarTime = formatElapsedCalendarTime(game.fecha_inicio, game.fecha_fin);
+const coverSourceMeta = getCoverSourceMeta();
 
 // Barras HLTB: escala cromática Blanco → Rosa → Morado → (Dinámico = Mis horas)
 const hltbBars = [
@@ -807,7 +829,7 @@ const metadataGroups = [
       },
       { label: "Solo", value: formatSolo(game.solo) },
       { label: "Nota", value: formatValue(game.nota) },
-      { label: "Caratula", value: "Dinamica" },
+      { label: "Fuente caratula", value: coverSourceMeta.value, note: coverSourceMeta.note },
     ],
   },
 ];
