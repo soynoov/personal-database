@@ -11,7 +11,7 @@ import GameDetailStats from "../../components/game-detail/GameDetailStats.astro"
 import GameDetailDLCs from "../../components/game-detail/GameDetailDLCs.astro";
 import GameDetailComments from "../../components/game-detail/GameDetailComments.astro";
 import { buildGameCoverUrl } from "../../lib/game-cover-url";
-import { findGameBySlug, readGames } from "../../lib/local-games";
+import { findGameBySlug, getPurchasedUnits, getTotalPaidPrice, readGames } from "../../lib/local-games";
 
 const game = findGameBySlug(await readGames(), Astro.params.slug ?? "");
 
@@ -74,6 +74,8 @@ const formatPrice = (value: unknown) => {
   if (hasFreeToPlayTag) return "Free to play";
   return formatCurrency(value);
 };
+
+const formatUnitCount = (value: number) => `${value} compra${value !== 1 ? "s" : ""} registrad${value !== 1 ? "as" : "a"}`;
 
 const getReferencePrice = () => {
   if (game.precio_actual !== null && game.precio_actual !== undefined && game.precio_actual !== "") {
@@ -468,6 +470,8 @@ const normalizeScalePosition = (value: number | null, min: number, max: number) 
 
 const purchasePrice =
   game.precio_pagado === null || game.precio_pagado === undefined ? null : Number(game.precio_pagado);
+const purchasedUnits = getPurchasedUnits(game);
+const totalPaidPrice = getTotalPaidPrice(game);
 const currentPrice =
   game.precio_actual === null || game.precio_actual === undefined ? null : Number(game.precio_actual);
 const launchPrice =
@@ -517,6 +521,13 @@ const moneyReferenceLines = [
   position: normalizeScalePosition(entry.value, moneyMin, moneyMax),
 }));
 
+const purchasePriceNote = (() => {
+  const baseNote = pricePaidVisual.note || "Sin dato de compra";
+  if (hasFreeToPlayTag || purchasePrice === null) return baseNote;
+  if (purchasedUnits <= 1 || totalPaidPrice === null) return baseNote;
+  return `${formatUnitCount(purchasedUnits)} · ${formatCurrency(totalPaidPrice)} en total`;
+})();
+
 const moneyPurchasePoint =
   purchasePrice === null
     ? null
@@ -524,7 +535,7 @@ const moneyPurchasePoint =
         label: "Tu compra",
         value: purchasePrice,
         display: formatPrice(purchasePrice),
-        note: pricePaidVisual.note || "Sin lectura financiera",
+        note: purchasePriceNote,
         position: normalizeScalePosition(purchasePrice, moneyMin, moneyMax),
         tone: hasFreeToPlayTag ? "free" : pricePaidVisual.delta !== null && pricePaidVisual.delta >= 0 ? "up" : "down",
       };
@@ -662,7 +673,7 @@ const moneySnapshotCards = [
   {
     label: "Precio pagado",
     value: formatPrice(game.precio_pagado),
-    note: pricePaidVisual.note || "Sin dato de compra",
+    note: purchasePriceNote,
     tone: priceDeltaTone,
   },
   {
@@ -853,6 +864,7 @@ const generalEditValues = {
 // Lápiz de Dinero: precio pagado, microtransacciones y el toggle free-to-play.
 const moneyEditValues = {
   precio_pagado: purchasePrice,
+  unidades_compradas: purchasedUnits,
   gasto_microtransacciones: microtransactionsSpend,
   tags: Array.isArray(game.tags) ? game.tags : [],
 };

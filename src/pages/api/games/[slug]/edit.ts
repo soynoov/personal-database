@@ -16,6 +16,13 @@ function toNullableNumber(value: unknown): number | null {
   return Number.isFinite(num) ? num : null;
 }
 
+function toNullablePositiveInteger(value: unknown): number | null {
+  const num = toNullableNumber(value);
+  if (num === null) return null;
+  if (!Number.isFinite(num) || num < 1) return null;
+  return Math.round(num);
+}
+
 function toNullableString(value: unknown): string | null {
   if (value === null || value === undefined) return null;
   const str = String(value).trim();
@@ -101,6 +108,9 @@ export const POST: APIRoute = async ({ params, request }) => {
   if (body.fecha_fin !== undefined) updated.fecha_fin = toNullableString(body.fecha_fin);
   if (body.solo !== undefined) updated.solo = toNullableBoolean(body.solo);
   if (body.precio_pagado !== undefined) updated.precio_pagado = toNullableNumber(body.precio_pagado);
+  if (body.unidades_compradas !== undefined) {
+    updated.unidades_compradas = toNullablePositiveInteger(body.unidades_compradas);
+  }
   if (body.gasto_microtransacciones !== undefined) {
     updated.gasto_microtransacciones = toNullableNumber(body.gasto_microtransacciones);
   }

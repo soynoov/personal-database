@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Sidebar from '../components/Sidebar.astro';
 import CatalogFilters from '../components/CatalogFilters.astro';
 import GameCard from '../components/GameCard.astro';
-import { getStats, getUniqueValues, readGames } from '../lib/local-games';
+import { getStats, getTotalPaidPrice, getUniqueValues, readGames } from '../lib/local-games';
 
 const games = await readGames();
 const estados = getUniqueValues(games, 'estado');
@@ -28,7 +28,7 @@ const completedGames = games.filter((g) => {
   return s === 'terminado' || s === 'completado';
 }).length;
 const totalLibraryValue = games.reduce((sum, g) => {
-  const base = Number(g.precio_pagado ?? 0);
+  const base = getTotalPaidPrice(g) ?? 0;
   const microtransacciones = Number(g.gasto_microtransacciones ?? 0);
   const dlc = Array.isArray(g.dlcs?.items)
     ? g.dlcs.items.reduce((acc, d) => acc + Number(d.precio_pagado ?? 0), 0)

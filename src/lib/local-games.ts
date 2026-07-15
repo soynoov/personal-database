@@ -12,6 +12,7 @@ export type LocalGame = {
   generos?: string[] | null;
   tags?: string[] | null;
   precio_pagado?: number | null;
+  unidades_compradas?: number | null;
   precio_actual?: number | null;
   precio_salida?: number | null;
   precio_minimo_historico?: number | null;
@@ -97,6 +98,26 @@ export function slugifyGameTitle(title: string) {
 
 export function findGameBySlug(games: LocalGame[], slug: string) {
   return games.find((game) => slugifyGameTitle(game.titulo) === slug) ?? null;
+}
+
+export function getPurchasedUnits(game: Pick<LocalGame, "unidades_compradas">) {
+  const units = Number(game.unidades_compradas ?? 1);
+  if (!Number.isFinite(units) || units < 1) return 1;
+  return Math.max(1, Math.round(units));
+}
+
+export function getPaidUnitPrice(game: Pick<LocalGame, "precio_pagado">) {
+  if (game.precio_pagado === null || game.precio_pagado === undefined) return null;
+  const price = Number(game.precio_pagado);
+  return Number.isFinite(price) ? price : null;
+}
+
+export function getTotalPaidPrice(
+  game: Pick<LocalGame, "precio_pagado" | "unidades_compradas">,
+) {
+  const unitPrice = getPaidUnitPrice(game);
+  if (unitPrice === null) return null;
+  return Number((unitPrice * getPurchasedUnits(game)).toFixed(2));
 }
 
 export function filterGames(

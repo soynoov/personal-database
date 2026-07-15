@@ -14,7 +14,7 @@
  *    aparte para poder avisar en la UI.
  */
 import type { LocalGame } from './local-games';
-import { slugifyGameTitle } from './local-games';
+import { getPaidUnitPrice, getPurchasedUnits, slugifyGameTitle } from './local-games';
 
 const TERMINADO_VALUES = new Set(['terminado', 'completado']);
 
@@ -115,9 +115,15 @@ export function getYearRecap(games: LocalGame[], year: number): YearRecap {
     let precio: number | null = null;
     let estimado = false;
     if (g.precio_pagado !== null && g.precio_pagado !== undefined) {
-      precio = Number(g.precio_pagado);
+      const unitPrice = getPaidUnitPrice(g);
+      if (unitPrice !== null) {
+        precio = Number((unitPrice * getPurchasedUnits(g)).toFixed(2));
+      }
     } else if (!esGratisOPirata && g.precio_actual !== null && g.precio_actual !== undefined) {
-      precio = Number(g.precio_actual);
+      const currentPrice = Number(g.precio_actual);
+      if (Number.isFinite(currentPrice)) {
+        precio = Number((currentPrice * getPurchasedUnits(g)).toFixed(2));
+      }
       estimado = true;
     }
     if (precio !== null && Number.isFinite(precio)) {

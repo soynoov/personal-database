@@ -15,6 +15,7 @@ import '../../styles/game-detail/edit.css';
 
 interface MoneyEditValues {
   precio_pagado: number | null;
+  unidades_compradas: number | null;
   gasto_microtransacciones: number | null;
   tags: string[];
 }
@@ -204,8 +205,12 @@ const showAccordion = hasDlcs || hasMicro;
       </div>
 
       <div class="edit-field" id="money-field-precio-pagado" hidden={isFreeToPlay}>
-        <label for="money-edit-precio">Precio pagado (EUR)</label>
+        <label for="money-edit-precio">Precio pagado por copia (EUR)</label>
         <input id="money-edit-precio" name="precio_pagado" type="number" step="0.01" min="0" value={editValues.precio_pagado ?? ''} />
+      </div>
+      <div class="edit-field" id="money-field-unidades-compradas" hidden={isFreeToPlay}>
+        <label for="money-edit-unidades">Unidades compradas</label>
+        <input id="money-edit-unidades" name="unidades_compradas" type="number" step="1" min="1" value={editValues.unidades_compradas ?? 1} />
       </div>
       <div class="edit-field" id="money-field-microtransacciones" hidden={!isFreeToPlay}>
         <label for="money-edit-microtransacciones">Microtransacciones (EUR)</label>
@@ -257,6 +262,7 @@ const showAccordion = hasDlcs || hasMicro;
 
     const freeToPlayCheckbox = document.getElementById('money-edit-free-to-play');
     const precioField = document.getElementById('money-field-precio-pagado');
+    const unidadesField = document.getElementById('money-field-unidades-compradas');
     const microtransaccionesField = document.getElementById('money-field-microtransacciones');
     const priceHint = document.getElementById('money-price-field-hint');
 
@@ -264,10 +270,12 @@ const showAccordion = hasDlcs || hasMicro;
       if (
         !(freeToPlayCheckbox instanceof HTMLInputElement) ||
         !(precioField instanceof HTMLElement) ||
+        !(unidadesField instanceof HTMLElement) ||
         !(microtransaccionesField instanceof HTMLElement)
       ) return;
       const isFtp = freeToPlayCheckbox.checked;
       precioField.hidden = isFtp;
+      unidadesField.hidden = isFtp;
       microtransaccionesField.hidden = !isFtp;
       if (priceHint instanceof HTMLElement) {
         priceHint.textContent = isFtp
@@ -291,6 +299,7 @@ const showAccordion = hasDlcs || hasMicro;
       const freeToPlayInput = document.getElementById('money-edit-free-to-play');
       const payload = {
         precio_pagado: data.get('precio_pagado'),
+        unidades_compradas: data.get('unidades_compradas'),
         gasto_microtransacciones: data.get('gasto_microtransacciones'),
         free_to_play: freeToPlayInput instanceof HTMLInputElement ? freeToPlayInput.checked : false,
       };

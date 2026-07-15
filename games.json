@@ -844,7 +844,8 @@
       "Acción",
       "Acceso anticipado"
     ],
-    "precio_pagado": 12.66,
+    "precio_pagado": 6.33,
+    "unidades_compradas": 3,
     "precio_actual": 6.64,
     "precio_salida": 9.49,
     "tags": [],
