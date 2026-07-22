@@ -188,3 +188,37 @@
 }
 
 } /* end @layer global */
+
+@layer global {
+  @media (max-width: 720px) {
+    .game-page-rich {
+      width: min(100% - 0.65rem, 1720px);
+      gap: 0.62rem;
+      padding-block: 0.45rem 1rem;
+    }
+
+    .game-page-rich .analysis-panel,
+    .game-page-rich .game-summary-section,
+    .game-page-rich .data-group-card,
+    .game-page-rich .range-chart-card,
+    .game-page-rich .finance-timeline-card {
+      padding: 0.72rem;
+    }
+
+    .game-page-rich .summary-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .game-page-rich .summary-grid .detail-item:first-child {
+      grid-column: auto;
+    }
+
+    .game-page-rich .summary-card {
+      min-height: 0;
+    }
+
+    .game-page-rich .finance-timeline-labels {
+      grid-template-columns: 1fr;
+    }
+  }
+}

@@ -219,6 +219,8 @@ const createBadge = (text: string, className: string): HTMLElement => {
 // ─── initCatalog ──────────────────────────────────────────────────────────────
 
 export function initCatalog(allGames: CatalogGame[]): void {
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
   const el = <T extends Element>(selector: string) =>
     document.querySelector<T>(selector)!;
 
@@ -233,6 +235,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     mobileFilterToggle: document.querySelector<HTMLElement>('#mobile-filter-toggle'),
     mobileExtraFilters: document.querySelector<HTMLElement>('#mobile-extra-filters'),
     reset: el<HTMLButtonElement>('#reset-filters'),
+    cardsShell: el<HTMLElement>('#cards-shell'),
     cards: el<HTMLElement>('#cards'),
     template: el<HTMLTemplateElement>('#card-template'),
     tableShell: el<HTMLElement>('#table-shell'),
@@ -272,8 +275,10 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
   const updateViewMode = (): void => {
     const isTable = activeView === 'table';
+    elements.cardsShell.hidden = isTable;
     elements.cards.hidden = isTable;
     elements.tableShell.hidden = !isTable;
+    elements.cardsShell.style.display = isTable ? 'none' : '';
     elements.cards.style.display = isTable ? 'none' : '';
     elements.tableShell.style.display = isTable ? '' : 'none';
     elements.viewButtons.forEach((button) => {
@@ -482,8 +487,8 @@ export function initCatalog(allGames: CatalogGame[]): void {
       const card = node.querySelector<HTMLAnchorElement>('[data-game-link]')!;
       card.href = `/games/${game.slug}/`;
       card.addEventListener('click', (event) => {
-        const isTouch = window.matchMedia('(hover: none)').matches;
-        if (isTouch && !card.classList.contains('is-open')) {
+        const usesRevealInteraction = window.matchMedia('(hover: none) and (min-width: 821px)').matches;
+        if (usesRevealInteraction && !card.classList.contains('is-open')) {
           event.preventDefault();
           document.querySelectorAll('.mock-game-card.is-open').forEach((c) => c.classList.remove('is-open'));
           card.classList.add('is-open');
@@ -534,6 +539,8 @@ export function initCatalog(allGames: CatalogGame[]): void {
       else if (filter === 'estado') active = normalizeStatus(elements.estado.value) === normalizeStatus(value);
       else if (filter === 'launcher') active = elements.launcher.value === value;
       else if (filter === 'plataforma') active = elements.plataforma.value === value;
+      else if (filter === 'solo') active = elements.solo.value === value;
+      else if (filter === 'precio') active = elements.precio.value === value;
       item.classList.toggle('is-active', active);
     });
 
@@ -608,6 +615,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     button.addEventListener('click', () => {
       activeView = (button as HTMLElement).dataset.view === 'table' ? 'table' : 'cards';
       render();
+      document.querySelector('.mock-catalog-controls')?.scrollIntoView({ block: 'start' });
     });
   });
 
@@ -644,6 +652,8 @@ export function initCatalog(allGames: CatalogGame[]): void {
       else if (filter === 'estado') { elements.estado.value = value; activeQuickFilter = ''; }
       else if (filter === 'launcher') elements.launcher.value = value;
       else if (filter === 'plataforma') elements.plataforma.value = value;
+      else if (filter === 'solo') elements.solo.value = value;
+      else if (filter === 'precio') elements.precio.value = value;
       closeMobileDrawer();
       render();
     });
@@ -655,4 +665,5 @@ export function initCatalog(allGames: CatalogGame[]): void {
   });
 
   render();
+  if (!window.location.hash) requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0 }));
 }

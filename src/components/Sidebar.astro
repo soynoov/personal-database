@@ -94,6 +94,41 @@ const estadoColor = (estado: string): string => {
       </div>
     )}
 
+    <div class='mobile-drawer-section mobile-drawer-section-compact'>
+      <span class='mobile-drawer-section-label'>Modo de juego</span>
+      <button class='mobile-drawer-item' data-drawer-filter='solo' data-value='' type='button'>
+        <span>Todos</span>
+      </button>
+      <button class='mobile-drawer-item' data-drawer-filter='solo' data-value='true' type='button'>
+        <span>Solo</span>
+      </button>
+      <button class='mobile-drawer-item' data-drawer-filter='solo' data-value='false' type='button'>
+        <span>Multijugador</span>
+      </button>
+    </div>
+
+    <div class='mobile-drawer-section mobile-drawer-section-compact'>
+      <span class='mobile-drawer-section-label'>Precio pagado</span>
+      <button class='mobile-drawer-item' data-drawer-filter='precio' data-value='' type='button'>
+        <span>Todos</span>
+      </button>
+      <button class='mobile-drawer-item' data-drawer-filter='precio' data-value='free' type='button'>
+        <span>Free to play</span>
+      </button>
+      <button class='mobile-drawer-item' data-drawer-filter='precio' data-value='cheap' type='button'>
+        <span>Hasta 10 EUR</span>
+      </button>
+      <button class='mobile-drawer-item' data-drawer-filter='precio' data-value='mid' type='button'>
+        <span>De 10 a 30 EUR</span>
+      </button>
+      <button class='mobile-drawer-item' data-drawer-filter='precio' data-value='high' type='button'>
+        <span>Más de 30 EUR</span>
+      </button>
+      <button class='mobile-drawer-item' data-drawer-filter='precio' data-value='unknown' type='button'>
+        <span>Sin dato</span>
+      </button>
+    </div>
+
     <div class='mobile-drawer-section'>
       <span class='mobile-drawer-section-label'>Ordenar</span>
       <button class='mobile-drawer-item' data-drawer-filter='sort' data-value='titulo-asc' type='button'>

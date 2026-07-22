@@ -24,3 +24,23 @@
 }
 
 } /* end @layer global */
+
+@layer global {
+  @media (max-width: 720px) {
+    .game-page-topbar {
+      min-height: 40px;
+      gap: 0.6rem;
+    }
+
+    .game-page-topbar .back-link {
+      min-height: 38px;
+      padding: 0.45rem 0.7rem;
+      font-size: 0.78rem;
+    }
+
+    .game-page-topbar .game-edit-trigger {
+      width: 38px;
+      height: 38px;
+    }
+  }
+}

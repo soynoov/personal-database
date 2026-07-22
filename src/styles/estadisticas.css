@@ -443,3 +443,175 @@
 }
 
 } /* end @layer global */
+
+@layer global {
+  @media (max-width: 720px) {
+    .recap-hero {
+      gap: 0.65rem;
+      padding: 0.9rem;
+      border-radius: 16px;
+    }
+
+    .recap-hero-top {
+      display: grid;
+      gap: 0.72rem;
+    }
+
+    .recap-hero h1 {
+      font-size: clamp(2rem, 10vw, 2.6rem);
+    }
+
+    .recap-hero-sub {
+      margin-top: 0.28rem;
+      font-size: 0.78rem;
+      line-height: 1.38;
+    }
+
+    .recap-year-pills {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin-inline: -0.15rem;
+      padding: 0.15rem;
+      scrollbar-width: none;
+    }
+
+    .recap-year-pills::-webkit-scrollbar {
+      display: none;
+    }
+
+    .recap-year-pill {
+      flex: 0 0 auto;
+      min-height: 34px;
+      padding: 0.32rem 0.72rem;
+      font-size: 0.78rem;
+    }
+
+    .recap-quality {
+      padding: 0.82rem;
+    }
+
+    .recap-quality-head {
+      margin-bottom: 0.7rem;
+    }
+
+    .recap-quality-head strong {
+      font-size: 0.92rem;
+    }
+
+    .recap-quality-grid {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      margin-bottom: 0;
+    }
+
+    .recap-quality-metric {
+      grid-template-columns: 58px minmax(0, 1fr);
+      align-items: start;
+      gap: 0.65rem;
+      padding: 0.62rem;
+      border-radius: 11px;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .recap-quality-metric strong {
+      font-size: 1.2rem;
+    }
+
+    .recap-quality-metric span {
+      font-size: 0.72rem;
+      line-height: 1.38;
+    }
+
+    .recap-section {
+      padding: 0.82rem;
+    }
+
+    .recap-section h2 {
+      font-size: 1.15rem;
+    }
+
+    .recap-section-sub {
+      margin-bottom: 0.72rem;
+      font-size: 0.76rem;
+      line-height: 1.4;
+    }
+
+    .recap-gap-groups {
+      gap: 0.55rem;
+    }
+
+    .recap-gap-groups .recap-quality-list-wrap {
+      padding: 0.68rem;
+    }
+
+    .recap-quality-list-wrap summary {
+      margin-bottom: 0;
+      font-size: 0.78rem;
+      line-height: 1.35;
+    }
+
+    .recap-quality-list-wrap[open] summary {
+      margin-bottom: 0.6rem;
+    }
+
+    .recap-gap-hint {
+      margin: 0.25rem 0 0 1rem;
+      font-size: 0.68rem;
+    }
+
+    .recap-stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+    }
+
+    .recap-stat {
+      min-height: 132px;
+      padding: 0.75rem;
+      gap: 0.35rem;
+    }
+
+    .recap-stat span:first-child {
+      font-size: 0.66rem;
+      line-height: 1.25;
+    }
+
+    .recap-stat strong {
+      font-size: 1.55rem;
+    }
+
+    .recap-stat .recap-stat-note,
+    .recap-delta {
+      font-size: 0.66rem;
+      line-height: 1.35;
+    }
+
+    .recap-chart-card {
+      height: 210px;
+      padding: 0.55rem;
+    }
+
+    .recap-completados-row {
+      align-items: flex-start;
+      padding: 0.62rem;
+      font-size: 0.82rem;
+    }
+
+    .recap-completados-row span {
+      font-size: 0.68rem;
+    }
+
+    .recap-methodology {
+      font-size: 0.72rem;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .recap-stats {
+      grid-template-columns: 1fr;
+    }
+
+    .recap-stat {
+      min-height: 0;
+    }
+  }
+}

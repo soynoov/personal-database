@@ -308,3 +308,71 @@
 }
 
 } /* end @layer global */
+
+@layer global {
+  @media (max-width: 720px) {
+    .game-page-rich .game-hero-cinematic {
+      border-radius: 16px;
+    }
+
+    .game-page-rich .game-hero-cinematic::before {
+      background:
+        linear-gradient(90deg, rgba(8, 10, 14, 0.88), rgba(8, 10, 14, 0.62)),
+        var(--hero-cover);
+      background-size: cover;
+      background-position: center 24%;
+    }
+
+    .game-page-rich .game-overview-card,
+    .game-page-rich .game-overview-card-cinematic {
+      grid-template-columns: 82px minmax(0, 1fr);
+      align-items: center;
+      gap: 0.72rem;
+      padding: 0.72rem;
+    }
+
+    .game-page-rich .game-overview-card-cinematic .game-overview-media {
+      width: 82px;
+      max-width: 82px;
+      aspect-ratio: 2 / 3;
+      align-self: center;
+      border-radius: 11px;
+    }
+
+    .game-page-rich .game-overview-copy {
+      gap: 0.42rem;
+      align-content: center;
+    }
+
+    .game-page-rich .game-overview-copy .eyebrow {
+      display: none;
+    }
+
+    .game-page-rich .game-overview-copy h1 {
+      font-size: clamp(1.55rem, 7.6vw, 2.15rem);
+      line-height: 0.98;
+      letter-spacing: 0.02em;
+    }
+
+    .game-page-rich .game-page-badges {
+      gap: 0.3rem;
+      max-height: 52px;
+      overflow: hidden;
+    }
+
+    .game-page-rich .game-page-badges .badge {
+      min-height: 20px;
+      padding: 0.2rem 0.42rem;
+      font-size: 0.61rem;
+    }
+
+    .game-page-rich .game-overview-summary {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      font-size: 0.72rem;
+      line-height: 1.3;
+    }
+  }
+}

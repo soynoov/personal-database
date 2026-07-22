@@ -46,6 +46,7 @@ const totalLibraryValue = games.reduce((sum, g) => {
 }, 0);
 const formatMoney = (value: number) =>
   new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value);
+const initialView = Astro.url.searchParams.get('view') === 'table' ? 'table' : 'cards';
 ---
 
 <BaseLayout title='Personal Database'>
@@ -174,10 +175,11 @@ const formatMoney = (value: number) =>
         launchers={launchers}
         plataformas={plataformas}
         totalGames={stats.total}
+        initialView={initialView}
       />
 
       <!-- Grid de cards -->
-      <section class='mock-catalog-results panel'>
+      <section class='mock-catalog-results panel' id='cards-shell' hidden={initialView === 'table'}>
         <section class='cards cards-bento mock-cards-grid' id='cards'>
           {initialCatalogGames.map((game, index) => (
             <CatalogGameCard game={game} eager={index < 6} />
@@ -186,7 +188,7 @@ const formatMoney = (value: number) =>
       </section>
 
       <!-- Vista tabla -->
-      <section class='inventory-table-shell' id='table-shell' hidden>
+      <section class='inventory-table-shell' id='table-shell' hidden={initialView !== 'table'}>
         <div class='inventory-table'>
           <div class='inventory-table-head'>
             <span>Juego</span>

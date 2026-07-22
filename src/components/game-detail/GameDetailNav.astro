@@ -14,9 +14,9 @@ const { hasDlcs } = Astro.props;
 ---
 
 <nav class="game-sections-nav" aria-label="Secciones del juego">
-  <a href="#overview">Overview</a>
+  <a href="#overview">Resumen</a>
   <a href="#stats">Horas</a>
   <a href="#finance">Dinero</a>
-  <a href="#technical">Estadísticas</a>
-  <a href="#dlcs">DLCs</a>
+  <a href="#technical">Datos</a>
+  {hasDlcs && <a href="#dlcs">DLCs</a>}
 </nav>

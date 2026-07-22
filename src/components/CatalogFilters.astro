@@ -4,9 +4,10 @@ interface Props {
   launchers: string[];
   plataformas: string[];
   totalGames: number;
+  initialView?: 'cards' | 'table';
 }
 
-const { estados, launchers, plataformas, totalGames } = Astro.props;
+const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = Astro.props;
 ---
 
 <section class='panel panel-controls pc-controls mock-catalog-controls'>
@@ -100,11 +101,11 @@ const { estados, launchers, plataformas, totalGames } = Astro.props;
     </div>
     <div class='view-toggle' role='group' aria-label='Modo de catalogo'>
       <button
-        class='view-toggle-button is-active'
+        class:list={['view-toggle-button', initialView === 'cards' && 'is-active']}
         id='view-cards'
         type='button'
         data-view='cards'
-        aria-pressed='true'
+        aria-pressed={initialView === 'cards' ? 'true' : 'false'}
         aria-label='Vista en cards'
         title='Vista en cards'
       >
@@ -117,11 +118,11 @@ const { estados, launchers, plataformas, totalGames } = Astro.props;
         <span>Cards</span>
       </button>
       <button
-        class='view-toggle-button'
+        class:list={['view-toggle-button', initialView === 'table' && 'is-active']}
         id='view-table'
         type='button'
         data-view='table'
-        aria-pressed='false'
+        aria-pressed={initialView === 'table' ? 'true' : 'false'}
         aria-label='Vista en tabla'
         title='Vista en tabla'
       >
