@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Sidebar from '../../components/Sidebar.astro';
 import '../../styles/estadisticas.css';
 import { getUniqueValues, readGames } from '../../lib/local-games';
+import { normalizeStatus } from '../../lib/game-status';
 import { getAvailableYears, getDataQuality, getYearRecap } from '../../lib/recap';
 
 const games = await readGames();
@@ -14,11 +15,11 @@ const drawerEstadosOrdered = [
   'Jugando', 'Terminado', 'Pendiente', 'Wishlist',
   'Pausado', 'Abandonado', 'Retirado', 'Recurrente',
 ];
-const estadosSet = new Set(estados.map((e) => e.toLowerCase()));
-const knownEstadoValues = new Set(drawerEstadosOrdered.map((d) => d.toLowerCase()));
+const estadosSet = new Set(estados.map(normalizeStatus));
+const knownEstadoValues = new Set(drawerEstadosOrdered.map(normalizeStatus));
 const orderedDrawerEstados = [
-  ...drawerEstadosOrdered.filter((d) => estadosSet.has(d.toLowerCase()) || d === 'Wishlist'),
-  ...estados.filter((e) => !knownEstadoValues.has(e.toLowerCase())),
+  ...drawerEstadosOrdered.filter((d) => estadosSet.has(normalizeStatus(d)) || d === 'Wishlist'),
+  ...estados.filter((e) => !knownEstadoValues.has(normalizeStatus(e))),
 ];
 
 const today = new Date();

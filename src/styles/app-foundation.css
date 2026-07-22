@@ -1,0 +1,897 @@
+@import './theme.css';
+
+/* ================================================================
+   app.css — layout de la app
+   ================================================================ */
+
+@layer global {
+
+.shell-app {
+  width: min(1480px, calc(100% - 1.5rem));
+  padding-top: 1.1rem;
+}
+
+.app-home-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(340px, 0.8fr);
+  gap: 1rem;
+  align-items: start;
+  min-height: 100svh;
+  align-content: start;
+}
+
+.hero-app,
+.panel-controls,
+.stats-bento .stat,
+.card,
+.analysis-panel,
+.game-summary-section,
+.data-group-card,
+.dlc-showcase-card,
+.detail-comments,
+.game-page-section,
+.detail-dialog {
+  border-radius: var(--app-radius-lg);
+}
+
+.hero-app,
+.panel-controls,
+.analysis-panel,
+.game-summary-section,
+.data-group-card,
+.dlc-showcase-card,
+.detail-comments,
+.game-page-section {
+  background:
+    linear-gradient(180deg, rgba(34, 36, 43, 0.9), rgba(19, 21, 27, 0.98)),
+    radial-gradient(
+      circle at top left,
+      rgba(255, 255, 255, 0.03),
+      transparent 30%
+    );
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 26px 60px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.hero-app {
+  min-height: calc(100svh - 2.2rem);
+  align-items: start;
+  justify-items: start;
+  text-align: left;
+  padding: 1.5rem 1.55rem 1.35rem;
+  gap: 1rem;
+  background:
+    radial-gradient(circle at top left, var(--app-glow-red), transparent 30%),
+    radial-gradient(
+      circle at 85% 18%,
+      rgba(255, 255, 255, 0.05),
+      transparent 18%
+    ),
+    linear-gradient(180deg, rgba(25, 26, 31, 0.98), rgba(16, 17, 22, 0.98));
+}
+
+.hero-app h1 {
+  max-width: 11ch;
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 5vw, 4.6rem);
+  font-weight: 400;
+  line-height: 0.94;
+  letter-spacing: 1px;
+}
+
+.hero-app p {
+  max-width: 34ch;
+  margin: 0;
+  font-size: 0.96rem;
+  color: #b7c0cb;
+}
+
+.app-topline {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.app-brand strong {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 1.2rem;
+  color: #fff8f6;
+}
+
+.app-topline-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: #d3dae3;
+}
+
+.stats-bento {
+  margin-top: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-self: stretch;
+}
+
+.stats-bento .stat {
+  min-height: 184px;
+  padding: 1.15rem 1.1rem 1.2rem;
+  text-align: left;
+  background:
+    linear-gradient(180deg, rgba(29, 31, 38, 0.98), rgba(19, 21, 27, 0.98)),
+    radial-gradient(
+      circle at top left,
+      rgba(255, 255, 255, 0.03),
+      transparent 28%
+    );
+}
+
+.stats-bento .stat span {
+  color: #aeb6c2;
+}
+
+.stats-bento .stat strong {
+  font-size: clamp(1.9rem, 3vw, 2.5rem);
+  color: #f3f5f7;
+}
+
+.panel-controls {
+  grid-column: 1 / -1;
+  margin-top: 0;
+  padding: 1.1rem 1.15rem 1rem;
+}
+
+.panel-controls-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.panel-controls-head h2 {
+  margin: 0.2rem 0 0;
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+.filters-app {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.filters-app .field-search {
+  grid-column: span 2;
+}
+
+.filters-app .actions {
+  grid-column: span 2;
+}
+
+.legend-app {
+  margin-top: 1rem;
+}
+
+.legend-chip {
+  min-height: 34px;
+  border-radius: 999px;
+}
+
+.cards-bento {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+/* Estilos de .cards-bento .card* → movidos a cards.css */
+
+/* Platform + Launcher badges in cards */
+.card-platform-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.card-platform-badges .badge {
+  font-size: 0.74rem;
+  min-height: 22px;
+  padding: 0.14rem 0.48rem;
+}
+
+/* Compact horizontal stats row for catalog hero */
+.pc-stats-bento {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.pc-stats-bento .stat {
+  min-height: 0;
+  padding: 0.7rem 0.85rem 0.75rem;
+}
+
+/* ===== PC-STAT BASE STYLES (must be global, not inside desktop @media) ===== */
+.pc-stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.pc-stat-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+/* Stat accent colors (activos = verde, completados = azul) */
+.stat-accent .pc-stat-icon,
+.stat-accent strong {
+  color: #6ee76c;
+}
+
+.stat-accent-alt .pc-stat-icon,
+.stat-accent-alt strong {
+  color: #67b1ff;
+}
+
+/* ===== CATALOG FILTERS REDESIGN ===== */
+
+.catalog-filters {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.catalog-filters-top {
+  display: flex;
+  gap: 0.7rem;
+  align-items: end;
+}
+
+.catalog-filters-top .field-search {
+  flex: 1;
+  min-width: 0;
+}
+
+.catalog-filter-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  align-self: end;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(177, 188, 201, 0.9);
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease;
+}
+
+.catalog-filter-toggle:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.catalog-filter-toggle svg {
+  width: 15px;
+  height: 15px;
+  stroke: currentColor;
+  fill: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Selects row — flat flex container with all 6 fields */
+.catalog-filters-selects {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: nowrap;
+}
+
+.catalog-filters-selects .field {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Home mockup override */
+.shell-desktop-app {
+  width: min(1880px, calc(100% - 1rem));
+}
+
+.desktop-main {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.mock-catalog-hero {
+  position: relative;
+  overflow: hidden;
+  justify-items: start;
+  text-align: left;
+  align-content: start;
+}
+
+.mock-catalog-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(186, 55, 55, 0.34),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(255, 110, 110, 0.12),
+      transparent 12%
+    ),
+    radial-gradient(circle at 84% 20%, rgba(186, 55, 55, 0.18), transparent 24%);
+  pointer-events: none;
+}
+
+.mock-catalog-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.42;
+  background-image:
+    radial-gradient(
+      circle at 100% 0%,
+      transparent 0 28px,
+      rgba(255, 110, 110, 0.22) 29px 30px,
+      transparent 31px
+    ),
+    radial-gradient(
+      circle at 100% 0%,
+      transparent 0 58px,
+      rgba(255, 110, 110, 0.16) 59px 60px,
+      transparent 61px
+    ),
+    radial-gradient(
+      circle at 100% 0%,
+      transparent 0 98px,
+      rgba(255, 110, 110, 0.12) 99px 100px,
+      transparent 101px
+    ),
+    radial-gradient(
+      circle at 100% 0%,
+      transparent 0 148px,
+      rgba(255, 110, 110, 0.08) 149px 150px,
+      transparent 151px
+    ),
+    radial-gradient(
+      circle at 100% 0%,
+      transparent 0 214px,
+      rgba(255, 110, 110, 0.06) 215px 216px,
+      transparent 217px
+    );
+  background-repeat: no-repeat;
+}
+
+.mock-catalog-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.mock-catalog-hero .app-topline,
+.mock-catalog-hero .pc-hero-copy,
+.mock-catalog-hero .pc-stats-bento {
+  width: 100%;
+}
+
+.mock-catalog-hero .app-topline {
+  justify-content: flex-start;
+}
+
+.mock-catalog-hero .pc-hero-copy {
+  max-width: 100%;
+}
+
+.mock-catalog-hero .pc-hero-copy h1 {
+  max-width: none;
+}
+
+.mock-catalog-controls,
+.mock-catalog-results {
+  margin-top: 0;
+}
+
+.mock-catalog-results {
+  padding: 0;
+  border-radius: 22px;
+  border: 1px solid rgba(126, 143, 172, 0.11);
+  background: linear-gradient(
+    180deg,
+    rgba(13, 21, 35, 0.98),
+    rgba(10, 17, 29, 0.98)
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 18px 42px rgba(0, 0, 0, 0.16);
+}
+
+.mock-cards-grid {
+  margin-top: 0;
+  padding: 0.88rem;
+}
+
+.mock-catalog-controls .filters-app {
+  row-gap: 0.82rem;
+}
+
+.mock-catalog-controls .field-search {
+  position: relative;
+}
+
+.field-search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  width: 1.05rem;
+  height: 1.05rem;
+  color: rgba(226, 234, 244, 0.72);
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.field-search-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mock-catalog-controls .field-search::before {
+  content: none;
+}
+
+.mock-catalog-controls .field-search::after {
+  content: none;
+}
+
+.mock-catalog-controls .field-search input {
+  padding-left: 2.9rem;
+}
+
+.button-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.active-filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 0.95rem 0 0;
+}
+
+.active-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 40px;
+  padding: 0.45rem 0.88rem;
+  border: 1px solid rgba(176, 93, 255, 0.46);
+  border-radius: 14px;
+  background: rgba(134, 79, 213, 0.18);
+  color: #eedaff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.active-filter-pill span {
+  font-size: 0.76rem;
+  opacity: 0.76;
+}
+
+.mock-game-card .card-main {
+  grid-template-columns: 1fr;
+}
+
+/* ── Estilos de .mock-game-card movidos a src/styles/cards.css ── */
+
+.mobile-topbar,
+.mobile-filter-toggle,
+.mobile-bottom-nav {
+  display: none;
+}
+
+.mobile-extra-filters {
+  display: contents;
+}
+
+/* Per-chip active colors */
+.legend-chip-completed.is-active {
+  border-color: rgba(72, 184, 109, 0.7);
+  background: rgba(72, 184, 109, 0.18);
+  box-shadow:
+    0 0 0 1px rgba(72, 184, 109, 0.14),
+    0 8px 20px rgba(72, 184, 109, 0.18);
+}
+.legend-chip-playing.is-active {
+  border-color: rgba(214, 102, 255, 0.7);
+  background: rgba(214, 102, 255, 0.18);
+  box-shadow:
+    0 0 0 1px rgba(214, 102, 255, 0.14),
+    0 8px 20px rgba(214, 102, 255, 0.18);
+}
+.legend-chip-pending.is-active {
+  border-color: rgba(245, 197, 24, 0.7);
+  background: rgba(245, 197, 24, 0.18);
+  box-shadow:
+    0 0 0 1px rgba(245, 197, 24, 0.14),
+    0 8px 20px rgba(245, 197, 24, 0.18);
+}
+.legend-chip-free.is-active {
+  border-color: rgba(90, 208, 255, 0.7);
+  background: rgba(90, 208, 255, 0.18);
+  box-shadow:
+    0 0 0 1px rgba(90, 208, 255, 0.14),
+    0 8px 20px rgba(90, 208, 255, 0.18);
+}
+.legend-chip-profit.is-active {
+  border-color: rgba(72, 184, 109, 0.7);
+  background: rgba(72, 184, 109, 0.18);
+  box-shadow:
+    0 0 0 1px rgba(72, 184, 109, 0.14),
+    0 8px 20px rgba(72, 184, 109, 0.18);
+}
+.legend-chip-loss.is-active {
+  border-color: rgba(214, 80, 80, 0.7);
+  background: rgba(214, 80, 80, 0.18);
+  box-shadow:
+    0 0 0 1px rgba(214, 80, 80, 0.14),
+    0 8px 20px rgba(214, 80, 80, 0.18);
+}
+.legend-chip-early.is-active {
+  border-color: rgba(255, 170, 64, 0.7);
+  background: rgba(255, 170, 64, 0.18);
+  box-shadow:
+    0 0 0 1px rgba(255, 170, 64, 0.14),
+    0 8px 20px rgba(255, 170, 64, 0.18);
+}
+
+/* ===== ACTIVE FILTER PILLS ===== */
+.active-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.active-pill-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-block;
+}
+.active-pill-remove {
+  font-size: 0.8em;
+  opacity: 0.65;
+  margin-left: 1px;
+}
+
+/* Tablet: wrap to 3 columns */
+@media (max-width: 1023px) and (min-width: 721px) {
+  .catalog-filters-selects {
+    flex-wrap: wrap;
+  }
+  .catalog-filters-selects .field {
+    flex: 1 1 calc(33.33% - 0.45rem);
+    min-width: 110px;
+  }
+}
+
+/* Mobile: 4 main selects in a row, extra (Solo+Precio) hidden behind toggle */
+@media (max-width: 720px) {
+  .catalog-filter-toggle {
+    display: flex;
+  }
+  .mock-catalog-controls .actions {
+    display: none;
+  }
+  /* Hide labels on mobile */
+  .catalog-filters-selects .field label {
+    display: none;
+  }
+  /* Main selects: horizontal row */
+  .catalog-filters-selects {
+    gap: 0.4rem;
+    align-items: stretch;
+  }
+  .catalog-filters-selects .cf-main {
+    flex: 1 1 70px;
+    min-width: 62px;
+  }
+  /* Filter toggle button: shown at end of selects row */
+  .catalog-filters-selects .catalog-filter-toggle {
+    display: flex;
+    flex-shrink: 0;
+    width: 46px;
+    align-self: stretch;
+    height: auto;
+  }
+  /* Extra fields (Solo + Precio): hidden by default */
+  .catalog-filters-selects .cf-extra {
+    display: none;
+  }
+  /* When toggle is activated — show extras below */
+  .catalog-filters-selects.is-open {
+    flex-wrap: wrap;
+  }
+  .catalog-filters-selects.is-open .cf-extra {
+    display: block;
+    flex: 1 1 calc(50% - 0.2rem);
+    min-width: 0;
+  }
+  .catalog-filters-selects.is-open .cf-extra label {
+    display: block;
+  }
+  /* Move toggle to after extras when open */
+  .catalog-filters-selects.is-open .catalog-filter-toggle {
+    order: 10;
+    align-self: flex-end;
+    height: 46px;
+  }
+}
+
+@media (max-width: 900px) {
+  .pc-stats-bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pc-stats-bento .stat {
+    min-height: 120px;
+  }
+}
+
+@media (min-width: 1181px) {
+  .pc-home-grid {
+    grid-template-columns: minmax(0, 1.55fr) minmax(380px, 0.9fr);
+    min-height: auto;
+    gap: 1.5rem;
+  }
+
+  .pc-hero-card {
+    min-height: 520px;
+    padding: 1.9rem 1.85rem 1.6rem;
+    gap: 1.35rem;
+    justify-content: end;
+    border-radius: 24px;
+    background:
+      linear-gradient(180deg, rgba(12, 13, 15, 0.18), rgba(8, 8, 10, 0.92)),
+      radial-gradient(
+        circle at 70% 20%,
+        rgba(183, 76, 76, 0.13),
+        transparent 22%
+      ),
+      radial-gradient(
+        circle at 18% 14%,
+        rgba(93, 109, 129, 0.18),
+        transparent 22%
+      ),
+      linear-gradient(180deg, rgba(17, 18, 21, 0.98), rgba(10, 11, 13, 0.98));
+  }
+
+  .pc-hero-card h1 {
+    max-width: 9.5ch;
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 5.6vw, 5.75rem);
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+  }
+
+  .pc-hero-card p {
+    max-width: 28ch;
+    font-size: 0.98rem;
+    line-height: 1.45;
+    color: #c6cbd2;
+  }
+
+  .pc-stats-bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.1rem;
+    align-content: start;
+  }
+
+  .pc-stats-bento .stat {
+    min-height: 154px;
+    padding: 1.15rem 1.15rem 1rem;
+    border-radius: 0;
+    border-color: rgba(255, 214, 214, 0.1);
+    background: linear-gradient(
+      180deg,
+      rgba(15, 16, 18, 0.98),
+      rgba(11, 12, 14, 0.98)
+    );
+  }
+
+  .pc-controls {
+    padding: 1.1rem 1.15rem 1rem;
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(14, 15, 17, 0.96),
+      rgba(11, 12, 15, 0.98)
+    );
+  }
+
+  .pc-controls .panel-controls-head {
+    margin-bottom: 1rem;
+  }
+
+  .pc-controls .panel-controls-head h2 {
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+  }
+
+  .filters-app {
+    grid-template-columns: minmax(260px, 1.5fr) repeat(
+        5,
+        minmax(112px, 0.72fr)
+      ) auto;
+    align-items: end;
+  }
+
+  .filters-app .field-search {
+    order: -1;
+    grid-column: span 1;
+  }
+
+  .filters-app .actions {
+    grid-column: span 1;
+  }
+
+  .legend-app {
+    margin-top: 1rem;
+  }
+
+  .cards-bento {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.1rem;
+  }
+
+  .cards-bento .card,
+  .cards-bento .card:nth-child(6n + 1),
+  .cards-bento .card:nth-child(6n + 2),
+  .cards-bento .card:nth-child(6n + 4),
+  .cards-bento .card:nth-child(6n + 5) {
+    grid-column: span 1;
+  }
+
+  .cards-bento .card {
+    overflow: hidden;
+    border: 1px solid rgba(255, 214, 214, 0.1);
+    background: linear-gradient(
+      180deg,
+      rgba(16, 17, 19, 0.98),
+      rgba(11, 12, 14, 0.98)
+    );
+  }
+
+  .cards-bento .card-main {
+    grid-template-columns: 1fr;
+    grid-template-rows: 260px auto;
+    min-height: 0;
+    align-content: start;
+  }
+
+  .cards-bento .card-cover {
+    height: 260px;
+    max-height: 260px;
+    min-height: 0;
+    aspect-ratio: unset;
+    align-self: start;
+  }
+
+  /* Fade mínimo (16px) — suaviza el corte imagen→body sin ser overlay visible */
+  .cards-bento .card-cover::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 16px;
+    background: linear-gradient(180deg, transparent, rgba(11, 12, 14, 0.97));
+    pointer-events: none;
+  }
+
+  .cards-bento .card-cover img {
+    transition: transform 220ms ease;
+  }
+
+  .cards-bento .card:hover .card-cover img {
+    transform: scale(1.03);
+  }
+
+  .cards-bento .card-body {
+    gap: 0.78rem;
+    padding: 0.95rem 0.95rem 0.9rem;
+    border-left: 0;
+    border-top: none;
+    background: linear-gradient(
+      180deg,
+      rgba(16, 17, 20, 0.96),
+      rgba(11, 12, 14, 0.98)
+    );
+  }
+
+  /* Año y horas siempre al fondo del card-body */
+  .cards-bento .card-body .meta {
+    margin-top: auto;
+  }
+
+  .cards-bento .card-copy {
+    display: grid;
+    gap: 0.28rem;
+  }
+
+  .cards-bento .card-kicker {
+    margin: 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #aab1bc;
+  }
+
+  .cards-bento .card h2 {
+    font-size: clamp(1.16rem, 1.35vw, 1.42rem);
+    line-height: 1.02;
+  }
+
+  .cards-bento .badge {
+    min-height: 24px;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.74rem;
+  }
+
+  .cards-bento .meta {
+    align-content: start;
+  }
+
+  .cards-bento .meta dt {
+    color: #a6aeb9;
+  }
+
+  .cards-bento .meta dd {
+    font-size: 1.15rem;
+  }
+
+  .cards-bento .card-support {
+    margin: 0;
+    min-height: 1.2em;
+    font-size: 0.84rem;
+    color: #9fa7b2;
+  }
+}
+
+} /* end @layer global */

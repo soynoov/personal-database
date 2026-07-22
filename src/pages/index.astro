@@ -2,10 +2,17 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Sidebar from '../components/Sidebar.astro';
 import CatalogFilters from '../components/CatalogFilters.astro';
+import CatalogGameCard from '../components/CatalogGameCard.astro';
 import GameCard from '../components/GameCard.astro';
+import { toCatalogGame } from '../lib/catalog-game';
 import { getStats, getTotalPaidPrice, getUniqueValues, readGames } from '../lib/local-games';
+import { isCompletedStatus, normalizeStatus } from '../lib/game-status';
 
 const games = await readGames();
+const catalogGames = games
+  .map(toCatalogGame)
+  .sort((a, b) => Number(b.horas ?? -1) - Number(a.horas ?? -1));
+const initialCatalogGames = catalogGames.slice(0, 24);
 const estados = getUniqueValues(games, 'estado');
 const launchers = getUniqueValues(games, 'launcher');
 const plataformas = getUniqueValues(games, 'plataforma');
@@ -15,18 +22,15 @@ const drawerEstadosOrdered = [
   'Jugando', 'Terminado', 'Pendiente', 'Wishlist',
   'Pausado', 'Abandonado', 'Retirado', 'Recurrente',
 ];
-const estadosSet = new Set(estados.map((e) => e.toLowerCase()));
-const knownEstadoValues = new Set(drawerEstadosOrdered.map((d) => d.toLowerCase()));
+const estadosSet = new Set(estados.map(normalizeStatus));
+const knownEstadoValues = new Set(drawerEstadosOrdered.map(normalizeStatus));
 const orderedDrawerEstados = [
-  ...drawerEstadosOrdered.filter((d) => estadosSet.has(d.toLowerCase()) || d === 'Wishlist'),
-  ...estados.filter((e) => !knownEstadoValues.has(e.toLowerCase())),
+  ...drawerEstadosOrdered.filter((d) => estadosSet.has(normalizeStatus(d)) || d === 'Wishlist'),
+  ...estados.filter((e) => !knownEstadoValues.has(normalizeStatus(e))),
 ];
 
-const activeGames = games.filter((g) => String(g.estado ?? '').trim().toLowerCase() === 'jugando').length;
-const completedGames = games.filter((g) => {
-  const s = String(g.estado ?? '').trim().toLowerCase();
-  return s === 'terminado' || s === 'completado';
-}).length;
+const activeGames = games.filter((g) => normalizeStatus(g.estado) === 'jugando').length;
+const completedGames = games.filter((g) => isCompletedStatus(g.estado)).length;
 const totalLibraryValue = games.reduce((sum, g) => {
   const base = getTotalPaidPrice(g) ?? 0;
   const microtransacciones = Number(g.gasto_microtransacciones ?? 0);
@@ -83,15 +87,15 @@ const formatMoney = (value: number) =>
             </div>
           </div>
 
-          <div class='mobile-tab-bar' id='mobile-tab-bar' role='tablist' aria-label='Filtros rápidos'>
-            <button class='mobile-tab' type='button' data-quick-filter='' role='tab' aria-pressed='true'>Todos</button>
-            <button class='mobile-tab' type='button' data-quick-filter='jugando' role='tab' aria-pressed='false'>
+          <div class='mobile-tab-bar' id='mobile-tab-bar' role='group' aria-label='Filtros rápidos'>
+            <button class='mobile-tab' type='button' data-quick-filter='' aria-pressed='true'>Todos</button>
+            <button class='mobile-tab' type='button' data-quick-filter='jugando' aria-pressed='false'>
               <span class='mobile-tab-dot' style='background:#6ee76c' aria-hidden='true'></span>Jugando
             </button>
-            <button class='mobile-tab' type='button' data-quick-filter='terminado' role='tab' aria-pressed='false'>
+            <button class='mobile-tab' type='button' data-quick-filter='terminado' aria-pressed='false'>
               <span class='mobile-tab-dot' style='background:#67b1ff' aria-hidden='true'></span>Terminado
             </button>
-            <button class='mobile-tab' type='button' data-quick-filter='wishlist' role='tab' aria-pressed='false'>
+            <button class='mobile-tab' type='button' data-quick-filter='wishlist' aria-pressed='false'>
               <span class='mobile-tab-dot' style='background:#5ad0ff' aria-hidden='true'></span>Wishlist
             </button>
           </div>
@@ -174,7 +178,11 @@ const formatMoney = (value: number) =>
 
       <!-- Grid de cards -->
       <section class='mock-catalog-results panel'>
-        <section class='cards cards-bento mock-cards-grid' id='cards'></section>
+        <section class='cards cards-bento mock-cards-grid' id='cards'>
+          {initialCatalogGames.map((game, index) => (
+            <CatalogGameCard game={game} eager={index < 6} />
+          ))}
+        </section>
       </section>
 
       <!-- Vista tabla -->
@@ -188,7 +196,6 @@ const formatMoney = (value: number) =>
             <span>Horas</span>
             <span>Pagado</span>
             <span>Lanzamiento</span>
-            <span class='inventory-table-actions-head'></span>
           </div>
           <div class='inventory-table-body' id='table-body'></div>
         </div>
@@ -201,8 +208,8 @@ const formatMoney = (value: number) =>
 
   </main>
 
-  <!-- Puente de datos: serializa games para catalog.ts -->
-  <div id='__catalog-data' data-games={JSON.stringify(games)} hidden></div>
+  <!-- Puente de datos: serializa la proyección del catálogo para catalog.ts -->
+  <div id='__catalog-data' data-games={JSON.stringify(catalogGames)} hidden></div>
 
   <script>
     import { initCatalog } from '../scripts/catalog';

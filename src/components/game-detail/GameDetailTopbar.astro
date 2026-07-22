@@ -7,6 +7,7 @@
  */
 import '../../styles/game-detail/topbar.css';
 import '../../styles/game-detail/edit.css';
+import { normalizeStatus } from '../../lib/game-status';
 
 interface EditValues {
   estado: string | null;
@@ -24,8 +25,9 @@ interface Props {
 const { slug, editValues } = Astro.props;
 
 const KNOWN_ESTADOS = ['Jugando', 'Terminado', 'Pendiente', 'Wishlist', 'Pausado', 'Abandonado', 'Retirado', 'Recurrente'];
+const normalizedEditStatus = normalizeStatus(editValues.estado);
 const estadoOptions =
-  editValues.estado && !KNOWN_ESTADOS.includes(editValues.estado)
+  editValues.estado && !KNOWN_ESTADOS.some((estado) => normalizeStatus(estado) === normalizedEditStatus)
     ? [...KNOWN_ESTADOS, editValues.estado]
     : KNOWN_ESTADOS;
 ---
@@ -58,7 +60,7 @@ const estadoOptions =
         <label for="edit-estado">Estado</label>
         <select id="edit-estado" name="estado">
           {estadoOptions.map((estado) => (
-            <option value={estado} selected={estado === editValues.estado}>{estado}</option>
+            <option value={estado} selected={normalizeStatus(estado) === normalizedEditStatus}>{estado}</option>
           ))}
         </select>
       </div>

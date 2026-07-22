@@ -1,6 +1,8 @@
 # Personal Database
 
-Visor local en Astro para `games.json`, con cards, filtros y endpoints JSON de apoyo.
+Base de datos personal en Astro para reunir y consultar distintos dominios de la vida del usuario. La primera vertical, y actualmente la principal, es la biblioteca de videojuegos almacenada en `games.json`.
+
+El proyecto debe mantener separados los dominios de datos y sus interfaces para poder incorporar nuevas áreas en el futuro sin convertir el catálogo de videojuegos en una página monolítica.
 
 ## Que incluye
 

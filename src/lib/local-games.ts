@@ -1,6 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { existsSync } from "node:fs";
+import { isCompletedStatus, normalizeStatus } from "./game-status";
 
 export type LocalGame = {
   titulo: string;
@@ -39,6 +40,7 @@ export type LocalGame = {
   lanzamiento?: number | null;
   solo?: boolean | null;
   cover_source?: string | null;
+  cover_url?: string | null;
   steam_store_name?: string | null;
   steam_store_genres?: string[] | null;
   steam_last_sync_at?: string | null;
@@ -146,7 +148,10 @@ export function filterGames(
 
     return (
       searchMatches &&
-      containsText(game.estado, filters.estado) &&
+      (!filters.estado ||
+        (isCompletedStatus(filters.estado)
+          ? isCompletedStatus(game.estado)
+          : normalizeStatus(game.estado) === normalizeStatus(filters.estado))) &&
       containsText(game.launcher, filters.launcher) &&
       containsText(game.plataforma, filters.plataforma) &&
       matchesSoloFilter(game.solo, filters.solo)
@@ -174,7 +179,7 @@ export function getStats(games: LocalGame[]) {
     launchers.set(launcher, (launchers.get(launcher) ?? 0) + 1);
     horas += Number(game.horas ?? 0);
 
-    if (estado === "Terminado") {
+    if (isCompletedStatus(estado)) {
       terminados++;
     }
   }

@@ -5,7 +5,7 @@
 
 <!-- Card template -->
 <template id='card-template'>
-  <article class='card mock-game-card' tabindex='0' role='button'>
+  <a class='card mock-game-card' data-game-link href='#'>
     <div class='card-main'>
       <div class='card-cover' data-cover></div>
       <div class='card-body'>
@@ -14,11 +14,6 @@
             <h2 data-title></h2>
             <div class='card-platform-badges' data-platform-badges></div>
           </div>
-          <button class='card-action' type='button' aria-label='Mas opciones'>
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
         </div>
         <div class='badges'>
           <span class='badge' data-estado></span>
@@ -32,12 +27,12 @@
         <p class='card-support' data-support></p>
       </div>
     </div>
-  </article>
+  </a>
 </template>
 
 <!-- Table row template -->
 <template id='table-row-template'>
-  <article class='inventory-row' tabindex='0' role='button'>
+  <a class='inventory-row' data-row-link href='#'>
     <div class='inventory-game'>
       <div class='inventory-cover' data-row-cover></div>
       <div class='inventory-copy'>
@@ -57,46 +52,5 @@
     <div class='inventory-cell' data-row-horas></div>
     <div class='inventory-cell' data-row-precio></div>
     <div class='inventory-cell' data-row-lanzamiento></div>
-    <div class='inventory-cell inventory-cell-actions'>
-      <button
-        class='inventory-row-action'
-        type='button'
-        aria-label='Mas opciones'
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-  </article>
+  </a>
 </template>
-
-<!-- Detail dialog -->
-<dialog class='detail-dialog' id='game-detail'>
-  <div class='detail-shell'>
-    <div class='detail-cover' id='detail-cover'></div>
-    <div class='detail-body'>
-      <div class='detail-topbar'>
-        <div class='detail-header'>
-          <h2 class='detail-title' id='detail-title'></h2>
-        </div>
-        <button
-          class='detail-close'
-          id='detail-close'
-          type='button'
-          aria-label='Cerrar'>x</button
-        >
-      </div>
-      <dl class='detail-grid' id='detail-grid'></dl>
-      <div class='detail-more' id='detail-more' hidden>
-        <a class='detail-more-button' id='detail-more-button' href='#' hidden>
-          Mas informacion
-        </a>
-      </div>
-      <div class='detail-comments'>
-        <dt class='muted'>Comentarios</dt>
-        <dd id='detail-comments'>-</dd>
-      </div>
-    </div>
-  </div>
-</dialog>

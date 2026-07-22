@@ -11,6 +11,7 @@ import GameDetailStats from "../../components/game-detail/GameDetailStats.astro"
 import GameDetailDLCs from "../../components/game-detail/GameDetailDLCs.astro";
 import GameDetailComments from "../../components/game-detail/GameDetailComments.astro";
 import { buildGameCoverUrl } from "../../lib/game-cover-url";
+import { isCompletedStatus, normalizeStatus } from "../../lib/game-status";
 import { findGameBySlug, getPurchasedUnits, getTotalPaidPrice, readGames } from "../../lib/local-games";
 
 const game = findGameBySlug(await readGames(), Astro.params.slug ?? "");
@@ -254,7 +255,7 @@ const formatTrackedHours = (value: number | null) => {
 };
 
 const statusClassName = (value: unknown) => {
-  const normalized = String(value ?? "").trim().toLowerCase();
+  const normalized = normalizeStatus(value);
   const map: Record<string, string> = {
     pendiente: "badge-status-pending",
     jugando: "badge-status-playing",
@@ -394,9 +395,9 @@ const cardsProgress =
     ? Math.max(0, Math.min(100, (Number(game.steam_cromos.actual) / Number(game.steam_cromos.total)) * 100))
     : null;
 
-const normalizedStatus = String(game.estado ?? "").toLowerCase();
+const normalizedStatus = normalizeStatus(game.estado);
 let statusCellClass = "";
-if (normalizedStatus === "terminado") statusCellClass = "detail-item-status-completed";
+if (isCompletedStatus(game.estado)) statusCellClass = "detail-item-status-completed";
 else if (normalizedStatus === "jugando") statusCellClass = "detail-item-status-playing";
 else if (normalizedStatus === "pendiente") statusCellClass = "detail-item-status-pending";
 else if (normalizedStatus === "recurrente") statusCellClass = "detail-item-status-recurring";

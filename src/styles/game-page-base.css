@@ -1,0 +1,523 @@
+@import './theme.css';
+
+/* ================================================================
+   game-page.css — página rich/cinematográfica
+   ================================================================ */
+
+@layer global {
+
+/* Detail page tightening */
+.game-page-rich .game-hero-cinematic {
+  border-radius: var(--radius-1);
+}
+
+.game-page-rich .game-hero-cinematic::before {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(8, 10, 14, 0.8) 0%,
+      rgba(8, 10, 14, 0.46) 48%,
+      rgba(8, 10, 14, 0.84) 100%
+    ),
+    radial-gradient(
+      circle at top left,
+      rgba(164, 174, 191, 0.1),
+      transparent 28%
+    ),
+    var(--hero-cover);
+  background-size: cover;
+  background-position: center 28%;
+}
+
+.game-page-rich .game-overview-card,
+.game-page-rich .analysis-panel,
+.game-page-rich .game-summary-section {
+  border-radius: var(--radius-1);
+}
+
+.game-page-rich .data-group-card,
+.game-page-rich .range-chart-card,
+.game-page-rich .finance-timeline-card,
+.game-page-rich .compact-bar-card {
+  border-radius: var(--radius-2);
+}
+
+.game-page-rich .finance-timeline-stop {
+  border-radius: var(--radius-3);
+}
+
+.game-page-rich .game-intro-panel,
+.game-page-rich .analysis-panel,
+.game-page-rich .game-summary-section,
+.game-page-rich .data-group-card,
+.game-page-rich .range-chart-card,
+.game-page-rich .finance-timeline-card {
+  padding: 0.95rem;
+}
+
+.game-page-rich .game-overview-card {
+  gap: 1rem;
+  min-height: 0;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(146, 154, 170, 0.08),
+      transparent 28%
+    ),
+    linear-gradient(180deg, rgba(18, 20, 26, 0.98), rgba(14, 16, 22, 0.96));
+}
+
+.game-page-rich .game-overview-card-cinematic {
+  padding: 1.25rem;
+}
+
+.game-page-rich .game-overview-card-cinematic .game-overview-media {
+  max-width: 88px;
+  margin-top: 0.1rem;
+}
+
+.game-page-rich .game-poster-image,
+.game-page-rich
+  .game-overview-card-cinematic
+  .game-overview-media
+  .game-poster-image {
+  border-radius: var(--radius-3);
+}
+
+.game-page-rich .game-overview-copy {
+  gap: 0.65rem;
+  padding-right: 0;
+}
+
+.game-page-rich .game-overview-summary {
+  max-width: 56ch;
+  font-size: 0.88rem;
+  line-height: 1.35;
+  color: #b8bdc7;
+}
+
+.game-page-rich .analysis-head {
+  margin-bottom: 0.7rem;
+}
+
+.game-page-rich .compact-bar-card p,
+.game-page-rich .finance-timeline-head span {
+  font-size: 0.79rem;
+  line-height: 1.3;
+}
+
+.game-page-rich .finance-timeline-chart {
+  height: 210px;
+  border-radius: var(--radius-3);
+}
+
+.game-page-rich .section-subtitle {
+  display: none;
+}
+
+.game-page-rich .game-sections-nav {
+  gap: 0.45rem;
+  padding: 0.16rem;
+}
+
+.game-page-rich .game-sections-nav a {
+  padding: 0.6rem 0.88rem;
+}
+
+.game-page-rich .summary-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.game-page-rich .summary-grid .detail-item,
+.game-page-rich .summary-grid .detail-item:nth-child(1),
+.game-page-rich .summary-grid .detail-item:nth-child(2),
+.game-page-rich .summary-grid .detail-item:nth-child(3),
+.game-page-rich .summary-grid .detail-item:nth-child(4) {
+  grid-column: span 1;
+}
+
+.game-page-rich .summary-card {
+  min-width: 0;
+  min-height: 132px;
+  padding: 0.85rem;
+  display: grid;
+  align-content: start;
+  gap: 0.08rem;
+}
+
+.game-page-rich .summary-card dt {
+  font-size: 0.72rem;
+  line-height: 1.15;
+}
+
+.game-page-rich .summary-card dd {
+  margin-top: 0.28rem;
+  font-size: 0.96rem;
+  line-height: 1.02;
+}
+
+.game-page-rich .summary-card .detail-item-note {
+  margin-top: 0.28rem;
+  font-size: 0.72rem;
+  line-height: 1.18;
+  color: rgba(244, 236, 236, 0.62);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.game-page-rich {
+  display: grid;
+  gap: 1.5rem;
+  width: min(40cm, calc(100% - 1.5rem));
+  overflow-x: clip;
+}
+
+.game-hero-rich {
+  display: block;
+}
+
+/* .game-hero-cinematic (+ ::before/::after) y .game-poster-panel migrados
+   por completo a src/styles/game-detail/hero.css — no dejar copias aquí
+   (causaba exactamente el mismo problema de cascada que .dlc-showcase-*:
+   esta hoja se importa después y sus valores viejos ganaban). */
+
+.analysis-panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-1);
+  background: linear-gradient(
+    180deg,
+    rgba(18, 20, 26, 0.98),
+    rgba(14, 16, 22, 0.96)
+  );
+  box-shadow: var(--shadow);
+}
+
+.game-intro-panel,
+.data-group-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-2);
+  background: linear-gradient(
+    180deg,
+    rgba(18, 20, 26, 0.98),
+    rgba(14, 16, 22, 0.96)
+  );
+  box-shadow: var(--shadow);
+}
+
+.game-intro-panel {
+  padding: 1.8rem;
+}
+
+.game-sections-nav {
+  display: flex;
+  gap: 1.8rem;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  padding: 0.15rem 0 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(34, 33, 33, 0.95),
+    rgba(34, 33, 33, 0.82) 72%,
+    rgba(34, 33, 33, 0)
+  );
+  backdrop-filter: blur(8px);
+  overflow-x: auto;
+}
+
+.game-sections-nav a {
+  position: relative;
+  padding: 0.1rem 0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: #d5cfd1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.game-sections-nav a:first-child::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.85rem;
+  height: 2px;
+  background: #ef5759;
+}
+
+/* .game-overview-* (card/media/copy/summary) migrados por completo a
+   src/styles/game-detail/hero.css — no dejar copias aquí. */
+
+.hero-analysis-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin-top: 0;
+}
+
+.analysis-panel {
+  padding: 1.5rem;
+}
+
+.analysis-head {
+  margin-bottom: 0.9rem;
+}
+
+.range-chart-card {
+  padding: 1.5rem;
+  border-radius: var(--radius-2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.compact-bars-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.95rem 1rem;
+}
+
+.compact-bar-card {
+  padding: 0.95rem 0.95rem 0.9rem;
+  border-radius: var(--radius-2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(42, 46, 55, 0.72),
+    rgba(28, 31, 38, 0.62)
+  );
+}
+
+.compact-bar-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+  margin-bottom: 0.75rem;
+  font-family: var(--font-body);
+}
+
+.compact-bar-head strong {
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: #f0e8ea;
+}
+
+.compact-bar-head span {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f7f1ee;
+}
+
+.compact-bar-track {
+  position: relative;
+  height: 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(5, 7, 10, 0.7);
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.38);
+}
+
+.compact-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ef5759, #ba2426);
+}
+
+.compact-bar-fill-accent {
+  background: linear-gradient(90deg, rgba(239, 87, 89, 0.7), #ef5759);
+}
+
+.compact-bar-fill-muted,
+.compact-bar-fill-neutral {
+  background: linear-gradient(90deg, #8f98aa, #bcc7da);
+}
+
+.compact-bar-fill-positive {
+  background: linear-gradient(90deg, #5ccf7d, #83f2a1);
+}
+
+.compact-bar-fill-negative {
+  background: linear-gradient(90deg, #ef5759, #c73033);
+}
+
+.compact-bar-card p {
+  margin: 0.65rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  line-height: 1.4;
+  color: #cabfc3;
+}
+
+.finance-timeline-card {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: var(--radius-2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(31, 38, 28, 0.4),
+    rgba(18, 24, 17, 0.55)
+  );
+}
+
+.finance-timeline-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+  margin-bottom: 0.8rem;
+  font-family: var(--font-body);
+}
+
+.finance-timeline-head strong {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f4f1e8;
+}
+
+.finance-timeline-head span {
+  font-size: 0.84rem;
+  color: #cfcdc2;
+}
+
+.finance-timeline-shell {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.finance-timeline-chart {
+  width: 100%;
+  height: 220px;
+  display: block;
+  border-radius: var(--radius-3);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.03),
+      rgba(255, 255, 255, 0.01)
+    ),
+    linear-gradient(180deg, rgba(10, 14, 10, 0.6), rgba(10, 14, 10, 0.2));
+}
+
+.finance-timeline-guides {
+  opacity: 1;
+}
+
+.finance-timeline-guide-line {
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 0.45;
+}
+
+.finance-timeline-area {
+  fill: rgba(42, 187, 79, 0.92);
+}
+
+.finance-timeline-line {
+  fill: none;
+  stroke: #91f5a9;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.finance-timeline-point-glow {
+  fill: rgba(255, 255, 255, 0.08);
+}
+
+.finance-timeline-point {
+  fill: #10160f;
+  stroke: #f7faf7;
+  stroke-width: 0.9;
+}
+
+.finance-timeline-labels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.finance-timeline-stop {
+  padding: 0.85rem 0.9rem;
+  border-radius: var(--radius-3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.finance-timeline-stop-label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #cbc8bb;
+}
+
+.finance-timeline-stop strong {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: #f8f3ef;
+}
+
+.finance-timeline-stop-empty {
+  opacity: 0.52;
+}
+
+.finance-timeline-empty {
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+  border-radius: var(--radius-3);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.02);
+  font-family: var(--font-body);
+  color: #c7c4b8;
+  text-align: center;
+  padding: 1rem;
+}
+
+.game-summary-section .detail-grid-4,
+.detail-grid-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.detail-grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.detail-grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.game-data-groups {
+  display: grid;
+  gap: 1.15rem;
+}
+
+.data-group-card {
+  padding: 1.2rem;
+}
+
+.data-group-head {
+  margin-bottom: 0.85rem;
+}
+
+.data-group-head h3 {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+}
+
+/* Estilos de DLC (.dlc-gallery, .dlc-showcase-*) migrados por completo a
+   src/styles/game-detail/dlcs.css — mantener ambas copias vivas causaba
+   conflictos de cascada (esta hoja se importa después y ganaba con
+   valores obsoletos: padding, object-fit:contain, fallback ya eliminado).
+   No dejar reglas .dlc-showcase-* aquí. */
+
+} /* end @layer global */

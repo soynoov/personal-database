@@ -1,15 +1,18 @@
 import type { APIRoute } from "astro";
-import { filterGames, readGames } from "../../lib/local-games";
+import { filterCatalogGames, getCatalogLimit, toCatalogGame } from "../../lib/catalog-game";
+import { readGames } from "../../lib/local-games";
 
 export const GET: APIRoute = async ({ url }) => {
-  const games = filterGames(await readGames(), {
+  const games = filterCatalogGames((await readGames()).map(toCatalogGame), {
     search: url.searchParams.get("search") ?? undefined,
     estado: url.searchParams.get("estado") ?? undefined,
     launcher: url.searchParams.get("launcher") ?? undefined,
     plataforma: url.searchParams.get("plataforma") ?? undefined,
   });
 
-  const limit = Number(url.searchParams.get("limit") ?? 200);
+  const limit = getCatalogLimit(url.searchParams.get("limit"));
 
-  return Response.json(games.slice(0, limit));
+  return Response.json(games.slice(0, limit), {
+    headers: { "Cache-Control": "private, no-store" },
+  });
 };

@@ -1,4 +1,6 @@
 ---
+import { normalizeStatus } from '../lib/game-status';
+
 interface Props {
   orderedDrawerEstados: string[];
   plataformas: string[];
@@ -9,7 +11,7 @@ interface Props {
 const { orderedDrawerEstados, plataformas, launchers, active = 'catalogo' } = Astro.props;
 
 const estadoColor = (estado: string): string => {
-  const n = estado.toLowerCase().trim();
+  const n = normalizeStatus(estado);
   if (n === 'jugando') return '#6ee76c';
   if (n === 'terminado' || n === 'completado') return '#67b1ff';
   if (n === 'pendiente') return '#f5c518';

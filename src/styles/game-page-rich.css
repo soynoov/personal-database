@@ -1,0 +1,451 @@
+@layer global {
+
+/* app-mode overrides for game-page-rich */
+.game-page-rich {
+  width: min(40cm, calc(100% - 1.5rem));
+  gap: 1.4rem;
+}
+
+/* ── Identidad de sección: eyebrow + acento de color ──────────────
+   Cada bloque mayor de la ficha (Horas, Dinero, Resumen, Estadísticas,
+   DLCs, Comentarios) lleva una etiqueta pequeña en mayúsculas y una
+   franja de 3px arriba, coloreada por --section-accent. El color
+   reutiliza la paleta nominal de theme.css, nada nuevo. */
+
+.section-eyebrow {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--section-accent, rgba(255, 255, 255, 0.5));
+  opacity: 0.92;
+}
+
+.analysis-panel,
+#summary,
+#technical,
+#dlcs,
+.detail-comments-vault {
+  position: relative;
+}
+
+.analysis-panel::before,
+#summary::before,
+#technical::before,
+#dlcs::before,
+.detail-comments-vault::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 1.4rem;
+  right: 1.4rem;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
+  background: var(--section-accent, transparent);
+  opacity: 0.85;
+}
+
+.analysis-panel-hours {
+  --section-accent: var(--indigo);
+}
+
+.analysis-panel-money {
+  --section-accent: var(--pistachio);
+}
+
+#summary {
+  --section-accent: #ef5759;
+}
+
+#technical {
+  --section-accent: #9db4d6;
+}
+
+#dlcs {
+  --section-accent: var(--pumpkin);
+}
+
+.detail-comments-vault {
+  --section-accent: rgba(255, 255, 255, 0.26);
+}
+
+.detail-comments-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.detail-comments-head dt {
+  margin: 0;
+}
+
+.game-sections-nav {
+  gap: 0.7rem;
+  padding: 0.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-pill);
+  background: rgba(19, 21, 26, 0.8);
+  position: sticky;
+  top: 0.8rem;
+}
+
+.game-sections-nav a {
+  padding: 0.72rem 1rem;
+  border-radius: var(--radius-pill);
+}
+
+.game-sections-nav a:first-child::after {
+  display: none;
+}
+
+.game-sections-nav a:hover,
+.game-sections-nav a:focus-visible {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.hero-analysis-grid {
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  align-items: start;
+}
+
+.hero-analysis-grid > .analysis-panel {
+  grid-column: 1 / -1;
+}
+
+.game-summary-section {
+  padding: 1.4rem;
+}
+
+.game-data-groups {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.data-group-card {
+  min-height: 100%;
+}
+
+.range-chart-card {
+  border-radius: var(--radius-2);
+  background: linear-gradient(
+    180deg,
+    rgba(20, 23, 29, 0.88),
+    rgba(13, 15, 20, 0.82)
+  );
+}
+
+.chart-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.95fr);
+  gap: 1rem;
+}
+
+.chart-visual-card {
+  display: grid;
+  gap: 0.85rem;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid rgba(132, 146, 166, 0.12);
+  border-radius: var(--radius-3);
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(197, 108, 255, 0.12),
+      transparent 32%
+    ),
+    linear-gradient(180deg, rgba(17, 21, 29, 0.96), rgba(11, 14, 20, 0.94));
+}
+
+.chart-visual-card-money {
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(155, 255, 131, 0.12),
+      transparent 32%
+    ),
+    linear-gradient(180deg, rgba(17, 21, 29, 0.96), rgba(11, 14, 20, 0.94));
+}
+
+.chart-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.9rem;
+}
+
+.chart-header strong {
+  display: block;
+  font-size: 0.92rem;
+  color: #f6f7fb;
+}
+
+.chart-header p {
+  margin: 0.28rem 0 0;
+  font-size: 0.79rem;
+  line-height: 1.35;
+  color: rgba(218, 226, 236, 0.7);
+}
+
+.chart-badge {
+  flex: 0 0 auto;
+  min-height: 30px;
+  padding: 0.32rem 0.72rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.03);
+  color: #e8edf3;
+  font-size: 0.72rem;
+}
+
+.chart-canvas-wrap {
+  position: relative;
+  min-height: 310px;
+  padding: 0.4rem 0.1rem 0 0;
+}
+
+.chart-canvas-wrap canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.chart-empty {
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+  padding: 1rem;
+  border: 1px dashed rgba(132, 146, 166, 0.18);
+  border-radius: var(--radius-4);
+  color: rgba(218, 226, 236, 0.68);
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.chart-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  align-content: start;
+}
+
+.chart-metric-card {
+  display: grid;
+  align-content: start;
+  gap: 0.3rem;
+  min-height: 136px;
+  padding: 0.9rem;
+  border: 1px solid rgba(132, 146, 166, 0.12);
+  border-radius: var(--radius-3);
+  background: linear-gradient(
+    180deg,
+    rgba(21, 26, 35, 0.95),
+    rgba(16, 19, 26, 0.92)
+  );
+}
+
+.chart-metric-card span {
+  font-size: 0.74rem;
+  color: rgba(218, 226, 236, 0.62);
+}
+
+.chart-metric-card strong {
+  font-size: clamp(1.3rem, 2vw, 2rem);
+  line-height: 1;
+  color: #f7f1ee;
+}
+
+.chart-metric-card p {
+  margin: 0;
+  font-size: 0.77rem;
+  line-height: 1.35;
+  color: rgba(218, 226, 236, 0.68);
+}
+
+.chart-metric-card-hours {
+  box-shadow: inset 0 0 0 1px rgba(197, 108, 255, 0.14);
+}
+
+.chart-metric-card-money {
+  box-shadow: inset 0 0 0 1px rgba(155, 255, 131, 0.14);
+}
+
+.chart-metric-card-positive {
+  box-shadow: inset 0 0 0 1px rgba(96, 214, 120, 0.16);
+}
+
+.chart-metric-card-negative {
+  box-shadow: inset 0 0 0 1px rgba(214, 80, 80, 0.16);
+}
+
+.chart-metric-card-neutral {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.finance-timeline-card {
+  border-radius: var(--radius-2);
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(255, 255, 255, 0.05),
+      transparent 24%
+    ),
+    linear-gradient(180deg, rgba(24, 24, 26, 0.95), rgba(17, 18, 20, 0.96));
+}
+
+.finance-timeline-card-profit {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(96, 222, 132, 0.16),
+      transparent 26%
+    ),
+    linear-gradient(180deg, rgba(24, 24, 26, 0.95), rgba(17, 18, 20, 0.96));
+}
+
+.finance-timeline-card-loss {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(186, 36, 38, 0.16),
+      transparent 26%
+    ),
+    linear-gradient(180deg, rgba(24, 24, 26, 0.95), rgba(17, 18, 20, 0.96));
+}
+
+.finance-timeline-card-neutral {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(255, 255, 255, 0.06),
+      transparent 26%
+    ),
+    linear-gradient(180deg, rgba(24, 24, 26, 0.95), rgba(17, 18, 20, 0.96));
+}
+
+.finance-timeline-chart {
+  height: 250px;
+  width: 100%;
+  display: block;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.018),
+      rgba(255, 255, 255, 0.006)
+    ),
+    linear-gradient(180deg, rgba(14, 14, 16, 0.96), rgba(20, 20, 21, 0.72));
+  padding: 0.35rem;
+}
+
+.finance-timeline-chart-profit {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.018),
+      rgba(255, 255, 255, 0.006)
+    ),
+    linear-gradient(180deg, rgba(14, 14, 16, 0.96), rgba(20, 20, 21, 0.72));
+}
+
+.finance-timeline-chart-loss {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.018),
+      rgba(255, 255, 255, 0.006)
+    ),
+    linear-gradient(180deg, rgba(14, 14, 16, 0.96), rgba(20, 20, 21, 0.72));
+}
+
+.finance-timeline-chart-neutral {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.018),
+      rgba(255, 255, 255, 0.006)
+    ),
+    linear-gradient(180deg, rgba(14, 14, 16, 0.96), rgba(20, 20, 21, 0.72));
+}
+
+.finance-timeline-area {
+  fill: rgba(128, 130, 138, 0.1);
+}
+
+.finance-timeline-line {
+  stroke: #d0d4da;
+  stroke-width: 1.45;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.06));
+}
+
+.finance-timeline-point-glow {
+  fill: rgba(255, 255, 255, 0.07);
+}
+
+.finance-timeline-point {
+  fill: #cfd4db;
+  stroke: rgba(207, 212, 219, 0.45);
+  stroke-width: 1.2;
+}
+
+.finance-timeline-card-profit .finance-timeline-area {
+  fill: rgba(86, 190, 90, 0.16);
+}
+
+.finance-timeline-card-profit .finance-timeline-line {
+  stroke: #b8e35f;
+  filter: drop-shadow(0 0 7px rgba(184, 227, 95, 0.2));
+}
+
+.finance-timeline-card-profit .finance-timeline-point-glow {
+  fill: rgba(184, 227, 95, 0.16);
+}
+
+.finance-timeline-card-profit .finance-timeline-point {
+  fill: #b8e35f;
+  stroke: rgba(184, 227, 95, 0.38);
+}
+
+.finance-timeline-card-loss .finance-timeline-area {
+  fill: rgba(186, 36, 38, 0.16);
+}
+
+.finance-timeline-card-loss .finance-timeline-line {
+  stroke: #ff7a7d;
+  filter: drop-shadow(0 0 7px rgba(255, 122, 125, 0.18));
+}
+
+.finance-timeline-card-loss .finance-timeline-point-glow {
+  fill: rgba(255, 122, 125, 0.14);
+}
+
+.finance-timeline-card-loss .finance-timeline-point {
+  fill: #ff7a7d;
+  stroke: rgba(255, 122, 125, 0.36);
+}
+
+.finance-timeline-card-neutral .finance-timeline-area {
+  fill: rgba(151, 154, 163, 0.14);
+}
+
+.finance-timeline-card-neutral .finance-timeline-line {
+  stroke: #cfd4db;
+}
+
+.finance-timeline-card-neutral .finance-timeline-point-glow {
+  fill: rgba(255, 255, 255, 0.08);
+}
+
+.finance-timeline-card-neutral .finance-timeline-point {
+  fill: #cfd4db;
+  stroke: rgba(207, 212, 219, 0.34);
+}
+
+.finance-timeline-stop {
+  border-radius: var(--radius-3);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+} /* end @layer global */

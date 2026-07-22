@@ -15,11 +15,10 @@
  */
 import type { LocalGame } from './local-games';
 import { getPaidUnitPrice, getPurchasedUnits, slugifyGameTitle } from './local-games';
-
-const TERMINADO_VALUES = new Set(['terminado', 'completado']);
+import { isCompletedStatus, normalizeStatus } from './game-status';
 
 function isTerminado(estado: string | null | undefined) {
-  return TERMINADO_VALUES.has(String(estado ?? '').trim().toLowerCase());
+  return isCompletedStatus(estado);
 }
 
 function yearOf(dateStr: string | null | undefined): number | null {
@@ -188,10 +187,6 @@ export function getYearRecap(games: LocalGame[], year: number): YearRecap {
 const NO_EMPIEZA_AUN = new Set(['wishlist', 'pendiente']); // sin fecha_inicio es normal
 const NO_ADQUIRIDO_AUN = new Set(['wishlist']); // sin precio_pagado es normal
 
-function estadoLower(estado: string | null | undefined) {
-  return String(estado ?? '').trim().toLowerCase();
-}
-
 function toGameRef(g: LocalGame) {
   return { titulo: g.titulo, slug: slugifyGameTitle(g.titulo) };
 }
@@ -222,13 +217,13 @@ export function getDataQuality(games: LocalGame[]): DataQuality {
   const terminadosSinFecha = terminados.filter((g) => !g.fecha_fin);
 
   const sinFechaInicio = games.filter(
-    (g) => !g.fecha_inicio && !NO_EMPIEZA_AUN.has(estadoLower(g.estado)),
+    (g) => !g.fecha_inicio && !NO_EMPIEZA_AUN.has(normalizeStatus(g.estado)),
   );
 
   const sinPrecio = games.filter(
     (g) =>
       (g.precio_pagado === null || g.precio_pagado === undefined) &&
-      !NO_ADQUIRIDO_AUN.has(estadoLower(g.estado)),
+      !NO_ADQUIRIDO_AUN.has(normalizeStatus(g.estado)),
   );
 
   const sinGeneros = games.filter((g) => !g.generos || g.generos.length === 0);

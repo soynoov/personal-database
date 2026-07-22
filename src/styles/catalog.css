@@ -401,10 +401,6 @@
   display: contents;
 }
 
-.card-action {
-  display: none;
-}
-
 .card-copy {
   display: grid;
   gap: 0.25rem;

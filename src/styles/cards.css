@@ -19,7 +19,6 @@
              div.card-title-stack
                h2[data-title]
                div.card-platform-badges
-             button.card-action
            div.badges
              span.badge[data-estado]
            dl.meta
@@ -68,6 +67,8 @@
     border-radius: var(--card-radius);
     cursor: pointer;
     display: block;
+    color: inherit;
+    text-decoration: none;
   }
 
   .mock-game-card:hover {
@@ -352,35 +353,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  /* Botón de acciones (tres puntos) */
-  .mock-game-card .card-action {
-    flex-shrink: 0;
-    background: transparent;
-    border: none;
-    padding: 0.2rem 0.25rem;
-    cursor: pointer;
-    opacity: 0.55;
-    transition: opacity 160ms ease;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    align-items: center;
-  }
-
-  .mock-game-card .card-action:hover {
-    opacity: 1;
-  }
-
-  /* Los spans del botón (puntos) heredan color del texto blanco */
-  .mock-game-card .card-action span {
-    display: block;
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: currentColor;
-    color: #fff;
   }
 
   /* ── 5. Touch: tap para revelar el panel (hover: none) ───── */

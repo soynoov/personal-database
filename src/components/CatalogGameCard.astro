@@ -1,0 +1,118 @@
+---
+import type { CatalogGame } from '../lib/catalog-game';
+import { buildGameCoverUrl } from '../lib/game-cover-url';
+import { normalizeStatus } from '../lib/game-status';
+
+interface Props {
+  game: CatalogGame;
+  eager?: boolean;
+}
+
+const { game, eager = false } = Astro.props;
+
+const statusClasses: Record<string, string> = {
+  pendiente: 'badge-status-pending',
+  jugando: 'badge-status-playing',
+  terminado: 'badge-status-completed',
+  completado: 'badge-status-completed',
+  recurrente: 'badge-status-recurring',
+  wishlist: 'badge-status-wishlist',
+  pausado: 'badge-status-paused',
+  abandonado: 'badge-status-abandoned',
+  retirado: 'badge-status-abandoned',
+};
+
+const launcherClasses: Record<string, string> = {
+  steam: 'badge-launcher-steam',
+  'epic games': 'badge-launcher-epic',
+  epic: 'badge-launcher-epic',
+  nintendo: 'badge-launcher-nintendo',
+  switch: 'badge-launcher-nintendo',
+  'nintendo switch': 'badge-launcher-nintendo',
+  'nintendo eshop': 'badge-launcher-eshop',
+  eshop: 'badge-launcher-eshop',
+  pirata: 'badge-launcher-pirata',
+  gamepass: 'badge-launcher-gamepass',
+  'xbox game pass': 'badge-launcher-gamepass',
+  'riot games': 'badge-launcher-riot',
+  hoyoverse: 'badge-launcher-hoyoplay',
+  hoyoplay: 'badge-launcher-hoyoplay',
+  'ea app': 'badge-launcher-ea',
+  ubisoft: 'badge-launcher-ubisoft',
+  'ubisoft connect': 'badge-launcher-ubisoft',
+  gog: 'badge-launcher-gog',
+  itch: 'badge-launcher-itch',
+  'itch.io': 'badge-launcher-itch',
+};
+
+const platformClasses: Record<string, string> = {
+  pc: 'badge-platform-pc',
+  mobile: 'badge-platform-mobile',
+  móvil: 'badge-platform-mobile',
+  android: 'badge-platform-mobile',
+  ios: 'badge-platform-mobile',
+  switch: 'badge-platform-switch',
+  'nintendo switch': 'badge-platform-switch',
+  nintendo: 'badge-platform-switch',
+};
+
+const normalizedStatus = normalizeStatus(game.estado);
+const isFreeToPlay = game.tags?.some((tag) => normalizeStatus(tag) === 'free-to-play') ?? false;
+const isEarlyAccess = game.generos?.some((genre) => {
+  const normalized = normalizeStatus(genre);
+  return normalized === 'acceso anticipado' || normalized === 'early access';
+}) ?? false;
+const support = [game.lanzamiento, game.generos?.slice(0, 2).join(', ')].filter(Boolean);
+---
+
+<a class='card mock-game-card' href={`/games/${game.slug}/`}>
+  <div class='card-main'>
+    <div class='card-cover'>
+      <img
+        src={buildGameCoverUrl(game)}
+        alt={`Carátula de ${game.titulo}`}
+        loading={eager ? 'eager' : 'lazy'}
+        decoding='async'
+      />
+    </div>
+    <div class='card-body'>
+      <div class='card-head'>
+        <div class='card-title-stack'>
+          <h2>{game.titulo}</h2>
+          <div class='card-platform-badges'>
+            {game.plataforma && (
+              <span class:list={['badge', platformClasses[normalizeStatus(game.plataforma)] ?? 'badge-platform-default']}>
+                {game.plataforma}
+              </span>
+            )}
+            {game.launcher && (
+              <span class:list={['badge', launcherClasses[normalizeStatus(game.launcher)] ?? 'badge-launcher-default']}>
+                {game.launcher}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+      <div class='badges'>
+        <span class:list={['badge', statusClasses[normalizedStatus] ?? 'badge-status-default']}>{game.estado ?? '-'}</span>
+        {isFreeToPlay && <span class='badge badge-tag-free'>Free to play</span>}
+        {isEarlyAccess && <span class='badge badge-tag-early'>Early Access</span>}
+      </div>
+      <dl class='meta'>
+        <div>
+          <dt>Horas</dt>
+          <dd>{game.horas == null ? '-' : new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1 }).format(game.horas)}</dd>
+        </div>
+      </dl>
+      <p class='card-support'>
+        {support.length > 0 ? support.map((part, index) => (
+          <>
+            {index > 0 && <span class='support-separator' aria-hidden='true'> | </span>}
+            <span>{part}</span>
+          </>
+        )) : 'Sin contexto'}
+      </p>
+    </div>
+  </div>
+</a>
+

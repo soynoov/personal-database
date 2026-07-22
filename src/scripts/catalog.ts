@@ -1,38 +1,17 @@
 /**
  * catalog.ts
  * Lógica cliente del catálogo: filtrado, renderizado de cards/tabla,
- * navegación, detail dialog y handlers de eventos.
+ * navegación y handlers de eventos.
  *
  * Punto de entrada: initCatalog(games)
  * Los datos llegan serializados desde index.astro via atributo data-games.
  */
 
 import { buildGameCoverUrl } from "../lib/game-cover-url";
+import type { CatalogGame } from "../lib/catalog-game";
+import { isCompletedStatus, normalizeStatus } from "../lib/game-status";
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
-
-interface LocalGame {
-  titulo: string;
-  estado: string | null;
-  launcher: string | null;
-  plataforma: string | null;
-  horas: number | null;
-  generos?: string[] | null;
-  tags?: string[] | null;
-  precio_pagado?: number | null;
-  precio_actual?: number | null;
-  precio_salida?: number | null;
-  hltb?: number | null;
-  fecha_inicio?: string | null;
-  fecha_fin?: string | null;
-  logros?: { actual: number | null; total: number | null } | null;
-  nota?: number | null;
-  comentarios?: string | null;
-  lanzamiento?: number | null;
-  solo?: boolean | null;
-  steam_appid?: number | null;
-  dlcs?: { total?: number | null; items?: Array<{ precio_pagado?: number | null }> } | null;
-}
 
 // ─── Utilidades generales ─────────────────────────────────────────────────────
 
@@ -40,9 +19,6 @@ const formatValue = (value: unknown, fallback = '-'): string => {
   if (value === null || value === undefined || value === '') return fallback;
   return String(value);
 };
-
-const normalizeStatus = (value: unknown): string =>
-  String(value ?? '').trim().toLowerCase();
 
 const textMatch = (value: unknown, search: string): boolean => {
   if (!search) return true;
@@ -58,20 +34,6 @@ const escapeHtml = (value: unknown): string =>
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
 
-const slugify = (value: unknown): string =>
-  String(value ?? '')
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-
-const formatSolo = (value: unknown): string => {
-  if (value === true) return 'Si';
-  if (value === false) return 'No';
-  return '-';
-};
-
 const matchesSoloFilter = (value: boolean | null | undefined, filter: string): boolean => {
   if (!filter) return true;
   if (filter === 'true') return value === true;
@@ -79,18 +41,7 @@ const matchesSoloFilter = (value: boolean | null | undefined, filter: string): b
   return false;
 };
 
-const formatDate = (value: unknown): string => {
-  if (!value) return '-';
-  const date = new Date(`${value}T00:00:00`);
-  if (Number.isNaN(date.getTime())) return String(value);
-  return new Intl.DateTimeFormat('es-ES', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric',
-  }).format(date);
-};
-
-const getCoverUrl = (game: LocalGame): string => buildGameCoverUrl(game);
+const getCoverUrl = (game: CatalogGame): string => buildGameCoverUrl(game);
 
 // ─── Iconos y clases de badges ────────────────────────────────────────────────
 
@@ -178,24 +129,24 @@ const platformClassName = (value: unknown): string =>
 
 // ─── Lógica de precios y tags ─────────────────────────────────────────────────
 
-const hasFreeToPlayTag = (game: LocalGame): boolean =>
+const hasFreeToPlayTag = (game: CatalogGame): boolean =>
   Array.isArray(game.tags) &&
   game.tags.some((tag) => String(tag).toLowerCase() === 'free-to-play');
 
-const hasEarlyAccess = (game: LocalGame): boolean =>
+const hasEarlyAccess = (game: CatalogGame): boolean =>
   Array.isArray(game.generos) &&
   game.generos.some((g) => {
     const n = String(g).toLowerCase();
     return n === 'acceso anticipado' || n === 'early access';
   });
 
-const getReferencePrice = (game: LocalGame): number | null => {
+const getReferencePrice = (game: CatalogGame): number | null => {
   if (game.precio_actual != null && game.precio_actual !== '') return Number(game.precio_actual);
   if (game.precio_salida != null && game.precio_salida !== '') return Number(game.precio_salida);
   return null;
 };
 
-const getPriceFilterBucket = (game: LocalGame): string => {
+const getPriceFilterBucket = (game: CatalogGame): string => {
   if (hasFreeToPlayTag(game)) return 'free';
   if (game.precio_pagado == null || game.precio_pagado === '') return 'unknown';
   const paid = Number(game.precio_pagado);
@@ -205,7 +156,7 @@ const getPriceFilterBucket = (game: LocalGame): string => {
   return 'high';
 };
 
-const getPaidPriceVisual = (game: LocalGame): { className: string; note: string } => {
+const getPaidPriceVisual = (game: CatalogGame): { className: string; note: string } => {
   if (hasFreeToPlayTag(game)) return { className: 'detail-item-price-free', note: 'Entrada sin coste' };
   if (game.precio_pagado == null || game.precio_pagado === '') return { className: '', note: '' };
 
@@ -231,15 +182,7 @@ const getPaidPriceVisual = (game: LocalGame): { className: string; note: string 
   return { className: 'detail-item-price-loss', note: `-${percent.toFixed(1)}% y ${Math.abs(delta).toFixed(2)} EUR por encima del precio ${sourceLabel}` };
 };
 
-const formatPrice = (value: unknown, game: LocalGame): string => {
-  if (hasFreeToPlayTag(game)) return 'Free to play';
-  if (value == null || value === '') return '-';
-  const amount = Number(value);
-  if (Number.isNaN(amount)) return String(value);
-  return `${amount.toFixed(2)} EUR`;
-};
-
-const formatViewPrice = (game: LocalGame): string => {
+const formatViewPrice = (game: CatalogGame): string => {
   if (hasFreeToPlayTag(game)) return 'Free to play';
   if (game.precio_pagado == null || game.precio_pagado === '') return '-';
   const amount = Number(game.precio_pagado);
@@ -252,7 +195,7 @@ const formatViewPrice = (game: LocalGame): string => {
 const STATUS_QUICK_FILTERS = new Set(['terminado', 'jugando', 'pendiente', 'wishlist']);
 const QUICK_ONLY_FILTERS = new Set(['profit', 'loss', 'early']);
 
-const matchesQuickFilter = (game: LocalGame, quickFilter: string): boolean => {
+const matchesQuickFilter = (game: CatalogGame, quickFilter: string): boolean => {
   if (!quickFilter) return true;
   if (quickFilter === 'free') return hasFreeToPlayTag(game);
   if (quickFilter === 'early') return hasEarlyAccess(game);
@@ -260,6 +203,7 @@ const matchesQuickFilter = (game: LocalGame, quickFilter: string): boolean => {
     const visual = getPaidPriceVisual(game);
     return quickFilter === 'profit' ? visual.className.includes('profit') : visual.className.includes('loss');
   }
+  if (quickFilter === 'terminado') return isCompletedStatus(game.estado);
   return normalizeStatus(game.estado) === quickFilter;
 };
 
@@ -272,36 +216,9 @@ const createBadge = (text: string, className: string): HTMLElement => {
   return badge;
 };
 
-const createDetailItem = (
-  label: string,
-  value: string,
-  options: { className?: string; note?: string; progress?: number | null } = {},
-): HTMLElement => {
-  const wrapper = document.createElement('div');
-  wrapper.className = 'detail-item';
-  if (value === '-') wrapper.classList.add('detail-item-empty');
-  if (options.className) wrapper.classList.add(options.className);
-  if (options.progress != null) {
-    wrapper.classList.add('detail-item-progress');
-    wrapper.style.setProperty('--progress', `${options.progress}%`);
-  }
-  const dt = document.createElement('dt');
-  dt.textContent = label;
-  const dd = document.createElement('dd');
-  dd.textContent = value;
-  wrapper.append(dt, dd);
-  if (options.note) {
-    const small = document.createElement('span');
-    small.className = 'detail-item-note';
-    small.textContent = options.note;
-    wrapper.appendChild(small);
-  }
-  return wrapper;
-};
-
 // ─── initCatalog ──────────────────────────────────────────────────────────────
 
-export function initCatalog(allGames: LocalGame[]): void {
+export function initCatalog(allGames: CatalogGame[]): void {
   const el = <T extends Element>(selector: string) =>
     document.querySelector<T>(selector)!;
 
@@ -325,14 +242,6 @@ export function initCatalog(allGames: LocalGame[]): void {
     activeFilterPills: el<HTMLElement>('#active-filter-pills'),
     quickFilters: Array.from(document.querySelectorAll<HTMLElement>('[data-quick-filter]')),
     viewButtons: Array.from(document.querySelectorAll<HTMLElement>('[data-view]')),
-    dialog: el<HTMLDialogElement>('#game-detail'),
-    detailCover: el<HTMLElement>('#detail-cover'),
-    detailTitle: el<HTMLElement>('#detail-title'),
-    detailGrid: el<HTMLElement>('#detail-grid'),
-    detailComments: el<HTMLElement>('#detail-comments'),
-    detailClose: el<HTMLButtonElement>('#detail-close'),
-    detailMore: el<HTMLElement>('#detail-more'),
-    detailMoreButton: el<HTMLAnchorElement>('#detail-more-button'),
   };
 
   // Restaurar params de URL
@@ -352,7 +261,11 @@ export function initCatalog(allGames: LocalGame[]): void {
 
   const isQuickChipActive = (chipValue: string, filters: Record<string, string>): boolean => {
     if (chipValue === '') return filters.estado === '' && filters.precio === '' && !activeQuickFilter;
-    if (STATUS_QUICK_FILTERS.has(chipValue)) return normalizeStatus(filters.estado) === chipValue;
+    if (STATUS_QUICK_FILTERS.has(chipValue)) {
+      return chipValue === 'terminado'
+        ? isCompletedStatus(filters.estado)
+        : normalizeStatus(filters.estado) === chipValue;
+    }
     if (chipValue === 'free') return filters.precio === 'free';
     return activeQuickFilter === chipValue;
   };
@@ -372,112 +285,6 @@ export function initCatalog(allGames: LocalGame[]): void {
 
   // ─── Detail dialog ─────────────────────────────────────────────────────────
 
-  const coverMarkup = (game: LocalGame): string => {
-    const coverUrl = escapeHtml(getCoverUrl(game));
-    return `
-      <div class="detail-cover-backdrop">
-        <img src="${coverUrl}" alt="" aria-hidden="true" loading="lazy" />
-      </div>
-      <div class="detail-cover-poster">
-        <img src="${coverUrl}" alt="Caratula de ${String(game.titulo).replace(/"/g, '&quot;')}" loading="lazy" />
-      </div>
-    `;
-  };
-
-  const openDetail = (game: LocalGame): void => {
-    elements.detailTitle.textContent = formatValue(game.titulo);
-    elements.detailGrid.innerHTML = '';
-    const commentsValue = formatValue(game.comentarios);
-    elements.detailComments.textContent = commentsValue;
-    elements.detailComments.parentElement?.classList.toggle('detail-comments-empty', commentsValue === '-');
-    elements.detailCover.innerHTML = coverMarkup(game);
-
-    // Más info link
-    const totalDlcs = Number(game.dlcs?.total ?? game.dlcs?.items?.length ?? 0);
-    const hasMoreInfo =
-      totalDlcs > 0 || Boolean(game.comentarios) || Boolean(game.generos?.length) ||
-      game.precio_pagado != null || game.precio_actual != null || game.precio_salida != null || game.nota != null;
-    elements.detailMore.hidden = !hasMoreInfo;
-    elements.detailMoreButton.hidden = !hasMoreInfo;
-    elements.detailMoreButton.textContent = totalDlcs > 0 ? 'Mas informacion y DLCs' : 'Mas informacion';
-    elements.detailMoreButton.href = `/games/${slugify(game.titulo)}/`;
-
-    // Calcular valores
-    const achievements =
-      game.logros && (game.logros.actual !== null || game.logros.total !== null)
-        ? `${formatValue(game.logros.actual)} / ${formatValue(game.logros.total)}`
-        : '-';
-    const achievementsProgress =
-      game.logros?.actual != null && game.logros?.total != null && Number(game.logros.total) > 0
-        ? Math.max(0, Math.min(100, (Number(game.logros.actual) / Number(game.logros.total)) * 100))
-        : null;
-    const genres = Array.isArray(game.generos) && game.generos.length > 0 ? game.generos.join(', ') : '-';
-    const tags = Array.isArray(game.tags) && game.tags.length > 0 ? game.tags.join(', ') : '-';
-    const hoursValue = game.horas == null ? null : Number(game.horas);
-    const hltbValue = game.hltb == null ? null : Number(game.hltb);
-
-    let hltbVisualClass = '';
-    let hltbNote = '';
-    if (hoursValue !== null && hltbValue !== null && hltbValue > 0) {
-      const ratio = hoursValue / hltbValue;
-      if (ratio >= 1.5) { hltbVisualClass = 'detail-item-hltb-long'; hltbNote = `Has tardado bastante mas (${(hoursValue - hltbValue).toFixed(1)} h extra)`; }
-      else if (ratio <= 0.6) { hltbVisualClass = 'detail-item-hltb-short'; hltbNote = `Has tardado bastante menos (${(hltbValue - hoursValue).toFixed(1)} h menos)`; }
-    }
-
-    const pricePaidVisual = getPaidPriceVisual(game);
-    const normalizedStatus = normalizeStatus(game.estado);
-    const STATUS_CELL_MAP: Record<string, string> = {
-      terminado: 'detail-item-status-completed', jugando: 'detail-item-status-playing',
-      pendiente: 'detail-item-status-pending', recurrente: 'detail-item-status-recurring',
-      wishlist: 'detail-item-status-wishlist', pausado: 'detail-item-status-paused',
-      abandonado: 'detail-item-status-abandoned', retirado: 'detail-item-status-abandoned',
-    };
-    const LAUNCHER_CELL_MAP: Record<string, string> = {
-      steam: 'detail-item-launcher-steam', 'epic games': 'detail-item-launcher-epic',
-      epic: 'detail-item-launcher-epic', nintendo: 'detail-item-launcher-nintendo',
-      switch: 'detail-item-launcher-nintendo', 'nintendo switch': 'detail-item-launcher-nintendo',
-      'nintendo eshop': 'detail-item-launcher-eshop', eshop: 'detail-item-launcher-eshop',
-      pirata: 'detail-item-launcher-pirata', gamepass: 'detail-item-launcher-gamepass',
-      'xbox game pass': 'detail-item-launcher-gamepass', 'riot games': 'detail-item-launcher-riot',
-      hoyoverse: 'detail-item-launcher-hoyoplay', hoyoplay: 'detail-item-launcher-hoyoplay',
-      'ea app': 'detail-item-launcher-ea', ubisoft: 'detail-item-launcher-ubisoft',
-      'ubisoft connect': 'detail-item-launcher-ubisoft', gog: 'detail-item-launcher-gog',
-      itch: 'detail-item-launcher-itch', 'itch.io': 'detail-item-launcher-itch',
-    };
-
-    [
-      { label: 'Horas jugadas', value: hoursValue === null ? '-' : `${hoursValue} h`, className: hltbVisualClass, note: hltbNote },
-      { label: 'HLTB', value: hltbValue === null ? '-' : `${hltbValue} h`, className: hltbVisualClass, note: hltbNote },
-      { label: 'Generos', value: genres },
-      { label: 'Precio pagado', value: formatPrice(game.precio_pagado, game), className: pricePaidVisual.className, note: pricePaidVisual.note },
-      { label: 'Precio actual', value: formatPrice(game.precio_actual, game) },
-      { label: 'PVP Steam', value: formatPrice(game.precio_salida, game) },
-      { label: 'Lanzamiento', value: formatValue(game.lanzamiento) },
-      { label: 'Estado', value: formatValue(game.estado), className: STATUS_CELL_MAP[normalizedStatus] ?? '' },
-      { label: 'Launcher', value: formatValue(game.launcher, 'Sin launcher'), className: LAUNCHER_CELL_MAP[normalizeStatus(game.launcher)] ?? '' },
-      { label: 'Plataforma', value: formatValue(game.plataforma), className: normalizeStatus(game.plataforma) === 'pc' ? 'detail-item-platform-pc' : '' },
-      { label: 'Steam AppID', value: formatValue(game.steam_appid) },
-      { label: 'Solo', value: formatSolo(game.solo) },
-      { label: 'Inicio', value: formatValue(game.fecha_inicio) },
-      { label: 'Fin', value: formatValue(game.fecha_fin) },
-      { label: 'Logros', value: achievements, className: 'detail-item-achievements', progress: achievementsProgress },
-      { label: 'Nota', value: formatValue(game.nota) },
-      { label: 'Tags', value: tags },
-      { label: 'Caratula', value: 'Dinamica' },
-      { label: 'DLCs', value: totalDlcs > 0 ? `${totalDlcs} registrados` : '-' },
-    ].forEach(({ label, value, className, note, progress }) => {
-      elements.detailGrid.appendChild(createDetailItem(label, value, { className, note, progress }));
-    });
-
-    elements.dialog.showModal();
-  };
-
-  const openGamePage = (game: LocalGame): void => {
-    window.location.href = `/games/${slugify(game.titulo)}/`;
-  };
-
-  // ─── Render ────────────────────────────────────────────────────────────────
-
   const render = (): void => {
     const filters = {
       search: elements.search.value.trim(),
@@ -493,14 +300,16 @@ export function initCatalog(allGames: LocalGame[]): void {
       .filter((game) => {
         const searchMatch =
           textMatch(game.titulo, filters.search) ||
-          textMatch(game.comentarios, filters.search) ||
           textMatch(game.launcher, filters.search) ||
           textMatch(Array.isArray(game.generos) ? game.generos.join(', ') : '', filters.search);
 
         return (
           searchMatch &&
           matchesQuickFilter(game, activeQuickFilter) &&
-          textMatch(game.estado, filters.estado) &&
+          (!filters.estado ||
+            (isCompletedStatus(filters.estado)
+              ? isCompletedStatus(game.estado)
+              : normalizeStatus(game.estado) === normalizeStatus(filters.estado))) &&
           textMatch(game.launcher, filters.launcher) &&
           textMatch(game.plataforma, filters.plataforma) &&
           (filters.precio ? getPriceFilterBucket(game) === filters.precio : true) &&
@@ -541,25 +350,41 @@ export function initCatalog(allGames: LocalGame[]): void {
 
     if (activeFilterEntries.length > 0) {
       elements.activeFilterPills.hidden = false;
-      elements.activeFilterPills.innerHTML = activeFilterEntries
-        .map(([key, value]) => {
-          let label: string;
-          let dotHtml = '';
-          if (key === 'quick') {
-            label = String(value).replace('destacado=', '');
-          } else if (key === 'estado') {
-            label = String(value);
-            const color = estadoPillColors[String(value).toLowerCase()] ?? '#8b9ab5';
-            dotHtml = `<span class="active-pill-dot" style="background:${color}" aria-hidden="true"></span>`;
-          } else {
-            label = `${key}: ${value}`;
-          }
-          return `<button class="active-filter-pill" type="button" data-filter-remove="${key}" data-filter-value="${String(value)}">${dotHtml}${label}<span class="active-pill-remove" aria-hidden="true">×</span></button>`;
-        })
-        .join('');
+      elements.activeFilterPills.replaceChildren();
+
+      for (const [key, value] of activeFilterEntries) {
+        const button = document.createElement('button');
+        button.className = 'active-filter-pill';
+        button.type = 'button';
+        button.dataset.filterRemove = key;
+
+        let label: string;
+        if (key === 'quick') {
+          label = String(value).replace('destacado=', '');
+        } else if (key === 'estado') {
+          label = String(value);
+          const dot = document.createElement('span');
+          dot.className = 'active-pill-dot';
+          dot.style.background = estadoPillColors[normalizeStatus(value)] ?? '#8b9ab5';
+          dot.setAttribute('aria-hidden', 'true');
+          button.appendChild(dot);
+        } else {
+          label = `${key}: ${value}`;
+        }
+
+        button.appendChild(document.createTextNode(label));
+
+        const remove = document.createElement('span');
+        remove.className = 'active-pill-remove';
+        remove.setAttribute('aria-hidden', 'true');
+        remove.textContent = '×';
+        button.appendChild(remove);
+
+        elements.activeFilterPills.appendChild(button);
+      }
     } else {
       elements.activeFilterPills.hidden = true;
-      elements.activeFilterPills.innerHTML = '';
+      elements.activeFilterPills.replaceChildren();
     }
 
     // Quick filter chips
@@ -654,24 +479,15 @@ export function initCatalog(allGames: LocalGame[]): void {
           : new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1, useGrouping: true }).format(Number(game.horas));
 
       // Eventos de la card
-      const card = node.querySelector('.card') as HTMLElement;
-      const cardAction = node.querySelector('.card-action')!;
-      cardAction.addEventListener('click', (e) => e.stopPropagation());
-      cardAction.addEventListener('keydown', (e) => e.stopPropagation());
+      const card = node.querySelector<HTMLAnchorElement>('[data-game-link]')!;
+      card.href = `/games/${game.slug}/`;
       card.addEventListener('click', (event) => {
         const isTouch = window.matchMedia('(hover: none)').matches;
         if (isTouch && !card.classList.contains('is-open')) {
+          event.preventDefault();
           document.querySelectorAll('.mock-game-card.is-open').forEach((c) => c.classList.remove('is-open'));
           card.classList.add('is-open');
           event.stopPropagation();
-          return;
-        }
-        openGamePage(game);
-      });
-      card.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          openGamePage(game);
         }
       });
 
@@ -703,17 +519,8 @@ export function initCatalog(allGames: LocalGame[]): void {
       (rowNode.querySelector('[data-row-precio]') as HTMLElement).textContent = formatViewPrice(game);
       (rowNode.querySelector('[data-row-lanzamiento]') as HTMLElement).textContent = formatValue(game.lanzamiento);
 
-      const row = rowNode.querySelector('.inventory-row')!;
-      const rowAction = rowNode.querySelector('.inventory-row-action')!;
-      rowAction.addEventListener('click', (e) => e.stopPropagation());
-      rowAction.addEventListener('keydown', (e) => e.stopPropagation());
-      row.addEventListener('click', () => openGamePage(game));
-      row.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          openGamePage(game);
-        }
-      });
+      const row = rowNode.querySelector<HTMLAnchorElement>('[data-row-link]')!;
+      row.href = `/games/${game.slug}/`;
 
       elements.tableBody.appendChild(rowNode);
     }
@@ -724,7 +531,7 @@ export function initCatalog(allGames: LocalGame[]): void {
       const value = item.dataset.value ?? '';
       let active = false;
       if (filter === 'sort') active = elements.sort.value === value;
-      else if (filter === 'estado') active = elements.estado.value === value;
+      else if (filter === 'estado') active = normalizeStatus(elements.estado.value) === normalizeStatus(value);
       else if (filter === 'launcher') active = elements.launcher.value === value;
       else if (filter === 'plataforma') active = elements.plataforma.value === value;
       item.classList.toggle('is-active', active);
@@ -773,8 +580,16 @@ export function initCatalog(allGames: LocalGame[]): void {
         elements.precio.value = '';
         activeQuickFilter = '';
       } else if (STATUS_QUICK_FILTERS.has(nextValue)) {
-        const isActive = normalizeStatus(elements.estado.value) === nextValue;
-        elements.estado.value = isActive ? '' : nextValue.charAt(0).toUpperCase() + nextValue.slice(1);
+        const isActive = nextValue === 'terminado'
+          ? isCompletedStatus(elements.estado.value)
+          : normalizeStatus(elements.estado.value) === nextValue;
+        const matchingOption = Array.from(elements.estado.options).find((option) =>
+          nextValue === 'terminado'
+            ? isCompletedStatus(option.value)
+            : normalizeStatus(option.value) === nextValue,
+        );
+        elements.estado.value = isActive ? '' : (matchingOption?.value ?? '');
+        activeQuickFilter = '';
       } else if (nextValue === 'free') {
         elements.precio.value = elements.precio.value === 'free' ? '' : 'free';
       } else if (QUICK_ONLY_FILTERS.has(nextValue)) {
@@ -832,16 +647,6 @@ export function initCatalog(allGames: LocalGame[]): void {
       closeMobileDrawer();
       render();
     });
-  });
-
-  // Detail dialog
-  elements.detailClose.addEventListener('click', () => elements.dialog.close());
-  elements.dialog.addEventListener('click', (event) => {
-    const rect = elements.dialog.getBoundingClientRect();
-    const isInDialog =
-      rect.top <= event.clientY && event.clientY <= rect.top + rect.height &&
-      rect.left <= event.clientX && event.clientX <= rect.left + rect.width;
-    if (!isInDialog) elements.dialog.close();
   });
 
   // Cerrar card abierta en touch al tocar fuera
