@@ -43,7 +43,7 @@
   stroke-linejoin: round;
 }
 
-/* ── Lápiz de sección (Dinero, DLCs, Comentarios...) ─────────────── */
+/* ── Lápiz de sección (Dinero, DLCs, Comentario...) ──────────────── */
 /* Igual que .game-edit-trigger pero más pequeño, pensado para vivir
    dentro de un .section-title-row junto al <h2>, no en la topbar. */
 .game-edit-trigger-sm {

@@ -1,5 +1,12 @@
 import type { APIRoute } from "astro";
-import { findGameBySlug, readGames, slugifyGameTitle, writeGames } from "../../../../lib/local-games";
+import { calculatePersonalScore } from "../../../../lib/game-reviews";
+import {
+  findGameBySlug,
+  readGames,
+  slugifyGameTitle,
+  writeGames,
+  type GameCritique,
+} from "../../../../lib/local-games";
 
 function jsonResponse(status: number, body: Record<string, unknown>) {
   return new Response(JSON.stringify(body), {
@@ -14,6 +21,43 @@ function toNullableNumber(value: unknown): number | null {
   if (str === "") return null;
   const num = Number(str);
   return Number.isFinite(num) ? num : null;
+}
+
+function toBoundedNumber(value: unknown, min: number, max: number): number | null {
+  const number = toNullableNumber(value);
+  if (number === null || number < min || number > max) return null;
+  return number;
+}
+
+function toGameCritique(value: unknown): GameCritique {
+  const source =
+    typeof value === "object" && value !== null
+      ? (value as Record<string, unknown>)
+      : {};
+  const criteriaSource =
+    typeof source.criterios === "object" && source.criterios !== null
+      ? (source.criterios as Record<string, unknown>)
+      : {};
+  const honorarySource =
+    typeof source.mencion_honorifica === "object" && source.mencion_honorifica !== null
+      ? (source.mencion_honorifica as Record<string, unknown>)
+      : {};
+
+  return {
+    metascore: toBoundedNumber(source.metascore, 0, 100),
+    userscore: toBoundedNumber(source.userscore, 0, 10),
+    criterios: {
+      jugabilidad: toBoundedNumber(criteriaSource.jugabilidad, 1, 5),
+      historia: toBoundedNumber(criteriaSource.historia, 1, 5),
+      musica: toBoundedNumber(criteriaSource.musica, 1, 3),
+      graficos_arte: toBoundedNumber(criteriaSource.graficos_arte, 1, 5),
+      entretenimiento: toBoundedNumber(criteriaSource.entretenimiento, 1, 5),
+    },
+    mencion_honorifica: {
+      nivel: toBoundedNumber(honorarySource.nivel, 0, 3),
+      comentario: toNullableString(honorarySource.comentario),
+    },
+  };
 }
 
 function toNullablePositiveInteger(value: unknown): number | null {
@@ -114,8 +158,18 @@ export const POST: APIRoute = async ({ params, request }) => {
   if (body.gasto_microtransacciones !== undefined) {
     updated.gasto_microtransacciones = toNullableNumber(body.gasto_microtransacciones);
   }
-  if (body.nota !== undefined) updated.nota = toNullableNumber(body.nota);
   if (body.comentarios !== undefined) updated.comentarios = toNullableString(body.comentarios);
+  if (body.critica !== undefined) {
+    updated.critica = toGameCritique(body.critica);
+    const honorary = updated.critica.mencion_honorifica;
+    if ((honorary?.nivel ?? 0) > 0 && !honorary?.comentario) {
+      return jsonResponse(400, {
+        ok: false,
+        error: "Explica el motivo de la mención honorífica.",
+      });
+    }
+    updated.nota = calculatePersonalScore(updated.critica);
+  }
 
   // Tags: el checkbox free_to_play solo se aplica si el formulario lo manda
   // explícitamente (junto al precio, desde el lápiz de Dinero). Si llega

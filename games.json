@@ -198,6 +198,21 @@
       "total": null
     },
     "nota": 8,
+    "critica": {
+      "metascore": 81,
+      "userscore": 8.2,
+      "criterios": {
+        "jugabilidad": 4,
+        "historia": 4,
+        "musica": 3,
+        "graficos_arte": 3,
+        "entretenimiento": 4
+      },
+      "mencion_honorifica": {
+        "nivel": 0,
+        "comentario": null
+      }
+    },
     "comentarios": null,
     "lanzamiento": 2019,
     "solo": true,

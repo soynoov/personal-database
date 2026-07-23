@@ -1,0 +1,4 @@
+design-qa.md
+tmp-playwright/
+test-results/
+*.log

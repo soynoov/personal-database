@@ -3,7 +3,7 @@
  * GameDetailTopbar.astro — Barra superior de la ficha: volver a la izquierda,
  * lápiz general a la derecha. El lápiz general edita solo lo que no tiene
  * un lápiz propio en otra sección (estado, horas, fechas, nota). Precio,
- * microtransacciones y comentarios se editan desde sus paneles respectivos.
+ * microtransacciones y el comentario se editan desde sus paneles respectivos.
  */
 import '../../styles/game-detail/topbar.css';
 import '../../styles/game-detail/edit.css';
@@ -14,7 +14,6 @@ interface EditValues {
   horas: number | null;
   fecha_inicio: string | null;
   fecha_fin: string | null;
-  nota: number | null;
 }
 
 interface Props {
@@ -65,15 +64,9 @@ const estadoOptions =
         </select>
       </div>
 
-      <div class="edit-field-row">
-        <div class="edit-field">
-          <label for="edit-horas">Horas jugadas</label>
-          <input id="edit-horas" name="horas" type="number" step="0.1" min="0" value={editValues.horas ?? ''} />
-        </div>
-        <div class="edit-field">
-          <label for="edit-nota">Nota</label>
-          <input id="edit-nota" name="nota" type="number" step="0.1" min="0" max="10" value={editValues.nota ?? ''} />
-        </div>
+      <div class="edit-field">
+        <label for="edit-horas">Horas jugadas</label>
+        <input id="edit-horas" name="horas" type="number" step="0.1" min="0" value={editValues.horas ?? ''} />
       </div>
 
       <div class="edit-field-row">
@@ -140,7 +133,6 @@ const estadoOptions =
         horas: data.get('horas'),
         fecha_inicio: data.get('fecha_inicio'),
         fecha_fin: data.get('fecha_fin'),
-        nota: data.get('nota'),
       };
 
       submitBtn.disabled = true;

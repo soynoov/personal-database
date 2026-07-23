@@ -1,8 +1,8 @@
 ---
 /**
- * GameDetailComments.astro — Sección de comentarios libres del juego.
+ * GameDetailComments.astro — Sección del comentario libre del juego.
  * Muestra el campo de texto libre 'comentarios'. Se oculta visualmente
- * si no hay comentarios (clase detail-comments-empty).
+ * si no hay comentario (clase detail-comments-empty).
  * Datos: comentarios viene del campo game.comentarios formateado en [slug].astro.
  */
 import '../../styles/game-detail/comments.css';
@@ -22,6 +22,7 @@ const { slug, comentarios, editValues } = Astro.props;
 ---
 
 <section
+  id="comentario"
   class:list={[
     "detail-comments",
     "detail-comments-vault",
@@ -31,9 +32,9 @@ const { slug, comentarios, editValues } = Astro.props;
   <div class="detail-comments-head">
     <div>
       <span class="section-eyebrow">Notas</span>
-      <dt class="muted">Comentarios</dt>
+      <dt class="muted">Comentario</dt>
     </div>
-    <button class="game-edit-trigger game-edit-trigger-sm" id="comments-edit-trigger" type="button" aria-label="Editar comentarios">
+    <button class="game-edit-trigger game-edit-trigger-sm" id="comments-edit-trigger" type="button" aria-label="Editar comentario">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 20h9"></path>
         <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
@@ -47,7 +48,7 @@ const { slug, comentarios, editValues } = Astro.props;
   <div class="edit-dialog-body">
     <div class="edit-dialog-head">
       <div>
-        <h2>Editar Comentarios</h2>
+        <h2>Editar comentario</h2>
         <p class="edit-dialog-sub">Escribe directo en games.json. Solo funciona en local (npm run dev).</p>
       </div>
       <button class="edit-dialog-close" id="comments-edit-close" type="button" aria-label="Cerrar">×</button>
@@ -57,7 +58,7 @@ const { slug, comentarios, editValues } = Astro.props;
 
     <form id="comments-edit-form" data-slug={slug}>
       <div class="edit-field">
-        <label for="comments-edit-textarea">Comentarios</label>
+        <label for="comments-edit-textarea">Comentario</label>
         <textarea id="comments-edit-textarea" name="comentarios" rows="6">{editValues.comentarios ?? ''}</textarea>
       </div>
 

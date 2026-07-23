@@ -10,6 +10,7 @@ import GameDetailSummary from "../../components/game-detail/GameDetailSummary.as
 import GameDetailStats from "../../components/game-detail/GameDetailStats.astro";
 import GameDetailDLCs from "../../components/game-detail/GameDetailDLCs.astro";
 import GameDetailComments from "../../components/game-detail/GameDetailComments.astro";
+import GameDetailMetacritic from "../../components/game-detail/GameDetailMetacritic.astro";
 import { buildGameCoverUrl } from "../../lib/game-cover-url";
 import { isCompletedStatus, normalizeStatus } from "../../lib/game-status";
 import { findGameBySlug, getPurchasedUnits, getTotalPaidPrice, readGames } from "../../lib/local-games";
@@ -840,7 +841,6 @@ const metadataGroups = [
               : "Necesita fecha_inicio y fecha_fin"),
       },
       { label: "Solo", value: formatSolo(game.solo) },
-      { label: "Nota", value: formatValue(game.nota) },
       { label: "Fuente caratula", value: coverSourceMeta.value, note: coverSourceMeta.note },
     ],
   },
@@ -850,7 +850,7 @@ const metadataGroups = [
 const statusBadge = { class: statusClassName(game.estado), label: formatValue(game.estado) };
 const launcherBadge = { class: launcherClassName(game.launcher), html: launcherBadgeContent(game.launcher) };
 const platformBadge = { class: platformClassName(game.plataforma), label: formatValue(game.plataforma) };
-const personalRating = game.nota !== null && game.nota !== undefined && Number.isFinite(Number(game.nota))
+const legacyPersonalRating = game.nota !== null && game.nota !== undefined && Number.isFinite(Number(game.nota))
   ? Number(game.nota)
   : null;
 
@@ -862,7 +862,6 @@ const generalEditValues = {
   horas: hoursValue,
   fecha_inicio: game.fecha_inicio,
   fecha_fin: game.fecha_fin,
-  nota: game.nota ?? null,
 };
 
 // Lápiz de Dinero: precio pagado, microtransacciones y el toggle free-to-play.
@@ -873,7 +872,7 @@ const moneyEditValues = {
   tags: Array.isArray(game.tags) ? game.tags : [],
 };
 
-// Lápiz de Comentarios.
+// Lápiz de Comentario.
 const commentsEditValues = {
   comentarios: game.comentarios ?? null,
 };
@@ -895,7 +894,6 @@ const commentsEditValues = {
       genres={genres}
       pricePaidNote={pricePaidVisual.note}
       soloLabel={formatSolo(game.solo)}
-      personalRating={personalRating}
     />
 
     <GameDetailNav hasDlcs={dlcTotal > 0} />
@@ -938,6 +936,12 @@ const commentsEditValues = {
       formatDate={formatDate}
       formatValue={formatValue}
       formatCurrency={formatCurrency}
+    />
+
+    <GameDetailMetacritic
+      slug={slugParam}
+      critique={game.critica ?? null}
+      legacyScore={legacyPersonalRating}
     />
 
     <GameDetailComments slug={slugParam} comentarios={formatValue(game.comentarios)} editValues={commentsEditValues} />

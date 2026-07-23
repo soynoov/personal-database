@@ -1,0 +1,326 @@
+---
+import '../../styles/game-detail/metacritic.css';
+import '../../styles/game-detail/edit.css';
+import type { GameCritique } from '../../lib/local-games';
+import {
+  calculatePersonalScore,
+  getReviewCriterionScores,
+  getScoreSummary,
+  getScoreTone,
+} from '../../lib/game-reviews';
+
+interface Props {
+  slug: string;
+  critique: GameCritique | null;
+  legacyScore: number | null;
+}
+
+const { slug, critique, legacyScore } = Astro.props;
+const personalScore = calculatePersonalScore(critique);
+const displayedPersonalScore = personalScore ?? legacyScore;
+const criterionScores = getReviewCriterionScores(critique);
+const completedCriteria = criterionScores.filter((criterion) => criterion.value !== null).length;
+const honoraryLevel = critique?.mencion_honorifica?.nivel ?? 0;
+const honoraryComment = critique?.mencion_honorifica?.comentario ?? '';
+
+const toNullableScore = (value: unknown) => {
+  if (value === null || value === undefined || value === '') return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+};
+
+const metascore = toNullableScore(critique?.metascore);
+const userscore = toNullableScore(critique?.userscore);
+const formatDecimal = (value: number | null) =>
+  value === null
+    ? '—'
+    : new Intl.NumberFormat('es-ES', {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+      }).format(value);
+---
+
+<section class="game-metacritic panel" id="metacritica">
+  <header class="game-metacritic-head">
+    <div>
+      <span class="section-eyebrow">Crítica</span>
+      <h2>Metacrítica</h2>
+      <p>La crítica profesional, la comunidad y tu valoración en un mismo lugar.</p>
+    </div>
+    <button
+      class="metacritic-edit-trigger"
+      id="metacritic-edit-trigger"
+      type="button"
+      aria-label="Editar puntuaciones de Metacrítica"
+    >
+      Editar puntuaciones
+    </button>
+  </header>
+
+  <div class="metacritic-score-grid">
+    <article class={`metacritic-score-card is-${getScoreTone(metascore, 100)}`}>
+      <div class="metacritic-score-copy">
+        <span>Metascore</span>
+        <strong>{getScoreSummary(metascore, 100)}</strong>
+        <small>Crítica profesional</small>
+      </div>
+      <div class="metacritic-score-value" aria-label={`Metascore ${metascore ?? 'sin puntuación'}`}>
+        {metascore === null ? '—' : Math.round(metascore)}
+      </div>
+    </article>
+
+    <article class={`metacritic-score-card is-${getScoreTone(userscore)}`}>
+      <div class="metacritic-score-copy">
+        <span>User score</span>
+        <strong>{getScoreSummary(userscore)}</strong>
+        <small>Comunidad de Metacritic</small>
+      </div>
+      <div class="metacritic-score-value is-round" aria-label={`User score ${userscore ?? 'sin puntuación'}`}>
+        {formatDecimal(userscore)}
+      </div>
+    </article>
+
+    <article class={`metacritic-score-card is-${getScoreTone(displayedPersonalScore)}`}>
+      <div class="metacritic-score-copy">
+        <span>My score</span>
+        <strong>{personalScore === null && legacyScore !== null ? 'Desglose pendiente' : getScoreSummary(personalScore)}</strong>
+          <small>
+            {personalScore === null
+              ? `${completedCriteria}/${criterionScores.length} criterios completos`
+              : 'Media ponderada de tus criterios'}
+          </small>
+      </div>
+      <div class="metacritic-score-value is-round is-personal" aria-label={`My score ${displayedPersonalScore ?? 'sin puntuación'}`}>
+        {displayedPersonalScore === null ? '—' : formatDecimal(displayedPersonalScore)}
+      </div>
+    </article>
+  </div>
+
+  <div class="metacritic-breakdown">
+    <div class="metacritic-breakdown-head">
+      <div>
+        <span class="section-eyebrow">Desglose personal</span>
+        <h3>De dónde sale tu nota</h3>
+      </div>
+      <span>{completedCriteria}/{criterionScores.length} criterios</span>
+    </div>
+
+    <div class="metacritic-criteria">
+      {criterionScores.map((criterion) => (
+        <article class="metacritic-criterion">
+          <div class="metacritic-criterion-row">
+            <strong>{criterion.label}</strong>
+            <span>
+              {criterion.value === null ? 'Sin puntuar' : `${criterion.value}/${criterion.max}`}
+            </span>
+          </div>
+          <progress
+            max={criterion.max}
+            value={criterion.value ?? 0}
+            aria-label={`${criterion.label}: ${criterion.value ?? 0} de ${criterion.max}`}
+          />
+          <p>{criterion.description ?? criterion.measures}</p>
+        </article>
+      ))}
+    </div>
+
+    <article class="metacritic-honorary">
+      <div>
+        <span class="section-eyebrow">Mención honorífica</span>
+        <strong>{honoraryLevel > 0 ? `${honoraryLevel}/3` : 'Sin mención'}</strong>
+      </div>
+      <p>
+        {honoraryLevel > 0
+          ? honoraryComment
+          : 'Es un reconocimiento separado y no altera My score.'}
+      </p>
+    </article>
+
+    <p class="metacritic-formula">
+      Cada apartado se normaliza sobre 10. Entretenimiento pesa 0,75 y el resto pesa 1.
+      My score aparece cuando están completos todos los criterios.
+    </p>
+  </div>
+</section>
+
+<dialog class="edit-dialog metacritic-edit-dialog" id="metacritic-edit-dialog">
+  <div class="edit-dialog-body">
+    <div class="edit-dialog-head">
+      <div>
+        <h2>Editar Metacrítica</h2>
+        <p class="edit-dialog-sub">No se introduce una nota global: My score se calcula automáticamente.</p>
+      </div>
+      <button class="edit-dialog-close" id="metacritic-edit-close" type="button" aria-label="Cerrar">×</button>
+    </div>
+
+    <p class="edit-dialog-error" id="metacritic-edit-error" hidden></p>
+
+    <form id="metacritic-edit-form" data-slug={slug}>
+      <div class="edit-field-row">
+        <div class="edit-field">
+          <label for="edit-metascore">Metascore</label>
+          <input
+            id="edit-metascore"
+            name="metascore"
+            type="number"
+            step="1"
+            min="0"
+            max="100"
+            value={critique?.metascore ?? ''}
+          />
+        </div>
+        <div class="edit-field">
+          <label for="edit-userscore">User score</label>
+          <input
+            id="edit-userscore"
+            name="userscore"
+            type="number"
+            step="0.1"
+            min="0"
+            max="10"
+            value={critique?.userscore ?? ''}
+          />
+        </div>
+      </div>
+
+      <div class="metacritic-edit-criteria">
+        {criterionScores.map((criterion) => (
+          <div class="edit-field">
+            <label for={`edit-${criterion.key}`}>{criterion.label}</label>
+            <input
+              id={`edit-${criterion.key}`}
+              name={criterion.key}
+              type="number"
+              step="1"
+              min="1"
+              max={criterion.max}
+              value={criterion.value ?? ''}
+              placeholder={`1–${criterion.max}`}
+            />
+            {criterion.scale && (
+              <small class="metacritic-scale-help">
+                {Object.entries(criterion.scale).map(([score, description]) => (
+                  <span><b>{score}</b> {description}</span>
+                ))}
+              </small>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div class="metacritic-honorary-fields">
+        <div class="edit-field">
+          <label for="edit-honorary-level">Mención honorífica</label>
+          <input
+            id="edit-honorary-level"
+            name="honorary_level"
+            type="number"
+            step="1"
+            min="0"
+            max="3"
+            value={honoraryLevel}
+            placeholder="0–3"
+          />
+          <small class="metacritic-scale-help">
+            <span><b>0</b> Sin mención.</span>
+            <span><b>1</b> Pequeño reconocimiento.</span>
+            <span><b>2</b> Aporte muy destacable.</span>
+            <span><b>3</b> Caso excepcional.</span>
+          </small>
+        </div>
+        <div class="edit-field">
+          <label for="edit-honorary-comment">Por qué merece la mención</label>
+          <textarea
+            id="edit-honorary-comment"
+            name="honorary_comment"
+            placeholder="Obligatorio cuando la mención es mayor que 0"
+          >{honoraryComment}</textarea>
+        </div>
+      </div>
+
+      <div class="edit-dialog-actions">
+        <button class="edit-dialog-cancel" id="metacritic-edit-cancel" type="button">Cancelar</button>
+        <button class="edit-dialog-submit" id="metacritic-edit-submit" type="submit">Guardar puntuaciones</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<script>
+  const trigger = document.getElementById('metacritic-edit-trigger');
+  const dialog = document.getElementById('metacritic-edit-dialog');
+  const form = document.getElementById('metacritic-edit-form');
+  const closeBtn = document.getElementById('metacritic-edit-close');
+  const cancelBtn = document.getElementById('metacritic-edit-cancel');
+  const errorBox = document.getElementById('metacritic-edit-error');
+  const submitBtn = document.getElementById('metacritic-edit-submit');
+
+  if (
+    trigger instanceof HTMLButtonElement &&
+    dialog instanceof HTMLDialogElement &&
+    form instanceof HTMLFormElement &&
+    errorBox instanceof HTMLElement &&
+    submitBtn instanceof HTMLButtonElement
+  ) {
+    const hideError = () => errorBox.setAttribute('hidden', '');
+    const showError = (message: string) => {
+      errorBox.textContent = message;
+      errorBox.removeAttribute('hidden');
+    };
+
+    trigger.addEventListener('click', () => {
+      hideError();
+      dialog.showModal();
+    });
+    closeBtn?.addEventListener('click', () => dialog.close());
+    cancelBtn?.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      hideError();
+
+      const data = new FormData(form);
+      const payload = {
+        critica: {
+          metascore: data.get('metascore'),
+          userscore: data.get('userscore'),
+          criterios: {
+            jugabilidad: data.get('jugabilidad'),
+            historia: data.get('historia'),
+            musica: data.get('musica'),
+            graficos_arte: data.get('graficos_arte'),
+            entretenimiento: data.get('entretenimiento'),
+          },
+          mencion_honorifica: {
+            nivel: data.get('honorary_level'),
+            comentario: data.get('honorary_comment'),
+          },
+        },
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Guardando…';
+
+      try {
+        const slug = form.dataset.slug ?? '';
+        const response = await fetch(`/api/games/${slug}/edit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) {
+          throw new Error(result.error || `No se pudo guardar (HTTP ${response.status}).`);
+        }
+        window.location.reload();
+      } catch (error) {
+        showError(error instanceof Error ? error.message : 'No se pudo guardar.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Guardar puntuaciones';
+      }
+    });
+  }
+</script>

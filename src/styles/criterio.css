@@ -124,6 +124,114 @@
     font-size: 0.78rem;
   }
 
+  .criterion-methodology-intro {
+    max-width: 78ch;
+    margin: -0.25rem 0 1rem;
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+  .criterion-methodology-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.7rem;
+  }
+
+  .criterion-method-card {
+    padding: 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: rgba(8, 11, 18, 0.46);
+  }
+
+  .criterion-method-card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.8rem;
+  }
+
+  .criterion-method-card h3,
+  .criterion-honorary-method h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 0.95rem;
+  }
+
+  .criterion-method-card-head > div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.35rem;
+  }
+
+  .criterion-method-card-head span {
+    padding: 0.2rem 0.42rem;
+    border: 1px solid rgba(201, 168, 255, 0.18);
+    border-radius: 999px;
+    color: #d7baff;
+    font-size: 0.64rem;
+    white-space: nowrap;
+  }
+
+  .criterion-method-card > p,
+  .criterion-honorary-method p {
+    margin: 0.5rem 0 0;
+    color: var(--muted);
+    font-size: 0.75rem;
+    line-height: 1.45;
+  }
+
+  .criterion-method-card p.criterion-scale-pending {
+    padding-top: 0.55rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    color: #cdbada;
+  }
+
+  .criterion-scale-list {
+    display: grid;
+    gap: 0.35rem;
+    margin: 0.65rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .criterion-scale-list li {
+    display: grid;
+    grid-template-columns: 25px 1fr;
+    align-items: start;
+    gap: 0.45rem;
+    color: var(--muted);
+    font-size: 0.72rem;
+    line-height: 1.35;
+  }
+
+  .criterion-scale-list strong {
+    display: grid;
+    place-items: center;
+    width: 25px;
+    height: 25px;
+    border-radius: 7px;
+    background: rgba(201, 168, 255, 0.12);
+    color: #e6c4ff;
+  }
+
+  .criterion-honorary-method {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr);
+    gap: 1rem;
+    margin-top: 0.7rem;
+    padding: 0.9rem;
+    border: 1px solid rgba(201, 168, 255, 0.2);
+    border-radius: 14px;
+    background: rgba(97, 52, 148, 0.09);
+  }
+
+  .criterion-honorary-method .criterion-scale-list {
+    margin: 0;
+  }
+
   .criterion-review-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -284,6 +392,10 @@
     .criterion-pending-list {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .criterion-honorary-method {
+      grid-template-columns: 1fr;
+    }
   }
 
   @media (max-width: 720px) {
@@ -381,6 +493,14 @@
 
     .criterion-pending-list {
       grid-template-columns: 1fr;
+    }
+
+    .criterion-methodology-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .criterion-method-card {
+      padding: 0.75rem;
     }
   }
 }

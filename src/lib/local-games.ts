@@ -3,6 +3,22 @@ import path from "node:path";
 import { existsSync } from "node:fs";
 import { isCompletedStatus, normalizeStatus } from "./game-status";
 
+export type GameCritique = {
+  metascore?: number | null;
+  userscore?: number | null;
+  criterios?: {
+    jugabilidad?: number | null;
+    historia?: number | null;
+    musica?: number | null;
+    graficos_arte?: number | null;
+    entretenimiento?: number | null;
+  } | null;
+  mencion_honorifica?: {
+    nivel?: number | null;
+    comentario?: string | null;
+  } | null;
+};
+
 export type LocalGame = {
   titulo: string;
   estado: string | null;
@@ -36,6 +52,7 @@ export type LocalGame = {
     total: number | null;
   } | null;
   nota?: number | null;
+  critica?: GameCritique | null;
   comentarios?: string | null;
   lanzamiento?: number | null;
   solo?: boolean | null;
