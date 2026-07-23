@@ -194,6 +194,13 @@
   color: #cdc4c8;
 }
 
+.badge-personal-rating {
+  order: -1;
+  border-color: rgba(201, 168, 255, 0.52);
+  background: rgba(116, 62, 166, 0.28);
+  color: #efdfff;
+}
+
 /* ── game-page-rich overrides (context prefix) ──────────────────── */
 .game-page-rich .game-hero-cinematic {
   border-radius: var(--radius-1);
@@ -358,6 +365,10 @@
       gap: 0.3rem;
       max-height: 52px;
       overflow: hidden;
+    }
+
+    .game-page-rich .game-page-badges:has(.badge-personal-rating) {
+      max-height: none;
     }
 
     .game-page-rich .game-page-badges .badge {

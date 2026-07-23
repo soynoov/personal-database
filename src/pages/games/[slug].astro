@@ -850,6 +850,9 @@ const metadataGroups = [
 const statusBadge = { class: statusClassName(game.estado), label: formatValue(game.estado) };
 const launcherBadge = { class: launcherClassName(game.launcher), html: launcherBadgeContent(game.launcher) };
 const platformBadge = { class: platformClassName(game.plataforma), label: formatValue(game.plataforma) };
+const personalRating = game.nota !== null && game.nota !== undefined && Number.isFinite(Number(game.nota))
+  ? Number(game.nota)
+  : null;
 
 const slugParam = Astro.params.slug ?? '';
 
@@ -892,6 +895,7 @@ const commentsEditValues = {
       genres={genres}
       pricePaidNote={pricePaidVisual.note}
       soloLabel={formatSolo(game.solo)}
+      personalRating={personalRating}
     />
 
     <GameDetailNav hasDlcs={dlcTotal > 0} />

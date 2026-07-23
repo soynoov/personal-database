@@ -479,10 +479,10 @@
       left: 50%;
       right: auto;
       bottom: max(0.45rem, env(safe-area-inset-bottom));
-      width: min(270px, calc(100% - 1rem));
+      width: min(350px, calc(100% - 1rem));
       transform: translateX(-50%);
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 0.3rem;
       padding: 0.32rem;
       border-radius: 18px;

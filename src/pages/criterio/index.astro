@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import '../../styles/criterio.css';
+import { buildGameCoverUrl } from '../../lib/game-cover-url';
+import { getUniqueValues, readGames, slugifyGameTitle } from '../../lib/local-games';
+import { isCompletedStatus, normalizeStatus } from '../../lib/game-status';
+
+const games = await readGames();
+const estados = getUniqueValues(games, 'estado');
+const launchers = getUniqueValues(games, 'launcher');
+const plataformas = getUniqueValues(games, 'plataforma');
+
+const drawerEstadosOrdered = [
+  'Jugando', 'Terminado', 'Pendiente', 'Wishlist',
+  'Pausado', 'Abandonado', 'Retirado', 'Recurrente',
+];
+const estadosSet = new Set(estados.map(normalizeStatus));
+const knownEstadoValues = new Set(drawerEstadosOrdered.map(normalizeStatus));
+const orderedDrawerEstados = [
+  ...drawerEstadosOrdered.filter((estado) => estadosSet.has(normalizeStatus(estado)) || estado === 'Wishlist'),
+  ...estados.filter((estado) => !knownEstadoValues.has(normalizeStatus(estado))),
+];
+
+const ratedGames = games
+  .flatMap((game) => {
+    const rating = Number(game.nota);
+    return game.nota !== null && game.nota !== undefined && Number.isFinite(rating)
+      ? [{ game, rating }]
+      : [];
+  })
+  .sort((a, b) => b.rating - a.rating || a.game.titulo.localeCompare(b.game.titulo, 'es'));
+
+const completedGames = games.filter((game) => isCompletedStatus(game.estado));
+const pendingRatings = completedGames
+  .filter((game) => game.nota === null || game.nota === undefined)
+  .sort((a, b) => a.titulo.localeCompare(b.titulo, 'es'));
+
+const averageRating = ratedGames.length > 0
+  ? ratedGames.reduce((sum, item) => sum + item.rating, 0) / ratedGames.length
+  : null;
+const coverage = completedGames.length > 0
+  ? Math.round((ratedGames.length / completedGames.length) * 100)
+  : 0;
+
+const formatRating = (rating: number) =>
+  new Intl.NumberFormat('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(rating);
+---
+
+<BaseLayout title='Criterio — Personal Database'>
+  <main class='shell shell-app shell-desktop-app'>
+    <Sidebar
+      orderedDrawerEstados={orderedDrawerEstados}
+      plataformas={plataformas}
+      launchers={launchers}
+      active='criterio'
+    />
+
+    <div class='desktop-main criterion-main'>
+      <section class='panel criterion-hero'>
+        <div>
+          <span class='eyebrow'>Metacrítica de cosecha propia</span>
+          <h1>Criterio</h1>
+          <p>
+            Tus puntuaciones personales, separadas de las horas, el precio y cualquier nota externa.
+            Cada ficha sigue siendo la fuente editable.
+          </p>
+        </div>
+        <div class='criterion-hero-score' aria-label={`Nota media ${averageRating === null ? 'sin datos' : `${formatRating(averageRating)} sobre 10`}`}>
+          <span>Media personal</span>
+          <strong>{averageRating === null ? '—' : formatRating(averageRating)}</strong>
+          <small>/ 10</small>
+        </div>
+      </section>
+
+      <section class='criterion-stats' aria-label='Resumen de puntuaciones'>
+        <article class='panel criterion-stat'>
+          <span>Juegos puntuados</span>
+          <strong>{ratedGames.length}</strong>
+          <small>con una nota propia</small>
+        </article>
+        <article class='panel criterion-stat'>
+          <span>Cobertura</span>
+          <strong>{coverage}%</strong>
+          <small>de los juegos terminados</small>
+        </article>
+        <article class='panel criterion-stat'>
+          <span>Pendientes</span>
+          <strong>{pendingRatings.length}</strong>
+          <small>terminados sin valorar</small>
+        </article>
+      </section>
+
+      <section class='panel criterion-section'>
+        <div class='criterion-section-head'>
+          <div>
+            <span class='section-eyebrow'>Reseñas</span>
+            <h2>Tu clasificación</h2>
+          </div>
+          <span class='criterion-count'>{ratedGames.length} puntuadas</span>
+        </div>
+
+        {ratedGames.length > 0 ? (
+          <div class='criterion-review-grid'>
+            {ratedGames.map(({ game, rating }, index) => (
+              <a class='criterion-review-card' href={`/games/${slugifyGameTitle(game.titulo)}/`}>
+                <div class='criterion-review-cover'>
+                  <img
+                    src={buildGameCoverUrl(game)}
+                    alt={`Carátula de ${game.titulo}`}
+                    loading={index < 4 ? 'eager' : 'lazy'}
+                    decoding='async'
+                  />
+                </div>
+                <div class='criterion-review-copy'>
+                  <span class='criterion-review-state'>{game.estado ?? 'Sin estado'}</span>
+                  <h3>{game.titulo}</h3>
+                  <p>{game.comentarios || 'Sin reseña escrita todavía.'}</p>
+                  <span class='criterion-review-action'>Abrir ficha y editar valoración</span>
+                </div>
+                <div class='criterion-review-score'>
+                  <strong>{formatRating(rating)}</strong>
+                  <span>/ 10</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <div class='criterion-empty'>
+            <strong>Aún no has puntuado ningún juego.</strong>
+            <span>Abre una ficha, pulsa el lápiz y rellena el campo «Nota».</span>
+          </div>
+        )}
+      </section>
+
+      <section class='panel criterion-section'>
+        <div class='criterion-section-head'>
+          <div>
+            <span class='section-eyebrow'>Cola de valoración</span>
+            <h2>Terminados sin nota</h2>
+          </div>
+          <span class='criterion-count'>{pendingRatings.length} pendientes</span>
+        </div>
+
+        {pendingRatings.length > 0 ? (
+          <div class='criterion-pending-list'>
+            {pendingRatings.map((game) => (
+              <a href={`/games/${slugifyGameTitle(game.titulo)}/`}>
+                <span>{game.titulo}</span>
+                <small>Valorar →</small>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <div class='criterion-empty'>
+            <strong>Todos tus juegos terminados tienen nota.</strong>
+          </div>
+        )}
+      </section>
+    </div>
+  </main>
+</BaseLayout>
