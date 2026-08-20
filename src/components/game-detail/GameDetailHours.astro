@@ -46,11 +46,7 @@ const {
     <div class="chart-shell">
       <div class="chart-visual-card">
         <div class="chart-header">
-          <div>
-            <strong>Perfil de horas</strong>
-            <p>Comparativa real entre tus horas y las referencias HLTB disponibles.</p>
-          </div>
-          <span class="chart-badge">Chart.js</span>
+          <strong>Tu tiempo vs. HLTB</strong>
         </div>
         {hoursChartPoints.length >= 1 ? (
           <div class="chart-canvas-wrap chart-canvas-wrap-hours">
@@ -63,10 +59,9 @@ const {
 
       <div class="chart-metrics-grid">
         {hoursSnapshotCards.map(({ label, value, note, tone }) => (
-          <article class:list={["chart-metric-card", `chart-metric-card-${tone}`, value === "-" && "chart-metric-card-empty"]}>
+          <article title={note} class:list={["chart-metric-card", `chart-metric-card-${tone}`, value === "-" && "chart-metric-card-empty"]}>
             <span>{label}</span>
             <strong>{value}</strong>
-            <p>{note}</p>
           </article>
         ))}
       </div>
@@ -81,28 +76,20 @@ const {
     </div>
     <dl class="detail-grid detail-grid-4">
       <div class={`detail-item ${hltbBreakdown.main !== null ? "" : "detail-item-empty"}`}>
-        <dt>Main</dt>
+        <dt>Historia</dt>
         <dd>{hltbBreakdown.main !== null ? `${hltbBreakdown.main.toFixed(1)} h` : "-"}</dd>
-        <span class="detail-item-note">Campana principal</span>
       </div>
       <div class={`detail-item ${hltbBreakdown.mainPlus !== null ? "" : "detail-item-empty"}`}>
-        <dt>Main + Extras</dt>
+        <dt>Historia + extras</dt>
         <dd>{hltbBreakdown.mainPlus !== null ? `${hltbBreakdown.mainPlus.toFixed(1)} h` : "-"}</dd>
-        <span class="detail-item-note">Contenido adicional sobre la campana principal</span>
       </div>
       <div class={`detail-item ${hltbBreakdown.completionist !== null ? "" : "detail-item-empty"}`}>
-        <dt>Completionist</dt>
+        <dt>100%</dt>
         <dd>{hltbBreakdown.completionist !== null ? `${hltbBreakdown.completionist.toFixed(1)} h` : "-"}</dd>
-        <span class="detail-item-note">Todo el contenido</span>
       </div>
       <div class={`detail-item ${hltbValue !== null ? hltbVisualClass : "detail-item-empty"}`}>
-        <dt>Referencia activa</dt>
+        <dt>Referencia</dt>
         <dd>{hltbValue !== null ? `${hltbValue.toFixed(1)} h` : "-"}</dd>
-        <span class="detail-item-note">
-          {hltbValue !== null
-            ? "Main si existe; si no, Main + Extras; si no, Completionist"
-            : "HLTB sin tiempo util publicado"}
-        </span>
       </div>
     </dl>
   </div>

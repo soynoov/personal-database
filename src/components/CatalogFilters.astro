@@ -16,16 +16,24 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
       <div class='field field-search'>
         <label class='sr-only' for='search'>Buscar</label>
         <span class='field-search-icon' aria-hidden='true'>
-          <svg viewBox='0 0 24 24'>
-            <circle cx='11' cy='11' r='7'></circle>
-            <path d='m20 20-3.5-3.5'></path>
-          </svg>
+          <i class='ph ph-magnifying-glass'></i>
         </span>
         <input id='search' type='search' placeholder='Buscar juegos...' />
       </div>
-      <div class='actions actions-inline'>
-        <button class='button button-ghost button-clear' id='reset-filters' type='button'>
-          Limpiar todo
+      <div class='catalog-filter-actions'>
+        <button
+          class='catalog-filter-toggle'
+          id='mobile-filter-toggle'
+          type='button'
+          aria-controls='mobile-extra-filters'
+          aria-expanded='false'
+        >
+          <i class='ph ph-sliders-horizontal' aria-hidden='true'></i>
+          <span>Filtros</span>
+        </button>
+        <button class='button button-ghost button-clear' id='reset-filters' type='button' hidden>
+          <i class='ph ph-x' aria-hidden='true'></i>
+          <span>Limpiar</span>
         </button>
       </div>
     </div>
@@ -79,17 +87,6 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
           <option value='unknown'>Sin dato</option>
         </select>
       </div>
-      <button
-        class='catalog-filter-toggle'
-        id='mobile-filter-toggle'
-        type='button'
-        aria-label='Mas filtros'
-        aria-expanded='false'
-      >
-        <svg viewBox='0 0 24 24' aria-hidden='true'>
-          <polygon points='22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3'></polygon>
-        </svg>
-      </button>
     </div>
   </div>
 
@@ -97,7 +94,7 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
 
   <div class='panel-subtoolbar'>
     <div class='muted'>
-      Viendo <strong id='results-count'>{totalGames}</strong> de <strong>{totalGames}</strong>
+      <strong id='results-count'>{totalGames}</strong> juegos
     </div>
     <div class='view-toggle' role='group' aria-label='Modo de catalogo'>
       <button
@@ -109,12 +106,7 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
         aria-label='Vista en cards'
         title='Vista en cards'
       >
-        <svg viewBox='0 0 24 24' aria-hidden='true'>
-          <rect x='4' y='4' width='7' height='7' rx='1.8'></rect>
-          <rect x='13' y='4' width='7' height='7' rx='1.8'></rect>
-          <rect x='4' y='13' width='7' height='7' rx='1.8'></rect>
-          <rect x='13' y='13' width='7' height='7' rx='1.8'></rect>
-        </svg>
+        <i class='ph ph-squares-four' aria-hidden='true'></i>
         <span>Cards</span>
       </button>
       <button
@@ -126,14 +118,7 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
         aria-label='Vista en tabla'
         title='Vista en tabla'
       >
-        <svg viewBox='0 0 24 24' aria-hidden='true'>
-          <path d='M5 7.25h14'></path>
-          <path d='M5 12h14'></path>
-          <path d='M5 16.75h14'></path>
-          <circle cx='7' cy='7.25' r='1.25'></circle>
-          <circle cx='7' cy='12' r='1.25'></circle>
-          <circle cx='7' cy='16.75' r='1.25'></circle>
-        </svg>
+        <i class='ph ph-list-bullets' aria-hidden='true'></i>
         <span>Tabla</span>
       </button>
     </div>

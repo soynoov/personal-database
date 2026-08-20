@@ -45,7 +45,6 @@ const formatDecimal = (value: number | null) =>
     <div>
       <span class="section-eyebrow">Crítica</span>
       <h2>Metacrítica</h2>
-      <p>La crítica profesional, la comunidad y tu valoración en un mismo lugar.</p>
     </div>
     <button
       class="metacritic-edit-trigger"
@@ -107,7 +106,7 @@ const formatDecimal = (value: number | null) =>
 
     <div class="metacritic-criteria">
       {criterionScores.map((criterion) => (
-        <article class="metacritic-criterion">
+        <article class="metacritic-criterion" title={criterion.description ?? criterion.measures}>
           <div class="metacritic-criterion-row">
             <strong>{criterion.label}</strong>
             <span>
@@ -119,7 +118,6 @@ const formatDecimal = (value: number | null) =>
             value={criterion.value ?? 0}
             aria-label={`${criterion.label}: ${criterion.value ?? 0} de ${criterion.max}`}
           />
-          <p>{criterion.description ?? criterion.measures}</p>
         </article>
       ))}
     </div>
@@ -129,17 +127,14 @@ const formatDecimal = (value: number | null) =>
         <span class="section-eyebrow">Mención honorífica</span>
         <strong>{honoraryLevel > 0 ? `${honoraryLevel}/3` : 'Sin mención'}</strong>
       </div>
-      <p>
-        {honoraryLevel > 0
-          ? honoraryComment
-          : 'Es un reconocimiento separado y no altera My score.'}
-      </p>
+      {honoraryLevel > 0 && honoraryComment && <p>{honoraryComment}</p>}
     </article>
 
-    <p class="metacritic-formula">
-      Cada apartado se normaliza sobre 10. Entretenimiento pesa 0,75 y el resto pesa 1.
-      My score aparece cuando están completos todos los criterios.
-    </p>
+    <div class="metacritic-formula">
+      <span><i class="ph ph-checks" aria-hidden="true"></i> Todos los criterios</span>
+      <span><i class="ph ph-scales" aria-hidden="true"></i> Entretenimiento ×0,75</span>
+      <span><i class="ph ph-equals" aria-hidden="true"></i> My score /10</span>
+    </div>
   </div>
 </section>
 

@@ -254,7 +254,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     const value = params.get(key);
     if (el && value) el.value = value;
   }
-  if (!elements.sort.value) elements.sort.value = 'horas-desc';
+  if (!elements.sort.value) elements.sort.value = 'titulo-asc';
 
   let activeQuickFilter = '';
   let activeView = params.get('view') === 'table' ? 'table' : 'cards';
@@ -347,6 +347,8 @@ export function initCatalog(allGames: CatalogGame[]): void {
       };
       activeFilterEntries.push(['quick', quickFilterLabels[activeQuickFilter] ?? activeQuickFilter]);
     }
+    const hasCustomSort = filters.sort !== 'titulo-asc';
+    elements.reset.hidden = activeFilterEntries.length === 0 && !hasCustomSort;
     const estadoPillColors: Record<string, string> = {
       jugando: '#6ee76c', terminado: '#67b1ff', completado: '#67b1ff',
       pendiente: '#f5c518', wishlist: '#5ad0ff', pausado: '#f5a818',
@@ -402,6 +404,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     // URL params
     const nextParams = new URLSearchParams();
     for (const [key, value] of Object.entries(filters)) {
+      if (key === 'sort' && value === 'titulo-asc') continue;
       if (value) nextParams.set(key, value);
     }
     if (activeView !== 'cards') nextParams.set('view', activeView);
@@ -411,6 +414,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     // Mobile extra filters toggle
     if (elements.mobileExtraFilters && elements.mobileFilterToggle) {
       elements.mobileExtraFilters.classList.toggle('is-open', mobileExtraFiltersOpen);
+      elements.mobileFilterToggle.classList.toggle('is-active', mobileExtraFiltersOpen);
       elements.mobileFilterToggle.setAttribute('aria-expanded', mobileExtraFiltersOpen ? 'true' : 'false');
     }
 
@@ -558,7 +562,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     elements.launcher.value = '';
     elements.plataforma.value = '';
     elements.solo.value = '';
-    elements.sort.value = 'horas-desc';
+    elements.sort.value = 'titulo-asc';
     elements.precio.value = '';
     activeQuickFilter = '';
     mobileExtraFiltersOpen = false;

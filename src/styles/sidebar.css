@@ -327,6 +327,17 @@
   pointer-events: none;
   transition: background 0.25s ease;
 }
+
+.mobile-bottom-settings {
+  display: none;
+}
+
+.desktop-nav-icon i,
+.mobile-bottom-nav-icon i {
+  display: block;
+  font-size: 1.18rem;
+  line-height: 1;
+}
 .mobile-drawer-overlay.is-visible {
   background: rgba(0, 0, 0, 0.6);
   pointer-events: all;

@@ -106,11 +106,18 @@ const gapGroups = [
           <div>
             <span class='eyebrow'>Tu año en juegos</span>
             <h1>Recap {year}</h1>
-            <p class='recap-hero-sub'>
-              {isCurrentYear
-                ? `En tiempo real: se recalcula con cada visita a partir de games.json. Vas por el día ${isoDayOfYear} de ${daysInYear} (${yearProgressPct}% del año).`
-                : `Resumen cerrado de ${year}. Cambia de año para comparar.`}
-            </p>
+            <div
+              class='recap-year-progress'
+              role='progressbar'
+              aria-label={`Progreso de ${year}`}
+              aria-valuemin='0'
+              aria-valuemax='100'
+              aria-valuenow={isCurrentYear ? yearProgressPct : 100}
+            >
+              <span>{isCurrentYear ? `Día ${isoDayOfYear}` : 'Año cerrado'}</span>
+              <div aria-hidden='true'><span style={`width:${isCurrentYear ? yearProgressPct : 100}%`}></span></div>
+              <strong>{isCurrentYear ? yearProgressPct : 100}%</strong>
+            </div>
           </div>
           <div class='recap-year-pills'>
             {availableYears.map((y) => (
@@ -125,37 +132,43 @@ const gapGroups = [
       <!-- Aviso de calidad de datos -->
       <section class='panel recap-quality'>
         <div class='recap-quality-head'>
-          <strong>Antes de creerte estas cifras</strong>
+          <strong>Calidad de los datos</strong>
         </div>
         <div class='recap-quality-grid'>
           <div class='recap-quality-metric'>
             <strong>{quality.pctFechaFinCompleta}%</strong>
-            <span>de tus juegos "Terminado" tienen fecha_fin registrada ({quality.totalTerminados - quality.gaps.terminadosSinFecha.length}/{quality.totalTerminados}). El resto no cuenta en "Completados {year}", aunque los hayas terminado.</span>
+            <span>Fechas de fin</span>
+            <small>{quality.totalTerminados - quality.gaps.terminadosSinFecha.length}/{quality.totalTerminados} registradas</small>
           </div>
           <div class='recap-quality-metric'>
             <strong>{quality.pctPrecioCompleto}%</strong>
-            <span>de tu librería tiene precio_pagado real ({quality.totalJuegos - quality.gaps.sinPrecio.length}/{quality.totalJuegos}). El resto se estima con el precio actual de tienda cuando aplica.</span>
+            <span>Precios reales</span>
+            <small>{quality.totalJuegos - quality.gaps.sinPrecio.length}/{quality.totalJuegos} registrados</small>
           </div>
           <div class='recap-quality-metric'>
             <strong>{recap.gastoEstimadoCount}</strong>
-            <span>juegos del gasto de {year} usan precio estimado, no lo que pagaste de verdad.</span>
+            <span>Estimaciones</span>
+            <small>en el gasto de {year}</small>
           </div>
         </div>
       </section>
 
       <!-- Qué te falta rellenar -->
       <section class='panel recap-section recap-quality-detail'>
-        <h2>Qué te falta rellenar</h2>
-        <p class='recap-section-sub'>
-          Por cada hueco: cuántos juegos lo tienen vacío y cuáles son, por si te suena el dato y lo puedes meter en games.json.
-        </p>
+        <div class='recap-section-head'>
+          <div>
+            <span class='section-eyebrow'>Datos incompletos</span>
+            <h2>Por revisar</h2>
+          </div>
+          <i class='ph ph-warning-circle' aria-hidden='true'></i>
+        </div>
         <div class='recap-gap-groups'>
           {gapGroups.map((group) => (
             group.items.length > 0 ? (
               <details class='recap-quality-list-wrap'>
-                <summary>
-                  <strong>{group.items.length}</strong> {group.title}
-                  <span class='recap-gap-hint'>{group.hint}</span>
+                <summary title={group.hint}>
+                  <span><strong>{group.items.length}</strong> {group.title}</span>
+                  <i class='ph ph-caret-down' aria-hidden='true'></i>
                 </summary>
                 <div class='recap-quality-pills'>
                   {group.items.slice(0, 40).map((g) => (
@@ -167,7 +180,7 @@ const gapGroups = [
                 </div>
               </details>
             ) : (
-              <p class='recap-gap-clear'>✓ Sin huecos en {group.title}.</p>
+              <p class='recap-gap-clear'><i class='ph ph-check-circle' aria-hidden='true'></i> Sin huecos en {group.title}.</p>
             )
           ))}
         </div>
@@ -217,8 +230,10 @@ const gapGroups = [
 
       <!-- Géneros y launchers -->
       <section class='panel recap-section'>
-        <h2>Dónde se fue el año</h2>
-        <p class='recap-section-sub'>Calculado sobre los {recap.iniciados.length} juegos con fecha_inicio en {year}.</p>
+        <div class='recap-section-head'>
+          <h2>Dónde se fue el año</h2>
+          <span class='recap-section-count'>{recap.iniciados.length} juegos</span>
+        </div>
 
         {recap.iniciados.length === 0 ? (
           <p class='recap-empty'>Ningún juego tiene fecha_inicio en {year}. Sin esa fecha no hay nada que repartir por género, launcher o mes.</p>
@@ -297,15 +312,17 @@ const gapGroups = [
       </section>
 
       <!-- Metodología -->
-      <section class='panel recap-section'>
-        <h2>Cómo se calcula esto</h2>
-        <p class='recap-methodology'>
-          <strong>Completados:</strong> estado "Terminado"/"Completado" con fecha_fin dentro del año. Si fecha_fin está vacía, no cuenta, sin importar el estado.<br />
-          <strong>Horas y gasto:</strong> se atribuyen al año de fecha_inicio (proxy de actividad, no de fecha de compra real). Un juego que sigue en curso al cambiar de año cuenta entero en el año en que lo empezaste.<br />
-          <strong>Gasto:</strong> usa precio_pagado si existe; si falta y el launcher no es "Pirata", se estima con precio_actual (marcado en el contador de estimados).<br />
-          Esta página lee games.json en cada visita — en cuanto rellenes una fecha o un precio, el recap se actualiza solo.
-        </p>
-      </section>
+      <details class='panel recap-section recap-methodology-panel'>
+        <summary>
+          <span><i class='ph ph-calculator' aria-hidden='true'></i> Cómo se calcula</span>
+          <i class='ph ph-caret-down' aria-hidden='true'></i>
+        </summary>
+        <dl class='recap-methodology'>
+          <div><dt>Completados</dt><dd>Estado terminado y fecha de fin dentro del año.</dd></div>
+          <div><dt>Horas</dt><dd>Atribuidas al año de inicio.</dd></div>
+          <div><dt>Gasto</dt><dd>Precio pagado; si falta, precio actual estimado.</dd></div>
+        </dl>
+      </details>
 
     </div>
   </main>

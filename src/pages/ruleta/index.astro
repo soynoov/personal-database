@@ -1,0 +1,231 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import { getUniqueValues, readGames } from '../../lib/local-games';
+import { normalizeStatus } from '../../lib/game-status';
+import { toRouletteGame } from '../../lib/roulette-game';
+import '../../styles/roulette.css';
+
+const games = await readGames();
+const rouletteGames = games
+  .map(toRouletteGame)
+  .sort((a, b) => a.titulo.localeCompare(b.titulo, 'es'));
+
+const estados = getUniqueValues(games, 'estado');
+const launchers = getUniqueValues(games, 'launcher');
+const plataformas = getUniqueValues(games, 'plataforma');
+const generos = [...new Set(games.flatMap((game) => game.generos ?? []))]
+  .filter(Boolean)
+  .sort((a, b) => a.localeCompare(b, 'es'));
+
+const drawerEstadosOrdered = [
+  'Jugando', 'Terminado', 'Pendiente', 'Wishlist',
+  'Pausado', 'Abandonado', 'Retirado', 'Recurrente',
+];
+const estadosSet = new Set(estados.map(normalizeStatus));
+const knownEstadoValues = new Set(drawerEstadosOrdered.map(normalizeStatus));
+const orderedDrawerEstados = [
+  ...drawerEstadosOrdered.filter((estado) => estadosSet.has(normalizeStatus(estado)) || estado === 'Wishlist'),
+  ...estados.filter((estado) => !knownEstadoValues.has(normalizeStatus(estado))),
+];
+
+const defaultSlugs = rouletteGames
+  .filter((game) => normalizeStatus(game.estado) === 'jugando')
+  .map((game) => game.slug);
+---
+
+<BaseLayout title='Ruleta — Personal Database'>
+  <main class='shell shell-app shell-desktop-app roulette-page'>
+    <Sidebar
+      orderedDrawerEstados={orderedDrawerEstados}
+      plataformas={plataformas}
+      launchers={launchers}
+      active='ruleta'
+    />
+
+    <div class='desktop-main roulette-main'>
+      <header class='roulette-header'>
+        <span class='eyebrow'>Personal Database</span>
+        <h1>Ruleta</h1>
+      </header>
+
+      <section class='roulette-setup' id='roulette-setup' aria-labelledby='roulette-title'>
+        <div class='roulette-stage'>
+          <h2 class='sr-only' id='roulette-title'>Ruleta de juegos</h2>
+          <div class='roulette-wheel-wrap'>
+            <span class='roulette-pointer' aria-hidden='true'>
+              <i class='ph-fill ph-caret-down'></i>
+            </span>
+            <canvas
+              id='roulette-wheel'
+              class='roulette-wheel'
+              width='680'
+              height='680'
+              role='img'
+              aria-label='Ruleta con los juegos seleccionados'
+            ></canvas>
+          </div>
+
+          <div class='roulette-stage-actions'>
+            <button class='roulette-button roulette-button-primary' id='roulette-spin' type='button'>
+              <i class='ph ph-dice-five' aria-hidden='true'></i>
+              <span>Girar la ruleta</span>
+            </button>
+            <button class='roulette-button roulette-button-ghost' id='roulette-clear' type='button'>
+              <i class='ph ph-trash' aria-hidden='true'></i>
+              <span>Limpiar</span>
+            </button>
+          </div>
+          <p class='roulette-feedback' id='roulette-feedback' aria-live='polite'></p>
+        </div>
+
+        <aside class='roulette-builder' aria-label='Preparar candidatos'>
+          <div class='roulette-builder-heading'>
+            <div>
+              <span class='roulette-kicker'>Preparar selección</span>
+              <h2>¿A qué juego?</h2>
+            </div>
+            <span class='roulette-count' id='roulette-count'>0 candidatos</span>
+          </div>
+
+          <div class='roulette-search field'>
+            <label for='roulette-search'>Añadir por nombre</label>
+            <div class='roulette-search-control'>
+              <i class='ph ph-magnifying-glass' aria-hidden='true'></i>
+              <input
+                id='roulette-search'
+                type='search'
+                list='roulette-game-options'
+                autocomplete='off'
+                placeholder='Buscar en mi biblioteca...'
+              />
+              <button id='roulette-add' type='button' aria-label='Añadir juego escrito'>
+                <i class='ph ph-plus' aria-hidden='true'></i>
+              </button>
+            </div>
+            <datalist id='roulette-game-options'>
+              {rouletteGames.map((game) => <option value={game.titulo}></option>)}
+            </datalist>
+          </div>
+
+          <div class='roulette-filter-grid'>
+            <div class='field'>
+              <label for='roulette-status'>Estado</label>
+              <select id='roulette-status'>
+                <option value=''>Todos</option>
+                {estados.map((estado) => (
+                  <option value={estado} selected={normalizeStatus(estado) === 'jugando'}>{estado}</option>
+                ))}
+              </select>
+            </div>
+            <div class='field'>
+              <label for='roulette-genre'>Género</label>
+              <select id='roulette-genre'>
+                <option value=''>Todos</option>
+                {generos.map((genero) => <option value={genero}>{genero}</option>)}
+              </select>
+            </div>
+            <div class='field'>
+              <label for='roulette-platform'>Plataforma</label>
+              <select id='roulette-platform'>
+                <option value=''>Todas</option>
+                {plataformas.map((plataforma) => <option value={plataforma}>{plataforma}</option>)}
+              </select>
+            </div>
+            <div class='field'>
+              <label for='roulette-launcher'>Launcher</label>
+              <select id='roulette-launcher'>
+                <option value=''>Todos</option>
+                {launchers.map((launcher) => <option value={launcher}>{launcher}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div class='roulette-list-toolbar'>
+            <strong>Participantes</strong>
+            <label class='roulette-select-all'>
+              <span>Seleccionar todo</span>
+              <input id='roulette-select-all' type='checkbox' checked />
+            </label>
+          </div>
+
+          <div class='roulette-candidate-list' id='roulette-candidates'></div>
+        </aside>
+      </section>
+
+      <section class='roulette-result' id='roulette-result' hidden aria-labelledby='roulette-result-title'>
+        <div class='roulette-result-arc' aria-hidden='true'>
+          <canvas id='roulette-result-wheel' width='900' height='900'></canvas>
+          <span class='roulette-result-pointer'><i class='ph-fill ph-caret-down'></i></span>
+        </div>
+
+        <div class='roulette-result-heading'>
+          <span class='roulette-kicker'>Resultado</span>
+          <h2 id='roulette-result-title'>La ruleta ha elegido</h2>
+        </div>
+
+        <div class='roulette-winner'>
+          <div class='roulette-winner-cover'>
+            <img id='roulette-winner-cover' src='' alt='' />
+          </div>
+          <div class='roulette-winner-copy'>
+            <h3 id='roulette-winner-title'></h3>
+            <span class='roulette-winner-status' id='roulette-winner-status'></span>
+            <p id='roulette-winner-genres'></p>
+            <dl class='roulette-winner-meta'>
+              <div>
+                <dt><i class='ph ph-game-controller' aria-hidden='true'></i><span class='sr-only'>Launcher</span></dt>
+                <dd id='roulette-winner-launcher'></dd>
+              </div>
+              <div>
+                <dt><i class='ph ph-clock' aria-hidden='true'></i><span class='sr-only'>Duración</span></dt>
+                <dd id='roulette-winner-hltb'></dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        <div class='roulette-result-actions'>
+          <a class='roulette-button roulette-button-primary' id='roulette-winner-link' href='/'>
+            <i class='ph-fill ph-play' aria-hidden='true'></i>
+            <span id='roulette-winner-link-label'>Jugar</span>
+          </a>
+          <button class='roulette-button roulette-button-ghost' id='roulette-again' type='button'>
+            <i class='ph ph-arrows-clockwise' aria-hidden='true'></i>
+            <span>Volver a girar</span>
+          </button>
+          <button class='roulette-button roulette-button-ghost' id='roulette-exclude' type='button'>
+            <i class='ph ph-minus-circle' aria-hidden='true'></i>
+            <span>Excluir y repetir</span>
+          </button>
+        </div>
+
+        <div class='roulette-participants'>
+          <div class='roulette-participants-title'>
+            <span></span>
+            <strong id='roulette-participants-count'>Participaron 0 juegos</strong>
+            <span></span>
+          </div>
+          <div class='roulette-participant-strip' id='roulette-participant-strip'></div>
+        </div>
+      </section>
+    </div>
+
+    <div
+      id='__roulette-data'
+      data-games={JSON.stringify(rouletteGames)}
+      data-default-slugs={JSON.stringify(defaultSlugs)}
+      hidden
+    ></div>
+  </main>
+
+  <script>
+    import { initRoulette } from '../../scripts/roulette';
+
+    const dataElement = document.getElementById('__roulette-data');
+    initRoulette(
+      JSON.parse(dataElement?.dataset.games ?? '[]'),
+      JSON.parse(dataElement?.dataset.defaultSlugs ?? '[]'),
+    );
+  </script>
+</BaseLayout>

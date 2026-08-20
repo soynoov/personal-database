@@ -14,10 +14,40 @@ const { hasDlcs } = Astro.props;
 ---
 
 <nav class="game-sections-nav" aria-label="Secciones del juego">
-  <a href="#overview">Resumen</a>
-  <a href="#stats">Horas</a>
-  <a href="#finance">Dinero</a>
-  <a href="#technical">Datos</a>
-  {hasDlcs && <a href="#dlcs">DLCs</a>}
-  <a href="#metacritica">Metacrítica</a>
+  <a class="is-active" aria-current="location" data-section-link href="#overview">Resumen</a>
+  <a data-section-link href="#hours">Horas</a>
+  <a data-section-link href="#finance">Dinero</a>
+  <a data-section-link href="#technical">Datos</a>
+  {hasDlcs && <a data-section-link href="#dlcs">DLCs</a>}
+  <a data-section-link href="#metacritica">Metacrítica</a>
 </nav>
+
+<script>
+  const sectionLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-section-link]'));
+  const sectionById = new Map(
+    sectionLinks
+      .map((link) => [link.hash.slice(1), document.getElementById(link.hash.slice(1))] as const)
+      .filter((entry): entry is [string, HTMLElement] => entry[1] instanceof HTMLElement),
+  );
+
+  const activateSection = (id: string) => {
+    sectionLinks.forEach((link) => {
+      const active = link.hash === `#${id}`;
+      link.classList.toggle('is-active', active);
+      if (active) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+  };
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible?.target.id) activateSection(visible.target.id);
+    },
+    { rootMargin: '-20% 0px -65% 0px', threshold: [0, 0.2, 0.6] },
+  );
+
+  sectionById.forEach((section) => observer.observe(section));
+</script>

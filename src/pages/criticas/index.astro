@@ -62,10 +62,6 @@ const formatRating = (rating: number) =>
         <div>
           <span class='eyebrow'>Tu propia escala</span>
           <h1>Metacrítica</h1>
-          <p>
-            Compara la crítica profesional, la comunidad y tu valoración calculada desde
-            Jugabilidad, Historia, Música, Gráficos / arte y Entretenimiento.
-          </p>
         </div>
         <div class='criterion-hero-score' aria-label={`Nota media ${averageRating === null ? 'sin datos' : `${formatRating(averageRating)} sobre 10`}`}>
           <span>Media personal</span>
@@ -101,10 +97,11 @@ const formatRating = (rating: number) =>
           <span class='criterion-count'>Resultado final sobre 10</span>
         </div>
 
-        <p class='criterion-methodology-intro'>
-          No se introduce una nota global. Cada criterio se normaliza sobre 10 y después
-          se calcula una media ponderada. Entretenimiento pesa 0,75; los demás criterios pesan 1.
-        </p>
+        <div class='criterion-formula' aria-label='Cinco criterios, resultado sobre diez y entretenimiento con peso cero coma setenta y cinco'>
+          <span><i class='ph ph-checks' aria-hidden='true'></i> 5 criterios</span>
+          <span><i class='ph ph-equals' aria-hidden='true'></i> Nota /10</span>
+          <span><i class='ph ph-scales' aria-hidden='true'></i> Entretenimiento ×0,75</span>
+        </div>
 
         <div class='criterion-methodology-grid'>
           {REVIEW_CRITERIA.map((criterion) => (
@@ -116,7 +113,7 @@ const formatRating = (rating: number) =>
                   <span>Peso {String(criterion.weight).replace('.', ',')}</span>
                 </div>
               </div>
-              <p>{criterion.measures}</p>
+              <span class='sr-only'>{criterion.measures}</span>
               {criterion.scale ? (
                 <ol class='criterion-scale-list'>
                   {Object.entries(criterion.scale).map(([score, description]) => (
@@ -126,11 +123,7 @@ const formatRating = (rating: number) =>
                     </li>
                   ))}
                 </ol>
-              ) : (
-                <p class='criterion-scale-pending'>
-                  Escala detallada pendiente de definir.
-                </p>
-              )}
+              ) : null}
             </article>
           ))}
         </div>
@@ -139,10 +132,10 @@ const formatRating = (rating: number) =>
           <div>
             <span class='section-eyebrow'>Apartado separado</span>
             <h3>Mención honorífica · 0–3</h3>
-            <p>
-              Reconoce algo especial y exige explicar el motivo. Se guarda aparte y no altera
-              la nota final.
-            </p>
+            <div class='criterion-formula'>
+              <span>Motivo obligatorio</span>
+              <span>No altera la nota</span>
+            </div>
           </div>
           <ol class='criterion-scale-list'>
             <li><strong>0</strong><span>Sin mención.</span></li>
