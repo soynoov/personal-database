@@ -817,6 +817,7 @@ const metadataGroups = [
       { label: "Tags", value: tags },
       { label: "Launcher", value: formatValue(game.launcher, "Sin launcher") },
       { label: "Plataforma", value: formatValue(game.plataforma) },
+      ...(game.tamano ? [{ label: "Tamaño instalado", value: game.tamano }] : []),
       { label: "Steam AppID", value: formatValue(game.steam_appid) },
       { label: "Coincidencia HLTB", value: formatValue(game.hltb_match) },
     ],

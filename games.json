@@ -6072,5 +6072,45 @@
     ],
     "steam_store_name": "The Farmer Was Replaced",
     "steam_last_sync_at": "2026-08-20T20:50:10.589Z"
+  },
+  {
+    "titulo": "Sifu",
+    "estado": "Jugando",
+    "launcher": "Epic Games",
+    "plataforma": "PC",
+    "horas": 2.35,
+    "tamano": "30,32 GB",
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": 6,
+      "total": 60
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2022,
+    "solo": true,
+    "hltb": null,
+    "cover_url": null,
+    "steam_appid": 2138710,
+    "generos": [
+      "Acción",
+      "Indie"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": null,
+      "main_plus": null,
+      "completionist": null
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Indie"
+    ],
+    "steam_store_name": "Sifu",
+    "steam_last_sync_at": null
   }
 ]

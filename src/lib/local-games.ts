@@ -25,6 +25,7 @@ export type LocalGame = {
   launcher: string | null;
   plataforma: string | null;
   horas: number | null;
+  tamano?: string | null;
   steam_appid?: number | null;
   generos?: string[] | null;
   tags?: string[] | null;

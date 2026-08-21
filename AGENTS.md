@@ -13,6 +13,10 @@ Shared notes for agents working inside the standalone app repository.
 - Dev: `npm run dev`
 - Build: `npm run build`
 
+## Git workflow
+
+- Tras completar cambios solicitados, crear el commit y hacer push directamente a `origin/main` sin esperar una petición adicional.
+
 ## Key implementation rules
 
 - `src/lib/local-games.ts` loads `games.json` from this folder first.
