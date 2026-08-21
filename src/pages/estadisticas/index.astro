@@ -18,29 +18,41 @@ const drawerEstadosOrdered = [
 const estadosSet = new Set(estados.map(normalizeStatus));
 const knownEstadoValues = new Set(drawerEstadosOrdered.map(normalizeStatus));
 const orderedDrawerEstados = [
-  ...drawerEstadosOrdered.filter((d) => estadosSet.has(normalizeStatus(d)) || d === 'Wishlist'),
-  ...estados.filter((e) => !knownEstadoValues.has(normalizeStatus(e))),
+  ...drawerEstadosOrdered.filter((estado) => estadosSet.has(normalizeStatus(estado)) || estado === 'Wishlist'),
+  ...estados.filter((estado) => !knownEstadoValues.has(normalizeStatus(estado))),
 ];
 
 const today = new Date();
 const currentYear = today.getFullYear();
-
 const availableYears = getAvailableYears(games);
 const requestedYear = Number(Astro.url.searchParams.get('year'));
 const year = availableYears.includes(requestedYear) ? requestedYear : currentYear;
-const isCurrentYear = year === currentYear;
+const selectedPlatform = Astro.url.searchParams.get('plataforma')?.trim() ?? '';
+const selectedLauncher = Astro.url.searchParams.get('launcher')?.trim() ?? '';
+const selectedStatus = Astro.url.searchParams.get('estado')?.trim() ?? '';
+const hasActiveFilters = Boolean(selectedPlatform || selectedLauncher || selectedStatus);
 
-const recap = getYearRecap(games, year);
-const prevRecap = getYearRecap(games, year - 1);
-const quality = getDataQuality(games);
+const filteredGames = games.filter((game) => {
+  if (selectedPlatform && game.plataforma !== selectedPlatform) return false;
+  if (selectedLauncher && game.launcher !== selectedLauncher) return false;
+  if (selectedStatus && normalizeStatus(game.estado) !== normalizeStatus(selectedStatus)) return false;
+  return true;
+});
+
+const recap = getYearRecap(filteredGames, year);
+const prevRecap = getYearRecap(filteredGames, year - 1);
+const quality = getDataQuality(filteredGames);
+const isCurrentYear = year === currentYear;
 
 const formatMoney = (value: number) =>
   new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value);
-
 const formatHours = (value: number) => `${value.toLocaleString('es-ES', { maximumFractionDigits: 1 })} h`;
+const formatDate = (date: string | null) => date
+  ? new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'short' }).format(new Date(`${date}T12:00:00`))
+  : '';
 
-const delta = (current: number, prev: number) => {
-  const diff = Number((current - prev).toFixed(1));
+const delta = (current: number, previous: number) => {
+  const diff = Number((current - previous).toFixed(1));
   if (diff > 0) return { sign: '+', tone: 'up', value: diff };
   if (diff < 0) return { sign: '', tone: 'down', value: diff };
   return { sign: '', tone: 'flat', value: 0 };
@@ -52,45 +64,32 @@ const completadosDelta = delta(recap.completados.length, prevRecap.completados.l
 
 const isoDayOfYear = (() => {
   const start = new Date(today.getFullYear(), 0, 0);
-  const diff = today.getTime() - start.getTime();
-  return Math.floor(diff / 86400000);
+  return Math.floor((today.getTime() - start.getTime()) / 86400000);
 })();
-const daysInYear = (today.getFullYear() % 4 === 0 && (today.getFullYear() % 100 !== 0 || today.getFullYear() % 400 === 0)) ? 366 : 365;
-const yearProgressPct = Math.round((isoDayOfYear / daysInYear) * 100);
+const daysInYear = currentYear % 4 === 0 && (currentYear % 100 !== 0 || currentYear % 400 === 0) ? 366 : 365;
+const yearProgressPct = isCurrentYear ? Math.round((isoDayOfYear / daysInYear) * 100) : 100;
 
 const monthLabels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-const chartPayload = {
+const monthlyChartPayload = {
   labels: monthLabels,
-  values: recap.monthly.map((m) => m.horas),
+  values: recap.monthly.map((month) => month.horas),
+};
+const genreChartPayload = {
+  labels: recap.generosTop.map((genre) => genre.name),
+  values: recap.generosTop.map((genre) => genre.count),
 };
 
 const gapGroups = [
-  {
-    title: 'juegos "Terminado" sin fecha_fin',
-    hint: 'Bloquea que cuenten en "Completados" de cualquier año.',
-    items: quality.gaps.terminadosSinFecha,
-  },
-  {
-    title: 'juegos en curso o terminados sin fecha_inicio',
-    hint: 'Sin esa fecha no entran en horas, gasto, géneros ni launchers de ningún año.',
-    items: quality.gaps.sinFechaInicio,
-  },
-  {
-    title: 'juegos adquiridos sin precio_pagado',
-    hint: 'El gasto se estima con precio_actual (no es lo que pagaste) o se queda fuera si tampoco hay precio_actual.',
-    items: quality.gaps.sinPrecio,
-  },
-  {
-    title: 'juegos sin géneros registrados',
-    hint: 'No aparecen en el desglose "Dónde se fue el año".',
-    items: quality.gaps.sinGeneros,
-  },
+  { title: 'Terminados sin fecha de fin', items: quality.gaps.terminadosSinFecha },
+  { title: 'En curso sin fecha de inicio', items: quality.gaps.sinFechaInicio },
+  { title: 'Adquiridos sin precio pagado', items: quality.gaps.sinPrecio },
+  { title: 'Sin géneros registrados', items: quality.gaps.sinGeneros },
 ];
+const totalGaps = gapGroups.reduce((sum, group) => sum + group.items.length, 0);
 ---
 
-<BaseLayout title='Estadisticas — Personal Database'>
+<BaseLayout title='Estadísticas — Personal Database'>
   <main class='shell shell-app shell-desktop-app'>
-
     <Sidebar
       orderedDrawerEstados={orderedDrawerEstados}
       plataformas={plataformas}
@@ -98,284 +97,247 @@ const gapGroups = [
       active='estadisticas'
     />
 
-    <div class='desktop-main'>
-
-      <!-- Hero -->
-      <section class='panel recap-hero'>
-        <div class='recap-hero-top'>
-          <div>
-            <span class='eyebrow'>Tu año en juegos</span>
-            <h1>Recap {year}</h1>
-            <div
-              class='recap-year-progress'
-              role='progressbar'
-              aria-label={`Progreso de ${year}`}
-              aria-valuemin='0'
-              aria-valuemax='100'
-              aria-valuenow={isCurrentYear ? yearProgressPct : 100}
-            >
-              <span>{isCurrentYear ? `Día ${isoDayOfYear}` : 'Año cerrado'}</span>
-              <div aria-hidden='true'><span style={`width:${isCurrentYear ? yearProgressPct : 100}%`}></span></div>
-              <strong>{isCurrentYear ? yearProgressPct : 100}%</strong>
-            </div>
-          </div>
-          <div class='recap-year-pills'>
-            {availableYears.map((y) => (
-              <a class:list={['recap-year-pill', y === year && 'is-active']} href={`/estadisticas/?year=${y}`}>
-                {y}
-              </a>
-            ))}
-          </div>
+    <div class='desktop-main stats-dashboard'>
+      <header class='stats-dashboard-heading'>
+        <div>
+          <span class='eyebrow'>Tu actividad</span>
+          <h1>Estadísticas</h1>
         </div>
-      </section>
-
-      <!-- Aviso de calidad de datos -->
-      <section class='panel recap-quality'>
-        <div class='recap-quality-head'>
-          <strong>Calidad de los datos</strong>
+        <div
+          class='stats-year-progress'
+          role='progressbar'
+          aria-label={`Progreso de ${year}`}
+          aria-valuemin='0'
+          aria-valuemax='100'
+          aria-valuenow={yearProgressPct}
+        >
+          <span>{isCurrentYear ? `Día ${isoDayOfYear}` : 'Año cerrado'}</span>
+          <div aria-hidden='true'><span style={`width:${yearProgressPct}%`}></span></div>
+          <strong>{yearProgressPct}%</strong>
         </div>
-        <div class='recap-quality-grid'>
-          <div class='recap-quality-metric'>
-            <strong>{quality.pctFechaFinCompleta}%</strong>
-            <span>Fechas de fin</span>
-            <small>{quality.totalTerminados - quality.gaps.terminadosSinFecha.length}/{quality.totalTerminados} registradas</small>
-          </div>
-          <div class='recap-quality-metric'>
-            <strong>{quality.pctPrecioCompleto}%</strong>
-            <span>Precios reales</span>
-            <small>{quality.totalJuegos - quality.gaps.sinPrecio.length}/{quality.totalJuegos} registrados</small>
-          </div>
-          <div class='recap-quality-metric'>
-            <strong>{recap.gastoEstimadoCount}</strong>
-            <span>Estimaciones</span>
-            <small>en el gasto de {year}</small>
-          </div>
-        </div>
-      </section>
+      </header>
 
-      <!-- Qué te falta rellenar -->
-      <section class='panel recap-section recap-quality-detail'>
-        <div class='recap-section-head'>
-          <div>
-            <span class='section-eyebrow'>Datos incompletos</span>
-            <h2>Por revisar</h2>
-          </div>
-          <i class='ph ph-warning-circle' aria-hidden='true'></i>
-        </div>
-        <div class='recap-gap-groups'>
-          {gapGroups.map((group) => (
-            group.items.length > 0 ? (
-              <details class='recap-quality-list-wrap'>
-                <summary title={group.hint}>
-                  <span><strong>{group.items.length}</strong> {group.title}</span>
-                  <i class='ph ph-caret-down' aria-hidden='true'></i>
-                </summary>
-                <div class='recap-quality-pills'>
-                  {group.items.slice(0, 40).map((g) => (
-                    <a class='recap-quality-pill' href={`/games/${g.slug}`}>{g.titulo}</a>
-                  ))}
-                  {group.items.length > 40 && (
-                    <span class='recap-quality-pill recap-quality-pill-more'>+{group.items.length - 40} más</span>
-                  )}
-                </div>
-              </details>
-            ) : (
-              <p class='recap-gap-clear'><i class='ph ph-check-circle' aria-hidden='true'></i> Sin huecos en {group.title}.</p>
-            )
-          ))}
-        </div>
-      </section>
-
-      <!-- Stat cards -->
-      <section class='recap-stats'>
-        <article class='panel recap-stat recap-stat-accent'>
-          <span>Completados en {year}</span>
-          <strong data-stat-completados>{recap.completados.length}</strong>
-          <span class='recap-stat-note'>
-            <span class:list={['recap-delta', `recap-delta-${completadosDelta.tone}`]}>
-              {completadosDelta.sign}{completadosDelta.value} vs {year - 1}
-            </span>
-            · fecha_fin estricta
-          </span>
-        </article>
-
-        <article class='panel recap-stat recap-stat-accent-alt'>
-          <span>Horas jugadas en {year}</span>
-          <strong data-stat-horas>{formatHours(recap.horasAtribuidas)}</strong>
-          <span class='recap-stat-note'>
-            <span class:list={['recap-delta', `recap-delta-${horasDelta.tone}`]}>
-              {horasDelta.sign}{formatHours(Math.abs(horasDelta.value))} vs {year - 1}
-            </span>
-            · aproximado por fecha_inicio
-          </span>
-        </article>
-
-        <article class='panel recap-stat'>
-          <span>Gastado en {year}</span>
-          <strong data-stat-gasto>{formatMoney(recap.gastoAtribuido)}</strong>
-          <span class='recap-stat-note'>
-            <span class:list={['recap-delta', `recap-delta-${gastoDelta.tone}`]}>
-              {gastoDelta.sign}{formatMoney(Math.abs(gastoDelta.value))} vs {year - 1}
-            </span>
-            · aproximado, {recap.gastoEstimadoCount} estimados
-          </span>
-        </article>
-
-        <article class='panel recap-stat recap-stat-accent-warn'>
-          <span>Juegos empezados en {year}</span>
-          <strong data-stat-iniciados>{recap.iniciados.length}</strong>
-          <span class='recap-stat-note'>{recap.promedioHorasPorJuego} h de media por juego</span>
-        </article>
-      </section>
-
-      <!-- Géneros y launchers -->
-      <section class='panel recap-section'>
-        <div class='recap-section-head'>
-          <h2>Dónde se fue el año</h2>
-          <span class='recap-section-count'>{recap.iniciados.length} juegos</span>
-        </div>
-
-        {recap.iniciados.length === 0 ? (
-          <p class='recap-empty'>Ningún juego tiene fecha_inicio en {year}. Sin esa fecha no hay nada que repartir por género, launcher o mes.</p>
-        ) : (
-          <div class='recap-two-col'>
-            <div>
-              <div class='recap-chart-card'>
-                <canvas id='recap-monthly-chart' data-chart={JSON.stringify(chartPayload)}></canvas>
-              </div>
-            </div>
-            <div class='recap-bar-list'>
-              {recap.generosTop.length > 0 ? recap.generosTop.map((g) => (
-                <div class='recap-bar-row'>
-                  <div class='recap-bar-row-label'>
-                    <span>{g.name}</span>
-                    <span>{g.count} · {g.pct}%</span>
-                  </div>
-                  <div class='recap-bar-track'>
-                    <div class='recap-bar-fill' style={`width:${g.pct}%`}></div>
-                  </div>
-                </div>
-              )) : <p class='recap-empty'>Sin géneros registrados para {year}.</p>}
-            </div>
-          </div>
+      <form class='panel stats-filter-bar' method='get' aria-label='Filtrar estadísticas'>
+        <label>
+          <span>Año</span>
+          <select name='year'>
+            {availableYears.map((optionYear) => <option value={optionYear} selected={optionYear === year}>{optionYear}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>Plataforma</span>
+          <select name='plataforma'>
+            <option value=''>Todas</option>
+            {plataformas.map((platform) => <option value={platform} selected={platform === selectedPlatform}>{platform}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>Launcher</span>
+          <select name='launcher'>
+            <option value=''>Todos</option>
+            {launchers.map((launcher) => <option value={launcher} selected={launcher === selectedLauncher}>{launcher}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>Estado</span>
+          <select name='estado'>
+            <option value=''>Todos</option>
+            {estados.map((estado) => <option value={estado} selected={normalizeStatus(estado) === normalizeStatus(selectedStatus)}>{estado}</option>)}
+          </select>
+        </label>
+        <button type='submit' class='stats-filter-submit' aria-label='Aplicar filtros'>
+          <i class='ph ph-funnel' aria-hidden='true'></i>
+          Aplicar
+        </button>
+        {hasActiveFilters && (
+          <a class='stats-filter-reset' href={`/estadisticas/?year=${year}`} aria-label='Quitar filtros'>
+            <i class='ph ph-x' aria-hidden='true'></i>
+          </a>
         )}
+      </form>
+
+      <div class='stats-scope'>
+        <strong>Resumen de {year}</strong>
+        <span>{filteredGames.length} de {games.length} juegos</span>
+      </div>
+
+      <section class='recap-stats' aria-label='Indicadores principales'>
+        <article class='panel recap-stat recap-stat-accent'>
+          <div class='recap-stat-head'><span>Completados</span><i class='ph ph-check-circle'></i></div>
+          <strong>{recap.completados.length}</strong>
+          <span class:list={['recap-delta', `recap-delta-${completadosDelta.tone}`]}>{completadosDelta.sign}{completadosDelta.value} vs {year - 1}</span>
+        </article>
+        <article class='panel recap-stat recap-stat-accent-alt'>
+          <div class='recap-stat-head'><span>Horas jugadas</span><i class='ph ph-timer'></i></div>
+          <strong>{formatHours(recap.horasAtribuidas)}</strong>
+          <span class:list={['recap-delta', `recap-delta-${horasDelta.tone}`]}>{horasDelta.sign}{formatHours(Math.abs(horasDelta.value))} vs {year - 1}</span>
+        </article>
+        <article class='panel recap-stat'>
+          <div class='recap-stat-head'><span>Gastado</span><i class='ph ph-wallet'></i></div>
+          <strong>{formatMoney(recap.gastoAtribuido)}</strong>
+          <span class:list={['recap-delta', `recap-delta-${gastoDelta.tone}`]}>{gastoDelta.sign}{formatMoney(Math.abs(gastoDelta.value))} vs {year - 1}</span>
+        </article>
+        <article class='panel recap-stat recap-stat-accent-warn'>
+          <div class='recap-stat-head'><span>Empezados</span><i class='ph ph-game-controller'></i></div>
+          <strong>{recap.iniciados.length}</strong>
+          <span class='recap-stat-note'>{recap.promedioHorasPorJuego} h de media</span>
+        </article>
       </section>
 
-      <!-- Launchers + destacado -->
-      {recap.iniciados.length > 0 && (
-        <section class='panel recap-section'>
-          <h2>Launchers y destacado del año</h2>
-          <div class='recap-two-col'>
-            <div class='recap-bar-list'>
-              {recap.launchersTop.map((l) => (
-                <div class='recap-bar-row'>
-                  <div class='recap-bar-row-label'>
-                    <span>{l.name}</span>
-                    <span>{l.count} · {l.pct}%</span>
-                  </div>
-                  <div class='recap-bar-track'>
-                    <div class='recap-bar-fill' style={`width:${l.pct}%`}></div>
-                  </div>
-                </div>
+      <div class='stats-dashboard-grid'>
+        <section class='panel recap-section stats-monthly-panel'>
+          <div class='recap-section-head'>
+            <div><span class='section-eyebrow'>Actividad</span><h2>Horas por mes</h2></div>
+            <span class='recap-section-count'>{formatHours(recap.horasAtribuidas)}</span>
+          </div>
+          {recap.iniciados.length ? (
+            <div class='recap-chart-card'><canvas id='recap-monthly-chart' data-chart={JSON.stringify(monthlyChartPayload)}></canvas></div>
+          ) : <div class='recap-empty'>Sin actividad para esta selección.</div>}
+        </section>
+
+        <section class='panel recap-section stats-genre-panel'>
+          <div class='recap-section-head'><div><span class='section-eyebrow'>Distribución</span><h2>Géneros</h2></div></div>
+          {recap.generosTop.length ? (
+            <>
+              <div class='stats-donut-wrap'>
+                <canvas id='recap-genre-chart' data-chart={JSON.stringify(genreChartPayload)}></canvas>
+                <div class='stats-donut-center' aria-hidden='true'><strong>{recap.iniciados.length}</strong><span>juegos</span></div>
+              </div>
+              <div class='stats-genre-legend'>
+                {recap.generosTop.slice(0, 4).map((genre, index) => (
+                  <span><i style={`--legend-index:${index}`}></i>{genre.name}<strong>{genre.pct}%</strong></span>
+                ))}
+              </div>
+            </>
+          ) : <div class='recap-empty'>Sin géneros para esta selección.</div>}
+        </section>
+
+        <section class='panel recap-section stats-launchers-panel'>
+          <div class='recap-section-head'><div><span class='section-eyebrow'>Biblioteca</span><h2>Launchers</h2></div></div>
+          <div class='recap-bar-list'>
+            {recap.launchersTop.length ? recap.launchersTop.slice(0, 6).map((launcher) => (
+              <div class='recap-bar-row'>
+                <div class='recap-bar-row-label'><span>{launcher.name}</span><span>{launcher.count} · {launcher.pct}%</span></div>
+                <div class='recap-bar-track'><div class='recap-bar-fill' style={`width:${launcher.pct}%`}></div></div>
+              </div>
+            )) : <div class='recap-empty'>Sin launchers para esta selección.</div>}
+          </div>
+          {recap.juegoConMasHoras && (
+            <a class='recap-highlight' href={`/games/${recap.juegoConMasHoras.slug}`}>
+              <span>Más jugado</span><strong>{recap.juegoConMasHoras.titulo}</strong>
+              <span>{formatHours(Number(recap.juegoConMasHoras.horas ?? 0))}<i class='ph ph-arrow-up-right'></i></span>
+            </a>
+          )}
+        </section>
+
+        <section class='panel recap-section stats-completed-panel'>
+          <div class='recap-section-head'>
+            <div><span class='section-eyebrow'>Historial</span><h2>Terminados recientemente</h2></div>
+            <span class='recap-section-count'>{recap.completados.length}</span>
+          </div>
+          {recap.completados.length ? (
+            <div class='recap-completados-list'>
+              {recap.completados.slice(0, 8).map((game) => (
+                <a class='recap-completados-row' href={`/games/${game.slug}`}>
+                  <span class='recap-completed-icon'><i class='ph ph-check'></i></span>
+                  <span class='recap-completed-copy'><strong>{game.titulo}</strong><small>{formatHours(Number(game.horas ?? 0))}</small></span>
+                  <time datetime={game.fecha_fin ?? undefined}>{formatDate(game.fecha_fin)}</time>
+                  <i class='ph ph-caret-right' aria-hidden='true'></i>
+                </a>
               ))}
             </div>
-            <div class='recap-highlight'>
-              <span>Más horas en {year}</span>
-              {recap.juegoConMasHoras ? (
-                <>
-                  <a href={`/games/${recap.juegoConMasHoras.slug}`}>{recap.juegoConMasHoras.titulo}</a>
-                  <span>{formatHours(Number(recap.juegoConMasHoras.horas ?? 0))}</span>
-                </>
-              ) : <span>Sin datos.</span>}
-            </div>
-          </div>
+          ) : <div class='recap-empty'>No hay juegos terminados en {year}.</div>}
         </section>
-      )}
 
-      <!-- Lista de completados -->
-      <section class='panel recap-section'>
-        <h2>Lo que terminaste en {year}</h2>
-        {recap.completados.length === 0 ? (
-          <p class='recap-empty'>
-            Ningún juego con fecha_fin en {year}. Si has terminado algo este año, añade fecha_fin en games.json para que aparezca aquí.
-          </p>
-        ) : (
-          <div class='recap-completados-list'>
-            {recap.completados.map((g) => (
-              <a class='recap-completados-row' href={`/games/${g.slug}`}>
-                <strong>{g.titulo}</strong>
-                <span>{g.fecha_fin} · {formatHours(Number(g.horas ?? 0))}</span>
-              </a>
-            ))}
+        <section class='panel recap-section stats-quality-panel'>
+          <div class='recap-section-head'>
+            <div><span class='section-eyebrow'>Cobertura</span><h2>Calidad de datos</h2></div>
+            <span class:list={['stats-quality-badge', totalGaps > 0 && 'has-gaps']}>{totalGaps}</span>
           </div>
-        )}
-      </section>
+          <div class='recap-quality-grid'>
+            <div class='recap-quality-metric'><strong>{quality.pctFechaFinCompleta}%</strong><span>Fechas de fin</span></div>
+            <div class='recap-quality-metric'><strong>{quality.pctPrecioCompleto}%</strong><span>Precios reales</span></div>
+            <div class='recap-quality-metric'><strong>{recap.gastoEstimadoCount}</strong><span>Estimaciones</span></div>
+          </div>
+          <details class='stats-gaps-details'>
+            <summary><span>Registros por completar</span><i class='ph ph-caret-down'></i></summary>
+            <div class='recap-gap-groups'>
+              {gapGroups.map((group) => group.items.length > 0 && (
+                <details class='recap-quality-list-wrap'>
+                  <summary><span><strong>{group.items.length}</strong> {group.title}</span><i class='ph ph-caret-down'></i></summary>
+                  <div class='recap-quality-pills'>
+                    {group.items.slice(0, 20).map((game) => <a class='recap-quality-pill' href={`/games/${game.slug}`}>{game.titulo}</a>)}
+                    {group.items.length > 20 && <span class='recap-quality-pill recap-quality-pill-more'>+{group.items.length - 20}</span>}
+                  </div>
+                </details>
+              ))}
+              {totalGaps === 0 && <p class='recap-gap-clear'><i class='ph ph-check-circle'></i> Todo completo.</p>}
+            </div>
+          </details>
+        </section>
+      </div>
 
-      <!-- Metodología -->
       <details class='panel recap-section recap-methodology-panel'>
-        <summary>
-          <span><i class='ph ph-calculator' aria-hidden='true'></i> Cómo se calcula</span>
-          <i class='ph ph-caret-down' aria-hidden='true'></i>
-        </summary>
+        <summary><span><i class='ph ph-calculator'></i> Cómo se calcula</span><i class='ph ph-caret-down'></i></summary>
         <dl class='recap-methodology'>
           <div><dt>Completados</dt><dd>Estado terminado y fecha de fin dentro del año.</dd></div>
           <div><dt>Horas</dt><dd>Atribuidas al año de inicio.</dd></div>
           <div><dt>Gasto</dt><dd>Precio pagado; si falta, precio actual estimado.</dd></div>
         </dl>
       </details>
-
     </div>
   </main>
 
   <script>
-    import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip } from 'chart.js';
+    import {
+      ArcElement, CategoryScale, Chart, DoughnutController, Filler,
+      LineController, LineElement, LinearScale, PointElement, Tooltip,
+    } from 'chart.js';
 
-    Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip);
+    Chart.register(
+      ArcElement, CategoryScale, DoughnutController, Filler,
+      LineController, LineElement, LinearScale, PointElement, Tooltip,
+    );
 
-    const canvas = document.getElementById('recap-monthly-chart');
-    if (canvas instanceof HTMLCanvasElement) {
-      const payload = JSON.parse(canvas.dataset.chart ?? '{"labels":[],"values":[]}');
-      new Chart(canvas, {
-        type: 'bar',
-        data: {
-          labels: payload.labels,
-          datasets: [
-            {
-              label: 'Horas',
-              data: payload.values,
-              backgroundColor: 'rgba(201, 168, 255, 0.35)',
-              borderColor: '#c9a8ff',
-              borderWidth: 1.5,
-              borderRadius: 5,
-              borderSkipped: false,
-            },
-          ],
-        },
+    const chartColors = ['#a875ff', '#63c6ff', '#ee75c8', '#6378ff', '#79e2be', '#ffbd6d'];
+    const monthlyCanvas = document.getElementById('recap-monthly-chart');
+    if (monthlyCanvas instanceof HTMLCanvasElement) {
+      const payload = JSON.parse(monthlyCanvas.dataset.chart ?? '{"labels":[],"values":[]}');
+      const context = monthlyCanvas.getContext('2d');
+      const gradient = context?.createLinearGradient(0, 0, 0, 260);
+      gradient?.addColorStop(0, 'rgba(168, 117, 255, 0.38)');
+      gradient?.addColorStop(1, 'rgba(168, 117, 255, 0.01)');
+      new Chart(monthlyCanvas, {
+        type: 'line',
+        data: { labels: payload.labels, datasets: [{
+          label: 'Horas', data: payload.values, fill: true,
+          backgroundColor: gradient ?? 'rgba(168, 117, 255, 0.2)',
+          borderColor: '#a875ff', borderWidth: 2.5, tension: 0.38,
+          pointBackgroundColor: '#e9dcff', pointBorderColor: '#a875ff', pointRadius: 3, pointHoverRadius: 5,
+        }] },
         options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              backgroundColor: 'rgba(13, 18, 26, 0.94)',
-              borderColor: 'rgba(255, 255, 255, 0.1)',
-              borderWidth: 1,
-              padding: 10,
-              callbacks: {
-                label: (ctx: any) => `${Number(ctx.parsed.y).toFixed(1)} h`,
-              },
-            },
-          },
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: {
+            backgroundColor: 'rgba(12, 10, 24, 0.96)', borderColor: 'rgba(168, 117, 255, 0.42)', borderWidth: 1, padding: 10,
+            callbacks: { label: (ctx: any) => `${Number(ctx.parsed.y).toFixed(1)} h` },
+          } },
           scales: {
-            x: {
-              grid: { display: false },
-              ticks: { color: 'rgba(218, 226, 236, 0.62)', font: { size: 11 } },
-            },
-            y: {
-              grid: { color: 'rgba(132, 146, 166, 0.16)' },
-              ticks: { color: 'rgba(218, 226, 236, 0.5)', font: { size: 11 } },
-            },
+            x: { grid: { display: false }, ticks: { color: 'rgba(226, 221, 239, 0.55)', font: { size: 11 } } },
+            y: { beginAtZero: true, grid: { color: 'rgba(137, 120, 165, 0.14)' }, ticks: { color: 'rgba(226, 221, 239, 0.45)', font: { size: 11 } } },
           },
+        },
+      });
+    }
+
+    const genreCanvas = document.getElementById('recap-genre-chart');
+    if (genreCanvas instanceof HTMLCanvasElement) {
+      const payload = JSON.parse(genreCanvas.dataset.chart ?? '{"labels":[],"values":[]}');
+      new Chart(genreCanvas, {
+        type: 'doughnut',
+        data: { labels: payload.labels, datasets: [{ data: payload.values, backgroundColor: chartColors, borderWidth: 0, spacing: 3 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false, cutout: '70%',
+          plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(12, 10, 24, 0.96)', padding: 10 } },
         },
       });
     }
