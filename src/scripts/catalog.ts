@@ -194,6 +194,7 @@ const formatViewPrice = (game: CatalogGame): string => {
 
 const STATUS_QUICK_FILTERS = new Set(['terminado', 'jugando', 'pendiente', 'wishlist']);
 const QUICK_ONLY_FILTERS = new Set(['profit', 'loss', 'early']);
+const DEFAULT_SORT = 'horas-desc';
 
 const matchesQuickFilter = (game: CatalogGame, quickFilter: string): boolean => {
   if (!quickFilter) return true;
@@ -254,7 +255,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     const value = params.get(key);
     if (el && value) el.value = value;
   }
-  if (!elements.sort.value) elements.sort.value = 'titulo-asc';
+  if (!elements.sort.value) elements.sort.value = DEFAULT_SORT;
 
   let activeQuickFilter = '';
   let activeView = params.get('view') === 'table' ? 'table' : 'cards';
@@ -347,7 +348,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
       };
       activeFilterEntries.push(['quick', quickFilterLabels[activeQuickFilter] ?? activeQuickFilter]);
     }
-    const hasCustomSort = filters.sort !== 'titulo-asc';
+    const hasCustomSort = filters.sort !== DEFAULT_SORT;
     elements.reset.hidden = activeFilterEntries.length === 0 && !hasCustomSort;
     const estadoPillColors: Record<string, string> = {
       jugando: '#6ee76c', terminado: '#67b1ff', completado: '#67b1ff',
@@ -404,7 +405,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     // URL params
     const nextParams = new URLSearchParams();
     for (const [key, value] of Object.entries(filters)) {
-      if (key === 'sort' && value === 'titulo-asc') continue;
+      if (key === 'sort' && value === DEFAULT_SORT) continue;
       if (value) nextParams.set(key, value);
     }
     if (activeView !== 'cards') nextParams.set('view', activeView);
@@ -562,7 +563,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     elements.launcher.value = '';
     elements.plataforma.value = '';
     elements.solo.value = '';
-    elements.sort.value = 'titulo-asc';
+    elements.sort.value = DEFAULT_SORT;
     elements.precio.value = '';
     activeQuickFilter = '';
     mobileExtraFiltersOpen = false;
