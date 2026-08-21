@@ -100,6 +100,10 @@ async function readBundledGames() {
   return JSON.parse(normalized) as LocalGame[];
 }
 
+function toStrongBlobEtag(etag: string) {
+  return etag.replace(/^W\//, "");
+}
+
 function containsText(value: unknown, search?: string | null) {
   if (!search) return true;
   if (value === null || value === undefined) return false;
@@ -128,7 +132,9 @@ export async function readGames() {
 
   const raw = await new Response(result.stream).text();
   const games = JSON.parse(raw.replace(/^\uFEFF/, "")) as LocalGame[];
-  gamesVersions.set(games, result.blob.etag);
+  // Las respuestas comprimidas pueden presentar el ETag como débil (`W/`).
+  // Blob espera el identificador fuerte equivalente al procesar `ifMatch`.
+  gamesVersions.set(games, toStrongBlobEtag(result.blob.etag));
   return games;
 }
 
