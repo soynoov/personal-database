@@ -223,6 +223,8 @@ const showAccordion = hasDlcs || hasMicro;
 </dialog>
 
 <script>
+  import { editorFetch } from '../../scripts/editor-auth';
+
   // ── Editor de Dinero ─────────────────────────────────────────────
   const trigger = document.getElementById('money-edit-trigger');
   const dialog = document.getElementById('money-edit-dialog');
@@ -291,7 +293,7 @@ const showAccordion = hasDlcs || hasMicro;
       submitBtn.disabled = true;
       submitBtn.textContent = 'Guardando…';
       try {
-        const response = await fetch(`/api/games/${slug}/edit`, {
+        const response = await editorFetch(`/api/games/${slug}/edit`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
@@ -317,7 +319,7 @@ const showAccordion = hasDlcs || hasMicro;
       syncPricesBtn.disabled = true;
       syncPricesStatus.textContent = 'Consultando Steam…';
       try {
-        const response = await fetch(`/api/games/${slug}/dlcs/sync-prices`, { method: 'POST' });
+        const response = await editorFetch(`/api/games/${slug}/dlcs/sync-prices`, { method: 'POST' });
         const result = await response.json().catch(() => ({}));
         if (!response.ok || !result.ok) throw new Error(result.error || `HTTP ${response.status}`);
         if (result.updated > 0) {

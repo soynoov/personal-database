@@ -171,6 +171,8 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
 </dialog>
 
 <script>
+  import { editorFetch } from '../../scripts/editor-auth';
+
   const trigger = document.getElementById('dlcs-edit-trigger');
   const dialog = document.getElementById('dlcs-edit-dialog');
   const form = document.getElementById('dlcs-edit-form');
@@ -246,7 +248,7 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
       submitBtn.textContent = 'Guardando…';
 
       try {
-        const response = await fetch(`/api/games/${slug}/dlcs/edit`, {
+        const response = await editorFetch(`/api/games/${slug}/dlcs/edit`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ items }),
@@ -380,7 +382,7 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
       syncStatus.textContent = 'Consultando Steam…';
 
       try {
-        const response = await fetch(`/api/games/${slug}/dlcs/sync`, { method: 'POST' });
+        const response = await editorFetch(`/api/games/${slug}/dlcs/sync`, { method: 'POST' });
         const result = await response.json().catch(() => ({}));
         if (!response.ok || !result.ok) {
           throw new Error(result.error || `No se pudo consultar Steam (HTTP ${response.status}).`);

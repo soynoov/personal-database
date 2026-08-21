@@ -242,6 +242,8 @@ const formatDecimal = (value: number | null) =>
 </dialog>
 
 <script>
+  import { editorFetch } from '../../scripts/editor-auth';
+
   const trigger = document.getElementById('metacritic-edit-trigger');
   const dialog = document.getElementById('metacritic-edit-dialog');
   const form = document.getElementById('metacritic-edit-form');
@@ -301,7 +303,7 @@ const formatDecimal = (value: number | null) =>
 
       try {
         const slug = form.dataset.slug ?? '';
-        const response = await fetch(`/api/games/${slug}/edit`, {
+        const response = await editorFetch(`/api/games/${slug}/edit`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),

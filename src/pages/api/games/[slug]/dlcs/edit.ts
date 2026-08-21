@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { requireEditor } from "../../../../../lib/edit-auth";
 import { findGameBySlug, readGames, slugifyGameTitle, writeGames } from "../../../../../lib/local-games";
 
 function jsonResponse(status: number, body: Record<string, unknown>) {
@@ -40,12 +41,8 @@ function toNullableIsoDate(value: unknown): string | null {
  * al plantear esta función.
  */
 export const POST: APIRoute = async ({ params, request }) => {
-  if (process.env.VERCEL) {
-    return jsonResponse(501, {
-      ok: false,
-      error: "El guardado solo está disponible en local (npm run dev) por ahora. En Vercel no hay forma de persistir el cambio en games.json.",
-    });
-  }
+  const authenticationError = requireEditor(request);
+  if (authenticationError) return authenticationError;
 
   const slug = params.slug ?? "";
   if (!slug) {
@@ -119,7 +116,7 @@ export const POST: APIRoute = async ({ params, request }) => {
   } catch (error) {
     return jsonResponse(500, {
       ok: false,
-      error: `No se pudo escribir games.json: ${error instanceof Error ? error.message : String(error)}`,
+      error: `No se pudo guardar la biblioteca: ${error instanceof Error ? error.message : String(error)}`,
     });
   }
 

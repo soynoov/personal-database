@@ -1,0 +1,44 @@
+<dialog class="editor-auth" id="editor-auth-dialog" aria-labelledby="editor-auth-title">
+  <form class="editor-auth__panel" id="editor-auth-form">
+    <button class="editor-auth__close" id="editor-auth-close" type="button" aria-label="Cerrar">
+      <i class="ph ph-x" aria-hidden="true"></i>
+    </button>
+
+    <span class="editor-auth__icon" aria-hidden="true">
+      <i class="ph ph-lock-key"></i>
+    </span>
+    <div>
+      <p class="editor-auth__eyebrow">Edición privada</p>
+      <h2 id="editor-auth-title">Desbloquear cambios</h2>
+    </div>
+    <p class="editor-auth__copy">
+      Introduce tu contraseña una vez. La sesión permanecerá abierta en este dispositivo.
+    </p>
+
+    <label class="editor-auth__field">
+      <span>Contraseña</span>
+      <input
+        id="editor-auth-password"
+        name="password"
+        type="password"
+        autocomplete="current-password"
+        required
+      />
+    </label>
+
+    <p class="editor-auth__error" id="editor-auth-error" role="alert" hidden></p>
+
+    <div class="editor-auth__actions">
+      <button class="editor-auth__cancel" id="editor-auth-cancel" type="button">Cancelar</button>
+      <button class="editor-auth__submit" id="editor-auth-submit" type="submit">
+        Desbloquear
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+  import { initEditorAuthDialog } from "../scripts/editor-auth";
+
+  initEditorAuthDialog();
+</script>

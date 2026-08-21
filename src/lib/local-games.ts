@@ -1,6 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { existsSync } from "node:fs";
+import { BlobPreconditionFailedError, get, put } from "@vercel/blob";
 import { isCompletedStatus, normalizeStatus } from "./game-status";
 
 export type GameCritique = {
@@ -83,6 +84,21 @@ export type LocalGame = {
 const localGamesPath = path.resolve(process.cwd(), "games.json");
 const parentGamesPath = path.resolve(process.cwd(), "..", "games.json");
 const gamesPath = existsSync(localGamesPath) ? localGamesPath : parentGamesPath;
+const productionGamesPath = "personal-database/games.json";
+const gamesVersions = new WeakMap<LocalGame[], string | null>();
+
+export function hasProductionGameStorage() {
+  return Boolean(
+    process.env.BLOB_READ_WRITE_TOKEN ||
+      (process.env.BLOB_STORE_ID && process.env.VERCEL_OIDC_TOKEN),
+  );
+}
+
+async function readBundledGames() {
+  const raw = await readFile(gamesPath, "utf8");
+  const normalized = raw.replace(/^\uFEFF/, "");
+  return JSON.parse(normalized) as LocalGame[];
+}
 
 function containsText(value: unknown, search?: string | null) {
   if (!search) return true;
@@ -91,20 +107,70 @@ function containsText(value: unknown, search?: string | null) {
 }
 
 export async function readGames() {
-  const raw = await readFile(gamesPath, "utf8");
-  const normalized = raw.replace(/^\uFEFF/, "");
-  return JSON.parse(normalized) as LocalGame[];
+  if (!process.env.VERCEL || !hasProductionGameStorage()) {
+    return readBundledGames();
+  }
+
+  const result = await get(productionGamesPath, {
+    access: "private",
+    useCache: false,
+  });
+
+  if (!result) {
+    const bundledGames = await readBundledGames();
+    gamesVersions.set(bundledGames, null);
+    return bundledGames;
+  }
+
+  if (result.statusCode !== 200 || !result.stream) {
+    throw new Error("Vercel Blob no devolvió el contenido de la biblioteca.");
+  }
+
+  const raw = await new Response(result.stream).text();
+  const games = JSON.parse(raw.replace(/^\uFEFF/, "")) as LocalGame[];
+  gamesVersions.set(games, result.blob.etag);
+  return games;
 }
 
 /**
- * Escribe games.json en disco. Solo funciona en un filesystem con permiso
- * de escritura (p. ej. `npm run dev` en local). En Vercel el filesystem del
- * deploy es de solo lectura \u2014 quien llame a esto debe comprobar el entorno
- * antes (ver src/pages/api/games/[slug]/edit.ts) y no asumir que escribe.
+ * En local conserva games.json como fuente canónica. En Vercel escribe una
+ * copia privada persistente en Blob; la primera escritura parte del JSON
+ * incluido en el deploy. El ETag evita pisar cambios concurrentes.
  */
 export async function writeGames(games: LocalGame[]) {
   const json = `${JSON.stringify(games, null, 2)}\n`;
-  await writeFile(gamesPath, json, "utf8");
+
+  if (!process.env.VERCEL) {
+    await writeFile(gamesPath, json, "utf8");
+    return;
+  }
+
+  if (!hasProductionGameStorage()) {
+    throw new Error(
+      "Falta conectar un almacén privado de Vercel Blob al proyecto.",
+    );
+  }
+
+  const previousEtag = gamesVersions.get(games);
+
+  try {
+    const saved = await put(productionGamesPath, json, {
+      access: "private",
+      addRandomSuffix: false,
+      allowOverwrite: true,
+      cacheControlMaxAge: 60,
+      contentType: "application/json; charset=utf-8",
+      ...(previousEtag ? { ifMatch: previousEtag } : {}),
+    });
+    gamesVersions.set(games, saved.etag);
+  } catch (error) {
+    if (error instanceof BlobPreconditionFailedError) {
+      throw new Error(
+        "La biblioteca cambió mientras editabas. Recarga la página y vuelve a intentarlo.",
+      );
+    }
+    throw error;
+  }
 }
 
 export function slugifyGameTitle(title: string) {

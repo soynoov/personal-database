@@ -86,6 +86,8 @@ const estadoOptions =
 </dialog>
 
 <script>
+  import { editorFetch } from '../../scripts/editor-auth';
+
   const trigger = document.getElementById('game-edit-trigger');
   const dialog = document.getElementById('game-edit-dialog');
   const form = document.getElementById('game-edit-form');
@@ -136,7 +138,7 @@ const estadoOptions =
       submitBtn.textContent = 'Guardando…';
 
       try {
-        const response = await fetch(`/api/games/${slug}/edit`, {
+        const response = await editorFetch(`/api/games/${slug}/edit`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),

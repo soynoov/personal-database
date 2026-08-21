@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { requireEditor } from "../../../../../lib/edit-auth";
 import { findGameBySlug, readGames, slugifyGameTitle, writeGames } from "../../../../../lib/local-games";
 
 function jsonResponse(status: number, body: Record<string, unknown>) {
@@ -46,15 +47,11 @@ async function fetchDlcPrice(appId: number): Promise<number | null> {
 
 /**
  * Actualiza precio_actual en todos los DLCs del juego que tengan steam_appid.
- * Solo escribe en games.json (local). En Vercel devuelve 501.
+ * Persiste los cambios en el almacenamiento configurado para el entorno.
  */
-export const POST: APIRoute = async ({ params }) => {
-  if (process.env.VERCEL) {
-    return jsonResponse(501, {
-      ok: false,
-      error: "Solo disponible en local (npm run dev) porque escribe en games.json.",
-    });
-  }
+export const POST: APIRoute = async ({ params, request }) => {
+  const authenticationError = requireEditor(request);
+  if (authenticationError) return authenticationError;
 
   const slug = params.slug ?? "";
   if (!slug) return jsonResponse(400, { ok: false, error: "Falta el slug del juego." });
@@ -111,7 +108,7 @@ export const POST: APIRoute = async ({ params }) => {
   } catch (err) {
     return jsonResponse(500, {
       ok: false,
-      error: `No se pudo guardar games.json: ${err instanceof Error ? err.message : String(err)}`,
+      error: `No se pudo guardar la biblioteca: ${err instanceof Error ? err.message : String(err)}`,
     });
   }
 
