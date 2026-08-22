@@ -36,6 +36,7 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
         >
           <img src={filtersIcon} alt='' aria-hidden='true' />
           <span>Filtros</span>
+          <span class='catalog-filter-count' id='catalog-filter-count' hidden>0</span>
         </button>
         <button class='button button-ghost button-clear' id='reset-filters' type='button' hidden>
           <img src={closeIcon} alt='' aria-hidden='true' />
@@ -44,7 +45,18 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
       </div>
     </div>
 
+    <button class='catalog-filter-backdrop' id='catalog-filter-backdrop' type='button' aria-label='Cerrar filtros' hidden></button>
+
     <div class='catalog-filters-selects' id='mobile-extra-filters'>
+      <div class='catalog-filter-sheet-head'>
+        <div>
+          <span class='section-eyebrow'>Catálogo</span>
+          <h2 id='catalog-filter-sheet-title'>Filtros</h2>
+        </div>
+        <button id='catalog-filter-close' type='button' aria-label='Cerrar filtros'>
+          <img src={closeIcon} alt='' aria-hidden='true' />
+        </button>
+      </div>
       <div class='field cf-main'>
         <label for='estado'>Estado</label>
         <select id='estado'>
@@ -66,7 +78,7 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
           {plataformas.map((plataforma) => <option value={plataforma}>{plataforma}</option>)}
         </select>
       </div>
-      <div class='field cf-main'>
+      <div class='field cf-main cf-sort'>
         <label for='sort'>Orden</label>
         <select id='sort'>
           <option value='titulo-asc'>A-Z</option>
@@ -82,7 +94,7 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
           <option value='false'>No</option>
         </select>
       </div>
-      <div class='field cf-extra'>
+      <div class='field cf-extra cf-price'>
         <label for='precio'>Precio</label>
         <select id='precio'>
           <option value=''>Todos</option>
@@ -92,6 +104,12 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
           <option value='high'>Mas de 30 EUR</option>
           <option value='unknown'>Sin dato</option>
         </select>
+      </div>
+      <div class='catalog-filter-sheet-actions'>
+        <button class='catalog-filter-reset-mobile' id='reset-filters-mobile' type='button'>Limpiar</button>
+        <button class='catalog-filter-apply' id='catalog-filter-apply' type='button'>
+          Ver <strong data-results-count>{totalGames}</strong> juegos
+        </button>
       </div>
     </div>
   </div>

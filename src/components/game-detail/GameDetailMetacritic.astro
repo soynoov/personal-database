@@ -8,6 +8,14 @@ import {
   getScoreSummary,
   getScoreTone,
 } from '../../lib/game-reviews';
+import TablerIcon from '../TablerIcon.astro';
+import checksIcon from '@tabler/icons/outline/checks.svg?url';
+import divideIcon from '@tabler/icons/outline/divide.svg?url';
+import usersIcon from '@tabler/icons/outline/users-group.svg?url';
+import starIcon from '@tabler/icons/outline/star.svg?url';
+import equalIcon from '@tabler/icons/outline/equal.svg?url';
+import arrowRightIcon from '@tabler/icons/outline/arrow-right.svg?url';
+import editIcon from '@tabler/icons/outline/edit.svg?url';
 
 interface Props {
   slug: string;
@@ -55,7 +63,8 @@ const formatDecimal = (value: number | null) =>
       type="button"
       aria-label="Editar puntuaciones de Metacrítica"
     >
-      Editar puntuaciones
+      <TablerIcon src={editIcon} />
+      <span>Editar</span>
     </button>
   </header>
 
@@ -137,11 +146,11 @@ const formatDecimal = (value: number | null) =>
     </article>
 
     <div class="metacritic-formula">
-      <span><i class="ph ph-checks" aria-hidden="true"></i> Todos los criterios</span>
-      <span><i class="ph ph-divide" aria-hidden="true"></i> Puntos obtenidos / máximos</span>
-      {includeCommunity && <span><i class="ph ph-users-three" aria-hidden="true"></i> Comunidad ×0,5</span>}
-      <span><i class="ph ph-star" aria-hidden="true"></i> Mención +0,1 por nivel</span>
-      <span><i class="ph ph-equals" aria-hidden="true"></i> Máximo 10</span>
+      <span><TablerIcon src={checksIcon} /> Todos los criterios</span>
+      <span><TablerIcon src={divideIcon} /> Puntos obtenidos / máximos</span>
+      {includeCommunity && <span><TablerIcon src={usersIcon} /> Comunidad ×0,5</span>}
+      <span><TablerIcon src={starIcon} /> Mención +0,1 por nivel</span>
+      <span><TablerIcon src={equalIcon} /> Máximo 10</span>
     </div>
   </div>
 </section>
@@ -204,7 +213,7 @@ const formatDecimal = (value: number | null) =>
             <span class="section-eyebrow">Cálculo automático</span>
             <h3 id="metacritic-personal-title">Tu valoración</h3>
           </div>
-          <a href="/criticas/">Qué significa cada nota <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+          <a href="/criticas/">Qué significa cada nota <TablerIcon src={arrowRightIcon} /></a>
         </div>
 
         <div class="metacritic-edit-criteria">

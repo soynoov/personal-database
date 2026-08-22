@@ -70,7 +70,8 @@ const support = [game.lanzamiento, game.generos?.slice(0, 2).join(', ')].filter(
     <div class='card-cover'>
       <img
         src={buildGameCoverUrl(game)}
-        alt={`Carátula de ${game.titulo}`}
+        alt=''
+        aria-hidden='true'
         loading={eager ? 'eager' : 'lazy'}
         decoding='async'
       />
@@ -115,4 +116,3 @@ const support = [game.lanzamiento, game.generos?.slice(0, 2).join(', ')].filter(
     </div>
   </div>
 </a>
-

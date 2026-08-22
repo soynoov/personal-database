@@ -1,11 +1,17 @@
+---
+import TablerIcon from './TablerIcon.astro';
+import closeIcon from '@tabler/icons/outline/x.svg?url';
+import lockIcon from '@tabler/icons/outline/lock.svg?url';
+---
+
 <dialog class="editor-auth" id="editor-auth-dialog" aria-labelledby="editor-auth-title">
   <form class="editor-auth__panel" id="editor-auth-form">
     <button class="editor-auth__close" id="editor-auth-close" type="button" aria-label="Cerrar">
-      <i class="ph ph-x" aria-hidden="true"></i>
+      <TablerIcon src={closeIcon} />
     </button>
 
     <span class="editor-auth__icon" aria-hidden="true">
-      <i class="ph ph-lock-key"></i>
+      <TablerIcon src={lockIcon} />
     </span>
     <div>
       <p class="editor-auth__eyebrow">Edición privada</p>

@@ -43,6 +43,11 @@
   stroke-linejoin: round;
 }
 
+.game-edit-trigger .tabler-icon {
+  width: 18px;
+  height: 18px;
+}
+
 /* ── Lápiz de sección (Dinero, DLCs, Comentario...) ──────────────── */
 /* Igual que .game-edit-trigger pero más pequeño, pensado para vivir
    dentro de un .section-title-row junto al <h2>, no en la topbar. */
@@ -55,6 +60,16 @@
 .game-edit-trigger-sm svg {
   width: 15px;
   height: 15px;
+}
+
+.game-edit-trigger-sm .tabler-icon {
+  width: 15px;
+  height: 15px;
+}
+
+.edit-dialog-close .tabler-icon {
+  width: 18px;
+  height: 18px;
 }
 
 /* ── Diálogo ─────────────────────────────────────────────────── */

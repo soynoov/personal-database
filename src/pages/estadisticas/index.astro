@@ -1,7 +1,20 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Sidebar from '../../components/Sidebar.astro';
+import TablerIcon from '../../components/TablerIcon.astro';
 import '../../styles/estadisticas.css';
+import arrowRightIcon from '@tabler/icons/outline/arrow-right.svg?url';
+import arrowUpRightIcon from '@tabler/icons/outline/arrow-up-right.svg?url';
+import calculatorIcon from '@tabler/icons/outline/calculator.svg?url';
+import checkIcon from '@tabler/icons/outline/check.svg?url';
+import chevronDownIcon from '@tabler/icons/outline/chevron-down.svg?url';
+import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg?url';
+import circleCheckIcon from '@tabler/icons/outline/circle-check.svg?url';
+import clockIcon from '@tabler/icons/outline/clock.svg?url';
+import gamepadIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
+import filterIcon from '@tabler/icons/outline/filter.svg?url';
+import walletIcon from '@tabler/icons/outline/wallet.svg?url';
+import xIcon from '@tabler/icons/outline/x.svg?url';
 import { getUniqueValues, readGames } from '../../lib/local-games';
 import { normalizeStatus } from '../../lib/game-status';
 import { getAvailableYears, getDataQuality, getYearRecap } from '../../lib/recap';
@@ -86,6 +99,7 @@ const gapGroups = [
   { title: 'Sin géneros registrados', items: quality.gaps.sinGeneros },
 ];
 const totalGaps = gapGroups.reduce((sum, group) => sum + group.items.length, 0);
+const nextGapGame = gapGroups.flatMap((group) => group.items)[0] ?? null;
 ---
 
 <BaseLayout title='Estadísticas — Personal Database'>
@@ -111,7 +125,7 @@ const totalGaps = gapGroups.reduce((sum, group) => sum + group.items.length, 0);
           aria-valuemax='100'
           aria-valuenow={yearProgressPct}
         >
-          <span>{isCurrentYear ? `Día ${isoDayOfYear}` : 'Año cerrado'}</span>
+          <span>{isCurrentYear ? `Día ${isoDayOfYear} de ${daysInYear}` : 'Año cerrado'}</span>
           <div aria-hidden='true'><span style={`width:${yearProgressPct}%`}></span></div>
           <strong>{yearProgressPct}%</strong>
         </div>
@@ -146,12 +160,12 @@ const totalGaps = gapGroups.reduce((sum, group) => sum + group.items.length, 0);
           </select>
         </label>
         <button type='submit' class='stats-filter-submit' aria-label='Aplicar filtros'>
-          <i class='ph ph-funnel' aria-hidden='true'></i>
+          <TablerIcon src={filterIcon} />
           Aplicar
         </button>
         {hasActiveFilters && (
           <a class='stats-filter-reset' href={`/estadisticas/?year=${year}`} aria-label='Quitar filtros'>
-            <i class='ph ph-x' aria-hidden='true'></i>
+            <TablerIcon src={xIcon} />
           </a>
         )}
       </form>
@@ -163,22 +177,22 @@ const totalGaps = gapGroups.reduce((sum, group) => sum + group.items.length, 0);
 
       <section class='recap-stats' aria-label='Indicadores principales'>
         <article class='panel recap-stat recap-stat-accent'>
-          <div class='recap-stat-head'><span>Completados</span><i class='ph ph-check-circle'></i></div>
+          <div class='recap-stat-head'><span>Completados</span><TablerIcon src={circleCheckIcon} /></div>
           <strong>{recap.completados.length}</strong>
           <span class:list={['recap-delta', `recap-delta-${completadosDelta.tone}`]}>{completadosDelta.sign}{completadosDelta.value} vs {year - 1}</span>
         </article>
         <article class='panel recap-stat recap-stat-accent-alt'>
-          <div class='recap-stat-head'><span>Horas jugadas</span><i class='ph ph-timer'></i></div>
+          <div class='recap-stat-head'><span>Horas jugadas</span><TablerIcon src={clockIcon} /></div>
           <strong>{formatHours(recap.horasAtribuidas)}</strong>
           <span class:list={['recap-delta', `recap-delta-${horasDelta.tone}`]}>{horasDelta.sign}{formatHours(Math.abs(horasDelta.value))} vs {year - 1}</span>
         </article>
         <article class='panel recap-stat'>
-          <div class='recap-stat-head'><span>Gastado</span><i class='ph ph-wallet'></i></div>
+          <div class='recap-stat-head'><span>Gastado</span><TablerIcon src={walletIcon} /></div>
           <strong>{formatMoney(recap.gastoAtribuido)}</strong>
           <span class:list={['recap-delta', `recap-delta-${gastoDelta.tone}`]}>{gastoDelta.sign}{formatMoney(Math.abs(gastoDelta.value))} vs {year - 1}</span>
         </article>
         <article class='panel recap-stat recap-stat-accent-warn'>
-          <div class='recap-stat-head'><span>Empezados</span><i class='ph ph-game-controller'></i></div>
+          <div class='recap-stat-head'><span>Empezados</span><TablerIcon src={gamepadIcon} /></div>
           <strong>{recap.iniciados.length}</strong>
           <span class='recap-stat-note'>{recap.promedioHorasPorJuego} h de media</span>
         </article>
@@ -225,7 +239,7 @@ const totalGaps = gapGroups.reduce((sum, group) => sum + group.items.length, 0);
           {recap.juegoConMasHoras && (
             <a class='recap-highlight' href={`/games/${recap.juegoConMasHoras.slug}`}>
               <span>Más jugado</span><strong>{recap.juegoConMasHoras.titulo}</strong>
-              <span>{formatHours(Number(recap.juegoConMasHoras.horas ?? 0))}<i class='ph ph-arrow-up-right'></i></span>
+              <span>{formatHours(Number(recap.juegoConMasHoras.horas ?? 0))}<TablerIcon src={arrowUpRightIcon} /></span>
             </a>
           )}
         </section>
@@ -239,10 +253,10 @@ const totalGaps = gapGroups.reduce((sum, group) => sum + group.items.length, 0);
             <div class='recap-completados-list'>
               {recap.completados.slice(0, 8).map((game) => (
                 <a class='recap-completados-row' href={`/games/${game.slug}`}>
-                  <span class='recap-completed-icon'><i class='ph ph-check'></i></span>
+                  <span class='recap-completed-icon'><TablerIcon src={checkIcon} /></span>
                   <span class='recap-completed-copy'><strong>{game.titulo}</strong><small>{formatHours(Number(game.horas ?? 0))}</small></span>
                   <time datetime={game.fecha_fin ?? undefined}>{formatDate(game.fecha_fin)}</time>
-                  <i class='ph ph-caret-right' aria-hidden='true'></i>
+                  <TablerIcon src={chevronRightIcon} />
                 </a>
               ))}
             </div>
@@ -252,33 +266,39 @@ const totalGaps = gapGroups.reduce((sum, group) => sum + group.items.length, 0);
         <section class='panel recap-section stats-quality-panel'>
           <div class='recap-section-head'>
             <div><span class='section-eyebrow'>Cobertura</span><h2>Calidad de datos</h2></div>
-            <span class:list={['stats-quality-badge', totalGaps > 0 && 'has-gaps']}>{totalGaps}</span>
+            <span class:list={['stats-quality-badge', totalGaps > 0 && 'has-gaps']}>{totalGaps} pendientes</span>
           </div>
           <div class='recap-quality-grid'>
             <div class='recap-quality-metric'><strong>{quality.pctFechaFinCompleta}%</strong><span>Fechas de fin</span></div>
             <div class='recap-quality-metric'><strong>{quality.pctPrecioCompleto}%</strong><span>Precios reales</span></div>
             <div class='recap-quality-metric'><strong>{recap.gastoEstimadoCount}</strong><span>Estimaciones</span></div>
           </div>
+          {nextGapGame && (
+            <a class='stats-quality-next' href={`/games/${nextGapGame.slug}`}>
+              <span><small>Completar siguiente</small><strong>{nextGapGame.titulo}</strong></span>
+              <TablerIcon src={arrowRightIcon} />
+            </a>
+          )}
           <details class='stats-gaps-details'>
-            <summary><span>Registros por completar</span><i class='ph ph-caret-down'></i></summary>
+            <summary><span>Registros por completar</span><TablerIcon src={chevronDownIcon} /></summary>
             <div class='recap-gap-groups'>
               {gapGroups.map((group) => group.items.length > 0 && (
                 <details class='recap-quality-list-wrap'>
-                  <summary><span><strong>{group.items.length}</strong> {group.title}</span><i class='ph ph-caret-down'></i></summary>
+                  <summary><span><strong>{group.items.length}</strong> {group.title}</span><TablerIcon src={chevronDownIcon} /></summary>
                   <div class='recap-quality-pills'>
                     {group.items.slice(0, 20).map((game) => <a class='recap-quality-pill' href={`/games/${game.slug}`}>{game.titulo}</a>)}
                     {group.items.length > 20 && <span class='recap-quality-pill recap-quality-pill-more'>+{group.items.length - 20}</span>}
                   </div>
                 </details>
               ))}
-              {totalGaps === 0 && <p class='recap-gap-clear'><i class='ph ph-check-circle'></i> Todo completo.</p>}
+              {totalGaps === 0 && <p class='recap-gap-clear'><TablerIcon src={circleCheckIcon} /> Todo completo.</p>}
             </div>
           </details>
         </section>
       </div>
 
       <details class='panel recap-section recap-methodology-panel'>
-        <summary><span><i class='ph ph-calculator'></i> Cómo se calcula</span><i class='ph ph-caret-down'></i></summary>
+        <summary><span><TablerIcon src={calculatorIcon} /> Cómo se calcula</span><TablerIcon src={chevronDownIcon} /></summary>
         <dl class='recap-methodology'>
           <div><dt>Completados</dt><dd>Estado terminado y fecha de fin dentro del año.</dd></div>
           <div><dt>Horas</dt><dd>Atribuidas al año de inicio.</dd></div>

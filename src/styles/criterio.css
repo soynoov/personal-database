@@ -145,6 +145,31 @@
     background: rgba(8, 11, 18, 0.46);
   }
 
+  .criterion-formula {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .criterion-formula > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.55rem;
+    border: 1px solid rgba(201, 168, 255, 0.16);
+    border-radius: 999px;
+    background: rgba(201, 168, 255, 0.05);
+    color: #d8c9e8;
+    font-size: 0.7rem;
+  }
+
+  .criterion-formula .tabler-icon {
+    width: 15px;
+    height: 15px;
+    color: #c9a8ff;
+  }
+
   .criterion-method-card-conditional {
     border-color: rgba(183, 132, 255, 0.32);
     background:
@@ -157,6 +182,14 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 0.8rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .criterion-method-card-head::-webkit-details-marker,
+  .criterion-honorary-method > summary::-webkit-details-marker,
+  .criterion-pending-more > summary::-webkit-details-marker {
+    display: none;
   }
 
   .criterion-method-card h3,
@@ -171,6 +204,26 @@
     flex-wrap: wrap;
     justify-content: flex-end;
     gap: 0.35rem;
+  }
+
+  .criterion-method-card-head .criterion-method-chevron,
+  .criterion-honorary-method .criterion-method-chevron {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    margin-top: 0.14rem;
+    color: #b99adf;
+    transition: transform 160ms ease;
+  }
+
+  .criterion-method-card[open] .criterion-method-chevron,
+  .criterion-honorary-method[open] .criterion-method-chevron,
+  .criterion-pending-more[open] > summary .tabler-icon {
+    transform: rotate(180deg);
+  }
+
+  .criterion-method-body {
+    padding-top: 0.1rem;
   }
 
   .criterion-method-card-head span {
@@ -225,9 +278,6 @@
   }
 
   .criterion-honorary-method {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr);
-    gap: 1rem;
     margin-top: 0.7rem;
     padding: 0.9rem;
     border: 1px solid rgba(201, 168, 255, 0.2);
@@ -235,8 +285,22 @@
     background: rgba(97, 52, 148, 0.09);
   }
 
-  .criterion-honorary-method .criterion-scale-list {
+  .criterion-honorary-method > summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .criterion-honorary-method > summary .criterion-formula {
+    justify-content: flex-end;
     margin: 0;
+  }
+
+  .criterion-honorary-method .criterion-scale-list {
+    margin-top: 0.75rem;
   }
 
   .criterion-review-grid {
@@ -377,6 +441,74 @@
     font-size: 0.68rem;
   }
 
+  .criterion-pending-stack {
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .criterion-next-review {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 0.95rem;
+    border: 1px solid rgba(201, 168, 255, 0.34);
+    border-radius: 14px;
+    background: linear-gradient(120deg, rgba(135, 82, 205, 0.18), rgba(19, 18, 28, 0.78));
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .criterion-next-review > span {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .criterion-next-review > span:first-child {
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .criterion-next-review small {
+    color: #c9a8ff;
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .criterion-next-review .tabler-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .criterion-pending-more {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.018);
+  }
+
+  .criterion-pending-more > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.72rem 0.85rem;
+    color: #d8c9e8;
+    font-size: 0.78rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .criterion-pending-more > summary .tabler-icon {
+    width: 17px;
+    height: 17px;
+    transition: transform 160ms ease;
+  }
+
+  .criterion-pending-more .criterion-pending-list {
+    padding: 0 0.55rem 0.55rem;
+  }
+
   .criterion-empty {
     display: grid;
     gap: 0.25rem;
@@ -400,9 +532,6 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .criterion-honorary-method {
-      grid-template-columns: 1fr;
-    }
   }
 
   @media (max-width: 720px) {
@@ -508,6 +637,36 @@
 
     .criterion-method-card {
       padding: 0.75rem;
+    }
+
+    .criterion-method-card-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .criterion-method-card-head > div {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      justify-content: flex-start;
+    }
+
+    .criterion-method-card-head .criterion-method-chevron {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .criterion-honorary-method > summary {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .criterion-honorary-method > summary .criterion-formula {
+      grid-column: 1 / -1;
+      justify-content: flex-start;
+    }
+
+    .criterion-next-review {
+      align-items: flex-end;
+      padding: 0.78rem;
     }
   }
 }

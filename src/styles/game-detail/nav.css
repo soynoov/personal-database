@@ -10,19 +10,56 @@
 @layer global {
 
 /* ── Sections nav ───────────────────────────────────────────────── */
-.game-sections-nav {
+.game-sections-nav-shell {
   display: flex;
-  gap: 0.7rem;
-  align-items: center;
   position: sticky;
   top: 0.8rem;
   z-index: 30;
-  padding: 0.2rem;
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: var(--radius-pill);
   background: rgba(19, 21, 26, 0.8);
   backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+
+.game-sections-nav {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  width: 100%;
+  padding: 0.2rem;
   overflow-x: auto;
+  scroll-padding-inline: 2rem;
+}
+
+.game-sections-nav-cue {
+  position: absolute;
+  top: 50%;
+  z-index: 41;
+  display: none;
+  place-items: center;
+  width: 2.35rem;
+  height: calc(100% - 0.35rem);
+  color: rgba(242, 236, 251, 0.82);
+  opacity: 0;
+  transform: translateY(-50%);
+  transition: opacity 140ms ease;
+  pointer-events: none;
+}
+
+.game-sections-nav-cue-left {
+  left: 0;
+  background: linear-gradient(90deg, rgba(19, 21, 26, 0.99) 45%, transparent);
+}
+
+.game-sections-nav-cue-right {
+  right: 0;
+  background: linear-gradient(270deg, rgba(19, 21, 26, 0.99) 45%, transparent);
+}
+
+.game-sections-nav-shell.can-scroll-left .game-sections-nav-cue-left,
+.game-sections-nav-shell.can-scroll-right .game-sections-nav-cue-right {
+  opacity: 1;
 }
 
 .game-sections-nav a {
@@ -74,14 +111,30 @@
 
 @layer global {
   @media (max-width: 720px) {
-    .game-page-rich .game-sections-nav {
+    .game-page-rich .game-sections-nav-shell {
       top: 0.3rem;
-      gap: 0.2rem;
-      padding: 0.22rem;
       border-radius: 14px;
+      background: rgba(19, 21, 26, 0.94);
+      backdrop-filter: blur(18px) saturate(1.08);
+    }
+
+    .game-page-rich .game-sections-nav {
+      gap: 0.2rem;
+      padding: 0.22rem 2rem 0.22rem 0.22rem;
       scroll-snap-type: x proximity;
       scrollbar-width: none;
-      background: rgba(19, 21, 26, 0.94);
+    }
+
+    .game-sections-nav-cue {
+      display: grid;
+    }
+
+    .game-sections-nav-cue .tabler-icon {
+      width: 20px;
+      height: 20px;
+      padding: 0.15rem;
+      border-radius: 999px;
+      background-color: #d7baff;
     }
 
     .game-page-rich .game-sections-nav::-webkit-scrollbar {

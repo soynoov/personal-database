@@ -1,0 +1,14 @@
+---
+interface Props {
+  src: string;
+  class?: string;
+}
+
+const { src, class: className = '' } = Astro.props;
+---
+
+<span
+  class:list={['tabler-icon', className]}
+  style={`--tabler-icon: url("${src}")`}
+  aria-hidden="true"
+></span>

@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@astrojs/vercel": "^10.0.8",
-    "@phosphor-icons/web": "^2.1.2",
     "@tabler/icons": "3.46.0",
     "@vercel/blob": "^2.8.0",
     "astro": "^6.4.6",

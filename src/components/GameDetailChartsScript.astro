@@ -264,6 +264,17 @@
     charts.set(canvasId, chart);
   };
 
+  const renderDlcPricesChart = (canvasId) => {
+    renderLineChart(canvasId, {
+      stroke: "#b58af5",
+      fillFallback: "rgba(181, 138, 245, 0.16)",
+      fill: [
+        [0, "rgba(181, 138, 245, 0.28)"],
+        [1, "rgba(181, 138, 245, 0.02)"],
+      ],
+    });
+  };
+
   /* ── Render all ───────────────────────────────────────────────── */
 
   const renderAllCharts = () => {

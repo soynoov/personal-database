@@ -234,8 +234,13 @@ export function initCatalog(allGames: CatalogGame[]): void {
     sort: el<HTMLSelectElement>('#sort'),
     mobileSort: document.querySelector<HTMLSelectElement>('#mobile-sort'),
     precio: el<HTMLSelectElement>('#precio'),
-    mobileFilterToggle: document.querySelector<HTMLElement>('#mobile-filter-toggle'),
+    mobileFilterToggle: document.querySelector<HTMLButtonElement>('#mobile-filter-toggle'),
     mobileExtraFilters: document.querySelector<HTMLElement>('#mobile-extra-filters'),
+    mobileFilterBackdrop: document.querySelector<HTMLButtonElement>('#catalog-filter-backdrop'),
+    mobileFilterClose: document.querySelector<HTMLButtonElement>('#catalog-filter-close'),
+    mobileFilterApply: document.querySelector<HTMLButtonElement>('#catalog-filter-apply'),
+    mobileReset: document.querySelector<HTMLButtonElement>('#reset-filters-mobile'),
+    mobileFilterCount: document.querySelector<HTMLElement>('#catalog-filter-count'),
     reset: el<HTMLButtonElement>('#reset-filters'),
     cardsShell: el<HTMLElement>('#cards-shell'),
     cards: el<HTMLElement>('#cards'),
@@ -289,6 +294,13 @@ export function initCatalog(allGames: CatalogGame[]): void {
       button.classList.toggle('is-active', active);
       button.setAttribute('aria-pressed', active ? 'true' : 'false');
     });
+  };
+
+  const closeMobileFilters = (): void => {
+    mobileExtraFiltersOpen = false;
+    document.body.style.overflow = '';
+    render();
+    elements.mobileFilterToggle?.focus();
   };
 
   // ─── Detail dialog ─────────────────────────────────────────────────────────
@@ -355,6 +367,11 @@ export function initCatalog(allGames: CatalogGame[]): void {
     }
     const hasCustomSort = filters.sort !== DEFAULT_SORT;
     elements.reset.hidden = activeFilterEntries.length === 0 && !hasCustomSort;
+    const mobileFilterCount = activeFilterEntries.filter(([key]) => key !== 'search').length;
+    if (elements.mobileFilterCount) {
+      elements.mobileFilterCount.textContent = String(mobileFilterCount);
+      elements.mobileFilterCount.hidden = mobileFilterCount === 0;
+    }
     const estadoPillColors: Record<string, string> = {
       jugando: '#6ee76c', terminado: '#67b1ff', completado: '#67b1ff',
       pendiente: '#f5c518', wishlist: '#5ad0ff', pausado: '#f5a818',
@@ -420,8 +437,19 @@ export function initCatalog(allGames: CatalogGame[]): void {
     // Mobile extra filters toggle
     if (elements.mobileExtraFilters && elements.mobileFilterToggle) {
       elements.mobileExtraFilters.classList.toggle('is-open', mobileExtraFiltersOpen);
+      if (mobileExtraFiltersOpen) {
+        elements.mobileExtraFilters.setAttribute('role', 'dialog');
+        elements.mobileExtraFilters.setAttribute('aria-modal', 'true');
+        elements.mobileExtraFilters.setAttribute('aria-labelledby', 'catalog-filter-sheet-title');
+      } else {
+        elements.mobileExtraFilters.removeAttribute('role');
+        elements.mobileExtraFilters.removeAttribute('aria-modal');
+        elements.mobileExtraFilters.removeAttribute('aria-labelledby');
+      }
       elements.mobileFilterToggle.classList.toggle('is-active', mobileExtraFiltersOpen);
       elements.mobileFilterToggle.setAttribute('aria-expanded', mobileExtraFiltersOpen ? 'true' : 'false');
+      elements.mobileFilterBackdrop?.classList.toggle('is-open', mobileExtraFiltersOpen);
+      if (elements.mobileFilterBackdrop) elements.mobileFilterBackdrop.hidden = !mobileExtraFiltersOpen;
     }
 
     // Renderizar cards
@@ -478,7 +506,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
       // Cover
       const cover = node.querySelector('[data-cover]')!;
-      cover.innerHTML = `<img src="${escapeHtml(getCoverUrl(game))}" alt="Caratula de ${String(game.titulo).replace(/"/g, '&quot;')}" loading="lazy" />`;
+      cover.innerHTML = `<img src="${escapeHtml(getCoverUrl(game))}" alt="" aria-hidden="true" loading="lazy" />`;
 
       // Estado y tags
       const statusBadge = node.querySelector('[data-estado]') as HTMLElement;
@@ -567,7 +595,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     render();
   });
 
-  elements.reset.addEventListener('click', () => {
+  const resetFilters = (): void => {
     elements.search.value = '';
     elements.estado.value = '';
     elements.launcher.value = '';
@@ -578,8 +606,12 @@ export function initCatalog(allGames: CatalogGame[]): void {
     elements.precio.value = '';
     activeQuickFilter = '';
     mobileExtraFiltersOpen = false;
+    document.body.style.overflow = '';
     render();
-  });
+  };
+
+  elements.reset.addEventListener('click', resetFilters);
+  elements.mobileReset?.addEventListener('click', resetFilters);
 
   elements.activeFilterPills.addEventListener('click', (event) => {
     const pill = (event.target as HTMLElement).closest<HTMLElement>('[data-filter-remove]');
@@ -624,7 +656,21 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
   elements.mobileFilterToggle?.addEventListener('click', () => {
     mobileExtraFiltersOpen = !mobileExtraFiltersOpen;
+    document.body.style.overflow = mobileExtraFiltersOpen ? 'hidden' : '';
     render();
+    if (mobileExtraFiltersOpen) elements.mobileFilterClose?.focus();
+  });
+
+  elements.mobileFilterBackdrop?.addEventListener('click', closeMobileFilters);
+  elements.mobileFilterClose?.addEventListener('click', closeMobileFilters);
+  elements.mobileFilterApply?.addEventListener('click', closeMobileFilters);
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && mobileExtraFiltersOpen) closeMobileFilters();
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 820 && mobileExtraFiltersOpen) closeMobileFilters();
   });
 
   elements.viewButtons.forEach((button) => {

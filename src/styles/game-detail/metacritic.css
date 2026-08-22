@@ -38,6 +38,10 @@
   }
 
   .metacritic-edit-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.42rem;
     flex: 0 0 auto;
     min-height: 38px;
     padding: 0.55rem 0.85rem;
@@ -46,6 +50,11 @@
     background: rgba(201, 168, 255, 0.08);
     color: #e7d5ff;
     cursor: pointer;
+  }
+
+  .metacritic-edit-trigger .tabler-icon {
+    width: 1rem;
+    height: 1rem;
   }
 
   .metacritic-edit-trigger:hover,
@@ -447,7 +456,6 @@
     }
 
     .metacritic-edit-trigger {
-      max-width: 94px;
       min-height: 34px;
       padding: 0.45rem 0.58rem;
       font-size: 0.68rem;

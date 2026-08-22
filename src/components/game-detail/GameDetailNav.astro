@@ -5,6 +5,9 @@
  * Datos: hasDlcs computado en [slug].astro.
  */
 import '../../styles/game-detail/nav.css';
+import TablerIcon from '../TablerIcon.astro';
+import chevronLeftIcon from '@tabler/icons/outline/chevron-left.svg?url';
+import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg?url';
 
 interface Props {
   hasDlcs: boolean;
@@ -15,18 +18,27 @@ interface Props {
 const { hasDlcs, hasOverviewDetails, isCompetitive } = Astro.props;
 ---
 
-<nav class="game-sections-nav" aria-label="Secciones del juego">
-  <a class="is-active" aria-current="location" data-section-link href={hasOverviewDetails ? "#overview" : "#game-header"}>Resumen</a>
-  <a data-section-link href="#hours">Horas</a>
-  <a data-section-link href="#finance">Dinero</a>
-  {isCompetitive && <a data-section-link href="#competitive">Rango</a>}
-  <a data-section-link href="#technical">Datos</a>
-  {hasDlcs && <a data-section-link href="#dlcs">DLCs</a>}
-  <a data-section-link href="#metacritica">Metacrítica</a>
-</nav>
+<div class="game-sections-nav-shell" data-section-nav-shell>
+  <span class="game-sections-nav-cue game-sections-nav-cue-left" aria-hidden="true">
+    <TablerIcon src={chevronLeftIcon} />
+  </span>
+  <nav class="game-sections-nav" aria-label="Secciones del juego">
+    <a class="is-active" aria-current="location" data-section-link href={hasOverviewDetails ? "#overview" : "#game-header"}>Resumen</a>
+    <a data-section-link href="#hours">Horas</a>
+    <a data-section-link href="#finance">Dinero</a>
+    {isCompetitive && <a data-section-link href="#competitive">Rango</a>}
+    <a data-section-link href="#technical">Datos</a>
+    {hasDlcs && <a data-section-link href="#dlcs">DLCs</a>}
+    <a data-section-link href="#metacritica">Metacrítica</a>
+  </nav>
+  <span class="game-sections-nav-cue game-sections-nav-cue-right" aria-hidden="true">
+    <TablerIcon src={chevronRightIcon} />
+  </span>
+</div>
 
 <script>
   const nav = document.querySelector<HTMLElement>('.game-sections-nav');
+  const navShell = document.querySelector<HTMLElement>('[data-section-nav-shell]');
   const sectionLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-section-link]'));
   const sectionById = new Map(
     sectionLinks
@@ -34,6 +46,13 @@ const { hasDlcs, hasOverviewDetails, isCompetitive } = Astro.props;
       .filter((entry): entry is [string, HTMLElement] => entry[1] instanceof HTMLElement),
   );
   let activeSectionId = '';
+
+  const updateScrollCues = () => {
+    if (!nav || !navShell) return;
+    const maxScroll = Math.max(0, nav.scrollWidth - nav.clientWidth);
+    navShell.classList.toggle('can-scroll-left', nav.scrollLeft > 4);
+    navShell.classList.toggle('can-scroll-right', nav.scrollLeft < maxScroll - 4);
+  };
 
   const activateSection = (id: string) => {
     sectionLinks.forEach((link) => {
@@ -48,6 +67,7 @@ const { hasDlcs, hasOverviewDetails, isCompetitive } = Astro.props;
           left: Math.max(0, targetLeft),
           behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
         });
+        window.setTimeout(updateScrollCues, 220);
       }
     });
     activeSectionId = id;
@@ -79,6 +99,11 @@ const { hasDlcs, hasOverviewDetails, isCompetitive } = Astro.props;
   };
 
   window.addEventListener('scroll', requestActiveSectionUpdate, { passive: true });
-  window.addEventListener('resize', requestActiveSectionUpdate);
+  window.addEventListener('resize', () => {
+    requestActiveSectionUpdate();
+    updateScrollCues();
+  });
+  nav?.addEventListener('scroll', updateScrollCues, { passive: true });
   updateActiveSection();
+  updateScrollCues();
 </script>

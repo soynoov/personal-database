@@ -259,15 +259,64 @@ const { dlc, formatDate, formatValue, formatCurrency } = Astro.props;
 
   /* ── Responsive ─────────────────────────────────────────────────── */
   @media (max-width: 720px) {
+    .dlc-showcase-card {
+      grid-template-columns: clamp(104px, 34vw, 132px) minmax(0, 1fr);
+      min-height: 154px;
+    }
+
+    .dlc-showcase-cover {
+      height: 100%;
+      min-height: 154px;
+      aspect-ratio: auto;
+    }
+
+    .dlc-showcase-body {
+      align-content: center;
+      gap: 0.58rem;
+      padding: 0.72rem;
+    }
+
+    .dlc-showcase-body h3 {
+      min-height: 0;
+      font-size: 0.96rem;
+      line-height: 1.18;
+    }
+
+    .dlc-showcase-facts {
+      grid-template-columns: 1fr;
+      gap: 0.35rem;
+    }
+
+    .dlc-showcase-body .detail-item {
+      min-height: 0;
+      padding: 0.5rem 0.58rem;
+    }
+
+    .dlc-showcase-body .detail-item dt {
+      font-size: 0.62rem;
+    }
+
+    .dlc-showcase-body .detail-item dd {
+      font-size: 0.8rem;
+    }
+
     .dlc-showcase-cover-empty svg {
       width: 28px;
       height: 28px;
     }
+
+    .dlc-showcase-unowned-badge {
+      top: 0.5rem;
+      right: 0.5rem;
+      min-height: 23px;
+      padding: 0.2rem 0.45rem;
+      font-size: 0.62rem;
+    }
   }
 
   @media (max-width: 380px) {
-    .dlc-showcase-facts {
-      grid-template-columns: 1fr;
+    .dlc-showcase-card {
+      grid-template-columns: 98px minmax(0, 1fr);
     }
   }
 
@@ -283,7 +332,7 @@ const { dlc, formatDate, formatValue, formatCurrency } = Astro.props;
 
   @media (max-width: 720px) {
     :global(.game-page-rich) .dlc-showcase-body {
-      padding: 0.82rem;
+      padding: 0.72rem;
     }
   }
 </style>

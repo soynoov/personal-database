@@ -80,6 +80,10 @@
     grid-column: 1 / -1;
   }
 
+  .game-page-rich .summary-grid .detail-item:last-child:nth-child(even) {
+    grid-column: 1 / -1;
+  }
+
   .game-page-rich .summary-card dd {
     font-size: 0.88rem;
   }

@@ -1,6 +1,17 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Sidebar from '../../components/Sidebar.astro';
+import TablerIcon from '../../components/TablerIcon.astro';
+import chevronDownIcon from '@tabler/icons/outline/chevron-down.svg?url';
+import circleMinusIcon from '@tabler/icons/outline/circle-minus.svg?url';
+import clockIcon from '@tabler/icons/outline/clock.svg?url';
+import diceIcon from '@tabler/icons/outline/dice-5.svg?url';
+import gamepadIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
+import playerPlayIcon from '@tabler/icons/outline/player-play.svg?url';
+import plusIcon from '@tabler/icons/outline/plus.svg?url';
+import refreshIcon from '@tabler/icons/outline/refresh.svg?url';
+import searchIcon from '@tabler/icons/outline/search.svg?url';
+import trashIcon from '@tabler/icons/outline/trash.svg?url';
 import { getUniqueValues, readGames } from '../../lib/local-games';
 import { normalizeStatus } from '../../lib/game-status';
 import { toRouletteGame } from '../../lib/roulette-game';
@@ -54,7 +65,7 @@ const defaultSlugs = rouletteGames
           <h2 class='sr-only' id='roulette-title'>Ruleta de juegos</h2>
           <div class='roulette-wheel-wrap'>
             <span class='roulette-pointer' aria-hidden='true'>
-              <i class='ph-fill ph-caret-down'></i>
+              <TablerIcon src={chevronDownIcon} />
             </span>
             <canvas
               id='roulette-wheel'
@@ -68,11 +79,11 @@ const defaultSlugs = rouletteGames
 
           <div class='roulette-stage-actions'>
             <button class='roulette-button roulette-button-primary' id='roulette-spin' type='button'>
-              <i class='ph ph-dice-five' aria-hidden='true'></i>
+              <TablerIcon src={diceIcon} />
               <span>Girar la ruleta</span>
             </button>
             <button class='roulette-button roulette-button-ghost' id='roulette-clear' type='button'>
-              <i class='ph ph-trash' aria-hidden='true'></i>
+              <TablerIcon src={trashIcon} />
               <span>Limpiar</span>
             </button>
           </div>
@@ -91,7 +102,7 @@ const defaultSlugs = rouletteGames
           <div class='roulette-search field'>
             <label for='roulette-search'>Añadir por nombre</label>
             <div class='roulette-search-control'>
-              <i class='ph ph-magnifying-glass' aria-hidden='true'></i>
+              <TablerIcon src={searchIcon} />
               <input
                 id='roulette-search'
                 type='search'
@@ -100,7 +111,7 @@ const defaultSlugs = rouletteGames
                 placeholder='Buscar en mi biblioteca...'
               />
               <button id='roulette-add' type='button' aria-label='Añadir juego escrito'>
-                <i class='ph ph-plus' aria-hidden='true'></i>
+                <TablerIcon src={plusIcon} />
               </button>
             </div>
             <datalist id='roulette-game-options'>
@@ -156,7 +167,7 @@ const defaultSlugs = rouletteGames
       <section class='roulette-result' id='roulette-result' hidden aria-labelledby='roulette-result-title'>
         <div class='roulette-result-arc' aria-hidden='true'>
           <canvas id='roulette-result-wheel' width='900' height='900'></canvas>
-          <span class='roulette-result-pointer'><i class='ph-fill ph-caret-down'></i></span>
+          <span class='roulette-result-pointer'><TablerIcon src={chevronDownIcon} /></span>
         </div>
 
         <div class='roulette-result-heading'>
@@ -174,11 +185,11 @@ const defaultSlugs = rouletteGames
             <p id='roulette-winner-genres'></p>
             <dl class='roulette-winner-meta'>
               <div>
-                <dt><i class='ph ph-game-controller' aria-hidden='true'></i><span class='sr-only'>Launcher</span></dt>
+                <dt><TablerIcon src={gamepadIcon} /><span class='sr-only'>Launcher</span></dt>
                 <dd id='roulette-winner-launcher'></dd>
               </div>
               <div>
-                <dt><i class='ph ph-clock' aria-hidden='true'></i><span class='sr-only'>Duración</span></dt>
+                <dt><TablerIcon src={clockIcon} /><span class='sr-only'>Duración</span></dt>
                 <dd id='roulette-winner-hltb'></dd>
               </div>
             </dl>
@@ -187,15 +198,15 @@ const defaultSlugs = rouletteGames
 
         <div class='roulette-result-actions'>
           <a class='roulette-button roulette-button-primary' id='roulette-winner-link' href='/'>
-            <i class='ph-fill ph-play' aria-hidden='true'></i>
+            <TablerIcon src={playerPlayIcon} />
             <span id='roulette-winner-link-label'>Jugar</span>
           </a>
           <button class='roulette-button roulette-button-ghost' id='roulette-again' type='button'>
-            <i class='ph ph-arrows-clockwise' aria-hidden='true'></i>
+            <TablerIcon src={refreshIcon} />
             <span>Volver a girar</span>
           </button>
           <button class='roulette-button roulette-button-ghost' id='roulette-exclude' type='button'>
-            <i class='ph ph-minus-circle' aria-hidden='true'></i>
+            <TablerIcon src={circleMinusIcon} />
             <span>Excluir y repetir</span>
           </button>
         </div>

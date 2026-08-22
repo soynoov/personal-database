@@ -1,7 +1,15 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Sidebar from '../../components/Sidebar.astro';
+import TablerIcon from '../../components/TablerIcon.astro';
 import '../../styles/criterio.css';
+import arrowRightIcon from '@tabler/icons/outline/arrow-right.svg?url';
+import checksIcon from '@tabler/icons/outline/checks.svg?url';
+import chevronDownIcon from '@tabler/icons/outline/chevron-down.svg?url';
+import divideIcon from '@tabler/icons/outline/divide.svg?url';
+import equalIcon from '@tabler/icons/outline/equal.svg?url';
+import starIcon from '@tabler/icons/outline/star.svg?url';
+import usersIcon from '@tabler/icons/outline/users-group.svg?url';
 import { buildGameCoverUrl } from '../../lib/game-cover-url';
 import { getUniqueValues, readGames, slugifyGameTitle } from '../../lib/local-games';
 import { isCompletedStatus, normalizeStatus } from '../../lib/game-status';
@@ -36,6 +44,8 @@ const completedGames = games.filter((game) => isCompletedStatus(game.estado));
 const pendingRatings = completedGames
   .filter((game) => calculatePersonalScore(game.critica, isCommunityCriterionApplicable(game)) === null)
   .sort((a, b) => a.titulo.localeCompare(b.titulo, 'es'));
+const nextPendingRating = pendingRatings[0] ?? null;
+const remainingPendingRatings = pendingRatings.slice(1);
 
 const averageRating = ratedGames.length > 0
   ? ratedGames.reduce((sum, item) => sum + item.rating, 0) / ratedGames.length
@@ -63,7 +73,7 @@ const formatRating = (rating: number) =>
           <span class='eyebrow'>Tu propia escala</span>
           <h1>Metacrítica</h1>
         </div>
-        <div class='criterion-hero-score' aria-label={`Nota media ${averageRating === null ? 'sin datos' : `${formatRating(averageRating)} sobre 10`}`}>
+        <div class='criterion-hero-score' role='group' aria-label={`Nota media ${averageRating === null ? 'sin datos' : `${formatRating(averageRating)} sobre 10`}`}>
           <span>Media personal</span>
           <strong>{averageRating === null ? '—' : formatRating(averageRating)}</strong>
           <small>/ 10</small>
@@ -97,57 +107,62 @@ const formatRating = (rating: number) =>
           <span class='criterion-count'>Resultado final sobre 10</span>
         </div>
 
-        <div class='criterion-formula' aria-label='Puntos obtenidos entre puntos máximos, comunidad con peso cero coma cinco cuando aplica, mención honorífica con bonus de hasta cero coma tres y resultado máximo de diez'>
-          <span><i class='ph ph-checks' aria-hidden='true'></i> 5 criterios base</span>
-          <span><i class='ph ph-divide' aria-hidden='true'></i> Puntos obtenidos / máximos</span>
-          <span><i class='ph ph-users-three' aria-hidden='true'></i> Comunidad ×0,5 cuando aplica</span>
-          <span><i class='ph ph-star' aria-hidden='true'></i> Mención: hasta +0,3</span>
-          <span><i class='ph ph-equals' aria-hidden='true'></i> Máximo 10</span>
+        <div class='criterion-formula' role='group' aria-label='Puntos obtenidos entre puntos máximos, comunidad con peso cero coma cinco cuando aplica, mención honorífica con bonus de hasta cero coma tres y resultado máximo de diez'>
+          <span><TablerIcon src={checksIcon} /> 5 criterios base</span>
+          <span><TablerIcon src={divideIcon} /> Puntos obtenidos / máximos</span>
+          <span><TablerIcon src={usersIcon} /> Comunidad ×0,5 cuando aplica</span>
+          <span><TablerIcon src={starIcon} /> Mención: hasta +0,3</span>
+          <span><TablerIcon src={equalIcon} /> Máximo 10</span>
         </div>
 
         <div class='criterion-methodology-grid'>
-          {REVIEW_CRITERIA.map((criterion) => (
-            <article class:list={['criterion-method-card', criterion.key === 'comunidad' && 'criterion-method-card-conditional']}>
-              <div class='criterion-method-card-head'>
+          {REVIEW_CRITERIA.map((criterion, index) => (
+            <details class:list={['criterion-method-card', criterion.key === 'comunidad' && 'criterion-method-card-conditional']} open={index === 0}>
+              <summary class='criterion-method-card-head'>
                 <h3>{criterion.label}</h3>
                 <div>
                   <span>1–{criterion.max}</span>
                   <span>{criterion.weight === 1 ? `${criterion.max} puntos máximos` : `Peso ×${String(criterion.weight).replace('.', ',')}`}</span>
                   {criterion.key === 'comunidad' && <span>Solo multi / competitivo</span>}
                 </div>
+                <TablerIcon src={chevronDownIcon} class='criterion-method-chevron' />
+              </summary>
+              <div class='criterion-method-body'>
+                <span class='sr-only'>{criterion.measures}</span>
+                {criterion.scale ? (
+                  <ol class='criterion-scale-list'>
+                    {Object.entries(criterion.scale).map(([score, description]) => (
+                      <li>
+                        <strong>{score}</strong>
+                        <span>{description}</span>
+                      </li>
+                    ))}
+                  </ol>
+                ) : null}
               </div>
-              <span class='sr-only'>{criterion.measures}</span>
-              {criterion.scale ? (
-                <ol class='criterion-scale-list'>
-                  {Object.entries(criterion.scale).map(([score, description]) => (
-                    <li>
-                      <strong>{score}</strong>
-                      <span>{description}</span>
-                    </li>
-                  ))}
-                </ol>
-              ) : null}
-            </article>
+            </details>
           ))}
         </div>
 
-        <article class='criterion-honorary-method'>
-          <div>
-            <span class='section-eyebrow'>Bonus final</span>
-            <h3>Mención honorífica · 0–3</h3>
-            <div class='criterion-formula'>
-              <span>Motivo obligatorio</span>
-              <span>+0,1 por nivel</span>
-              <span>Nota máxima: 10</span>
+        <details class='criterion-honorary-method'>
+          <summary>
+            <div>
+              <span class='section-eyebrow'>Bonus final</span>
+              <h3>Mención honorífica · 0–3</h3>
             </div>
-          </div>
+            <div class='criterion-formula'>
+              <span>+0,1 por nivel</span>
+              <span>Máximo 10</span>
+            </div>
+            <TablerIcon src={chevronDownIcon} class='criterion-method-chevron' />
+          </summary>
           <ol class='criterion-scale-list'>
             <li><strong>0</strong><span>Sin mención · +0.</span></li>
             <li><strong>1</strong><span>Pequeño reconocimiento · +0,1.</span></li>
             <li><strong>2</strong><span>Aporte muy destacable · +0,2.</span></li>
             <li><strong>3</strong><span>Caso excepcional · +0,3.</span></li>
           </ol>
-        </article>
+        </details>
       </section>
 
       <section class='panel criterion-section'>
@@ -166,7 +181,8 @@ const formatRating = (rating: number) =>
                 <div class='criterion-review-cover'>
                   <img
                     src={buildGameCoverUrl(game)}
-                    alt={`Carátula de ${game.titulo}`}
+                    alt=''
+                    aria-hidden='true'
                     loading={index < 4 ? 'eager' : 'lazy'}
                     decoding='async'
                   />
@@ -201,14 +217,28 @@ const formatRating = (rating: number) =>
           <span class='criterion-count'>{pendingRatings.length} pendientes</span>
         </div>
 
-        {pendingRatings.length > 0 ? (
-          <div class='criterion-pending-list'>
-            {pendingRatings.map((game) => (
-              <a href={`/games/${slugifyGameTitle(game.titulo)}/`}>
-                <span>{game.titulo}</span>
-                <small>Valorar →</small>
-              </a>
-            ))}
+        {nextPendingRating ? (
+          <div class='criterion-pending-stack'>
+            <a class='criterion-next-review' href={`/games/${slugifyGameTitle(nextPendingRating.titulo)}/#metacritica`}>
+              <span><small>Siguiente</small><strong>{nextPendingRating.titulo}</strong></span>
+              <span>Valorar <TablerIcon src={arrowRightIcon} /></span>
+            </a>
+            {remainingPendingRatings.length > 0 && (
+              <details class='criterion-pending-more'>
+                <summary>
+                  <span>Ver los otros {remainingPendingRatings.length}</span>
+                  <TablerIcon src={chevronDownIcon} />
+                </summary>
+                <div class='criterion-pending-list'>
+                  {remainingPendingRatings.map((game) => (
+                    <a href={`/games/${slugifyGameTitle(game.titulo)}/#metacritica`}>
+                      <span>{game.titulo}</span>
+                      <small>Valorar</small>
+                    </a>
+                  ))}
+                </div>
+              </details>
+            )}
           </div>
         ) : (
           <div class='criterion-empty'>

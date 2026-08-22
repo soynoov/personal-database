@@ -1,6 +1,7 @@
 import { buildGameCoverUrl } from '../lib/game-cover-url';
 import { normalizeStatus } from '../lib/game-status';
 import type { RouletteGame } from '../lib/roulette-game';
+import gamepadIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
 
 const WHEEL_COLORS = [
   '#a63f45',
@@ -320,7 +321,15 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
     if (candidates.length === 0) {
       const empty = document.createElement('div');
       empty.className = 'roulette-empty';
-      empty.innerHTML = '<i class="ph ph-game-controller"></i><strong>Sin candidatos</strong><span>Usa los filtros o añade un juego por nombre.</span>';
+      const emptyIcon = document.createElement('span');
+      emptyIcon.className = 'tabler-icon';
+      emptyIcon.style.setProperty('--tabler-icon', `url("${gamepadIcon}")`);
+      emptyIcon.setAttribute('aria-hidden', 'true');
+      const emptyTitle = document.createElement('strong');
+      emptyTitle.textContent = 'Sin candidatos';
+      const emptyCopy = document.createElement('span');
+      emptyCopy.textContent = 'Usa los filtros o añade un juego por nombre.';
+      empty.append(emptyIcon, emptyTitle, emptyCopy);
       candidateList.append(empty);
     } else {
       const fragment = document.createDocumentFragment();
