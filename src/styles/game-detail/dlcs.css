@@ -12,9 +12,19 @@
 /* ── DLC gallery ────────────────────────────────────────────────── */
 .dlc-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
   gap: 1.25rem;
   min-width: 0;
+}
+
+.game-page-section#dlcs {
+  min-width: 0;
+}
+
+.game-page-section#dlcs .section-title-actions {
+  min-width: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 /* ── Orden de la galería ────────────────────────────────────────── */
@@ -113,6 +123,16 @@
   flex-wrap: wrap;
 }
 
+.dlc-edit-sync-row .edit-dialog-cancel {
+  min-height: 40px;
+  padding: 0 0.9rem;
+  border-radius: var(--radius-2);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 /* Buscador por nombre — necesario en juegos con muchos DLCs (DBD: 41),
    donde encontrar la fila correcta a ojo en una lista de solo texto es
    lento. Filtra .dlc-edit-row por su data-search-text. */
@@ -141,6 +161,7 @@
   display: grid;
   grid-template-columns: 40px minmax(0, 1fr) auto 140px 140px;
   align-items: center;
+  min-width: 0;
   gap: 0.7rem;
   padding: 0.6rem 0.2rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -201,6 +222,8 @@
 .dlc-edit-date-input,
 .dlc-edit-price-input {
   width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   padding: 0.4rem 0.55rem;
   border-radius: var(--radius-3);
   border: 1px solid var(--line);
@@ -238,10 +261,66 @@
   .dlc-edit-price-input { grid-area: price; }
 }
 
+@media (max-width: 420px) {
+  .dlc-edit-row {
+    grid-template-columns: 40px minmax(0, 1fr);
+    grid-template-areas:
+      "thumb title"
+      "owned owned"
+      "date  date"
+      "price price";
+  }
+}
+
 /* ── Responsive galería ─────────────────────────────────────────── */
 @media (max-width: 1120px) {
   .dlc-gallery {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .game-page-section#dlcs .section-title-row {
+    align-items: flex-start;
+  }
+
+  .game-page-section#dlcs .section-title-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    justify-content: stretch;
+    gap: 0.55rem;
+  }
+
+  .game-page-section#dlcs .section-pill {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+  }
+
+  .game-page-section#dlcs .game-edit-trigger {
+    grid-column: 2;
+    grid-row: 1;
+    width: 44px;
+    height: 44px;
+  }
+
+  .game-page-section#dlcs .dlc-sort-select,
+  .game-page-section#dlcs .dlc-filter-label {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+
+  .game-page-section#dlcs .dlc-sort-select {
+    grid-row: 2;
+  }
+
+  .game-page-section#dlcs .dlc-filter-label {
+    grid-row: 3;
   }
 }
 
