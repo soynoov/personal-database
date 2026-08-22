@@ -38,7 +38,11 @@
       "Indie"
     ],
     "steam_store_name": "MiSide",
-    "steam_last_sync_at": "2026-08-20T11:24:03.500Z"
+    "steam_last_sync_at": "2026-08-20T11:24:03.500Z",
+    "critica": {
+      "metascore": 83,
+      "userscore": 7.8
+    }
   },
   {
     "titulo": "Stray",
@@ -77,7 +81,11 @@
       "Indie"
     ],
     "steam_store_name": "Stray",
-    "steam_last_sync_at": "2026-08-20T11:24:04.136Z"
+    "steam_last_sync_at": "2026-08-20T11:24:04.136Z",
+    "critica": {
+      "metascore": 83,
+      "userscore": 8.2
+    }
   },
   {
     "titulo": "Firewatch",
@@ -113,7 +121,11 @@
       "Indie"
     ],
     "steam_store_name": "Firewatch",
-    "steam_last_sync_at": "2026-08-20T11:24:04.631Z"
+    "steam_last_sync_at": "2026-08-20T11:24:04.631Z",
+    "critica": {
+      "metascore": 81,
+      "userscore": 7.4
+    }
   },
   {
     "titulo": "Ori and the Blind Forest",
@@ -148,7 +160,11 @@
       "Acción"
     ],
     "steam_store_name": "Ori and the Blind Forest: Definitive Edition",
-    "steam_last_sync_at": "2026-08-20T11:24:05.145Z"
+    "steam_last_sync_at": "2026-08-20T11:24:05.145Z",
+    "critica": {
+      "metascore": 88,
+      "userscore": 8.6
+    }
   },
   {
     "titulo": "Ori and the Will of the Wisps",
@@ -183,7 +199,11 @@
       "Acción"
     ],
     "steam_store_name": "Ori and the Will of the Wisps",
-    "steam_last_sync_at": "2026-08-20T11:24:05.641Z"
+    "steam_last_sync_at": "2026-08-20T11:24:05.641Z",
+    "critica": {
+      "metascore": 90,
+      "userscore": 8.9
+    }
   },
   {
     "titulo": "A Plague Tale: Innocence",
@@ -273,7 +293,11 @@
       "Aventura"
     ],
     "steam_store_name": "A Plague Tale: Requiem",
-    "steam_last_sync_at": "2026-08-20T11:24:06.613Z"
+    "steam_last_sync_at": "2026-08-20T11:24:06.613Z",
+    "critica": {
+      "metascore": 82,
+      "userscore": 8.3
+    }
   },
   {
     "titulo": "Resonance: A Plague Tale Legacy",
@@ -333,6 +357,9 @@
       "main": 80,
       "main_plus": 84.4,
       "completionist": null
+    },
+    "critica": {
+      "userscore": 6.1
     }
   },
   {
@@ -412,7 +439,11 @@
       "Rol"
     ],
     "steam_store_name": "Baldur's Gate 3",
-    "steam_last_sync_at": "2026-08-20T11:24:07.562Z"
+    "steam_last_sync_at": "2026-08-20T11:24:07.562Z",
+    "critica": {
+      "metascore": 96,
+      "userscore": 9.1
+    }
   },
   {
     "titulo": "Cult of the Lamb",
@@ -453,7 +484,11 @@
       "Aventura"
     ],
     "steam_store_name": "Cult of the Lamb",
-    "steam_last_sync_at": "2026-08-20T11:24:08.081Z"
+    "steam_last_sync_at": "2026-08-20T11:24:08.081Z",
+    "critica": {
+      "metascore": 82,
+      "userscore": 7.9
+    }
   },
   {
     "titulo": "Cuphead",
@@ -504,7 +539,11 @@
       "Indie"
     ],
     "steam_store_name": "Cuphead",
-    "steam_last_sync_at": "2026-08-20T11:24:08.562Z"
+    "steam_last_sync_at": "2026-08-20T11:24:08.562Z",
+    "critica": {
+      "metascore": 86,
+      "userscore": 8.5
+    }
   },
   {
     "titulo": "Dispatch",
@@ -546,7 +585,11 @@
       "Aventura"
     ],
     "steam_store_name": "Dispatch",
-    "steam_last_sync_at": "2026-08-20T11:24:09.060Z"
+    "steam_last_sync_at": "2026-08-20T11:24:09.060Z",
+    "critica": {
+      "metascore": 87,
+      "userscore": 8.8
+    }
   },
   {
     "titulo": "Farming Simulator 22",
@@ -583,7 +626,11 @@
       "Simuladores"
     ],
     "steam_store_name": "Farming Simulator 22",
-    "steam_last_sync_at": "2026-08-20T11:24:09.635Z"
+    "steam_last_sync_at": "2026-08-20T11:24:09.635Z",
+    "critica": {
+      "metascore": 75,
+      "userscore": 6.8
+    }
   },
   {
     "titulo": "Forager",
@@ -624,7 +671,11 @@
       "Aventura"
     ],
     "steam_store_name": "Forager",
-    "steam_last_sync_at": "2026-08-20T11:24:10.105Z"
+    "steam_last_sync_at": "2026-08-20T11:24:10.105Z",
+    "critica": {
+      "metascore": 78,
+      "userscore": 7.5
+    }
   },
   {
     "titulo": "Grand Theft Auto V Enhanced",
@@ -664,7 +715,10 @@
       "Aventura"
     ],
     "steam_store_name": "Grand Theft Auto V Enhanced",
-    "steam_last_sync_at": "2026-08-20T11:24:10.627Z"
+    "steam_last_sync_at": "2026-08-20T11:24:10.627Z",
+    "critica": {
+      "userscore": 8.4
+    }
   },
   {
     "titulo": "Marvel Rivals",
@@ -755,7 +809,11 @@
         "concepto": "2180 Lattices",
         "precio_eur": 17.08
       }
-    ]
+    ],
+    "critica": {
+      "metascore": 74,
+      "userscore": 6.8
+    }
   },
   {
     "titulo": "Muse Dash",
@@ -795,7 +853,11 @@
       "Casual"
     ],
     "steam_store_name": "Muse Dash",
-    "steam_last_sync_at": "2026-08-20T11:24:11.655Z"
+    "steam_last_sync_at": "2026-08-20T11:24:11.655Z",
+    "critica": {
+      "metascore": 73,
+      "userscore": 6.9
+    }
   },
   {
     "titulo": "Phasmophobia",
@@ -835,7 +897,10 @@
       "Indie"
     ],
     "steam_store_name": "Phasmophobia",
-    "steam_last_sync_at": "2026-08-20T11:24:12.165Z"
+    "steam_last_sync_at": "2026-08-20T11:24:12.165Z",
+    "critica": {
+      "metascore": 76
+    }
   },
   {
     "titulo": "R.E.P.O.",
@@ -916,7 +981,11 @@
       "Indie"
     ],
     "steam_store_name": "Satisfactory",
-    "steam_last_sync_at": "2026-08-20T11:24:13.242Z"
+    "steam_last_sync_at": "2026-08-20T11:24:13.242Z",
+    "critica": {
+      "metascore": 91,
+      "userscore": 8.8
+    }
   },
   {
     "titulo": "Schedule I",
@@ -1034,7 +1103,11 @@
       "Acción"
     ],
     "steam_store_name": "Metro: Last Light Redux",
-    "steam_last_sync_at": "2026-08-20T11:24:14.808Z"
+    "steam_last_sync_at": "2026-08-20T11:24:14.808Z",
+    "critica": {
+      "metascore": 82,
+      "userscore": 8.5
+    }
   },
   {
     "titulo": "Mini Airways",
@@ -1111,7 +1184,11 @@
       "Simuladores"
     ],
     "steam_store_name": "Mini Motorways",
-    "steam_last_sync_at": "2026-08-20T11:24:15.802Z"
+    "steam_last_sync_at": "2026-08-20T11:24:15.802Z",
+    "critica": {
+      "metascore": 87,
+      "userscore": 7.5
+    }
   },
   {
     "titulo": "Monster Hunter: World",
@@ -1148,7 +1225,11 @@
       "Acción"
     ],
     "steam_store_name": "Monster Hunter: World",
-    "steam_last_sync_at": "2026-08-20T11:24:16.835Z"
+    "steam_last_sync_at": "2026-08-20T11:24:16.835Z",
+    "critica": {
+      "metascore": 90,
+      "userscore": 7.8
+    }
   },
   {
     "titulo": "MultiVersus",
@@ -1184,7 +1265,11 @@
       "Free to Play"
     ],
     "steam_store_name": "MultiVersus",
-    "steam_last_sync_at": "2026-08-20T11:24:17.345Z"
+    "steam_last_sync_at": "2026-08-20T11:24:17.345Z",
+    "critica": {
+      "metascore": 75,
+      "userscore": 5.5
+    }
   },
   {
     "titulo": "Outlast",
@@ -1224,7 +1309,11 @@
       "Aventura"
     ],
     "steam_store_name": "Outlast",
-    "steam_last_sync_at": "2026-08-20T11:24:17.841Z"
+    "steam_last_sync_at": "2026-08-20T11:24:17.841Z",
+    "critica": {
+      "metascore": 80,
+      "userscore": 8.2
+    }
   },
   {
     "titulo": "PAYDAY 2",
@@ -1263,7 +1352,11 @@
       "Rol"
     ],
     "steam_store_name": "PAYDAY 2",
-    "steam_last_sync_at": "2026-08-20T11:24:18.639Z"
+    "steam_last_sync_at": "2026-08-20T11:24:18.639Z",
+    "critica": {
+      "metascore": 79,
+      "userscore": 4.2
+    }
   },
   {
     "titulo": "Plague Inc: Evolved",
@@ -1304,7 +1397,11 @@
       "Indie"
     ],
     "steam_store_name": "Plague Inc: Evolved",
-    "steam_last_sync_at": "2026-08-20T11:24:19.164Z"
+    "steam_last_sync_at": "2026-08-20T11:24:19.164Z",
+    "critica": {
+      "metascore": 80,
+      "userscore": 7.1
+    }
   },
   {
     "titulo": "Portal 2",
@@ -1343,7 +1440,11 @@
       "Aventura"
     ],
     "steam_store_name": "Portal 2",
-    "steam_last_sync_at": "2026-08-20T11:24:19.659Z"
+    "steam_last_sync_at": "2026-08-20T11:24:19.659Z",
+    "critica": {
+      "metascore": 95,
+      "userscore": 8.9
+    }
   },
   {
     "titulo": "Potion Craft: Alchemist Simulator",
@@ -1382,7 +1483,11 @@
       "Simuladores"
     ],
     "steam_store_name": "Potion Craft: Alchemist Simulator",
-    "steam_last_sync_at": "2026-08-20T11:24:20.171Z"
+    "steam_last_sync_at": "2026-08-20T11:24:20.171Z",
+    "critica": {
+      "metascore": 74,
+      "userscore": 7.1
+    }
   },
   {
     "titulo": "Raft",
@@ -1422,7 +1527,10 @@
       "Indie"
     ],
     "steam_store_name": "Raft",
-    "steam_last_sync_at": "2026-08-20T11:24:20.698Z"
+    "steam_last_sync_at": "2026-08-20T11:24:20.698Z",
+    "critica": {
+      "userscore": 7.4
+    }
   },
   {
     "titulo": "Reigns: Her Majesty",
@@ -1462,7 +1570,11 @@
       "Indie"
     ],
     "steam_store_name": "Reigns: Her Majesty",
-    "steam_last_sync_at": "2026-08-20T11:24:21.276Z"
+    "steam_last_sync_at": "2026-08-20T11:24:21.276Z",
+    "critica": {
+      "metascore": 81,
+      "userscore": 7
+    }
   },
   {
     "titulo": "Rocket League",
@@ -1549,7 +1661,11 @@
         "concepto": "Rocket League Credits x1100",
         "precio_eur": 10
       }
-    ]
+    ],
+    "critica": {
+      "metascore": 85,
+      "userscore": 7.9
+    }
   },
   {
     "titulo": "Sekiro: Shadows Die Twice",
@@ -1588,7 +1704,11 @@
       "Aventura"
     ],
     "steam_store_name": "Sekiro™: Shadows Die Twice - GOTY Edition",
-    "steam_last_sync_at": "2026-08-20T11:24:22.416Z"
+    "steam_last_sync_at": "2026-08-20T11:24:22.416Z",
+    "critica": {
+      "metascore": 90,
+      "userscore": 8.6
+    }
   },
   {
     "titulo": "Sid Meier's Civilization VI",
@@ -1625,7 +1745,11 @@
       "Estrategia"
     ],
     "steam_store_name": "Sid Meier’s Civilization® VI",
-    "steam_last_sync_at": "2026-08-20T11:24:22.951Z"
+    "steam_last_sync_at": "2026-08-20T11:24:22.951Z",
+    "critica": {
+      "metascore": 88,
+      "userscore": 7.3
+    }
   },
   {
     "titulo": "Slime Rancher 2",
@@ -1667,7 +1791,11 @@
       "Aventura"
     ],
     "steam_store_name": "Slime Rancher 2",
-    "steam_last_sync_at": "2026-08-20T11:24:23.468Z"
+    "steam_last_sync_at": "2026-08-20T11:24:23.468Z",
+    "critica": {
+      "metascore": 76,
+      "userscore": 7.2
+    }
   },
   {
     "titulo": "Soulworker",
@@ -1710,7 +1838,10 @@
       "Multijugador masivo"
     ],
     "steam_store_name": "Soulworker",
-    "steam_last_sync_at": "2026-08-20T11:24:23.937Z"
+    "steam_last_sync_at": "2026-08-20T11:24:23.937Z",
+    "critica": {
+      "userscore": 5.8
+    }
   },
   {
     "titulo": "Stacklands",
@@ -1750,7 +1881,11 @@
       "Indie"
     ],
     "steam_store_name": "Stacklands",
-    "steam_last_sync_at": "2026-08-20T11:24:24.441Z"
+    "steam_last_sync_at": "2026-08-20T11:24:24.441Z",
+    "critica": {
+      "metascore": 84,
+      "userscore": 7.6
+    }
   },
   {
     "titulo": "Stardew Valley",
@@ -1790,7 +1925,11 @@
       "Rol"
     ],
     "steam_store_name": "Stardew Valley",
-    "steam_last_sync_at": "2026-08-20T11:24:25.014Z"
+    "steam_last_sync_at": "2026-08-20T11:24:25.014Z",
+    "critica": {
+      "metascore": 89,
+      "userscore": 8.8
+    }
   },
   {
     "titulo": "Surviving Mars",
@@ -1829,7 +1968,11 @@
       "Estrategia"
     ],
     "steam_store_name": "Surviving Mars: Relaunched",
-    "steam_last_sync_at": "2026-08-20T11:24:25.579Z"
+    "steam_last_sync_at": "2026-08-20T11:24:25.579Z",
+    "critica": {
+      "metascore": 76,
+      "userscore": 7
+    }
   },
   {
     "titulo": "Terraria",
@@ -1870,7 +2013,11 @@
       "Aventura"
     ],
     "steam_store_name": "Terraria",
-    "steam_last_sync_at": "2026-08-20T11:24:26.190Z"
+    "steam_last_sync_at": "2026-08-20T11:24:26.190Z",
+    "critica": {
+      "metascore": 81,
+      "userscore": 8.4
+    }
   },
   {
     "titulo": "The Binding of Isaac: Rebirth",
@@ -1907,7 +2054,11 @@
       "Acción"
     ],
     "steam_store_name": "The Binding of Isaac: Rebirth",
-    "steam_last_sync_at": "2026-08-20T11:24:26.729Z"
+    "steam_last_sync_at": "2026-08-20T11:24:26.729Z",
+    "critica": {
+      "metascore": 88,
+      "userscore": 8.2
+    }
   },
   {
     "titulo": "The Elder Scrolls V: Skyrim",
@@ -1944,7 +2095,11 @@
       "Rol"
     ],
     "steam_store_name": "The Elder Scrolls V: Skyrim Special Edition",
-    "steam_last_sync_at": "2026-08-20T11:24:27.262Z"
+    "steam_last_sync_at": "2026-08-20T11:24:27.262Z",
+    "critica": {
+      "metascore": 84,
+      "userscore": 8.3
+    }
   },
   {
     "titulo": "The Escapists",
@@ -1986,7 +2141,11 @@
       "Aventura"
     ],
     "steam_store_name": "The Escapists",
-    "steam_last_sync_at": "2026-08-20T11:24:27.803Z"
+    "steam_last_sync_at": "2026-08-20T11:24:27.803Z",
+    "critica": {
+      "metascore": 74,
+      "userscore": 6.9
+    }
   },
   {
     "titulo": "The Walking Dead: The Telltale Definitive Series",
@@ -2023,7 +2182,11 @@
       "Aventura"
     ],
     "steam_store_name": "The Walking Dead: The Telltale Definitive Series",
-    "steam_last_sync_at": "2026-08-20T11:24:28.335Z"
+    "steam_last_sync_at": "2026-08-20T11:24:28.335Z",
+    "critica": {
+      "metascore": 82,
+      "userscore": 8.6
+    }
   },
   {
     "titulo": "The Witcher 3: Wild Hunt",
@@ -2060,7 +2223,11 @@
       "Rol"
     ],
     "steam_store_name": "The Witcher 3: Wild Hunt",
-    "steam_last_sync_at": "2026-08-20T11:24:28.916Z"
+    "steam_last_sync_at": "2026-08-20T11:24:28.916Z",
+    "critica": {
+      "metascore": 92,
+      "userscore": 9.1
+    }
   },
   {
     "titulo": "The Witness",
@@ -2099,7 +2266,11 @@
       "Indie"
     ],
     "steam_store_name": "The Witness",
-    "steam_last_sync_at": "2026-08-20T11:24:29.385Z"
+    "steam_last_sync_at": "2026-08-20T11:24:29.385Z",
+    "critica": {
+      "metascore": 87,
+      "userscore": 7.3
+    }
   },
   {
     "titulo": "Tom Clancy's Rainbow Six Siege",
@@ -2140,7 +2311,11 @@
       "Free to Play"
     ],
     "steam_store_name": "Tom Clancy's Rainbow Six Siege",
-    "steam_last_sync_at": "2026-08-20T11:24:29.993Z"
+    "steam_last_sync_at": "2026-08-20T11:24:29.993Z",
+    "critica": {
+      "metascore": 73,
+      "userscore": 7
+    }
   },
   {
     "titulo": "Tomb Raider",
@@ -2179,7 +2354,11 @@
       "Aventura"
     ],
     "steam_store_name": "Tomb Raider Game of the Year",
-    "steam_last_sync_at": "2026-08-20T11:24:30.504Z"
+    "steam_last_sync_at": "2026-08-20T11:24:30.504Z",
+    "critica": {
+      "metascore": 86,
+      "userscore": 8.2
+    }
   },
   {
     "titulo": "Townscaper",
@@ -2219,7 +2398,11 @@
       "Indie"
     ],
     "steam_store_name": "Townscaper",
-    "steam_last_sync_at": "2026-08-20T11:24:31.008Z"
+    "steam_last_sync_at": "2026-08-20T11:24:31.008Z",
+    "critica": {
+      "metascore": 63,
+      "userscore": 6.4
+    }
   },
   {
     "titulo": "Undertale",
@@ -2258,7 +2441,11 @@
       "Rol"
     ],
     "steam_store_name": "Undertale",
-    "steam_last_sync_at": "2026-08-20T11:24:31.482Z"
+    "steam_last_sync_at": "2026-08-20T11:24:31.482Z",
+    "critica": {
+      "metascore": 92,
+      "userscore": 8.7
+    }
   },
   {
     "titulo": "Unpacking",
@@ -2298,7 +2485,11 @@
       "Indie"
     ],
     "steam_store_name": "Unpacking",
-    "steam_last_sync_at": "2026-08-20T11:24:31.984Z"
+    "steam_last_sync_at": "2026-08-20T11:24:31.984Z",
+    "critica": {
+      "metascore": 83,
+      "userscore": 7.4
+    }
   },
   {
     "titulo": "Urban Rivals",
@@ -2343,7 +2534,10 @@
       "Indie"
     ],
     "steam_store_name": "Urban Rivals",
-    "steam_last_sync_at": "2026-08-20T11:24:32.471Z"
+    "steam_last_sync_at": "2026-08-20T11:24:32.471Z",
+    "critica": {
+      "userscore": 5.3
+    }
   },
   {
     "titulo": "XCOM 2",
@@ -2380,7 +2574,11 @@
       "Estrategia"
     ],
     "steam_store_name": "XCOM® 2",
-    "steam_last_sync_at": "2026-08-20T11:24:32.998Z"
+    "steam_last_sync_at": "2026-08-20T11:24:32.998Z",
+    "critica": {
+      "metascore": 88,
+      "userscore": 7.5
+    }
   },
   {
     "titulo": "60 Seconds! Reatomized",
@@ -2422,7 +2620,10 @@
       "Casual"
     ],
     "steam_store_name": "60 Seconds! Reatomized",
-    "steam_last_sync_at": "2026-08-20T11:24:33.502Z"
+    "steam_last_sync_at": "2026-08-20T11:24:33.502Z",
+    "critica": {
+      "userscore": 6.7
+    }
   },
   {
     "titulo": "Amnesia: The Dark Descent",
@@ -2462,7 +2663,11 @@
       "Aventura"
     ],
     "steam_store_name": "Amnesia: The Dark Descent",
-    "steam_last_sync_at": "2026-08-20T11:24:34.048Z"
+    "steam_last_sync_at": "2026-08-20T11:24:34.048Z",
+    "critica": {
+      "metascore": 85,
+      "userscore": 8.5
+    }
   },
   {
     "titulo": "Among Us",
@@ -2499,7 +2704,11 @@
       "Casual"
     ],
     "steam_store_name": "Among Us",
-    "steam_last_sync_at": "2026-08-20T11:24:34.594Z"
+    "steam_last_sync_at": "2026-08-20T11:24:34.594Z",
+    "critica": {
+      "metascore": 85,
+      "userscore": 7
+    }
   },
   {
     "titulo": "Apex Legends",
@@ -2541,7 +2750,11 @@
       "Aventura"
     ],
     "steam_store_name": "Apex Legends™",
-    "steam_last_sync_at": "2026-08-20T11:24:35.199Z"
+    "steam_last_sync_at": "2026-08-20T11:24:35.199Z",
+    "critica": {
+      "metascore": 89,
+      "userscore": 6.6
+    }
   },
   {
     "titulo": "Atomic Heart",
@@ -2581,7 +2794,11 @@
       "Aventura"
     ],
     "steam_store_name": "Atomic Heart",
-    "steam_last_sync_at": "2026-08-20T11:24:35.700Z"
+    "steam_last_sync_at": "2026-08-20T11:24:35.700Z",
+    "critica": {
+      "metascore": 70,
+      "userscore": 6.8
+    }
   },
   {
     "titulo": "Bandle Tale: A League of Legends Story",
@@ -2620,7 +2837,11 @@
       "Simuladores"
     ],
     "steam_store_name": "Bandle Tale: A League of Legends Story",
-    "steam_last_sync_at": "2026-08-20T11:24:36.224Z"
+    "steam_last_sync_at": "2026-08-20T11:24:36.224Z",
+    "critica": {
+      "metascore": 76,
+      "userscore": 6.5
+    }
   },
   {
     "titulo": "Beyond: Two Souls",
@@ -2659,7 +2880,11 @@
       "Aventura"
     ],
     "steam_store_name": "Beyond: Two Souls",
-    "steam_last_sync_at": "2026-08-20T11:24:36.744Z"
+    "steam_last_sync_at": "2026-08-20T11:24:36.744Z",
+    "critica": {
+      "metascore": 70,
+      "userscore": 8
+    }
   },
   {
     "titulo": "Borderlands 2",
@@ -2698,7 +2923,11 @@
       "Rol"
     ],
     "steam_store_name": "Borderlands 2",
-    "steam_last_sync_at": "2026-08-20T11:24:37.541Z"
+    "steam_last_sync_at": "2026-08-20T11:24:37.541Z",
+    "critica": {
+      "metascore": 89,
+      "userscore": 8.1
+    }
   },
   {
     "titulo": "Catherine Classic",
@@ -2735,7 +2964,11 @@
       "Aventura"
     ],
     "steam_store_name": "Catherine Classic",
-    "steam_last_sync_at": "2026-08-20T11:24:38.239Z"
+    "steam_last_sync_at": "2026-08-20T11:24:38.239Z",
+    "critica": {
+      "metascore": 79,
+      "userscore": 8.2
+    }
   },
   {
     "titulo": "Celeste",
@@ -2775,7 +3008,11 @@
       "Aventura"
     ],
     "steam_store_name": "Celeste",
-    "steam_last_sync_at": "2026-08-20T11:24:38.765Z"
+    "steam_last_sync_at": "2026-08-20T11:24:38.765Z",
+    "critica": {
+      "metascore": 92,
+      "userscore": 8.7
+    }
   },
   {
     "titulo": "Counter-Strike 2",
@@ -2854,7 +3091,11 @@
         "concepto": "Actualización a estatus Prime",
         "precio_eur": 9.37
       }
-    ]
+    ],
+    "critica": {
+      "metascore": 82,
+      "userscore": 5.5
+    }
   },
   {
     "titulo": "Cyberpunk 2077",
@@ -2890,7 +3131,11 @@
       "Rol"
     ],
     "steam_store_name": "Cyberpunk 2077",
-    "steam_last_sync_at": "2026-08-20T11:24:39.864Z"
+    "steam_last_sync_at": "2026-08-20T11:24:39.864Z",
+    "critica": {
+      "metascore": 86,
+      "userscore": 7.3
+    }
   },
   {
     "titulo": "Dead by Daylight",
@@ -3435,7 +3680,11 @@
         "concepto": "500 Auric Cells",
         "precio_eur": 5
       }
-    ]
+    ],
+    "critica": {
+      "metascore": 64,
+      "userscore": 5.5
+    }
   },
   {
     "titulo": "Destiny 2",
@@ -3477,7 +3726,11 @@
       "Aventura"
     ],
     "steam_store_name": "Destiny 2",
-    "steam_last_sync_at": "2026-08-20T11:24:41.301Z"
+    "steam_last_sync_at": "2026-08-20T11:24:41.301Z",
+    "critica": {
+      "metascore": 85,
+      "userscore": 5.2
+    }
   },
   {
     "titulo": "Detroit: Become Human",
@@ -3516,7 +3769,11 @@
       "Aventura"
     ],
     "steam_store_name": "Detroit: Become Human",
-    "steam_last_sync_at": "2026-08-20T11:24:41.775Z"
+    "steam_last_sync_at": "2026-08-20T11:24:41.775Z",
+    "critica": {
+      "metascore": 78,
+      "userscore": 8.7
+    }
   },
   {
     "titulo": "Don't Starve Together",
@@ -3559,7 +3816,11 @@
       "Aventura"
     ],
     "steam_store_name": "Don't Starve Together",
-    "steam_last_sync_at": "2026-08-20T11:24:42.346Z"
+    "steam_last_sync_at": "2026-08-20T11:24:42.346Z",
+    "critica": {
+      "metascore": 83,
+      "userscore": 7.9
+    }
   },
   {
     "titulo": "Dying Light",
@@ -3598,7 +3859,11 @@
       "Aventura"
     ],
     "steam_store_name": "Dying Light",
-    "steam_last_sync_at": "2026-08-20T11:24:42.963Z"
+    "steam_last_sync_at": "2026-08-20T11:24:42.963Z",
+    "critica": {
+      "metascore": 74,
+      "userscore": 8
+    }
   },
   {
     "titulo": "Eternal Return",
@@ -3637,7 +3902,10 @@
     },
     "steam_store_genres": [],
     "steam_store_name": "Eternal Return",
-    "steam_last_sync_at": "2026-08-20T11:24:43.462Z"
+    "steam_last_sync_at": "2026-08-20T11:24:43.462Z",
+    "critica": {
+      "userscore": 6
+    }
   },
   {
     "titulo": "Euro Truck Simulator 2",
@@ -3676,7 +3944,11 @@
       "Simuladores"
     ],
     "steam_store_name": "Euro Truck Simulator 2",
-    "steam_last_sync_at": "2026-08-20T11:24:44.158Z"
+    "steam_last_sync_at": "2026-08-20T11:24:44.158Z",
+    "critica": {
+      "metascore": 79,
+      "userscore": 8.5
+    }
   },
   {
     "titulo": "Fallout 4",
@@ -3713,7 +3985,11 @@
       "Rol"
     ],
     "steam_store_name": "Fallout 4",
-    "steam_last_sync_at": "2026-08-20T11:24:44.659Z"
+    "steam_last_sync_at": "2026-08-20T11:24:44.659Z",
+    "critica": {
+      "metascore": 87,
+      "userscore": 7.1
+    }
   },
   {
     "titulo": "Fallout Shelter",
@@ -3755,7 +4031,11 @@
       "Simuladores"
     ],
     "steam_store_name": "Fallout Shelter",
-    "steam_last_sync_at": "2026-08-20T11:24:45.158Z"
+    "steam_last_sync_at": "2026-08-20T11:24:45.158Z",
+    "critica": {
+      "metascore": 71,
+      "userscore": 6.4
+    }
   },
   {
     "titulo": "Garry's Mod",
@@ -3795,7 +4075,10 @@
       "Indie"
     ],
     "steam_store_name": "Garry's Mod",
-    "steam_last_sync_at": "2026-08-20T11:24:45.652Z"
+    "steam_last_sync_at": "2026-08-20T11:24:45.652Z",
+    "critica": {
+      "userscore": 8.8
+    }
   },
   {
     "titulo": "Ghost of Tsushima Director's Cut",
@@ -3834,7 +4117,11 @@
       "Aventura"
     ],
     "steam_store_name": "Ghost of Tsushima: VERSIÓN DEL DIRECTOR",
-    "steam_last_sync_at": "2026-08-20T11:24:46.200Z"
+    "steam_last_sync_at": "2026-08-20T11:24:46.200Z",
+    "critica": {
+      "metascore": 87,
+      "userscore": 8.4
+    }
   },
   {
     "titulo": "Gotham Knights",
@@ -3874,7 +4161,11 @@
       "Aventura"
     ],
     "steam_store_name": "Gotham Knights",
-    "steam_last_sync_at": "2026-08-20T11:24:46.732Z"
+    "steam_last_sync_at": "2026-08-20T11:24:46.732Z",
+    "critica": {
+      "metascore": 67,
+      "userscore": 5.3
+    }
   },
   {
     "titulo": "Governor of Poker 3",
@@ -3917,7 +4208,10 @@
       "Multijugador masivo"
     ],
     "steam_store_name": "Governor of Poker 3",
-    "steam_last_sync_at": "2026-08-20T11:24:47.284Z"
+    "steam_last_sync_at": "2026-08-20T11:24:47.284Z",
+    "critica": {
+      "userscore": 3.3
+    }
   },
   {
     "titulo": "Grand Theft Auto IV: The Complete Edition",
@@ -3956,7 +4250,10 @@
       "Aventura"
     ],
     "steam_store_name": "Grand Theft Auto IV: The Complete Edition",
-    "steam_last_sync_at": "2026-08-20T11:24:47.803Z"
+    "steam_last_sync_at": "2026-08-20T11:24:47.803Z",
+    "critica": {
+      "userscore": 8
+    }
   },
   {
     "titulo": "Grand Theft Auto V Legacy",
@@ -3991,7 +4288,11 @@
       "Aventura"
     ],
     "steam_store_name": "Grand Theft Auto V Legacy",
-    "steam_last_sync_at": "2026-08-20T11:24:48.282Z"
+    "steam_last_sync_at": "2026-08-20T11:24:48.282Z",
+    "critica": {
+      "metascore": 97,
+      "userscore": 8.5
+    }
   },
   {
     "titulo": "GRIS",
@@ -4030,7 +4331,11 @@
       "Indie"
     ],
     "steam_store_name": "GRIS",
-    "steam_last_sync_at": "2026-08-20T11:24:48.758Z"
+    "steam_last_sync_at": "2026-08-20T11:24:48.758Z",
+    "critica": {
+      "metascore": 83,
+      "userscore": 8
+    }
   },
   {
     "titulo": "Hades",
@@ -4070,7 +4375,11 @@
       "Indie"
     ],
     "steam_store_name": "Hades",
-    "steam_last_sync_at": "2026-08-20T11:24:49.280Z"
+    "steam_last_sync_at": "2026-08-20T11:24:49.280Z",
+    "critica": {
+      "metascore": 93,
+      "userscore": 8.5
+    }
   },
   {
     "titulo": "Heartopia",
@@ -4112,7 +4421,10 @@
       "Simuladores"
     ],
     "steam_store_name": "Heartopia",
-    "steam_last_sync_at": "2026-08-20T11:24:49.750Z"
+    "steam_last_sync_at": "2026-08-20T11:24:49.750Z",
+    "critica": {
+      "userscore": 5
+    }
   },
   {
     "titulo": "Hogwarts Legacy",
@@ -4152,7 +4464,11 @@
       "Aventura"
     ],
     "steam_store_name": "Hogwarts Legacy",
-    "steam_last_sync_at": "2026-08-20T11:24:50.397Z"
+    "steam_last_sync_at": "2026-08-20T11:24:50.397Z",
+    "critica": {
+      "metascore": 84,
+      "userscore": 8
+    }
   },
   {
     "titulo": "Hollow Knight",
@@ -4192,7 +4508,11 @@
       "Aventura"
     ],
     "steam_store_name": "Hollow Knight",
-    "steam_last_sync_at": "2026-08-20T11:24:50.874Z"
+    "steam_last_sync_at": "2026-08-20T11:24:50.874Z",
+    "critica": {
+      "metascore": 90,
+      "userscore": 9
+    }
   },
   {
     "titulo": "It Takes Two",
@@ -4231,7 +4551,11 @@
       "Aventura"
     ],
     "steam_store_name": "It Takes Two",
-    "steam_last_sync_at": "2026-08-20T11:24:51.431Z"
+    "steam_last_sync_at": "2026-08-20T11:24:51.431Z",
+    "critica": {
+      "metascore": 88,
+      "userscore": 8.8
+    }
   },
   {
     "titulo": "Just Cause 3",
@@ -4270,7 +4594,11 @@
       "Aventura"
     ],
     "steam_store_name": "Just Cause™ 3",
-    "steam_last_sync_at": "2026-08-20T11:24:52.030Z"
+    "steam_last_sync_at": "2026-08-20T11:24:52.030Z",
+    "critica": {
+      "metascore": 74,
+      "userscore": 6.3
+    }
   },
   {
     "titulo": "Left 4 Dead 2",
@@ -4307,7 +4635,11 @@
       "Acción"
     ],
     "steam_store_name": "Left 4 Dead 2",
-    "steam_last_sync_at": "2026-08-20T11:24:52.555Z"
+    "steam_last_sync_at": "2026-08-20T11:24:52.555Z",
+    "critica": {
+      "metascore": 89,
+      "userscore": 8.2
+    }
   },
   {
     "titulo": "Little Nightmares",
@@ -4344,7 +4676,11 @@
       "Aventura"
     ],
     "steam_store_name": "Little Nightmares",
-    "steam_last_sync_at": "2026-08-20T11:24:53.102Z"
+    "steam_last_sync_at": "2026-08-20T11:24:53.102Z",
+    "critica": {
+      "metascore": 78,
+      "userscore": 8
+    }
   },
   {
     "titulo": "MARVEL SNAP",
@@ -4427,7 +4763,11 @@
         "concepto": "Bundle1499",
         "precio_eur": 16.99
       }
-    ]
+    ],
+    "critica": {
+      "metascore": 85,
+      "userscore": 6.5
+    }
   },
   {
     "titulo": "A Game About Digging A Hole",
@@ -4463,7 +4803,11 @@
       "Indie"
     ],
     "steam_store_name": "A Game About Digging A Hole™",
-    "steam_last_sync_at": "2026-08-20T11:24:54.389Z"
+    "steam_last_sync_at": "2026-08-20T11:24:54.389Z",
+    "critica": {
+      "metascore": 75,
+      "userscore": 5.8
+    }
   },
   {
     "titulo": "Metaphor: ReFantazio",
@@ -4503,7 +4847,11 @@
       "Aventura"
     ],
     "steam_store_name": "Metaphor: ReFantazio",
-    "steam_last_sync_at": "2026-08-20T11:24:55.076Z"
+    "steam_last_sync_at": "2026-08-20T11:24:55.076Z",
+    "critica": {
+      "metascore": 94,
+      "userscore": 8.5
+    }
   },
   {
     "titulo": "Metro 2033",
@@ -4540,7 +4888,11 @@
       "Acción"
     ],
     "steam_store_name": "Metro 2033 Redux",
-    "steam_last_sync_at": "2026-08-20T11:24:55.751Z"
+    "steam_last_sync_at": "2026-08-20T11:24:55.751Z",
+    "critica": {
+      "metascore": 90,
+      "userscore": 8.1
+    }
   },
   {
     "titulo": "Valorant",
@@ -4574,6 +4926,10 @@
       "main": 106.4,
       "main_plus": 474.1,
       "completionist": 560.1
+    },
+    "critica": {
+      "metascore": 80,
+      "userscore": 4.7
     }
   },
   {
@@ -4608,6 +4964,10 @@
       "main": 1163.3,
       "main_plus": 1751,
       "completionist": 3307
+    },
+    "critica": {
+      "metascore": 78,
+      "userscore": 4.7
     }
   },
   {
@@ -4640,6 +5000,10 @@
       "main": 45.6,
       "main_plus": 92.2,
       "completionist": 172.1
+    },
+    "critica": {
+      "metascore": 79,
+      "userscore": 3.8
     }
   },
   {
@@ -4670,6 +5034,10 @@
       "main": null,
       "main_plus": 21,
       "completionist": null
+    },
+    "critica": {
+      "metascore": 89,
+      "userscore": 5.3
     }
   },
   {
@@ -4702,6 +5070,10 @@
       "main": 39.2,
       "main_plus": 90.4,
       "completionist": 685
+    },
+    "critica": {
+      "metascore": 87,
+      "userscore": 6.5
     }
   },
   {
@@ -4735,7 +5107,11 @@
       "main_plus": 26.4,
       "completionist": 51.7
     },
-    "gasto_microtransacciones": null
+    "gasto_microtransacciones": null,
+    "critica": {
+      "metascore": 78,
+      "userscore": 4.6
+    }
   },
   {
     "titulo": "Sea of Remnants",
@@ -4853,6 +5229,10 @@
       "main": 69.2,
       "main_plus": 242.2,
       "completionist": 816.5
+    },
+    "critica": {
+      "metascore": 81,
+      "userscore": 5.1
     }
   },
   {
@@ -4885,6 +5265,9 @@
       "main": 114.2,
       "main_plus": 183.9,
       "completionist": 329.3
+    },
+    "critica": {
+      "userscore": 7.5
     }
   },
   {
@@ -4917,6 +5300,10 @@
       "main": 25.6,
       "main_plus": 85.7,
       "completionist": 214.5
+    },
+    "critica": {
+      "metascore": 80,
+      "userscore": 6.5
     }
   },
   {
@@ -4949,6 +5336,9 @@
       "main": null,
       "main_plus": null,
       "completionist": null
+    },
+    "critica": {
+      "userscore": 5.8
     }
   },
   {
@@ -4987,7 +5377,11 @@
       "Aventura"
     ],
     "steam_store_name": "Zenless Zone Zero",
-    "steam_last_sync_at": "2026-08-20T11:24:57.438Z"
+    "steam_last_sync_at": "2026-08-20T11:24:57.438Z",
+    "critica": {
+      "metascore": 77,
+      "userscore": 7
+    }
   },
   {
     "titulo": "Two Point Museum",
@@ -5023,7 +5417,11 @@
       "Indie"
     ],
     "steam_store_name": "Two Point Museum",
-    "steam_last_sync_at": "2026-08-20T11:24:57.982Z"
+    "steam_last_sync_at": "2026-08-20T11:24:57.982Z",
+    "critica": {
+      "metascore": 84,
+      "userscore": 8.1
+    }
   },
   {
     "titulo": "The Lift Playtest",
@@ -5092,7 +5490,10 @@
       "Casual"
     ],
     "steam_store_name": "Banana",
-    "steam_last_sync_at": "2026-08-20T11:24:58.902Z"
+    "steam_last_sync_at": "2026-08-20T11:24:58.902Z",
+    "critica": {
+      "userscore": 7.8
+    }
   },
   {
     "titulo": "Brawlhalla",
@@ -5171,7 +5572,10 @@
         "concepto": "140 Mammoth Coins",
         "precio_eur": 5.99
       }
-    ]
+    ],
+    "critica": {
+      "userscore": 5.5
+    }
   },
   {
     "titulo": "Paladins",
@@ -5207,7 +5611,11 @@
       "Aventura"
     ],
     "steam_store_name": "Paladins®",
-    "steam_last_sync_at": "2026-08-20T11:25:00.263Z"
+    "steam_last_sync_at": "2026-08-20T11:25:00.263Z",
+    "critica": {
+      "metascore": 74,
+      "userscore": 6.4
+    }
   },
   {
     "titulo": "River City Girls",
@@ -5244,7 +5652,11 @@
       "Acción"
     ],
     "steam_store_name": "River City Girls",
-    "steam_last_sync_at": "2026-08-20T11:25:00.737Z"
+    "steam_last_sync_at": "2026-08-20T11:25:00.737Z",
+    "critica": {
+      "metascore": 79,
+      "userscore": 6.9
+    }
   },
   {
     "titulo": "River City Girls 2",
@@ -5284,7 +5696,11 @@
       "Aventura"
     ],
     "steam_store_name": "River City Girls 2",
-    "steam_last_sync_at": "2026-08-20T11:25:01.306Z"
+    "steam_last_sync_at": "2026-08-20T11:25:01.306Z",
+    "critica": {
+      "metascore": 78,
+      "userscore": 6
+    }
   },
   {
     "titulo": "Star Wars Outlaws",
@@ -5323,7 +5739,11 @@
       "Aventura"
     ],
     "steam_store_name": "Star Wars Outlaws",
-    "steam_last_sync_at": "2026-08-20T11:25:01.904Z"
+    "steam_last_sync_at": "2026-08-20T11:25:01.904Z",
+    "critica": {
+      "metascore": 75,
+      "userscore": 5.6
+    }
   },
   {
     "titulo": "Ultimate Chicken Horse",
@@ -5362,7 +5782,11 @@
       "Casual"
     ],
     "steam_store_name": "Ultimate Chicken Horse",
-    "steam_last_sync_at": "2026-08-20T11:25:02.474Z"
+    "steam_last_sync_at": "2026-08-20T11:25:02.474Z",
+    "critica": {
+      "metascore": 80,
+      "userscore": 7.8
+    }
   },
   {
     "titulo": "Figment",
@@ -5402,7 +5826,11 @@
       "Aventura"
     ],
     "steam_store_name": "Figment",
-    "steam_last_sync_at": "2026-08-20T11:25:02.995Z"
+    "steam_last_sync_at": "2026-08-20T11:25:02.995Z",
+    "critica": {
+      "metascore": 75,
+      "userscore": 7
+    }
   },
   {
     "titulo": "Titan Souls",
@@ -5442,7 +5870,11 @@
       "Aventura"
     ],
     "steam_store_name": "Titan Souls",
-    "steam_last_sync_at": "2026-08-20T11:25:03.521Z"
+    "steam_last_sync_at": "2026-08-20T11:25:03.521Z",
+    "critica": {
+      "metascore": 74,
+      "userscore": 6.2
+    }
   },
   {
     "titulo": "Graveyard Keeper",
@@ -5482,7 +5914,11 @@
       "Indie"
     ],
     "steam_store_name": "Graveyard Keeper",
-    "steam_last_sync_at": "2026-08-20T11:25:04.018Z"
+    "steam_last_sync_at": "2026-08-20T11:25:04.018Z",
+    "critica": {
+      "metascore": 69,
+      "userscore": 7.2
+    }
   },
   {
     "titulo": "A Story About My Uncle",
@@ -5521,7 +5957,11 @@
       "Casual"
     ],
     "steam_store_name": "A Story About My Uncle",
-    "steam_last_sync_at": "2026-08-20T11:25:04.525Z"
+    "steam_last_sync_at": "2026-08-20T11:25:04.525Z",
+    "critica": {
+      "metascore": 73,
+      "userscore": 7
+    }
   },
   {
     "titulo": "HITMAN",
@@ -5559,7 +5999,11 @@
       "Acción"
     ],
     "steam_store_name": "HITMAN™",
-    "steam_last_sync_at": "2026-08-20T11:25:05.086Z"
+    "steam_last_sync_at": "2026-08-20T11:25:05.086Z",
+    "critica": {
+      "metascore": 84,
+      "userscore": 7.8
+    }
   },
   {
     "titulo": "Spec Ops: The Line",
@@ -5597,7 +6041,11 @@
       "Aventura"
     ],
     "steam_store_name": "Spec Ops: The Line",
-    "steam_last_sync_at": "2026-08-20T11:25:05.615Z"
+    "steam_last_sync_at": "2026-08-20T11:25:05.615Z",
+    "critica": {
+      "metascore": 76,
+      "userscore": 8.3
+    }
   },
   {
     "titulo": "SteamWorld Dig",
@@ -5636,7 +6084,11 @@
       "Aventura"
     ],
     "steam_store_name": "SteamWorld Dig",
-    "steam_last_sync_at": "2026-08-20T11:25:06.111Z"
+    "steam_last_sync_at": "2026-08-20T11:25:06.111Z",
+    "critica": {
+      "metascore": 82,
+      "userscore": 7.9
+    }
   },
   {
     "titulo": "Company of Heroes 2",
@@ -5673,7 +6125,11 @@
       "Estrategia"
     ],
     "steam_store_name": "Company of Heroes 2",
-    "steam_last_sync_at": "2026-08-20T11:25:06.760Z"
+    "steam_last_sync_at": "2026-08-20T11:25:06.760Z",
+    "critica": {
+      "metascore": 80,
+      "userscore": 2.3
+    }
   },
   {
     "titulo": "The You Quiz",
@@ -5752,7 +6208,11 @@
       "Indie"
     ],
     "steam_store_name": "Hextech Mayhem: A League of Legends Story™",
-    "steam_last_sync_at": "2026-08-20T11:25:07.807Z"
+    "steam_last_sync_at": "2026-08-20T11:25:07.807Z",
+    "critica": {
+      "metascore": 72,
+      "userscore": 6.1
+    }
   },
   {
     "titulo": "Wallpaper Engine",
@@ -5951,7 +6411,11 @@
       "Acción"
     ],
     "steam_store_name": "Grand Theft Auto: San Andreas",
-    "steam_last_sync_at": "2026-08-20T11:25:10.334Z"
+    "steam_last_sync_at": "2026-08-20T11:25:10.334Z",
+    "critica": {
+      "metascore": 95,
+      "userscore": 9.1
+    }
   },
   {
     "titulo": "Burgie's Cozy Kitchen",
@@ -6076,7 +6540,10 @@
       "Estrategia"
     ],
     "steam_store_name": "The Farmer Was Replaced",
-    "steam_last_sync_at": "2026-08-20T20:50:10.589Z"
+    "steam_last_sync_at": "2026-08-20T20:50:10.589Z",
+    "critica": {
+      "userscore": 8
+    }
   },
   {
     "titulo": "Sifu",
@@ -6116,6 +6583,10 @@
       "Indie"
     ],
     "steam_store_name": "Sifu",
-    "steam_last_sync_at": null
+    "steam_last_sync_at": null,
+    "critica": {
+      "metascore": 81,
+      "userscore": 7.9
+    }
   }
 ]

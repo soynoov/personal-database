@@ -99,7 +99,7 @@ export function hasProductionGameStorage() {
   );
 }
 
-async function readBundledGames() {
+export async function readBundledGames() {
   const raw = await readFile(gamesPath, "utf8");
   const normalized = raw.replace(/^\uFEFF/, "");
   return JSON.parse(normalized) as LocalGame[];
