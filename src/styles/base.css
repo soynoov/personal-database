@@ -198,6 +198,29 @@ code {
   font-family: var(--font-mono);
 }
 
+/* Los menús nativos no siempre heredan el tema oscuro del documento.
+   Forzamos una paleta legible común para todos los select de la app. */
+select {
+  color-scheme: dark;
+  background-color: var(--surface-strong);
+  color: var(--text);
+}
+
+select option,
+select optgroup {
+  background-color: var(--surface-strong);
+  color: var(--text);
+}
+
+select option:checked {
+  background-color: #65438f;
+  color: #fff;
+}
+
+select option:disabled {
+  color: #8f878d;
+}
+
 @media (max-width: 720px) {
   .shell {
     width: min(100% - 1rem, 1180px);
