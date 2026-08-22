@@ -1972,6 +1972,48 @@
     }
   },
   {
+    "titulo": "Subnautica",
+    "estado": "Terminado",
+    "launcher": "Epic Games",
+    "plataforma": "PC",
+    "horas": 71.33,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2018,
+    "solo": true,
+    "hltb": 30,
+    "cover_url": null,
+    "steam_appid": 264710,
+    "generos": [
+      "Aventura",
+      "Indie"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 30,
+      "main_plus": 42,
+      "completionist": 52
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Indie"
+    ],
+    "steam_store_name": "Subnautica",
+    "critica": {
+      "metascore": 87,
+      "userscore": 8.5
+    }
+  },
+  {
     "titulo": "Surviving Mars",
     "estado": "Pendiente",
     "launcher": "Steam",
