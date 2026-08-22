@@ -55,14 +55,14 @@ export const REVIEW_CRITERIA: ReviewCriterionDefinition[] = [
     key: 'entretenimiento',
     label: 'Entretenimiento',
     max: 5,
-    weight: 0.75,
+    weight: 1,
     measures: 'Lo que lo has disfrutado y lo que te ha gustado.',
   },
   {
     key: 'comunidad',
     label: 'Comunidad',
     max: 5,
-    weight: 1,
+    weight: 0.5,
     measures: 'La limpieza, deportividad y trato entre quienes juegan.',
     scale: {
       1: 'Muy tóxica o insegura: los insultos, las trampas o el acoso son habituales.',
@@ -124,24 +124,54 @@ export function getReviewCriterionScores(
   });
 }
 
+export type PersonalScoreCalculation = {
+  earnedPoints: number;
+  possiblePoints: number;
+  baseScore: number;
+  honoraryBonus: number;
+  finalScore: number;
+};
+
 /**
- * Cada criterio se normaliza a 10 antes de aplicar su peso.
- * Entretenimiento tiene un peso menor (0,75); el resto pesa 1.
- * La nota solo existe cuando todos los criterios definidos están completos.
+ * La nota base compara los puntos obtenidos con los puntos máximos posibles.
+ * Así, una escala de 3 puntos influye menos que una de 5 de forma natural.
+ * Comunidad solo aplica a juegos multi/competitivos y pesa 0,5.
+ * La mención honorífica suma 0,1 por nivel y la nota final nunca supera 10.
  */
+export function getPersonalScoreCalculation(
+  critique: GameCritique | null | undefined,
+  includeCommunity = false,
+): PersonalScoreCalculation | null {
+  const scores = getReviewCriterionScores(critique, includeCommunity);
+  if (scores.some((score) => score.value === null)) return null;
+
+  const earnedPoints = scores.reduce(
+    (total, score) => total + (score.value ?? 0) * score.weight,
+    0,
+  );
+  const possiblePoints = scores.reduce(
+    (total, score) => total + score.max * score.weight,
+    0,
+  );
+  const baseScoreRaw = (earnedPoints / possiblePoints) * 10;
+  const honoraryLevel = toBoundedNumber(critique?.mencion_honorifica?.nivel, 0, 3) ?? 0;
+  const honoraryBonus = Number((honoraryLevel * 0.1).toFixed(1));
+  const finalScore = Number(Math.min(10, baseScoreRaw + honoraryBonus).toFixed(1));
+
+  return {
+    earnedPoints,
+    possiblePoints,
+    baseScore: Number(baseScoreRaw.toFixed(1)),
+    honoraryBonus,
+    finalScore,
+  };
+}
+
 export function calculatePersonalScore(
   critique: GameCritique | null | undefined,
   includeCommunity = false,
 ): number | null {
-  const scores = getReviewCriterionScores(critique, includeCommunity);
-  if (scores.some((score) => score.normalized === null)) return null;
-
-  const totalWeight = scores.reduce((total, score) => total + score.weight, 0);
-  const average = scores.reduce(
-    (total, score) => total + (score.normalized ?? 0) * score.weight,
-    0,
-  ) / totalWeight;
-  return Number(average.toFixed(1));
+  return getPersonalScoreCalculation(critique, includeCommunity)?.finalScore ?? null;
 }
 
 export function getScoreTone(score: number | null, scale: 10 | 100 = 10) {

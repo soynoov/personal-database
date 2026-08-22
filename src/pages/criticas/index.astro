@@ -97,11 +97,12 @@ const formatRating = (rating: number) =>
           <span class='criterion-count'>Resultado final sobre 10</span>
         </div>
 
-        <div class='criterion-formula' aria-label='Cinco criterios base, comunidad cuando el juego es multijugador o competitivo, resultado sobre diez y entretenimiento con peso cero coma setenta y cinco'>
+        <div class='criterion-formula' aria-label='Puntos obtenidos entre puntos máximos, comunidad con peso cero coma cinco cuando aplica, mención honorífica con bonus de hasta cero coma tres y resultado máximo de diez'>
           <span><i class='ph ph-checks' aria-hidden='true'></i> 5 criterios base</span>
-          <span><i class='ph ph-users-three' aria-hidden='true'></i> Comunidad cuando aplica</span>
-          <span><i class='ph ph-equals' aria-hidden='true'></i> Nota /10</span>
-          <span><i class='ph ph-scales' aria-hidden='true'></i> Entretenimiento ×0,75</span>
+          <span><i class='ph ph-divide' aria-hidden='true'></i> Puntos obtenidos / máximos</span>
+          <span><i class='ph ph-users-three' aria-hidden='true'></i> Comunidad ×0,5 cuando aplica</span>
+          <span><i class='ph ph-star' aria-hidden='true'></i> Mención: hasta +0,3</span>
+          <span><i class='ph ph-equals' aria-hidden='true'></i> Máximo 10</span>
         </div>
 
         <div class='criterion-methodology-grid'>
@@ -111,7 +112,7 @@ const formatRating = (rating: number) =>
                 <h3>{criterion.label}</h3>
                 <div>
                   <span>1–{criterion.max}</span>
-                  <span>Peso {String(criterion.weight).replace('.', ',')}</span>
+                  <span>{criterion.weight === 1 ? `${criterion.max} puntos máximos` : `Peso ×${String(criterion.weight).replace('.', ',')}`}</span>
                   {criterion.key === 'comunidad' && <span>Solo multi / competitivo</span>}
                 </div>
               </div>
@@ -132,18 +133,19 @@ const formatRating = (rating: number) =>
 
         <article class='criterion-honorary-method'>
           <div>
-            <span class='section-eyebrow'>Apartado separado</span>
+            <span class='section-eyebrow'>Bonus final</span>
             <h3>Mención honorífica · 0–3</h3>
             <div class='criterion-formula'>
               <span>Motivo obligatorio</span>
-              <span>No altera la nota</span>
+              <span>+0,1 por nivel</span>
+              <span>Nota máxima: 10</span>
             </div>
           </div>
           <ol class='criterion-scale-list'>
-            <li><strong>0</strong><span>Sin mención.</span></li>
-            <li><strong>1</strong><span>Pequeño reconocimiento.</span></li>
-            <li><strong>2</strong><span>Aporte muy destacable.</span></li>
-            <li><strong>3</strong><span>Caso excepcional.</span></li>
+            <li><strong>0</strong><span>Sin mención · +0.</span></li>
+            <li><strong>1</strong><span>Pequeño reconocimiento · +0,1.</span></li>
+            <li><strong>2</strong><span>Aporte muy destacable · +0,2.</span></li>
+            <li><strong>3</strong><span>Caso excepcional · +0,3.</span></li>
           </ol>
         </article>
       </section>

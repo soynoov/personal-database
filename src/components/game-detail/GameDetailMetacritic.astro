@@ -3,7 +3,7 @@ import '../../styles/game-detail/metacritic.css';
 import '../../styles/game-detail/edit.css';
 import type { GameCritique } from '../../lib/local-games';
 import {
-  calculatePersonalScore,
+  getPersonalScoreCalculation,
   getReviewCriterionScores,
   getScoreSummary,
   getScoreTone,
@@ -17,7 +17,8 @@ interface Props {
 }
 
 const { slug, critique, legacyScore, includeCommunity } = Astro.props;
-const personalScore = calculatePersonalScore(critique, includeCommunity);
+const scoreCalculation = getPersonalScoreCalculation(critique, includeCommunity);
+const personalScore = scoreCalculation?.finalScore ?? null;
 const criterionScores = getReviewCriterionScores(critique, includeCommunity);
 const hasCriterionData = criterionScores.some((criterion) => criterion.value !== null);
 const displayedPersonalScore = personalScore ?? (hasCriterionData ? null : legacyScore);
@@ -88,7 +89,9 @@ const formatDecimal = (value: number | null) =>
           <small>
             {personalScore === null
               ? `${completedCriteria}/${criterionScores.length} criterios completos`
-              : 'Media ponderada de tus criterios'}
+              : scoreCalculation && scoreCalculation.honoraryBonus > 0
+                ? `Base ${formatDecimal(scoreCalculation.baseScore)} + mención ${formatDecimal(scoreCalculation.honoraryBonus)}`
+                : 'Puntos obtenidos sobre el máximo'}
           </small>
       </div>
       <div class="metacritic-score-value is-round is-personal">
@@ -128,14 +131,17 @@ const formatDecimal = (value: number | null) =>
       <div>
         <span class="section-eyebrow">Mención honorífica</span>
         <strong>{honoraryLevel > 0 ? `${honoraryLevel}/3` : 'Sin mención'}</strong>
+        <small>{honoraryLevel > 0 ? `+${formatDecimal(honoraryLevel * 0.1)} a My score` : 'Sin bonus'}</small>
       </div>
       {honoraryLevel > 0 && honoraryComment && <p>{honoraryComment}</p>}
     </article>
 
     <div class="metacritic-formula">
       <span><i class="ph ph-checks" aria-hidden="true"></i> Todos los criterios</span>
-      <span><i class="ph ph-scales" aria-hidden="true"></i> Entretenimiento ×0,75</span>
-      <span><i class="ph ph-equals" aria-hidden="true"></i> My score /10</span>
+      <span><i class="ph ph-divide" aria-hidden="true"></i> Puntos obtenidos / máximos</span>
+      {includeCommunity && <span><i class="ph ph-users-three" aria-hidden="true"></i> Comunidad ×0,5</span>}
+      <span><i class="ph ph-star" aria-hidden="true"></i> Mención +0,1 por nivel</span>
+      <span><i class="ph ph-equals" aria-hidden="true"></i> Máximo 10</span>
     </div>
   </div>
 </section>
@@ -225,7 +231,7 @@ const formatDecimal = (value: number | null) =>
             <span class="section-eyebrow">Opcional</span>
             <h3 id="metacritic-honorary-title">Mención honorífica</h3>
           </div>
-          <span>No altera My score</span>
+          <span>Suma hasta +0,3</span>
         </div>
 
         <div class="metacritic-honorary-fields">
