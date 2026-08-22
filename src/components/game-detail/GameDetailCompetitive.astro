@@ -1,0 +1,165 @@
+---
+/**
+ * GameDetailCompetitive.astro — rango actual y mejor rango alcanzado.
+ * Solo se monta desde la página cuando el juego está marcado como competitivo.
+ */
+import '../../styles/game-detail/competitive.css';
+import '../../styles/game-detail/edit.css';
+
+interface Props {
+  slug: string;
+  currentRank: string | null;
+  peakRank: string | null;
+}
+
+const { slug, currentRank, peakRank } = Astro.props;
+const displayRank = (value: string | null) => value?.trim() || 'Sin registrar';
+---
+
+<section class="game-page-section competitive-section" id="competitive">
+  <div class="section-title-row competitive-section-head">
+    <div>
+      <span class="section-eyebrow">Competitivo</span>
+      <h2>Clasificatoria</h2>
+    </div>
+    <button
+      class="game-edit-trigger game-edit-trigger-sm"
+      id="competitive-edit-trigger"
+      type="button"
+      aria-label="Editar rangos competitivos"
+      title="Editar rangos competitivos"
+    >
+      <i class="ph ph-pencil-simple" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <div class="competitive-rank-grid">
+    <article class:list={["competitive-rank-card", "competitive-rank-card-peak", !peakRank && "is-empty"]}>
+      <div class="competitive-rank-label">
+        <i class="ph ph-trophy" aria-hidden="true"></i>
+        <span>Peak ELO</span>
+      </div>
+      <strong title={displayRank(peakRank)}>{displayRank(peakRank)}</strong>
+      <p>Mejor rango alcanzado</p>
+    </article>
+
+    <article class:list={["competitive-rank-card", "competitive-rank-card-current", !currentRank && "is-empty"]}>
+      <div class="competitive-rank-label">
+        <i class="ph ph-medal" aria-hidden="true"></i>
+        <span>Rango actual</span>
+      </div>
+      <strong title={displayRank(currentRank)}>{displayRank(currentRank)}</strong>
+      <p>Última división registrada</p>
+    </article>
+  </div>
+</section>
+
+<dialog class="edit-dialog" id="competitive-edit-dialog">
+  <div class="edit-dialog-body">
+    <div class="edit-dialog-head">
+      <div>
+        <h2>Editar clasificatoria</h2>
+        <p class="edit-dialog-sub">Admite divisiones, nombres propios del juego o MMR numérico.</p>
+      </div>
+      <button class="edit-dialog-close" id="competitive-edit-close" type="button" aria-label="Cerrar">×</button>
+    </div>
+
+    <p class="edit-dialog-error" id="competitive-edit-error" hidden></p>
+
+    <form id="competitive-edit-form" data-slug={slug}>
+      <div class="edit-field-row">
+        <div class="edit-field">
+          <label for="competitive-edit-current">Rango actual</label>
+          <input
+            id="competitive-edit-current"
+            name="rango_actual"
+            type="text"
+            maxlength="80"
+            placeholder="Ej. Oro 3"
+            value={currentRank ?? ''}
+          />
+        </div>
+        <div class="edit-field">
+          <label for="competitive-edit-peak">Peak ELO</label>
+          <input
+            id="competitive-edit-peak"
+            name="rango_maximo"
+            type="text"
+            maxlength="80"
+            placeholder="Ej. Diamante 1 o 1850 MMR"
+            value={peakRank ?? ''}
+          />
+        </div>
+      </div>
+
+      <div class="edit-dialog-actions">
+        <button class="edit-dialog-cancel" id="competitive-edit-cancel" type="button">Cancelar</button>
+        <button class="edit-dialog-submit" id="competitive-edit-submit" type="submit">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<script>
+  import { editorFetch } from '../../scripts/editor-auth';
+
+  const trigger = document.getElementById('competitive-edit-trigger');
+  const dialog = document.getElementById('competitive-edit-dialog');
+  const form = document.getElementById('competitive-edit-form');
+  const closeBtn = document.getElementById('competitive-edit-close');
+  const cancelBtn = document.getElementById('competitive-edit-cancel');
+  const errorBox = document.getElementById('competitive-edit-error');
+  const submitBtn = document.getElementById('competitive-edit-submit');
+
+  if (
+    trigger instanceof HTMLButtonElement &&
+    dialog instanceof HTMLDialogElement &&
+    form instanceof HTMLFormElement &&
+    errorBox instanceof HTMLElement &&
+    submitBtn instanceof HTMLButtonElement
+  ) {
+    const hideError = () => errorBox.setAttribute('hidden', '');
+    const showError = (message: string) => {
+      errorBox.textContent = message;
+      errorBox.removeAttribute('hidden');
+    };
+
+    trigger.addEventListener('click', () => {
+      hideError();
+      dialog.showModal();
+    });
+    closeBtn?.addEventListener('click', () => dialog.close());
+    cancelBtn?.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      hideError();
+      const data = new FormData(form);
+      const slug = form.dataset.slug ?? '';
+      const payload = {
+        rango_actual: data.get('rango_actual'),
+        rango_maximo: data.get('rango_maximo'),
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Guardando…';
+      try {
+        const response = await editorFetch(`/api/games/${slug}/edit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) throw new Error(result.error || `HTTP ${response.status}`);
+        window.location.reload();
+      } catch (error) {
+        showError(error instanceof Error ? error.message : 'No se pudo guardar.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Guardar cambios';
+      }
+    });
+  }
+</script>

@@ -9,15 +9,17 @@ import '../../styles/game-detail/nav.css';
 interface Props {
   hasDlcs: boolean;
   hasOverviewDetails: boolean;
+  isCompetitive: boolean;
 }
 
-const { hasDlcs, hasOverviewDetails } = Astro.props;
+const { hasDlcs, hasOverviewDetails, isCompetitive } = Astro.props;
 ---
 
 <nav class="game-sections-nav" aria-label="Secciones del juego">
   <a class="is-active" aria-current="location" data-section-link href={hasOverviewDetails ? "#overview" : "#game-header"}>Resumen</a>
   <a data-section-link href="#hours">Horas</a>
   <a data-section-link href="#finance">Dinero</a>
+  {isCompetitive && <a data-section-link href="#competitive">Rango</a>}
   <a data-section-link href="#technical">Datos</a>
   {hasDlcs && <a data-section-link href="#dlcs">DLCs</a>}
   <a data-section-link href="#metacritica">Metacrítica</a>

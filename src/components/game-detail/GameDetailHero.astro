@@ -14,6 +14,7 @@ interface Props {
   launcherBadge: { class: string; html: string };
   platformBadge: { class: string; label: string };
   hasFreeToPlayTag: boolean;
+  isCompetitive: boolean;
   hasEarlyAccess: boolean;
   genres: string;
   pricePaidNote: string;
@@ -28,6 +29,7 @@ const {
   launcherBadge,
   platformBadge,
   hasFreeToPlayTag,
+  isCompetitive,
   hasEarlyAccess,
   genres,
   pricePaidNote,
@@ -59,6 +61,7 @@ const paymentModel = hasFreeToPlayTag ? "Free to play" : pricePaidNote || "Sin d
         <span class={`badge ${launcherBadge.class}`} set:html={launcherBadge.html} />
         <span class={`badge ${platformBadge.class}`}>{platformBadge.label}</span>
         {hasFreeToPlayTag && <span class="badge badge-tag-free">Free to play</span>}
+        {isCompetitive && <span class="badge badge-tag-competitive">Competitivo</span>}
         {hasEarlyAccess && <span class="badge badge-tag-early">Early Access</span>}
       </div>
       <dl class="game-hero-facts" aria-label="Datos principales">

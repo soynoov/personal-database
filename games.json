@@ -694,7 +694,8 @@
     "precio_actual": null,
     "precio_salida": null,
     "tags": [
-      "free-to-play"
+      "free-to-play",
+      "competitivo"
     ],
     "hltb_breakdown": {
       "main": 18.2,
@@ -1487,7 +1488,9 @@
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": [],
+    "tags": [
+      "competitivo"
+    ],
     "hltb_breakdown": {
       "main": 4.7,
       "main_plus": 26.6,
@@ -4564,7 +4567,8 @@
     "precio_actual": null,
     "precio_salida": null,
     "tags": [
-      "free-to-play"
+      "free-to-play",
+      "competitivo"
     ],
     "hltb_breakdown": {
       "main": 106.4,
@@ -4597,7 +4601,8 @@
     "precio_actual": null,
     "precio_salida": null,
     "tags": [
-      "free-to-play"
+      "free-to-play",
+      "competitivo"
     ],
     "hltb_breakdown": {
       "main": 1163.3,

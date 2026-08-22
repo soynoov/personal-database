@@ -190,6 +190,11 @@
     color: var(--tag-free-fg);
   }
 
+  .badge-tag-competitive {
+    background: rgba(111, 70, 201, 0.28);
+    color: #d9c7ff;
+  }
+
   .badge-tag-early {
     background: #221000; /* pumpkin */
     color: var(--tag-early-fg);

@@ -98,6 +98,7 @@ function toTagsArray(value: unknown): string[] {
 }
 
 const FREE_TO_PLAY_TAG = "free-to-play";
+const COMPETITIVE_TAG = "competitivo";
 
 /**
  * El formulario no edita la lista de tags completa (se gestiona aparte).
@@ -109,6 +110,14 @@ function toggleFreeToPlayTag(existingTags: string[] | null | undefined, freeToPl
     ? existingTags.filter((tag) => String(tag).trim().toLowerCase() !== FREE_TO_PLAY_TAG)
     : [];
   return freeToPlay === true ? [...base, FREE_TO_PLAY_TAG] : base;
+}
+
+function toggleTag(existingTags: string[] | null | undefined, tagName: string, enabled: unknown): string[] {
+  const normalizedTag = tagName.toLowerCase();
+  const base = Array.isArray(existingTags)
+    ? existingTags.filter((tag) => String(tag).trim().toLowerCase() !== normalizedTag)
+    : [];
+  return enabled === true ? [...base, tagName] : base;
 }
 
 export const POST: APIRoute = async ({ params, request }) => {
@@ -152,6 +161,8 @@ export const POST: APIRoute = async ({ params, request }) => {
   if (body.gasto_microtransacciones !== undefined) {
     updated.gasto_microtransacciones = toNullableNumber(body.gasto_microtransacciones);
   }
+  if (body.rango_actual !== undefined) updated.rango_actual = toNullableString(body.rango_actual);
+  if (body.rango_maximo !== undefined) updated.rango_maximo = toNullableString(body.rango_maximo);
   if (body.comentarios !== undefined) updated.comentarios = toNullableString(body.comentarios);
   if (body.critica !== undefined) {
     updated.critica = toGameCritique(body.critica);
@@ -165,13 +176,18 @@ export const POST: APIRoute = async ({ params, request }) => {
     updated.nota = calculatePersonalScore(updated.critica);
   }
 
-  // Tags: el checkbox free_to_play solo se aplica si el formulario lo manda
-  // explícitamente (junto al precio, desde el lápiz de Dinero). Si llega
-  // body.tags como array/string por otro camino, se respeta tal cual.
-  if (body.tags !== undefined) {
-    updated.tags = toTagsArray(body.tags);
-  } else if (body.free_to_play !== undefined) {
-    updated.tags = toggleFreeToPlayTag(game.tags, body.free_to_play);
+  // Los toggles de free-to-play y competitivo solo se aplican cuando su
+  // formulario los envía. Si llega body.tags por otro camino, se respeta
+  // como base y ambos toggles preservan el resto de etiquetas.
+  let nextTags = body.tags !== undefined ? toTagsArray(body.tags) : game.tags;
+  if (body.free_to_play !== undefined) {
+    nextTags = toggleFreeToPlayTag(nextTags, body.free_to_play);
+  }
+  if (body.competitivo !== undefined) {
+    nextTags = toggleTag(nextTags, COMPETITIVE_TAG, body.competitivo);
+  }
+  if (body.tags !== undefined || body.free_to_play !== undefined || body.competitivo !== undefined) {
+    updated.tags = nextTags;
   }
 
   games[index] = updated;

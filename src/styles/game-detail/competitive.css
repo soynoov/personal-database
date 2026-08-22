@@ -1,0 +1,148 @@
+@import '../theme.css';
+
+/* ================================================================
+   game-detail/competitive.css — bento de rango y Peak ELO
+   ================================================================ */
+
+@layer global {
+
+.competitive-section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  scroll-margin-top: 5.5rem;
+  padding: 1.05rem;
+  border: 1px solid rgba(185, 159, 255, 0.2);
+  border-radius: var(--radius-1);
+  background:
+    radial-gradient(circle at 13% -30%, rgba(132, 79, 255, 0.24), transparent 43%),
+    linear-gradient(145deg, rgba(25, 24, 38, 0.93), rgba(14, 16, 22, 0.97));
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px) saturate(125%);
+}
+
+.competitive-section::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  width: 240px;
+  height: 240px;
+  top: -155px;
+  right: 8%;
+  border-radius: 50%;
+  background: rgba(164, 107, 255, 0.18);
+  filter: blur(35px);
+  pointer-events: none;
+}
+
+.competitive-section-head {
+  margin-bottom: 0.85rem;
+}
+
+.competitive-rank-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(230px, 0.75fr);
+  gap: 0.75rem;
+}
+
+.competitive-rank-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 164px;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: 1.15rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-2);
+  background: rgba(9, 10, 16, 0.54);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.competitive-rank-card-peak {
+  background:
+    radial-gradient(circle at 78% 12%, rgba(184, 126, 255, 0.28), transparent 34%),
+    linear-gradient(140deg, rgba(64, 38, 105, 0.7), rgba(15, 15, 24, 0.68) 66%);
+}
+
+.competitive-rank-card-current {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.055), rgba(9, 10, 16, 0.62));
+}
+
+.competitive-rank-label {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #d8c5ff;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.competitive-rank-label i {
+  font-size: 1rem;
+}
+
+.competitive-rank-card strong {
+  max-width: 100%;
+  overflow: hidden;
+  color: #fffaf8;
+  font-family: var(--font-display);
+  font-size: clamp(2.05rem, 4.6vw, 4rem);
+  font-weight: 400;
+  line-height: 0.98;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.competitive-rank-card-current strong {
+  font-size: clamp(1.7rem, 3vw, 2.65rem);
+}
+
+.competitive-rank-card p {
+  margin: 0.42rem 0 0;
+  color: rgba(244, 236, 236, 0.62);
+  font-size: 0.76rem;
+}
+
+.competitive-rank-card.is-empty strong {
+  color: rgba(244, 236, 236, 0.48);
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+}
+
+@media (max-width: 720px) {
+  .competitive-section {
+    padding: 0.82rem;
+  }
+
+  .competitive-rank-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .competitive-rank-card {
+    min-height: 130px;
+    padding: 1rem;
+  }
+
+  .competitive-rank-card-current {
+    min-height: 112px;
+  }
+
+  .competitive-rank-label {
+    top: 0.85rem;
+    left: 0.9rem;
+  }
+
+  .competitive-rank-card strong,
+  .competitive-rank-card-current strong {
+    font-size: clamp(1.85rem, 10vw, 3rem);
+  }
+}
+
+} /* end @layer global */

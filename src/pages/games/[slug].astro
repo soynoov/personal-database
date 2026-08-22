@@ -6,6 +6,7 @@ import GameDetailTopbar from "../../components/game-detail/GameDetailTopbar.astr
 import GameDetailNav from "../../components/game-detail/GameDetailNav.astro";
 import GameDetailHours from "../../components/game-detail/GameDetailHours.astro";
 import GameDetailFinance from "../../components/game-detail/GameDetailFinance.astro";
+import GameDetailCompetitive from "../../components/game-detail/GameDetailCompetitive.astro";
 import GameDetailSummary from "../../components/game-detail/GameDetailSummary.astro";
 import GameDetailStats from "../../components/game-detail/GameDetailStats.astro";
 import GameDetailDLCs from "../../components/game-detail/GameDetailDLCs.astro";
@@ -57,6 +58,11 @@ const getCoverSourceMeta = () => {
 
 const hasFreeToPlayTag =
   Array.isArray(game.tags) && game.tags.some((tag: string) => String(tag).toLowerCase() === "free-to-play");
+
+const hasCompetitiveTag =
+  Array.isArray(game.tags) && game.tags.some((tag: string) => String(tag).trim().toLowerCase() === "competitivo");
+// Compatibilidad con las fichas antiguas que ya guardaban rango_maximo sin tag.
+const isCompetitive = hasCompetitiveTag || Boolean(game.rango_actual || game.rango_maximo);
 
 const hasEarlyAccess =
   Array.isArray(game.generos) &&
@@ -864,6 +870,7 @@ const generalEditValues = {
   horas: hoursValue,
   fecha_inicio: game.fecha_inicio,
   fecha_fin: game.fecha_fin,
+  competitivo: isCompetitive,
 };
 
 // Lápiz de Dinero: precio pagado, microtransacciones y el toggle free-to-play.
@@ -892,13 +899,14 @@ const commentsEditValues = {
       launcherBadge={launcherBadge}
       platformBadge={platformBadge}
       hasFreeToPlayTag={hasFreeToPlayTag}
+      isCompetitive={isCompetitive}
       hasEarlyAccess={hasEarlyAccess}
       genres={genres}
       pricePaidNote={pricePaidVisual.note}
       soloLabel={formatSolo(game.solo)}
     />
 
-    <GameDetailNav hasDlcs={dlcTotal > 0} hasOverviewDetails={hasOverviewDetails} />
+    <GameDetailNav hasDlcs={dlcTotal > 0} hasOverviewDetails={hasOverviewDetails} isCompetitive={isCompetitive} />
 
     {hasOverviewDetails && <GameDetailSummary summaryCards={summaryCards} />}
 
@@ -928,6 +936,14 @@ const commentsEditValues = {
         editValues={moneyEditValues}
       />
     </section>
+
+    {isCompetitive && (
+      <GameDetailCompetitive
+        slug={slugParam}
+        currentRank={game.rango_actual ?? null}
+        peakRank={game.rango_maximo ?? null}
+      />
+    )}
 
     <GameDetailStats metadataGroups={metadataGroups} />
 

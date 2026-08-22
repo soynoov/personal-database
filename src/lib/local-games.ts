@@ -37,6 +37,10 @@ export type LocalGame = {
   precio_minimo_historico?: number | null;
   /** Gasto en compras dentro del juego (microtransacciones), aparte de precio_pagado. Relevante sobre todo en free-to-play. */
   gasto_microtransacciones?: number | null;
+  /** Rango competitivo actual, con el vocabulario propio del juego (p. ej. Oro 3 o 1850 MMR). */
+  rango_actual?: string | null;
+  /** Mejor rango competitivo alcanzado; se muestra como Peak ELO. */
+  rango_maximo?: string | null;
   hltb?: number | null;
   hltb_breakdown?: {
     main?: number | null;
