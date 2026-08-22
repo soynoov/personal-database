@@ -3,6 +3,7 @@ node_modules/
 dist/
 .vercel/
 design-qa.md
+.codex-remote-attachments/
 tmp-playwright/
 test-results/
 *.log

@@ -26,12 +26,14 @@ const { hasDlcs, hasOverviewDetails, isCompetitive } = Astro.props;
 </nav>
 
 <script>
+  const nav = document.querySelector<HTMLElement>('.game-sections-nav');
   const sectionLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-section-link]'));
   const sectionById = new Map(
     sectionLinks
       .map((link) => [link.hash.slice(1), document.getElementById(link.hash.slice(1))] as const)
       .filter((entry): entry is [string, HTMLElement] => entry[1] instanceof HTMLElement),
   );
+  let activeSectionId = '';
 
   const activateSection = (id: string) => {
     sectionLinks.forEach((link) => {
@@ -39,18 +41,44 @@ const { hasDlcs, hasOverviewDetails, isCompetitive } = Astro.props;
       link.classList.toggle('is-active', active);
       if (active) link.setAttribute('aria-current', 'location');
       else link.removeAttribute('aria-current');
+
+      if (active && id !== activeSectionId && nav && nav.scrollWidth > nav.clientWidth) {
+        const targetLeft = link.offsetLeft - (nav.clientWidth - link.clientWidth) / 2;
+        nav.scrollTo({
+          left: Math.max(0, targetLeft),
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        });
+      }
+    });
+    activeSectionId = id;
+  };
+
+  const updateActiveSection = () => {
+    const activationLine = window.innerHeight * 0.44;
+    let visibleId = sectionById.keys().next().value as string | undefined;
+
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
+      const ids = Array.from(sectionById.keys());
+      visibleId = ids.at(-1) ?? visibleId;
+    } else {
+      sectionById.forEach((section, id) => {
+        if (section.getBoundingClientRect().top <= activationLine) visibleId = id;
+      });
+    }
+
+    if (visibleId) activateSection(visibleId);
+  };
+
+  let frame = 0;
+  const requestActiveSectionUpdate = () => {
+    if (frame) return;
+    frame = window.requestAnimationFrame(() => {
+      frame = 0;
+      updateActiveSection();
     });
   };
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (visible?.target.id) activateSection(visible.target.id);
-    },
-    { rootMargin: '-20% 0px -65% 0px', threshold: [0, 0.2, 0.6] },
-  );
-
-  sectionById.forEach((section) => observer.observe(section));
+  window.addEventListener('scroll', requestActiveSectionUpdate, { passive: true });
+  window.addEventListener('resize', requestActiveSectionUpdate);
+  updateActiveSection();
 </script>
