@@ -1,4 +1,10 @@
 ---
+import searchIcon from '@tabler/icons/outline/search.svg?url';
+import filtersIcon from '@tabler/icons/outline/adjustments-horizontal.svg?url';
+import closeIcon from '@tabler/icons/outline/x.svg?url';
+import gridIcon from '@tabler/icons/outline/layout-grid.svg?url';
+import listIcon from '@tabler/icons/outline/list.svg?url';
+
 interface Props {
   estados: string[];
   launchers: string[];
@@ -16,7 +22,7 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
       <div class='field field-search'>
         <label class='sr-only' for='search'>Buscar</label>
         <span class='field-search-icon' aria-hidden='true'>
-          <i class='ph ph-magnifying-glass'></i>
+          <img src={searchIcon} alt='' />
         </span>
         <input id='search' type='search' placeholder='Buscar juegos...' />
       </div>
@@ -28,11 +34,11 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
           aria-controls='mobile-extra-filters'
           aria-expanded='false'
         >
-          <i class='ph ph-sliders-horizontal' aria-hidden='true'></i>
+          <img src={filtersIcon} alt='' aria-hidden='true' />
           <span>Filtros</span>
         </button>
         <button class='button button-ghost button-clear' id='reset-filters' type='button' hidden>
-          <i class='ph ph-x' aria-hidden='true'></i>
+          <img src={closeIcon} alt='' aria-hidden='true' />
           <span>Limpiar</span>
         </button>
       </div>
@@ -90,11 +96,34 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
     </div>
   </div>
 
+  <div class='mobile-sort-bar'>
+    <label for='mobile-sort'>Ordenar:</label>
+    <select id='mobile-sort' aria-label='Ordenar catálogo'>
+      <option value='titulo-asc'>A-Z</option>
+      <option value='horas-desc' selected>Horas jugadas</option>
+      <option value='lanzamiento-desc'>Más reciente</option>
+    </select>
+    <span class='mobile-results-count'><strong data-results-count>{totalGames}</strong> juegos</span>
+  </div>
+
+  <div class='mobile-tab-bar' id='mobile-tab-bar' role='group' aria-label='Filtros rápidos'>
+    <button class='mobile-tab' type='button' data-quick-filter='' aria-pressed='true'>Todos</button>
+    <button class='mobile-tab' type='button' data-quick-filter='jugando' aria-pressed='false'>
+      <span class='mobile-tab-dot mobile-tab-dot-playing' aria-hidden='true'></span>Jugando
+    </button>
+    <button class='mobile-tab' type='button' data-quick-filter='terminado' aria-pressed='false'>
+      <span class='mobile-tab-dot mobile-tab-dot-completed' aria-hidden='true'></span>Terminado
+    </button>
+    <button class='mobile-tab' type='button' data-quick-filter='wishlist' aria-pressed='false'>
+      <span class='mobile-tab-dot mobile-tab-dot-wishlist' aria-hidden='true'></span>Wishlist
+    </button>
+  </div>
+
   <div class='active-filter-pills' id='active-filter-pills' hidden></div>
 
   <div class='panel-subtoolbar'>
     <div class='muted'>
-      <strong id='results-count'>{totalGames}</strong> juegos
+      <strong id='results-count' data-results-count>{totalGames}</strong> juegos
     </div>
     <div class='view-toggle' role='group' aria-label='Modo de catalogo'>
       <button
@@ -106,7 +135,7 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
         aria-label='Vista en cards'
         title='Vista en cards'
       >
-        <i class='ph ph-squares-four' aria-hidden='true'></i>
+        <img src={gridIcon} alt='' aria-hidden='true' />
         <span>Cards</span>
       </button>
       <button
@@ -118,7 +147,7 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
         aria-label='Vista en tabla'
         title='Vista en tabla'
       >
-        <i class='ph ph-list-bullets' aria-hidden='true'></i>
+        <img src={listIcon} alt='' aria-hidden='true' />
         <span>Tabla</span>
       </button>
     </div>

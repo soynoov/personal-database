@@ -4,6 +4,9 @@ import Sidebar from '../components/Sidebar.astro';
 import CatalogFilters from '../components/CatalogFilters.astro';
 import CatalogGameCard from '../components/CatalogGameCard.astro';
 import GameCard from '../components/GameCard.astro';
+import menuIcon from '@tabler/icons/outline/menu-2.svg?url';
+import gridIcon from '@tabler/icons/outline/layout-grid.svg?url';
+import listIcon from '@tabler/icons/outline/list.svg?url';
 import { toCatalogGame } from '../lib/catalog-game';
 import { getStats, getTotalPaidPrice, getUniqueValues, readGames } from '../lib/local-games';
 import { isCompletedStatus, normalizeStatus } from '../lib/game-status';
@@ -65,7 +68,7 @@ const initialView = Astro.url.searchParams.get('view') === 'table' ? 'table' : '
 
           <div class='mobile-topbar' aria-label='Barra superior movil'>
             <button class='mobile-menu-button' id='mobile-drawer-open' type='button' aria-label='Abrir menu'>
-              <svg viewBox='0 0 24 24' aria-hidden='true'><path d='M4 6h16M4 12h16M4 18h16'></path></svg>
+              <img src={menuIcon} alt='' aria-hidden='true' />
             </button>
             <div class='mobile-topbar-brand'>
               <span class='mobile-topbar-mark' aria-hidden='true' style='display:none'>
@@ -79,26 +82,13 @@ const initialView = Astro.url.searchParams.get('view') === 'table' ? 'table' : '
               </div>
             </div>
             <div class='mobile-topbar-actions'>
-              <button class='mobile-topbar-btn' id='mobile-search-toggle' type='button' aria-label='Buscar'>
-                <svg viewBox='0 0 24 24' aria-hidden='true'>
-                  <circle cx='11' cy='11' r='7'></circle>
-                  <path d='m20 20-3.5-3.5'></path>
-                </svg>
+              <button class:list={['mobile-topbar-btn', initialView === 'cards' && 'is-active']} type='button' data-view='cards' aria-pressed={initialView === 'cards' ? 'true' : 'false'} aria-label='Vista en cuadrícula'>
+                <img src={gridIcon} alt='' aria-hidden='true' />
+              </button>
+              <button class:list={['mobile-topbar-btn', initialView === 'table' && 'is-active']} type='button' data-view='table' aria-pressed={initialView === 'table' ? 'true' : 'false'} aria-label='Vista en lista'>
+                <img src={listIcon} alt='' aria-hidden='true' />
               </button>
             </div>
-          </div>
-
-          <div class='mobile-tab-bar' id='mobile-tab-bar' role='group' aria-label='Filtros rápidos'>
-            <button class='mobile-tab' type='button' data-quick-filter='' aria-pressed='true'>Todos</button>
-            <button class='mobile-tab' type='button' data-quick-filter='jugando' aria-pressed='false'>
-              <span class='mobile-tab-dot' style='background:#6ee76c' aria-hidden='true'></span>Jugando
-            </button>
-            <button class='mobile-tab' type='button' data-quick-filter='terminado' aria-pressed='false'>
-              <span class='mobile-tab-dot' style='background:#67b1ff' aria-hidden='true'></span>Terminado
-            </button>
-            <button class='mobile-tab' type='button' data-quick-filter='wishlist' aria-pressed='false'>
-              <span class='mobile-tab-dot' style='background:#5ad0ff' aria-hidden='true'></span>Wishlist
-            </button>
           </div>
 
           <div class='app-topline'>

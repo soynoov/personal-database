@@ -1,0 +1,322 @@
+@layer global {
+  .field-search-icon img,
+  .catalog-filter-toggle img,
+  .button-clear img,
+  .view-toggle-button img {
+    width: 18px;
+    height: 18px;
+    filter: invert(87%) sepia(5%) saturate(342%) hue-rotate(218deg) brightness(91%);
+  }
+
+  .mobile-sort-bar {
+    display: none;
+  }
+
+  @media (max-width: 820px) {
+    body {
+      background: #0d0d12;
+    }
+
+    .shell-desktop-app {
+      width: min(100% - 1.25rem, 980px);
+      padding-top: 0.55rem;
+    }
+
+    .desktop-main {
+      gap: 0.65rem;
+    }
+
+    .pc-hero-card.mock-catalog-hero,
+    .panel.panel-hero.pc-hero-card {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .mock-catalog-hero::before,
+    .mock-catalog-hero::after {
+      content: none;
+    }
+
+    .mobile-topbar {
+      min-height: 64px;
+      padding: 0;
+      gap: 0.78rem;
+    }
+
+    .mobile-menu-button,
+    .mobile-topbar-btn {
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(207, 200, 220, 0.2);
+      border-radius: 13px;
+      background: rgba(28, 28, 36, 0.72);
+      color: rgba(226, 222, 232, 0.74);
+      box-shadow: none;
+    }
+
+    .mobile-menu-button img,
+    .mobile-topbar-btn img {
+      width: 20px;
+      height: 20px;
+      filter: invert(87%) sepia(5%) saturate(342%) hue-rotate(218deg) brightness(91%);
+    }
+
+    .mobile-topbar-btn.is-active {
+      border-color: rgba(175, 151, 226, 0.3);
+      background: rgba(98, 77, 142, 0.34);
+    }
+
+    .mobile-topbar-brand {
+      min-width: 0;
+      margin-right: auto;
+    }
+
+    .mobile-topbar-name {
+      color: #f2f0f5;
+      font-size: 1.08rem;
+      font-weight: 750;
+      line-height: 1.1;
+    }
+
+    .mobile-topbar-sub {
+      margin-top: 0.2rem;
+      color: rgba(211, 207, 218, 0.5);
+      font-size: 0.72rem;
+    }
+
+    .mobile-topbar-actions {
+      gap: 0.42rem;
+    }
+
+    .mock-catalog-controls {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+
+    .catalog-filters {
+      order: 1;
+      padding: 0;
+    }
+
+    .catalog-filters-top {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0;
+      overflow: hidden;
+      border: 1px solid rgba(207, 200, 220, 0.17);
+      border-radius: 15px;
+      background: rgba(29, 29, 36, 0.72);
+      backdrop-filter: blur(16px);
+    }
+
+    .mock-catalog-controls .field-search input {
+      min-height: 52px;
+      padding: 0.82rem 0.85rem 0.82rem 2.85rem;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: #efedf2;
+      font-size: 0.96rem;
+      box-shadow: none;
+    }
+
+    .mock-catalog-controls .field-search input:focus {
+      border: 0;
+      box-shadow: none;
+    }
+
+    .mock-catalog-controls .field-search input::placeholder {
+      color: rgba(211, 207, 218, 0.42);
+    }
+
+    .field-search-icon {
+      left: 1rem;
+    }
+
+    .field-search-icon img {
+      width: 20px;
+      height: 20px;
+      opacity: 0.66;
+      filter: invert(87%) sepia(5%) saturate(342%) hue-rotate(218deg) brightness(91%);
+    }
+
+    .catalog-filter-actions {
+      align-self: stretch;
+    }
+
+    .catalog-filter-toggle {
+      align-self: stretch;
+      min-height: 52px;
+      padding: 0 1rem;
+      border: 0;
+      border-left: 1px solid rgba(207, 200, 220, 0.18);
+      border-radius: 0;
+      background: transparent;
+      color: rgba(231, 228, 236, 0.9);
+      font-size: 0.84rem;
+      box-shadow: none;
+    }
+
+    .catalog-filter-toggle img,
+    .button-clear img,
+    .view-toggle-button img {
+      width: 18px;
+      height: 18px;
+      filter: invert(87%) sepia(5%) saturate(342%) hue-rotate(218deg) brightness(91%);
+    }
+
+    .mock-catalog-controls .button-clear {
+      position: absolute;
+      top: 3.58rem;
+      right: 0;
+      z-index: 2;
+      min-height: 34px;
+      padding: 0.4rem 0.6rem;
+      border-color: rgba(207, 200, 220, 0.15);
+      background: #1c1c24;
+    }
+
+    .catalog-filters-selects.is-open {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+      margin-top: 0.55rem;
+      padding: 0.7rem;
+      border: 1px solid rgba(207, 200, 220, 0.13);
+      border-radius: 14px;
+      background: rgba(25, 25, 32, 0.88);
+    }
+
+    .mobile-sort-bar {
+      order: 2;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      min-height: 38px;
+      color: rgba(211, 207, 218, 0.56);
+      font-size: 0.78rem;
+    }
+
+    .mobile-sort-bar label {
+      white-space: nowrap;
+    }
+
+    .mobile-sort-bar select {
+      width: auto;
+      min-width: 0;
+      max-width: 9.5rem;
+      padding: 0.3rem 1.4rem 0.3rem 0.15rem;
+      border: 0;
+      background-color: transparent;
+      color: rgba(229, 225, 235, 0.82);
+      font: 650 0.78rem/1 var(--font-body);
+    }
+
+    .mobile-results-count {
+      margin-left: auto;
+      white-space: nowrap;
+      color: rgba(211, 207, 218, 0.46);
+    }
+
+    .mobile-results-count strong {
+      font-weight: 600;
+    }
+
+    .mobile-tab-bar {
+      order: 3;
+      display: flex;
+      gap: 0.95rem;
+      width: 100%;
+      min-height: 42px;
+      margin: 0;
+      padding: 0;
+      overflow-x: auto;
+      border: 0;
+      scrollbar-width: none;
+    }
+
+    .mobile-tab {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.42rem;
+      min-width: max-content;
+      min-height: 42px;
+      padding: 0 0 0.12rem;
+      border: 0;
+      background: transparent;
+      color: rgba(211, 207, 218, 0.48);
+      font: 600 0.82rem/1 var(--font-body);
+    }
+
+    .mobile-tab::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      border-radius: 2px;
+      background: transparent;
+    }
+
+    .mobile-tab[aria-pressed='true'] {
+      color: #bba5ee;
+    }
+
+    .mobile-tab[aria-pressed='true']::after {
+      background: #a98be8;
+    }
+
+    .mobile-tab-dot {
+      width: 0.44rem;
+      height: 0.44rem;
+      border-radius: 50%;
+    }
+
+    .mobile-tab-dot-playing { background: #63c681; }
+    .mobile-tab-dot-completed { background: #6aa9dd; }
+    .mobile-tab-dot-wishlist { background: #77709a; }
+
+    .active-filter-pills {
+      order: 4;
+      padding: 0.35rem 0 0;
+    }
+
+    .panel-subtoolbar,
+    .legend.legend-app {
+      display: none;
+    }
+  }
+
+  @media (max-width: 350px) {
+    .shell-desktop-app {
+      width: min(100% - 0.8rem, 980px);
+    }
+
+    .mobile-menu-button,
+    .mobile-topbar-btn {
+      width: 38px;
+      height: 38px;
+    }
+
+    .mobile-topbar-actions {
+      gap: 0.3rem;
+    }
+
+    .catalog-filter-toggle {
+      padding-inline: 0.72rem;
+    }
+
+    .mobile-tab-bar {
+      gap: 0.78rem;
+    }
+  }
+}

@@ -232,6 +232,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     plataforma: el<HTMLSelectElement>('#plataforma'),
     solo: el<HTMLSelectElement>('#solo'),
     sort: el<HTMLSelectElement>('#sort'),
+    mobileSort: document.querySelector<HTMLSelectElement>('#mobile-sort'),
     precio: el<HTMLSelectElement>('#precio'),
     mobileFilterToggle: document.querySelector<HTMLElement>('#mobile-filter-toggle'),
     mobileExtraFilters: document.querySelector<HTMLElement>('#mobile-extra-filters'),
@@ -242,7 +243,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     tableShell: el<HTMLElement>('#table-shell'),
     tableBody: el<HTMLElement>('#table-body'),
     tableTemplate: el<HTMLTemplateElement>('#table-row-template'),
-    results: el<HTMLElement>('#results-count'),
+    results: Array.from(document.querySelectorAll<HTMLElement>('[data-results-count]')),
     activeFilterPills: el<HTMLElement>('#active-filter-pills'),
     quickFilters: Array.from(document.querySelectorAll<HTMLElement>('[data-quick-filter]')),
     viewButtons: Array.from(document.querySelectorAll<HTMLElement>('[data-view]')),
@@ -256,6 +257,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     if (el && value) el.value = value;
   }
   if (!elements.sort.value) elements.sort.value = DEFAULT_SORT;
+  if (elements.mobileSort) elements.mobileSort.value = elements.sort.value;
 
   let activeQuickFilter = '';
   let activeView = params.get('view') === 'table' ? 'table' : 'cards';
@@ -301,6 +303,9 @@ export function initCatalog(allGames: CatalogGame[]): void {
       sort: elements.sort.value,
       precio: elements.precio.value,
     };
+    if (elements.mobileSort && elements.mobileSort.value !== filters.sort) {
+      elements.mobileSort.value = filters.sort;
+    }
 
     const filtered = allGames
       .filter((game) => {
@@ -328,7 +333,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
         return String(a.titulo).localeCompare(String(b.titulo), 'es');
       });
 
-    elements.results.textContent = String(filtered.length);
+    elements.results.forEach((result) => { result.textContent = String(filtered.length); });
     const mobileSubEl = document.querySelector('#mobile-topbar-sub');
     if (mobileSubEl) {
       mobileSubEl.textContent =
@@ -557,6 +562,11 @@ export function initCatalog(allGames: CatalogGame[]): void {
   [elements.search, elements.estado, elements.launcher, elements.plataforma, elements.solo, elements.sort, elements.precio]
     .forEach((el) => { el.addEventListener('input', render); el.addEventListener('change', render); });
 
+  elements.mobileSort?.addEventListener('change', () => {
+    elements.sort.value = elements.mobileSort?.value ?? DEFAULT_SORT;
+    render();
+  });
+
   elements.reset.addEventListener('click', () => {
     elements.search.value = '';
     elements.estado.value = '';
@@ -564,6 +574,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     elements.plataforma.value = '';
     elements.solo.value = '';
     elements.sort.value = DEFAULT_SORT;
+    if (elements.mobileSort) elements.mobileSort.value = DEFAULT_SORT;
     elements.precio.value = '';
     activeQuickFilter = '';
     mobileExtraFiltersOpen = false;
@@ -653,7 +664,10 @@ export function initCatalog(allGames: CatalogGame[]): void {
     item.addEventListener('click', () => {
       const filter = item.dataset.drawerFilter;
       const value = item.dataset.value ?? '';
-      if (filter === 'sort') elements.sort.value = value;
+      if (filter === 'sort') {
+        elements.sort.value = value;
+        if (elements.mobileSort) elements.mobileSort.value = value;
+      }
       else if (filter === 'estado') { elements.estado.value = value; activeQuickFilter = ''; }
       else if (filter === 'launcher') elements.launcher.value = value;
       else if (filter === 'plataforma') elements.plataforma.value = value;
