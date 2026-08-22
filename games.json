@@ -592,6 +592,46 @@
     }
   },
   {
+    "titulo": "Farming Simulator 19",
+    "estado": null,
+    "launcher": "Epic Games",
+    "plataforma": "PC",
+    "horas": 155.23,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2018,
+    "solo": false,
+    "hltb": 113.5,
+    "cover_url": null,
+    "steam_appid": 787860,
+    "generos": [
+      "Simuladores"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 113.5,
+      "main_plus": 235,
+      "completionist": 254
+    },
+    "steam_store_genres": [
+      "Simuladores"
+    ],
+    "steam_store_name": "Farming Simulator 19",
+    "critica": {
+      "metascore": 73,
+      "userscore": 6.3
+    }
+  },
+  {
     "titulo": "Farming Simulator 22",
     "estado": "Pausado",
     "launcher": "Steam",
