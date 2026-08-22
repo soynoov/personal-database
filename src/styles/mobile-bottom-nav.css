@@ -1,0 +1,140 @@
+@import './theme.css';
+
+/* Navegación primaria móvil con iconos oficiales de Tabler. */
+@layer global {
+  @media (max-width: 1180px) {
+    .shell-desktop-app {
+      padding-bottom: calc(6.25rem + env(safe-area-inset-bottom));
+    }
+
+    .mobile-bottom-nav {
+      position: fixed;
+      z-index: 50;
+      left: 50%;
+      right: auto;
+      bottom: max(0.5rem, env(safe-area-inset-bottom));
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.2rem;
+      width: min(430px, calc(100% - 1rem));
+      min-height: 72px;
+      margin: 0;
+      padding: 0.42rem;
+      transform: translateX(-50%);
+      overflow: hidden;
+      border: 1px solid rgba(196, 181, 253, 0.22);
+      border-radius: 23px;
+      background:
+        linear-gradient(180deg, rgba(28, 23, 46, 0.96), rgba(13, 11, 24, 0.97));
+      box-shadow:
+        0 18px 50px rgba(0, 0, 0, 0.52),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(24px) saturate(1.25);
+    }
+
+    .mobile-bottom-nav::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 12% 0, rgba(167, 139, 250, 0.13), transparent 42%),
+        radial-gradient(circle at 88% 100%, rgba(124, 58, 237, 0.1), transparent 38%);
+    }
+
+    .mobile-bottom-nav-item {
+      position: relative;
+      display: grid;
+      grid-template-rows: 31px auto;
+      align-items: center;
+      justify-items: center;
+      gap: 0.1rem;
+      min-width: 0;
+      min-height: 58px;
+      padding: 0.2rem 0.12rem 0.15rem;
+      border: 0;
+      border-radius: 16px;
+      background: transparent;
+      color: rgba(221, 209, 247, 0.58);
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+      transition: color 150ms ease, background 150ms ease, transform 150ms ease;
+    }
+
+    .mobile-bottom-nav-icon {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 30px;
+      border-radius: 11px;
+      color: currentColor;
+      transition: color 150ms ease, background 150ms ease, box-shadow 150ms ease,
+        transform 150ms ease;
+    }
+
+    .mobile-bottom-nav-icon::before {
+      content: '';
+      width: 23px;
+      height: 23px;
+      background: currentColor;
+      mask: var(--mobile-nav-icon) center / contain no-repeat;
+      -webkit-mask: var(--mobile-nav-icon) center / contain no-repeat;
+    }
+
+    .mobile-bottom-nav-item > span:last-child {
+      max-width: 100%;
+      overflow: hidden;
+      color: currentColor;
+      font: 600 0.66rem/1 var(--font-body);
+      letter-spacing: -0.01em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .mobile-bottom-nav-item.is-active {
+      background: rgba(124, 58, 237, 0.08);
+      color: #f5f1ff;
+    }
+
+    .mobile-bottom-nav-item.is-active .mobile-bottom-nav-icon {
+      color: #fff;
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      box-shadow:
+        0 8px 20px rgba(124, 58, 237, 0.36),
+        inset 0 1px 0 rgba(255, 255, 255, 0.24);
+      transform: translateY(-1px);
+    }
+
+    .mobile-bottom-nav-item.is-active > span:last-child {
+      color: var(--indigo);
+      font-weight: 750;
+    }
+
+    .mobile-bottom-nav-item:active {
+      transform: scale(0.96);
+    }
+
+    .mobile-bottom-nav-item:focus-visible {
+      outline-offset: -2px;
+    }
+
+    @media (hover: hover) {
+      .mobile-bottom-nav-item:not(.is-active):hover {
+        background: rgba(167, 139, 250, 0.07);
+        color: #ddd1f7;
+      }
+    }
+  }
+
+  @media (max-width: 350px) {
+    .mobile-bottom-nav {
+      width: calc(100% - 0.65rem);
+      padding-inline: 0.3rem;
+    }
+
+    .mobile-bottom-nav-item > span:last-child {
+      font-size: 0.6rem;
+    }
+  }
+}
