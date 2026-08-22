@@ -35,7 +35,7 @@ const {
 } = Astro.props;
 ---
 
-<section class="game-hero-rich game-hero-cinematic" id="overview" style={heroCoverStyle}>
+<section class="game-hero-rich game-hero-cinematic" id="game-header" style={heroCoverStyle}>
   <section class="game-intro-panel game-overview-card game-overview-card-cinematic">
     <div class="game-overview-media">
       <div class="game-poster-stack">
@@ -49,7 +49,7 @@ const {
     </div>
 
     <div class="game-overview-copy">
-      <div class="eyebrow">Personal Database</div>
+      <div class="eyebrow">Ficha de juego</div>
       <h1>{title}</h1>
       <div class="badges game-page-badges">
         <span class={`badge ${statusBadge.class}`}>{statusBadge.label}</span>

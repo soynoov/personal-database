@@ -32,7 +32,7 @@ const { slug, comentarios, editValues } = Astro.props;
   <div class="detail-comments-head">
     <div>
       <span class="section-eyebrow">Notas</span>
-      <dt class="muted">Comentario</dt>
+      <h2 class="muted">Comentario</h2>
     </div>
     <button class="game-edit-trigger game-edit-trigger-sm" id="comments-edit-trigger" type="button" aria-label="Editar comentario">
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -41,7 +41,7 @@ const { slug, comentarios, editValues } = Astro.props;
       </svg>
     </button>
   </div>
-  <dd>{comentarios}</dd>
+  <p class="detail-comments-text">{comentarios}</p>
 </section>
 
 <dialog class="edit-dialog" id="comments-edit-dialog">

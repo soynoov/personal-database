@@ -63,7 +63,7 @@ const formatDecimal = (value: number | null) =>
         <strong>{getScoreSummary(metascore, 100)}</strong>
         <small>Crítica profesional</small>
       </div>
-      <div class="metacritic-score-value" aria-label={`Metascore ${metascore ?? 'sin puntuación'}`}>
+      <div class="metacritic-score-value">
         {metascore === null ? '—' : Math.round(metascore)}
       </div>
     </article>
@@ -74,7 +74,7 @@ const formatDecimal = (value: number | null) =>
         <strong>{getScoreSummary(userscore)}</strong>
         <small>Comunidad de Metacritic</small>
       </div>
-      <div class="metacritic-score-value is-round" aria-label={`User score ${userscore ?? 'sin puntuación'}`}>
+      <div class="metacritic-score-value is-round">
         {formatDecimal(userscore)}
       </div>
     </article>
@@ -89,7 +89,7 @@ const formatDecimal = (value: number | null) =>
               : 'Media ponderada de tus criterios'}
           </small>
       </div>
-      <div class="metacritic-score-value is-round is-personal" aria-label={`My score ${displayedPersonalScore ?? 'sin puntuación'}`}>
+      <div class="metacritic-score-value is-round is-personal">
         {displayedPersonalScore === null ? '—' : formatDecimal(displayedPersonalScore)}
       </div>
     </article>

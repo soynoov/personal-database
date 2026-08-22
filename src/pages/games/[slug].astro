@@ -899,7 +899,9 @@ const commentsEditValues = {
 
     <GameDetailNav hasDlcs={dlcTotal > 0} />
 
-    <section class="hero-analysis-grid" id="stats">
+    <GameDetailSummary summaryCards={summaryCards} />
+
+    <section class="hero-analysis-grid" aria-label="Análisis de juego">
       <GameDetailHours
         hoursChartPayload={hoursChartPayload}
         hoursChartPoints={hoursChartPoints}
@@ -926,18 +928,18 @@ const commentsEditValues = {
       />
     </section>
 
-    <GameDetailSummary summaryCards={summaryCards} />
-
     <GameDetailStats metadataGroups={metadataGroups} />
 
-    <GameDetailDLCs
-      slug={slugParam}
-      dlcItems={dlcItems}
-      dlcTotal={dlcTotal}
-      formatDate={formatDate}
-      formatValue={formatValue}
-      formatCurrency={formatCurrency}
-    />
+    {dlcTotal > 0 && (
+      <GameDetailDLCs
+        slug={slugParam}
+        dlcItems={dlcItems}
+        dlcTotal={dlcTotal}
+        formatDate={formatDate}
+        formatValue={formatValue}
+        formatCurrency={formatCurrency}
+      />
+    )}
 
     <GameDetailMetacritic
       slug={slugParam}
