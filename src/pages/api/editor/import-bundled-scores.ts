@@ -43,12 +43,12 @@ export const POST: APIRoute = async ({ request }) => {
     game.critica ??= {};
     let changed = false;
 
-    if (metascore != null && game.critica.metascore !== metascore) {
+    if (metascore != null && game.critica.metascore == null) {
       game.critica.metascore = metascore;
       updatedFields += 1;
       changed = true;
     }
-    if (userscore != null && game.critica.userscore !== userscore) {
+    if (userscore != null && game.critica.userscore == null) {
       game.critica.userscore = userscore;
       updatedFields += 1;
       changed = true;
