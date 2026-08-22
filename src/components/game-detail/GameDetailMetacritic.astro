@@ -13,12 +13,14 @@ interface Props {
   slug: string;
   critique: GameCritique | null;
   legacyScore: number | null;
+  includeCommunity: boolean;
 }
 
-const { slug, critique, legacyScore } = Astro.props;
-const personalScore = calculatePersonalScore(critique);
-const displayedPersonalScore = personalScore ?? legacyScore;
-const criterionScores = getReviewCriterionScores(critique);
+const { slug, critique, legacyScore, includeCommunity } = Astro.props;
+const personalScore = calculatePersonalScore(critique, includeCommunity);
+const criterionScores = getReviewCriterionScores(critique, includeCommunity);
+const hasCriterionData = criterionScores.some((criterion) => criterion.value !== null);
+const displayedPersonalScore = personalScore ?? (hasCriterionData ? null : legacyScore);
 const completedCriteria = criterionScores.filter((criterion) => criterion.value !== null).length;
 const honoraryLevel = critique?.mencion_honorifica?.nivel ?? 0;
 const honoraryComment = critique?.mencion_honorifica?.comentario ?? '';
@@ -151,87 +153,101 @@ const formatDecimal = (value: number | null) =>
     <p class="edit-dialog-error" id="metacritic-edit-error" hidden></p>
 
     <form id="metacritic-edit-form" data-slug={slug}>
-      <div class="edit-field-row">
-        <div class="edit-field">
-          <label for="edit-metascore">Metascore</label>
-          <input
-            id="edit-metascore"
-            name="metascore"
-            type="number"
-            step="1"
-            min="0"
-            max="100"
-            value={critique?.metascore ?? ''}
-          />
+      <section class="metacritic-edit-group" aria-labelledby="metacritic-public-title">
+        <div class="metacritic-edit-group-head">
+          <div>
+            <span class="section-eyebrow">Referencias externas</span>
+            <h3 id="metacritic-public-title">Puntuación pública</h3>
+          </div>
+          <span>No altera My score</span>
         </div>
-        <div class="edit-field">
-          <label for="edit-userscore">User score</label>
-          <input
-            id="edit-userscore"
-            name="userscore"
-            type="number"
-            step="0.1"
-            min="0"
-            max="10"
-            value={critique?.userscore ?? ''}
-          />
-        </div>
-      </div>
 
-      <div class="metacritic-edit-criteria">
-        {criterionScores.map((criterion) => (
-          <div class="edit-field">
-            <label for={`edit-${criterion.key}`}>{criterion.label}</label>
+        <div class="metacritic-public-fields">
+          <label class="metacritic-public-field" for="edit-metascore">
+            <span>Metascore <small>/100</small></span>
             <input
-              id={`edit-${criterion.key}`}
-              name={criterion.key}
+              id="edit-metascore"
+              name="metascore"
               type="number"
               step="1"
-              min="1"
-              max={criterion.max}
-              value={criterion.value ?? ''}
-              placeholder={`1–${criterion.max}`}
+              min="0"
+              max="100"
+              placeholder="81"
+              value={critique?.metascore ?? ''}
             />
-            {criterion.scale && (
-              <small class="metacritic-scale-help">
-                {Object.entries(criterion.scale).map(([score, description]) => (
-                  <span><b>{score}</b> {description}</span>
-                ))}
-              </small>
-            )}
-          </div>
-        ))}
-      </div>
+          </label>
+          <label class="metacritic-public-field" for="edit-userscore">
+            <span>User score <small>/10</small></span>
+            <input
+              id="edit-userscore"
+              name="userscore"
+              type="number"
+              step="0.1"
+              min="0"
+              max="10"
+              placeholder="8,2"
+              value={critique?.userscore ?? ''}
+            />
+          </label>
+        </div>
+      </section>
 
-      <div class="metacritic-honorary-fields">
-        <div class="edit-field">
-          <label for="edit-honorary-level">Mención honorífica</label>
-          <input
-            id="edit-honorary-level"
-            name="honorary_level"
-            type="number"
-            step="1"
-            min="0"
-            max="3"
-            value={honoraryLevel}
-            placeholder="0–3"
-          />
-          <small class="metacritic-scale-help">
-            <span><b>0</b> Sin mención.</span>
-            <span><b>1</b> Pequeño reconocimiento.</span>
-            <span><b>2</b> Aporte muy destacable.</span>
-            <span><b>3</b> Caso excepcional.</span>
-          </small>
+      <section class="metacritic-edit-group" aria-labelledby="metacritic-personal-title">
+        <div class="metacritic-edit-group-head">
+          <div>
+            <span class="section-eyebrow">Cálculo automático</span>
+            <h3 id="metacritic-personal-title">Tu valoración</h3>
+          </div>
+          <a href="/criticas/">Qué significa cada nota <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
         </div>
-        <div class="edit-field">
-          <label for="edit-honorary-comment">Por qué merece la mención</label>
-          <textarea
-            id="edit-honorary-comment"
-            name="honorary_comment"
-            placeholder="Obligatorio cuando la mención es mayor que 0"
-          >{honoraryComment}</textarea>
+
+        <div class="metacritic-edit-criteria">
+          {criterionScores.map((criterion) => (
+            <label class:list={["metacritic-rating-field", criterion.key === 'comunidad' && 'is-community']} for={`edit-${criterion.key}`}>
+              <span>
+                {criterion.label}
+                <small>1–{criterion.max}</small>
+              </span>
+              <select id={`edit-${criterion.key}`} name={criterion.key}>
+                <option value="" selected={criterion.value === null}>Sin puntuar</option>
+                {Array.from({ length: criterion.max }, (_, index) => index + 1).map((score) => (
+                  <option value={score} selected={criterion.value === score}>{score} / {criterion.max}</option>
+                ))}
+              </select>
+            </label>
+          ))}
         </div>
-      </div>
+      </section>
+
+      <section class="metacritic-edit-group metacritic-edit-honorary" aria-labelledby="metacritic-honorary-title">
+        <div class="metacritic-edit-group-head">
+          <div>
+            <span class="section-eyebrow">Opcional</span>
+            <h3 id="metacritic-honorary-title">Mención honorífica</h3>
+          </div>
+          <span>No altera My score</span>
+        </div>
+
+        <div class="metacritic-honorary-fields">
+          <label class="metacritic-rating-field" for="edit-honorary-level">
+            <span>Nivel <small>0–3</small></span>
+            <select id="edit-honorary-level" name="honorary_level">
+              <option value="0" selected={honoraryLevel === 0}>0 · Ninguna</option>
+              <option value="1" selected={honoraryLevel === 1}>1 · Pequeña</option>
+              <option value="2" selected={honoraryLevel === 2}>2 · Destacada</option>
+              <option value="3" selected={honoraryLevel === 3}>3 · Excepcional</option>
+            </select>
+          </label>
+          <label class="metacritic-honorary-comment" for="edit-honorary-comment">
+            <span>Motivo</span>
+            <textarea
+              id="edit-honorary-comment"
+              name="honorary_comment"
+              placeholder="Obligatorio si eliges una mención"
+            >{honoraryComment}</textarea>
+          </label>
+        </div>
+      </section>
 
       <div class="edit-dialog-actions">
         <button class="edit-dialog-cancel" id="metacritic-edit-cancel" type="button">Cancelar</button>
@@ -290,6 +306,7 @@ const formatDecimal = (value: number | null) =>
             musica: data.get('musica'),
             graficos_arte: data.get('graficos_arte'),
             entretenimiento: data.get('entretenimiento'),
+            comunidad: data.get('comunidad'),
           },
           mencion_honorifica: {
             nivel: data.get('honorary_level'),

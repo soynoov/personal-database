@@ -14,6 +14,7 @@ import GameDetailComments from "../../components/game-detail/GameDetailComments.
 import GameDetailMetacritic from "../../components/game-detail/GameDetailMetacritic.astro";
 import { buildGameCoverUrl } from "../../lib/game-cover-url";
 import { isCompletedStatus, normalizeStatus } from "../../lib/game-status";
+import { isCommunityCriterionApplicable } from "../../lib/game-reviews";
 import { findGameBySlug, getPurchasedUnits, getTotalPaidPrice, readGames } from "../../lib/local-games";
 
 const game = findGameBySlug(await readGames(), Astro.params.slug ?? "");
@@ -63,6 +64,7 @@ const hasCompetitiveTag =
   Array.isArray(game.tags) && game.tags.some((tag: string) => String(tag).trim().toLowerCase() === "competitivo");
 // Compatibilidad con las fichas antiguas que ya guardaban rango_maximo sin tag.
 const isCompetitive = hasCompetitiveTag || Boolean(game.rango_actual || game.rango_maximo);
+const includeCommunityCriterion = isCommunityCriterionApplicable(game);
 
 const hasEarlyAccess =
   Array.isArray(game.generos) &&
@@ -413,6 +415,13 @@ else if (normalizedStatus === "pausado") statusCellClass = "detail-item-status-p
 else if (normalizedStatus === "abandonado" || normalizedStatus === "retirado") statusCellClass = "detail-item-status-abandoned";
 
 const pricePaidVisual = getPaidPriceVisual();
+const acquisitionLabel = hasFreeToPlayTag
+  ? "Free to play"
+  : game.precio_pagado === null || game.precio_pagado === undefined
+    ? "Sin registrar"
+    : Number(game.precio_pagado) === 0
+      ? "Obtenido gratis"
+      : `${formatCurrency(game.precio_pagado)} pagados`;
 const priceDeltaTone =
   hasFreeToPlayTag || pricePaidVisual.deltaLabel === ""
     ? "neutral"
@@ -902,7 +911,7 @@ const commentsEditValues = {
       isCompetitive={isCompetitive}
       hasEarlyAccess={hasEarlyAccess}
       genres={genres}
-      pricePaidNote={pricePaidVisual.note}
+      acquisitionLabel={acquisitionLabel}
       soloLabel={formatSolo(game.solo)}
     />
 
@@ -962,6 +971,7 @@ const commentsEditValues = {
       slug={slugParam}
       critique={game.critica ?? null}
       legacyScore={legacyPersonalRating}
+      includeCommunity={includeCommunityCriterion}
     />
 
     <GameDetailComments slug={slugParam} comentarios={formatValue(game.comentarios)} editValues={commentsEditValues} />

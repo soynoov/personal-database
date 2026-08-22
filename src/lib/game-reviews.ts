@@ -1,11 +1,12 @@
-import type { GameCritique } from './local-games';
+import type { GameCritique, LocalGame } from './local-games';
 
 export type ReviewCriterionKey =
   | 'jugabilidad'
   | 'historia'
   | 'musica'
   | 'graficos_arte'
-  | 'entretenimiento';
+  | 'entretenimiento'
+  | 'comunidad';
 
 export type ReviewCriterionDefinition = {
   key: ReviewCriterionKey;
@@ -57,7 +58,39 @@ export const REVIEW_CRITERIA: ReviewCriterionDefinition[] = [
     weight: 0.75,
     measures: 'Lo que lo has disfrutado y lo que te ha gustado.',
   },
+  {
+    key: 'comunidad',
+    label: 'Comunidad',
+    max: 5,
+    weight: 1,
+    measures: 'La limpieza, deportividad y trato entre quienes juegan.',
+    scale: {
+      1: 'Muy tóxica o insegura: los insultos, las trampas o el acoso son habituales.',
+      2: 'Poco agradable: predominan los conflictos y las conductas negativas.',
+      3: 'Mixta: alterna gente agradable con episodios frecuentes de toxicidad.',
+      4: 'Mayormente limpia y respetuosa, con problemas puntuales.',
+      5: 'Muy sana y acogedora: juego limpio, respeto y buena convivencia.',
+    },
+  },
 ];
+
+export function isCommunityCriterionApplicable(
+  game: Pick<LocalGame, 'solo' | 'tags' | 'generos' | 'rango_actual' | 'rango_maximo'>,
+) {
+  const normalizedTags = Array.isArray(game.tags)
+    ? game.tags.map((tag) => String(tag).trim().toLowerCase())
+    : [];
+  const normalizedGenres = Array.isArray(game.generos)
+    ? game.generos.map((genre) => String(genre).trim().toLowerCase())
+    : [];
+
+  return (
+    game.solo === false ||
+    normalizedTags.includes('competitivo') ||
+    normalizedGenres.some((genre) => genre.includes('multijugador') || genre.includes('multiplayer')) ||
+    Boolean(game.rango_actual || game.rango_maximo)
+  );
+}
 
 export type ReviewCriterionScore = ReviewCriterionDefinition & {
   value: number | null;
@@ -72,8 +105,15 @@ const toBoundedNumber = (value: unknown, min: number, max: number) => {
   return parsed;
 };
 
-export function getReviewCriterionScores(critique: GameCritique | null | undefined): ReviewCriterionScore[] {
-  return REVIEW_CRITERIA.map((criterion) => {
+export function getReviewCriterionScores(
+  critique: GameCritique | null | undefined,
+  includeCommunity = false,
+): ReviewCriterionScore[] {
+  const applicableCriteria = includeCommunity
+    ? REVIEW_CRITERIA
+    : REVIEW_CRITERIA.filter((criterion) => criterion.key !== 'comunidad');
+
+  return applicableCriteria.map((criterion) => {
     const value = toBoundedNumber(critique?.criterios?.[criterion.key], 1, criterion.max);
     return {
       ...criterion,
@@ -89,8 +129,11 @@ export function getReviewCriterionScores(critique: GameCritique | null | undefin
  * Entretenimiento tiene un peso menor (0,75); el resto pesa 1.
  * La nota solo existe cuando todos los criterios definidos están completos.
  */
-export function calculatePersonalScore(critique: GameCritique | null | undefined): number | null {
-  const scores = getReviewCriterionScores(critique);
+export function calculatePersonalScore(
+  critique: GameCritique | null | undefined,
+  includeCommunity = false,
+): number | null {
+  const scores = getReviewCriterionScores(critique, includeCommunity);
   if (scores.some((score) => score.normalized === null)) return null;
 
   const totalWeight = scores.reduce((total, score) => total + score.weight, 0);

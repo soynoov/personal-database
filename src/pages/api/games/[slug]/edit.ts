@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { requireEditor } from "../../../../lib/edit-auth";
-import { calculatePersonalScore } from "../../../../lib/game-reviews";
+import { calculatePersonalScore, isCommunityCriterionApplicable } from "../../../../lib/game-reviews";
 import {
   findGameBySlug,
   readGames,
@@ -53,6 +53,7 @@ function toGameCritique(value: unknown): GameCritique {
       musica: toBoundedNumber(criteriaSource.musica, 1, 3),
       graficos_arte: toBoundedNumber(criteriaSource.graficos_arte, 1, 5),
       entretenimiento: toBoundedNumber(criteriaSource.entretenimiento, 1, 5),
+      comunidad: toBoundedNumber(criteriaSource.comunidad, 1, 5),
     },
     mencion_honorifica: {
       nivel: toBoundedNumber(honorarySource.nivel, 0, 3),
@@ -173,7 +174,7 @@ export const POST: APIRoute = async ({ params, request }) => {
         error: "Explica el motivo de la mención honorífica.",
       });
     }
-    updated.nota = calculatePersonalScore(updated.critica);
+    updated.nota = calculatePersonalScore(updated.critica, isCommunityCriterionApplicable(updated));
   }
 
   // Los toggles de free-to-play y competitivo solo se aplican cuando su

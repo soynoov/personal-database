@@ -145,6 +145,13 @@
     background: rgba(8, 11, 18, 0.46);
   }
 
+  .criterion-method-card-conditional {
+    border-color: rgba(183, 132, 255, 0.32);
+    background:
+      radial-gradient(circle at 100% 0, rgba(151, 91, 226, 0.16), transparent 38%),
+      rgba(8, 11, 18, 0.5);
+  }
+
   .criterion-method-card-head {
     display: flex;
     align-items: flex-start;

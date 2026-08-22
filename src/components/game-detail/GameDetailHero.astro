@@ -17,7 +17,7 @@ interface Props {
   isCompetitive: boolean;
   hasEarlyAccess: boolean;
   genres: string;
-  pricePaidNote: string;
+  acquisitionLabel: string;
   soloLabel: string;
 }
 
@@ -32,12 +32,15 @@ const {
   isCompetitive,
   hasEarlyAccess,
   genres,
-  pricePaidNote,
+  acquisitionLabel,
   soloLabel,
 } = Astro.props;
 
-const playMode = soloLabel === "Si" || soloLabel === "Sí" ? "Un jugador" : "Multijugador";
-const paymentModel = hasFreeToPlayTag ? "Free to play" : pricePaidNote || "Sin datos";
+const playMode = soloLabel === "Si" || soloLabel === "Sí"
+  ? "Un jugador"
+  : soloLabel === "No"
+    ? "Multijugador"
+    : "Sin registrar";
 ---
 
 <section class="game-hero-rich game-hero-cinematic" id="game-header" style={heroCoverStyle}>
@@ -70,8 +73,8 @@ const paymentModel = hasFreeToPlayTag ? "Free to play" : pricePaidNote || "Sin d
           <dd>{genres !== "-" ? genres : "Sin datos"}</dd>
         </div>
         <div>
-          <dt>Modelo</dt>
-          <dd>{paymentModel}</dd>
+          <dt>Adquisición</dt>
+          <dd>{acquisitionLabel}</dd>
         </div>
         <div>
           <dt>Modo</dt>

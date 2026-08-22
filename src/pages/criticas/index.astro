@@ -5,7 +5,7 @@ import '../../styles/criterio.css';
 import { buildGameCoverUrl } from '../../lib/game-cover-url';
 import { getUniqueValues, readGames, slugifyGameTitle } from '../../lib/local-games';
 import { isCompletedStatus, normalizeStatus } from '../../lib/game-status';
-import { calculatePersonalScore, REVIEW_CRITERIA } from '../../lib/game-reviews';
+import { calculatePersonalScore, isCommunityCriterionApplicable, REVIEW_CRITERIA } from '../../lib/game-reviews';
 
 const games = await readGames();
 const estados = getUniqueValues(games, 'estado');
@@ -25,7 +25,7 @@ const orderedDrawerEstados = [
 
 const ratedGames = games
   .flatMap((game) => {
-    const rating = calculatePersonalScore(game.critica);
+    const rating = calculatePersonalScore(game.critica, isCommunityCriterionApplicable(game));
     return rating !== null
       ? [{ game, rating }]
       : [];
@@ -34,7 +34,7 @@ const ratedGames = games
 
 const completedGames = games.filter((game) => isCompletedStatus(game.estado));
 const pendingRatings = completedGames
-  .filter((game) => calculatePersonalScore(game.critica) === null)
+  .filter((game) => calculatePersonalScore(game.critica, isCommunityCriterionApplicable(game)) === null)
   .sort((a, b) => a.titulo.localeCompare(b.titulo, 'es'));
 
 const averageRating = ratedGames.length > 0
@@ -97,20 +97,22 @@ const formatRating = (rating: number) =>
           <span class='criterion-count'>Resultado final sobre 10</span>
         </div>
 
-        <div class='criterion-formula' aria-label='Cinco criterios, resultado sobre diez y entretenimiento con peso cero coma setenta y cinco'>
-          <span><i class='ph ph-checks' aria-hidden='true'></i> 5 criterios</span>
+        <div class='criterion-formula' aria-label='Cinco criterios base, comunidad cuando el juego es multijugador o competitivo, resultado sobre diez y entretenimiento con peso cero coma setenta y cinco'>
+          <span><i class='ph ph-checks' aria-hidden='true'></i> 5 criterios base</span>
+          <span><i class='ph ph-users-three' aria-hidden='true'></i> Comunidad cuando aplica</span>
           <span><i class='ph ph-equals' aria-hidden='true'></i> Nota /10</span>
           <span><i class='ph ph-scales' aria-hidden='true'></i> Entretenimiento ×0,75</span>
         </div>
 
         <div class='criterion-methodology-grid'>
           {REVIEW_CRITERIA.map((criterion) => (
-            <article class='criterion-method-card'>
+            <article class:list={['criterion-method-card', criterion.key === 'comunidad' && 'criterion-method-card-conditional']}>
               <div class='criterion-method-card-head'>
                 <h3>{criterion.label}</h3>
                 <div>
                   <span>1–{criterion.max}</span>
                   <span>Peso {String(criterion.weight).replace('.', ',')}</span>
+                  {criterion.key === 'comunidad' && <span>Solo multi / competitivo</span>}
                 </div>
               </div>
               <span class='sr-only'>{criterion.measures}</span>

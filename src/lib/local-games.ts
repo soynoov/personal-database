@@ -13,6 +13,7 @@ export type GameCritique = {
     musica?: number | null;
     graficos_arte?: number | null;
     entretenimiento?: number | null;
+    comunidad?: number | null;
   } | null;
   mencion_honorifica?: {
     nivel?: number | null;
