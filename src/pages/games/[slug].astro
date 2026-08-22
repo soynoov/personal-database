@@ -844,6 +844,7 @@ const metadataGroups = [
       { label: "Lanzamiento", value: formatValue(game.lanzamiento) },
       { label: "Fecha inicio", value: formatDate(game.fecha_inicio) },
       { label: "Fecha fin", value: formatDate(game.fecha_fin) },
+      { label: "Dificultad", value: formatValue(game.dificultad) },
       {
         label: "Tiempo en pasarlo",
         value:
@@ -877,6 +878,9 @@ const slugParam = Astro.params.slug ?? '';
 const generalEditValues = {
   estado: game.estado,
   horas: hoursValue,
+  dificultad: game.dificultad ?? null,
+  logros_actual: game.logros?.actual ?? null,
+  logros_total: game.logros?.total ?? null,
   fecha_inicio: game.fecha_inicio,
   fecha_fin: game.fecha_fin,
   competitivo: isCompetitive,

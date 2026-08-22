@@ -15,6 +15,9 @@ import editIcon from '@tabler/icons/outline/edit.svg?url';
 interface EditValues {
   estado: string | null;
   horas: number | null;
+  dificultad: string | null;
+  logros_actual: number | null;
+  logros_total: number | null;
   fecha_inicio: string | null;
   fecha_fin: string | null;
   competitivo: boolean;
@@ -69,6 +72,22 @@ const estadoOptions =
       <div class="edit-field">
         <label for="edit-horas">Horas jugadas</label>
         <input id="edit-horas" name="horas" type="number" step="0.1" min="0" value={editValues.horas ?? ''} />
+      </div>
+
+      <div class="edit-field">
+        <label for="edit-dificultad">Dificultad</label>
+        <input id="edit-dificultad" name="dificultad" type="text" placeholder="Fácil, normal, difícil…" value={editValues.dificultad ?? ''} />
+      </div>
+
+      <div class="edit-field-row">
+        <div class="edit-field">
+          <label for="edit-logros-actual">Logros conseguidos</label>
+          <input id="edit-logros-actual" name="logros_actual" type="number" step="1" min="0" value={editValues.logros_actual ?? ''} />
+        </div>
+        <div class="edit-field">
+          <label for="edit-logros-total">Logros totales</label>
+          <input id="edit-logros-total" name="logros_total" type="number" step="1" min="0" value={editValues.logros_total ?? ''} />
+        </div>
       </div>
 
       <div class="edit-field-row">
@@ -143,6 +162,9 @@ const estadoOptions =
       const payload = {
         estado: data.get('estado'),
         horas: data.get('horas'),
+        dificultad: data.get('dificultad'),
+        logros_actual: data.get('logros_actual'),
+        logros_total: data.get('logros_total'),
         fecha_inicio: data.get('fecha_inicio'),
         fecha_fin: data.get('fecha_fin'),
         competitivo: data.get('competitivo') === 'on',

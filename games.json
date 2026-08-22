@@ -6547,15 +6547,16 @@
   },
   {
     "titulo": "Sifu",
-    "estado": "Jugando",
+    "estado": "Terminado",
     "launcher": "Epic Games",
     "plataforma": "PC",
-    "horas": 2.35,
+    "horas": 4.5,
+    "dificultad": "Fácil",
     "tamano": "30,32 GB",
     "fecha_inicio": null,
-    "fecha_fin": null,
+    "fecha_fin": "2026-08-23",
     "logros": {
-      "actual": 6,
+      "actual": 16,
       "total": 60
     },
     "nota": null,

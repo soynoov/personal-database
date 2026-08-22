@@ -69,6 +69,12 @@ function toNullablePositiveInteger(value: unknown): number | null {
   return Math.round(num);
 }
 
+function toNullableNonNegativeInteger(value: unknown): number | null {
+  const num = toNullableNumber(value);
+  if (num === null || num < 0) return null;
+  return Math.round(num);
+}
+
 function toNullableString(value: unknown): string | null {
   if (value === null || value === undefined) return null;
   const str = String(value).trim();
@@ -152,6 +158,21 @@ export const POST: APIRoute = async ({ params, request }) => {
 
   if (body.estado !== undefined) updated.estado = toNullableString(body.estado) ?? game.estado;
   if (body.horas !== undefined) updated.horas = toNullableNumber(body.horas);
+  if (body.dificultad !== undefined) updated.dificultad = toNullableString(body.dificultad);
+  if (body.logros_actual !== undefined || body.logros_total !== undefined) {
+    const actual = body.logros_actual !== undefined
+      ? toNullableNonNegativeInteger(body.logros_actual)
+      : game.logros?.actual ?? null;
+    const total = body.logros_total !== undefined
+      ? toNullableNonNegativeInteger(body.logros_total)
+      : game.logros?.total ?? null;
+
+    if (actual !== null && total !== null && actual > total) {
+      return jsonResponse(400, { ok: false, error: "Los logros conseguidos no pueden superar el total." });
+    }
+
+    updated.logros = actual === null && total === null ? null : { actual, total };
+  }
   if (body.fecha_inicio !== undefined) updated.fecha_inicio = toNullableString(body.fecha_inicio);
   if (body.fecha_fin !== undefined) updated.fecha_fin = toNullableString(body.fecha_fin);
   if (body.solo !== undefined) updated.solo = toNullableBoolean(body.solo);
