@@ -596,6 +596,7 @@ const summaryCards = [
     note: dlcTotal > 0 ? "Registrados" : "Sin DLCs",
   },
 ];
+const hasOverviewDetails = summaryCards.some(({ label, value }) => label !== "Estado" && value !== "-");
 
 const formatHoursValue = (value: number | null) => formatTrackedHours(value);
 const elapsedCalendarTime = formatElapsedCalendarTime(game.fecha_inicio, game.fecha_fin);
@@ -897,9 +898,9 @@ const commentsEditValues = {
       soloLabel={formatSolo(game.solo)}
     />
 
-    <GameDetailNav hasDlcs={dlcTotal > 0} />
+    <GameDetailNav hasDlcs={dlcTotal > 0} hasOverviewDetails={hasOverviewDetails} />
 
-    <GameDetailSummary summaryCards={summaryCards} />
+    {hasOverviewDetails && <GameDetailSummary summaryCards={summaryCards} />}
 
     <section class="hero-analysis-grid" aria-label="Análisis de juego">
       <GameDetailHours

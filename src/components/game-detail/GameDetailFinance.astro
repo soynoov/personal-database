@@ -60,17 +60,23 @@ const isFreeToPlay = editValues.tags.includes('free-to-play');
 // El acordeón se muestra si hay DLCs registrados o si hay microtransacciones
 const microtransaccionesCard = additionalContentCards.find(c => c.label === 'Microtransacciones');
 const hasMicro = microtransaccionesCard?.value !== '-';
-const showAccordion = hasDlcs || hasMicro;
+const showAccordion = isFreeToPlay || hasDlcs || hasMicro;
+const visibleAdditionalCards = isFreeToPlay && !hasDlcs
+  ? microtransaccionesCard
+    ? [{ ...microtransaccionesCard, value: microtransaccionesCard.value === '-' ? 'Sin gasto' : microtransaccionesCard.value }]
+    : []
+  : additionalContentCards;
+const additionalContentTitle = isFreeToPlay ? 'Micropagos' : 'Contenido adicional';
 ---
 
-<article class="analysis-panel analysis-panel-money" id="finance">
+<article class:list={["analysis-panel", "analysis-panel-money", isFreeToPlay && "analysis-panel-money-f2p"]} id="finance">
   <div class="section-title-row analysis-head">
     <div>
       <span class="section-eyebrow">Finanzas</span>
       <h2>Dinero</h2>
     </div>
     <div class="section-title-actions">
-      {priceDeltaLabel && (
+      {!isFreeToPlay && priceDeltaLabel && (
         <span class:list={["section-pill", `section-pill-${priceDeltaTone}`]}>{priceDeltaLabel}</span>
       )}
       <button class="game-edit-trigger game-edit-trigger-sm" id="money-edit-trigger" type="button" aria-label="Editar precio y microtransacciones">
@@ -113,45 +119,50 @@ const showAccordion = hasDlcs || hasMicro;
 
   {/* ── Acordeón "Contenido Adicional" ──────────────────────────── */}
   {showAccordion && (
-    <details class="dlc-finance-accordion">
+    <details class:list={["dlc-finance-accordion", isFreeToPlay && "dlc-finance-accordion-f2p"]} open={isFreeToPlay}>
       <summary class="dlc-finance-summary">
-        <span>Contenido Adicional</span>
+        <span>{additionalContentTitle}</span>
+        {isFreeToPlay && <small>Free to play</small>}
         <svg class="dlc-finance-chevron" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M6 9l6 6 6-6"></path>
         </svg>
       </summary>
 
       <div class="dlc-finance-body">
-        <div class="dlc-finance-actions">
-          <button
-            type="button"
-            class="dlc-sync-prices-btn"
-            id="dlc-sync-prices-btn"
-            data-slug={slug}
-          >
-            Actualizar precios DLC
-          </button>
-          <span class="dlc-sync-prices-status" id="dlc-sync-prices-status" aria-live="polite"></span>
-        </div>
-
-        <div class="chart-shell">
-          {/* ── Chart DLC (izquierda) ─── */}
-          <div class="chart-visual-card chart-visual-card-dlc">
-            <div class="chart-header">
-              <strong>Precio de los DLC</strong>
-            </div>
-            {dlcChartPoints.length >= 2 ? (
-              <div class="chart-canvas-wrap">
-                <canvas id="dlc-finance-chart" data-chart={JSON.stringify(dlcChartPayload)}></canvas>
-              </div>
-            ) : (
-              <div class="chart-empty">Faltan al menos dos puntos de precio para dibujar la gráfica de DLC.</div>
-            )}
+        {hasDlcs && (
+          <div class="dlc-finance-actions">
+            <button
+              type="button"
+              class="dlc-sync-prices-btn"
+              id="dlc-sync-prices-btn"
+              data-slug={slug}
+            >
+              Actualizar precios DLC
+            </button>
+            <span class="dlc-sync-prices-status" id="dlc-sync-prices-status" aria-live="polite"></span>
           </div>
+        )}
+
+        <div class:list={["chart-shell", isFreeToPlay && !hasDlcs && "chart-shell-micropayments"]}>
+          {/* ── Chart DLC (izquierda) ─── */}
+          {hasDlcs && (
+            <div class="chart-visual-card chart-visual-card-dlc">
+              <div class="chart-header">
+                <strong>Precio de los DLC</strong>
+              </div>
+              {dlcChartPoints.length >= 2 ? (
+                <div class="chart-canvas-wrap">
+                  <canvas id="dlc-finance-chart" data-chart={JSON.stringify(dlcChartPayload)}></canvas>
+                </div>
+              ) : (
+                <div class="chart-empty">Faltan al menos dos puntos de precio para dibujar la gráfica de DLC.</div>
+              )}
+            </div>
+          )}
 
           {/* ── Metric cards (derecha, bento) ─── */}
-          <div class="chart-metrics-grid dlc-finance-grid">
-            {additionalContentCards.map(({ label, value, note, tone }) => (
+          <div class:list={["chart-metrics-grid", "dlc-finance-grid", isFreeToPlay && !hasDlcs && "micropayments-grid"]}>
+            {visibleAdditionalCards.map(({ label, value, note, tone }) => (
               <article title={note} class:list={["chart-metric-card", `chart-metric-card-${tone}`, value === "-" && "chart-metric-card-empty"]}>
                 <span>{label}</span>
                 <strong>{value}</strong>

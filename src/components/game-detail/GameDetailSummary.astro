@@ -16,6 +16,7 @@ interface Props {
 }
 
 const { summaryCards } = Astro.props;
+const visibleCards = summaryCards.filter(({ label, value }) => label === "Estado" || value !== "-");
 ---
 
 <section class="game-page-section game-summary-section" id="overview">
@@ -25,8 +26,8 @@ const { summaryCards } = Astro.props;
       <h2>Resumen</h2>
     </div>
   </div>
-  <dl class="detail-grid detail-grid-4 summary-grid">
-    {summaryCards.map(({ label, value, note, className = "", progress = null }) => (
+  <dl class="detail-grid detail-grid-4 summary-grid" data-count={visibleCards.length}>
+    {visibleCards.map(({ label, value, note, className = "", progress = null }) => (
       <div
         class:list={[
           "detail-item",

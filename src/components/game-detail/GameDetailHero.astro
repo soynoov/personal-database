@@ -33,6 +33,9 @@ const {
   pricePaidNote,
   soloLabel,
 } = Astro.props;
+
+const playMode = soloLabel === "Si" || soloLabel === "Sí" ? "Un jugador" : "Multijugador";
+const paymentModel = hasFreeToPlayTag ? "Free to play" : pricePaidNote || "Sin datos";
 ---
 
 <section class="game-hero-rich game-hero-cinematic" id="game-header" style={heroCoverStyle}>
@@ -58,10 +61,20 @@ const {
         {hasFreeToPlayTag && <span class="badge badge-tag-free">Free to play</span>}
         {hasEarlyAccess && <span class="badge badge-tag-early">Early Access</span>}
       </div>
-      <p class="game-overview-summary">
-        {genres !== "-" ? genres : "Sin genero cargado"} · {pricePaidNote || "Sin lectura financiera"} ·{" "}
-        {soloLabel === "Si" ? "Experiencia en solitario" : "Puede jugarse acompanado"}
-      </p>
+      <dl class="game-hero-facts" aria-label="Datos principales">
+        <div>
+          <dt>Géneros</dt>
+          <dd>{genres !== "-" ? genres : "Sin datos"}</dd>
+        </div>
+        <div>
+          <dt>Modelo</dt>
+          <dd>{paymentModel}</dd>
+        </div>
+        <div>
+          <dt>Modo</dt>
+          <dd>{playMode}</dd>
+        </div>
+      </dl>
     </div>
   </section>
 </section>
