@@ -415,13 +415,6 @@ else if (normalizedStatus === "pausado") statusCellClass = "detail-item-status-p
 else if (normalizedStatus === "abandonado" || normalizedStatus === "retirado") statusCellClass = "detail-item-status-abandoned";
 
 const pricePaidVisual = getPaidPriceVisual();
-const acquisitionLabel = hasFreeToPlayTag
-  ? "Free to play"
-  : game.precio_pagado === null || game.precio_pagado === undefined
-    ? "Sin registrar"
-    : Number(game.precio_pagado) === 0
-      ? "Obtenido gratis"
-      : `${formatCurrency(game.precio_pagado)} pagados`;
 const priceDeltaTone =
   hasFreeToPlayTag || pricePaidVisual.deltaLabel === ""
     ? "neutral"
@@ -432,6 +425,13 @@ const priceDeltaTone =
         : "neutral";
 const genres = Array.isArray(game.generos) && game.generos.length > 0 ? game.generos.join(", ") : "-";
 const tags = Array.isArray(game.tags) && game.tags.length > 0 ? game.tags.join(", ") : "-";
+const tagLabels: Record<string, string> = {
+  "free-to-play": "Free to play",
+  competitivo: "Competitivo",
+};
+const heroTagsLabel = Array.isArray(game.tags) && game.tags.length > 0
+  ? game.tags.map((tag) => tagLabels[String(tag).trim().toLowerCase()] ?? String(tag).trim()).join(", ")
+  : "Sin etiquetas";
 const dlcItems = Array.isArray(game.dlcs?.items) ? game.dlcs.items : [];
 const dlcTotal = Number(game.dlcs?.total ?? dlcItems.length ?? 0);
 
@@ -911,7 +911,7 @@ const commentsEditValues = {
       isCompetitive={isCompetitive}
       hasEarlyAccess={hasEarlyAccess}
       genres={genres}
-      acquisitionLabel={acquisitionLabel}
+      tagsLabel={heroTagsLabel}
       soloLabel={formatSolo(game.solo)}
     />
 

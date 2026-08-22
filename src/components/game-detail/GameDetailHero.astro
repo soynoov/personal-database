@@ -17,7 +17,7 @@ interface Props {
   isCompetitive: boolean;
   hasEarlyAccess: boolean;
   genres: string;
-  acquisitionLabel: string;
+  tagsLabel: string;
   soloLabel: string;
 }
 
@@ -32,7 +32,7 @@ const {
   isCompetitive,
   hasEarlyAccess,
   genres,
-  acquisitionLabel,
+  tagsLabel,
   soloLabel,
 } = Astro.props;
 
@@ -73,8 +73,8 @@ const playMode = soloLabel === "Si" || soloLabel === "Sí"
           <dd>{genres !== "-" ? genres : "Sin datos"}</dd>
         </div>
         <div>
-          <dt>Adquisición</dt>
-          <dd>{acquisitionLabel}</dd>
+          <dt>Etiquetas</dt>
+          <dd>{tagsLabel}</dd>
         </div>
         <div>
           <dt>Modo</dt>
