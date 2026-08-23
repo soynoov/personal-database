@@ -6689,5 +6689,50 @@
       "metascore": 81,
       "userscore": 7.9
     }
+  },
+  {
+    "titulo": "Wolfenstein: The New Order",
+    "estado": "Jugando",
+    "launcher": "Epic Games",
+    "plataforma": "PC",
+    "horas": 0,
+    "tamano": "44,49 GB",
+    "fecha_inicio": "2026-08-23",
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2014,
+    "modos": [
+      "solitario"
+    ],
+    "solo": true,
+    "hltb": 11.5,
+    "cover_url": null,
+    "steam_appid": 201810,
+    "generos": [
+      "Acción"
+    ],
+    "precio_pagado": null,
+    "precio_actual": 19.99,
+    "precio_salida": 59.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 11.5,
+      "main_plus": 15.5,
+      "completionist": 24.5
+    },
+    "steam_store_genres": [
+      "Acción"
+    ],
+    "steam_store_name": "Wolfenstein: The New Order",
+    "steam_last_sync_at": null,
+    "critica": {
+      "metascore": 81,
+      "userscore": 8.1
+    }
   }
 ]
