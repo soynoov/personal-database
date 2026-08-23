@@ -83,12 +83,15 @@ export function isCommunityCriterionApplicable(
   const normalizedGenres = Array.isArray(game.generos)
     ? game.generos.map((genre) => String(genre).trim().toLowerCase())
     : [];
+  const hasCompetitiveContext =
+    normalizedTags.includes('competitivo') || Boolean(game.rango_actual || game.rango_maximo);
+
+  if (hasCompetitiveContext) return true;
+  if (normalizedTags.includes('cooperativo-privado')) return false;
 
   return (
     game.solo === false ||
-    normalizedTags.includes('competitivo') ||
-    normalizedGenres.some((genre) => genre.includes('multijugador') || genre.includes('multiplayer')) ||
-    Boolean(game.rango_actual || game.rango_maximo)
+    normalizedGenres.some((genre) => genre.includes('multijugador') || genre.includes('multiplayer'))
   );
 }
 
@@ -135,7 +138,8 @@ export type PersonalScoreCalculation = {
 /**
  * La nota base compara los puntos obtenidos con los puntos máximos posibles.
  * Así, una escala de 3 puntos influye menos que una de 5 de forma natural.
- * Comunidad solo aplica a juegos multi/competitivos y pesa 0,5.
+ * Comunidad solo aplica a juegos con comunidad pública o competitivos y pesa 0,5.
+ * El cooperativo privado entre amigos queda fuera salvo que también sea competitivo.
  * La mención honorífica suma 0,1 por nivel y la nota final nunca supera 10.
  */
 export function getPersonalScoreCalculation(

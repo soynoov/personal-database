@@ -62,6 +62,8 @@ const hasFreeToPlayTag =
 
 const hasCompetitiveTag =
   Array.isArray(game.tags) && game.tags.some((tag: string) => String(tag).trim().toLowerCase() === "competitivo");
+const hasPrivateCoopTag =
+  Array.isArray(game.tags) && game.tags.some((tag: string) => String(tag).trim().toLowerCase() === "cooperativo-privado");
 // Compatibilidad con las fichas antiguas que ya guardaban rango_maximo sin tag.
 const isCompetitive = hasCompetitiveTag || Boolean(game.rango_actual || game.rango_maximo);
 const includeCommunityCriterion = isCommunityCriterionApplicable(game);
@@ -428,6 +430,7 @@ const tags = Array.isArray(game.tags) && game.tags.length > 0 ? game.tags.join("
 const tagLabels: Record<string, string> = {
   "free-to-play": "Free to play",
   competitivo: "Competitivo",
+  "cooperativo-privado": "Cooperativo con amigos",
 };
 const heroTagsLabel = Array.isArray(game.tags) && game.tags.length > 0
   ? game.tags.map((tag) => tagLabels[String(tag).trim().toLowerCase()] ?? String(tag).trim()).join(", ")
@@ -884,6 +887,7 @@ const generalEditValues = {
   fecha_inicio: game.fecha_inicio,
   fecha_fin: game.fecha_fin,
   competitivo: isCompetitive,
+  cooperativo_privado: hasPrivateCoopTag,
 };
 
 // Lápiz de Dinero: precio pagado, microtransacciones y el toggle free-to-play.
@@ -913,6 +917,7 @@ const commentsEditValues = {
       platformBadge={platformBadge}
       hasFreeToPlayTag={hasFreeToPlayTag}
       isCompetitive={isCompetitive}
+      isPrivateCoop={hasPrivateCoopTag}
       hasEarlyAccess={hasEarlyAccess}
       genres={genres}
       tagsLabel={heroTagsLabel}

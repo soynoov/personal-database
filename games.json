@@ -616,7 +616,9 @@
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": [],
+    "tags": [
+      "cooperativo-privado"
+    ],
     "hltb_breakdown": {
       "main": 113.5,
       "main_plus": 235,

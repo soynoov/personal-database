@@ -21,6 +21,7 @@ interface EditValues {
   fecha_inicio: string | null;
   fecha_fin: string | null;
   competitivo: boolean;
+  cooperativo_privado: boolean;
 }
 
 interface Props {
@@ -109,6 +110,14 @@ const estadoOptions =
         <span class="edit-field-hint">Activa los rangos y el Peak ELO en la ficha.</span>
       </div>
 
+      <div class="edit-field edit-field-checkbox">
+        <label for="edit-cooperativo-privado">
+          <input id="edit-cooperativo-privado" name="cooperativo_privado" type="checkbox" checked={editValues.cooperativo_privado} />
+          Cooperativo con amigos
+        </label>
+        <span class="edit-field-hint">No activa el criterio Comunidad, salvo que el juego también sea competitivo.</span>
+      </div>
+
       <div class="edit-dialog-actions">
         <button class="edit-dialog-cancel" id="game-edit-cancel" type="button">Cancelar</button>
         <button class="edit-dialog-submit" id="game-edit-submit" type="submit">Guardar cambios</button>
@@ -168,6 +177,7 @@ const estadoOptions =
         fecha_inicio: data.get('fecha_inicio'),
         fecha_fin: data.get('fecha_fin'),
         competitivo: data.get('competitivo') === 'on',
+        cooperativo_privado: data.get('cooperativo_privado') === 'on',
       };
 
       submitBtn.disabled = true;

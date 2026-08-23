@@ -15,6 +15,7 @@ interface Props {
   platformBadge: { class: string; label: string };
   hasFreeToPlayTag: boolean;
   isCompetitive: boolean;
+  isPrivateCoop: boolean;
   hasEarlyAccess: boolean;
   genres: string;
   tagsLabel: string;
@@ -30,13 +31,16 @@ const {
   platformBadge,
   hasFreeToPlayTag,
   isCompetitive,
+  isPrivateCoop,
   hasEarlyAccess,
   genres,
   tagsLabel,
   soloLabel,
 } = Astro.props;
 
-const playMode = soloLabel === "Si" || soloLabel === "Sí"
+const playMode = isPrivateCoop
+  ? "Cooperativo con amigos"
+  : soloLabel === "Si" || soloLabel === "Sí"
   ? "Un jugador"
   : soloLabel === "No"
     ? "Multijugador"

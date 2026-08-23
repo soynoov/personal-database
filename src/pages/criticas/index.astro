@@ -123,7 +123,7 @@ const formatRating = (rating: number) =>
                 <div>
                   <span>1–{criterion.max}</span>
                   <span>{criterion.weight === 1 ? `${criterion.max} puntos máximos` : `Peso ×${String(criterion.weight).replace('.', ',')}`}</span>
-                  {criterion.key === 'comunidad' && <span>Solo multi / competitivo</span>}
+                  {criterion.key === 'comunidad' && <span>Solo comunidad pública / competitivo</span>}
                 </div>
                 <TablerIcon src={chevronDownIcon} class='criterion-method-chevron' />
               </summary>

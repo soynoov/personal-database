@@ -106,6 +106,7 @@ function toTagsArray(value: unknown): string[] {
 
 const FREE_TO_PLAY_TAG = "free-to-play";
 const COMPETITIVE_TAG = "competitivo";
+const PRIVATE_COOP_TAG = "cooperativo-privado";
 
 /**
  * El formulario no edita la lista de tags completa (se gestiona aparte).
@@ -198,9 +199,9 @@ export const POST: APIRoute = async ({ params, request }) => {
     updated.nota = calculatePersonalScore(updated.critica, isCommunityCriterionApplicable(updated));
   }
 
-  // Los toggles de free-to-play y competitivo solo se aplican cuando su
-  // formulario los envía. Si llega body.tags por otro camino, se respeta
-  // como base y ambos toggles preservan el resto de etiquetas.
+  // Los toggles semánticos solo se aplican cuando su formulario los envía.
+  // Si llega body.tags por otro camino, se respeta como base y cada toggle
+  // preserva el resto de etiquetas.
   let nextTags = body.tags !== undefined ? toTagsArray(body.tags) : game.tags;
   if (body.free_to_play !== undefined) {
     nextTags = toggleFreeToPlayTag(nextTags, body.free_to_play);
@@ -208,7 +209,15 @@ export const POST: APIRoute = async ({ params, request }) => {
   if (body.competitivo !== undefined) {
     nextTags = toggleTag(nextTags, COMPETITIVE_TAG, body.competitivo);
   }
-  if (body.tags !== undefined || body.free_to_play !== undefined || body.competitivo !== undefined) {
+  if (body.cooperativo_privado !== undefined) {
+    nextTags = toggleTag(nextTags, PRIVATE_COOP_TAG, body.cooperativo_privado);
+  }
+  if (
+    body.tags !== undefined ||
+    body.free_to_play !== undefined ||
+    body.competitivo !== undefined ||
+    body.cooperativo_privado !== undefined
+  ) {
     updated.tags = nextTags;
   }
 
