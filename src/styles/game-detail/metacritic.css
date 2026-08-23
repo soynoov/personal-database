@@ -341,6 +341,31 @@
     text-decoration: underline;
   }
 
+  .metacritic-honorary-preview {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.32rem;
+    min-height: 34px;
+    padding: 0.42rem 0.62rem;
+    border: 1px solid rgba(201, 168, 255, 0.2);
+    border-radius: 999px;
+    background: rgba(201, 168, 255, 0.07);
+    color: var(--muted);
+    font: inherit;
+    font-size: 0.68rem;
+  }
+
+  .metacritic-honorary-preview .tabler-icon {
+    width: 0.92rem;
+    height: 0.92rem;
+    color: #c9a8ff;
+  }
+
+  .metacritic-honorary-preview strong {
+    color: #eadcff;
+    font-size: 0.76rem;
+  }
+
   .metacritic-public-fields {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -427,12 +452,107 @@
 
   .metacritic-honorary-fields {
     display: grid;
-    grid-template-columns: minmax(210px, 0.7fr) 1.3fr;
     gap: 0.65rem;
   }
 
+  .metacritic-honorary-levels {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .metacritic-honorary-levels legend {
+    margin-bottom: 0.42rem;
+    color: var(--text);
+    font-size: 0.76rem;
+    font-weight: 700;
+  }
+
+  .metacritic-honorary-choice-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .metacritic-honorary-choice {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.48rem;
+    min-width: 0;
+    min-height: 58px;
+    padding: 0.58rem 0.62rem;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.025);
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .metacritic-honorary-choice:hover {
+    border-color: rgba(201, 168, 255, 0.28);
+    background: rgba(201, 168, 255, 0.055);
+  }
+
+  .metacritic-honorary-choice:focus-within {
+    outline: 2px solid rgba(201, 168, 255, 0.58);
+    outline-offset: 2px;
+  }
+
+  .metacritic-honorary-choice:has(input:checked) {
+    border-color: rgba(201, 168, 255, 0.58);
+    background: rgba(124, 78, 188, 0.2);
+  }
+
+  .metacritic-honorary-choice input {
+    width: 17px;
+    height: 17px;
+    margin: 0;
+    accent-color: #b98cf2;
+  }
+
+  .metacritic-honorary-choice > span {
+    display: grid;
+    gap: 0.14rem;
+    min-width: 0;
+  }
+
+  .metacritic-honorary-choice strong {
+    overflow: hidden;
+    font-size: 0.72rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .metacritic-honorary-choice small {
+    color: var(--muted);
+    font-size: 0.64rem;
+  }
+
+  .metacritic-honorary-choice:has(input:checked) small {
+    color: #d9c4f5;
+  }
+
+  .metacritic-honorary-comment[hidden] {
+    display: none;
+  }
+
+  .metacritic-honorary-comment > span {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .metacritic-honorary-comment > span small {
+    color: #d9c4f5;
+    font-size: 0.62rem;
+    font-weight: 600;
+  }
+
   .metacritic-honorary-comment textarea {
-    min-height: 74px;
+    min-height: 82px;
     padding: 0.65rem 0.7rem;
     resize: vertical;
   }
@@ -541,6 +661,10 @@
     .metacritic-public-field,
     .metacritic-rating-field {
       grid-template-columns: minmax(0, 1fr) 112px;
+    }
+
+    .metacritic-honorary-choice-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .metacritic-honorary {

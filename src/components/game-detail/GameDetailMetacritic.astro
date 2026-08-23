@@ -33,6 +33,12 @@ const displayedPersonalScore = personalScore ?? (hasCriterionData ? null : legac
 const completedCriteria = criterionScores.filter((criterion) => criterion.value !== null).length;
 const honoraryLevel = critique?.mencion_honorifica?.nivel ?? 0;
 const honoraryComment = critique?.mencion_honorifica?.comentario ?? '';
+const honoraryOptions = [
+  { level: 0, label: 'Ninguna', bonus: 'Sin bonus' },
+  { level: 1, label: 'Pequeña', bonus: '+0,1' },
+  { level: 2, label: 'Destacada', bonus: '+0,2' },
+  { level: 3, label: 'Excepcional', bonus: '+0,3' },
+];
 
 const toNullableScore = (value: unknown) => {
   if (value === null || value === undefined || value === '') return null;
@@ -136,30 +142,32 @@ const formatDecimal = (value: number | null) =>
       ))}
     </div>
 
-    <article class:list={["metacritic-honorary", honoraryLevel > 0 && "has-value"]}>
-      <div class="metacritic-honorary-level">
-        <span class="section-eyebrow">Mención honorífica</span>
-        <div>
-          <strong>{honoraryLevel > 0 ? honoraryLevel : '—'}</strong>
-          <small>/3</small>
+    {honoraryLevel > 0 && (
+      <article class="metacritic-honorary has-value">
+        <div class="metacritic-honorary-level">
+          <span class="section-eyebrow">Mención honorífica</span>
+          <div>
+            <strong>{honoraryLevel}</strong>
+            <small>/3</small>
+          </div>
         </div>
-      </div>
-      <div class="metacritic-honorary-bonus">
-        <span>Bonus</span>
-        <strong>{honoraryLevel > 0 ? `+${formatDecimal(honoraryLevel * 0.1)}` : '—'}</strong>
-        <small>My score</small>
-      </div>
-      <div class="metacritic-honorary-reason">
-        <span>Motivo</span>
-        <p>{honoraryLevel > 0 ? honoraryComment || 'Sin comentario' : 'Sin mención'}</p>
-      </div>
-    </article>
+        <div class="metacritic-honorary-bonus">
+          <span>Bonus</span>
+          <strong>+{formatDecimal(honoraryLevel * 0.1)}</strong>
+          <small>My score</small>
+        </div>
+        <div class="metacritic-honorary-reason">
+          <span>Motivo</span>
+          <p>{honoraryComment || 'Sin comentario'}</p>
+        </div>
+      </article>
+    )}
 
     <div class="metacritic-formula">
       <span><TablerIcon src={checksIcon} /> Todos los criterios</span>
       <span><TablerIcon src={divideIcon} /> Puntos obtenidos / máximos</span>
       {includeCommunity && <span><TablerIcon src={usersIcon} /> Comunidad ×0,5</span>}
-      <span><TablerIcon src={starIcon} /> Mención +0,1 por nivel</span>
+      {honoraryLevel > 0 && <span><TablerIcon src={starIcon} /> Mención +0,1 por nivel</span>}
       <span><TablerIcon src={equalIcon} /> Máximo 10</span>
     </div>
   </div>
@@ -250,25 +258,46 @@ const formatDecimal = (value: number | null) =>
             <span class="section-eyebrow">Opcional</span>
             <h3 id="metacritic-honorary-title">Mención honorífica</h3>
           </div>
-          <span>Suma hasta +0,3</span>
+          <output class="metacritic-honorary-preview" aria-live="polite">
+            <TablerIcon src={starIcon} />
+            <span>Bonus</span>
+            <strong id="edit-honorary-bonus">+0,{honoraryLevel}</strong>
+          </output>
         </div>
 
         <div class="metacritic-honorary-fields">
-          <label class="metacritic-rating-field" for="edit-honorary-level">
-            <span>Nivel <small>0–3</small></span>
-            <select id="edit-honorary-level" name="honorary_level">
-              <option value="0" selected={honoraryLevel === 0}>0 · Ninguna</option>
-              <option value="1" selected={honoraryLevel === 1}>1 · Pequeña</option>
-              <option value="2" selected={honoraryLevel === 2}>2 · Destacada</option>
-              <option value="3" selected={honoraryLevel === 3}>3 · Excepcional</option>
-            </select>
-          </label>
-          <label class="metacritic-honorary-comment" for="edit-honorary-comment">
-            <span>Motivo</span>
+          <fieldset class="metacritic-honorary-levels">
+            <legend>Nivel de mención</legend>
+            <div class="metacritic-honorary-choice-grid">
+              {honoraryOptions.map((option) => (
+                <label class="metacritic-honorary-choice">
+                  <input
+                    type="radio"
+                    name="honorary_level"
+                    value={option.level}
+                    checked={honoraryLevel === option.level}
+                  />
+                  <span>
+                    <strong>{option.level} · {option.label}</strong>
+                    <small>{option.bonus}</small>
+                  </span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+          <label
+            class="metacritic-honorary-comment"
+            id="edit-honorary-comment-field"
+            for="edit-honorary-comment"
+            hidden={honoraryLevel === 0}
+          >
+            <span>Motivo <small>Obligatorio</small></span>
             <textarea
               id="edit-honorary-comment"
               name="honorary_comment"
-              placeholder="Obligatorio si eliges una mención"
+              placeholder="¿Por qué merece esta mención?"
+              required={honoraryLevel > 0}
+              disabled={honoraryLevel === 0}
             >{honoraryComment}</textarea>
           </label>
         </div>
@@ -292,6 +321,12 @@ const formatDecimal = (value: number | null) =>
   const cancelBtn = document.getElementById('metacritic-edit-cancel');
   const errorBox = document.getElementById('metacritic-edit-error');
   const submitBtn = document.getElementById('metacritic-edit-submit');
+  const honoraryLevelInputs = Array.from(
+    document.querySelectorAll<HTMLInputElement>('input[name="honorary_level"]'),
+  );
+  const honoraryCommentField = document.getElementById('edit-honorary-comment-field');
+  const honoraryCommentInput = document.getElementById('edit-honorary-comment');
+  const honoraryBonus = document.getElementById('edit-honorary-bonus');
 
   if (
     trigger instanceof HTMLButtonElement &&
@@ -305,6 +340,28 @@ const formatDecimal = (value: number | null) =>
       errorBox.textContent = message;
       errorBox.removeAttribute('hidden');
     };
+    const syncHonoraryFields = (revealComment = false) => {
+      const selectedLevel = honoraryLevelInputs.find((input) => input.checked);
+      const level = Number(selectedLevel?.value ?? 0);
+      const hasHonoraryMention = level > 0;
+
+      honoraryCommentField?.toggleAttribute('hidden', !hasHonoraryMention);
+      if (honoraryCommentInput instanceof HTMLTextAreaElement) {
+        honoraryCommentInput.disabled = !hasHonoraryMention;
+        honoraryCommentInput.required = hasHonoraryMention;
+      }
+      if (honoraryBonus instanceof HTMLElement) {
+        honoraryBonus.textContent = `+0,${level}`;
+      }
+      if (revealComment && hasHonoraryMention && honoraryCommentField instanceof HTMLElement) {
+        requestAnimationFrame(() => honoraryCommentField.scrollIntoView({ block: 'center' }));
+      }
+    };
+
+    honoraryLevelInputs.forEach((input) =>
+      input.addEventListener('change', () => syncHonoraryFields(true)),
+    );
+    syncHonoraryFields();
 
     trigger.addEventListener('click', () => {
       hideError();
