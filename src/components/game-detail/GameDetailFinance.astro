@@ -210,9 +210,6 @@ const micropaymentsValue = microtransaccionesCard?.value === '-'
           />
           Free to play
         </label>
-        <span class="edit-field-hint">
-          Marca esto si el juego es gratis de base. Cambia el badge y sustituye el campo "Precio pagado" por "Microtransacciones".
-        </span>
       </div>
 
       <div class="edit-field" id="money-field-precio-pagado" hidden={isFreeToPlay}>
@@ -234,11 +231,6 @@ const micropaymentsValue = microtransaccionesCard?.value === '-'
           value={editValues.gasto_microtransacciones ?? ''}
         />
       </div>
-      <p class="edit-field-hint edit-field-hint-price" id="money-price-field-hint">
-        {isFreeToPlay
-          ? 'Free to play: el precio del juego es 0. Esto es lo gastado dentro, en compras o DLC sueltas.'
-          : 'Lo que pagaste por el juego en sí.'}
-      </p>
 
       <div class="edit-dialog-actions">
         <button class="edit-dialog-cancel" id="money-edit-cancel" type="button">Cancelar</button>
@@ -277,7 +269,6 @@ const micropaymentsValue = microtransaccionesCard?.value === '-'
     const precioField = document.getElementById('money-field-precio-pagado');
     const unidadesField = document.getElementById('money-field-unidades-compradas');
     const microtransaccionesField = document.getElementById('money-field-microtransacciones');
-    const priceHint = document.getElementById('money-price-field-hint');
 
     const syncPriceFields = () => {
       if (
@@ -290,11 +281,6 @@ const micropaymentsValue = microtransaccionesCard?.value === '-'
       precioField.hidden = isFtp;
       unidadesField.hidden = isFtp;
       microtransaccionesField.hidden = !isFtp;
-      if (priceHint instanceof HTMLElement) {
-        priceHint.textContent = isFtp
-          ? 'Free to play: el precio del juego es 0. Esto es lo gastado dentro, en compras o DLC sueltas.'
-          : 'Lo que pagaste por el juego en sí.';
-      }
     };
 
     freeToPlayCheckbox?.addEventListener('change', syncPriceFields);

@@ -79,10 +79,7 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
 <dialog class="edit-dialog edit-dialog-wide" id="dlcs-edit-dialog">
   <div class="edit-dialog-body">
     <div class="edit-dialog-head">
-      <div>
-        <h2>Editar DLCs</h2>
-        <p class="edit-dialog-sub">Selecciona los DLCs que tienes y registra fecha y precio.</p>
-      </div>
+      <h2>Editar DLCs</h2>
       <button class="edit-dialog-close" id="dlcs-edit-close" type="button" aria-label="Cerrar"><TablerIcon src={xIcon} /></button>
     </div>
 
@@ -92,9 +89,7 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
       <button class="edit-dialog-cancel" id="dlcs-sync-button" type="button" data-slug={slug}>
         Actualizar desde Steam
       </button>
-      <span class="edit-field-hint" id="dlcs-sync-status">
-        Busca DLCs nuevos en Steam y los añade como "no adquirido".
-      </span>
+      <span class="edit-field-hint" id="dlcs-sync-status" role="status" aria-live="polite"></span>
     </div>
 
     {dlcItems.length > 0 && (
@@ -383,8 +378,6 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
   }
 
   if (syncBtn instanceof HTMLButtonElement && syncStatus instanceof HTMLElement) {
-    const defaultStatusText = syncStatus.textContent ?? '';
-
     syncBtn.addEventListener('click', async () => {
       const slug = syncBtn.dataset.slug ?? '';
       syncBtn.disabled = true;

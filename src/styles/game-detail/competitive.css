@@ -96,12 +96,6 @@
   white-space: nowrap;
 }
 
-.competitive-rank-card p {
-  margin: 0.42rem 0 0;
-  color: rgba(244, 236, 236, 0.62);
-  font-size: 0.76rem;
-}
-
 .competitive-rank-card.is-empty strong {
   color: rgba(244, 236, 236, 0.48);
   font-size: clamp(1.3rem, 2.5vw, 1.8rem);

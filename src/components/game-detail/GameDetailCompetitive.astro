@@ -42,7 +42,6 @@ const displayRank = (value: string | null) => value?.trim() || 'Sin registrar';
         <span>Mejor rango alcanzado</span>
       </div>
       <strong title={displayRank(peakRank)}>{displayRank(peakRank)}</strong>
-      <p>Tu techo histórico en este juego</p>
     </article>
   </div>
 </section>
@@ -50,10 +49,7 @@ const displayRank = (value: string | null) => value?.trim() || 'Sin registrar';
 <dialog class="edit-dialog" id="competitive-edit-dialog">
   <div class="edit-dialog-body">
     <div class="edit-dialog-head">
-      <div>
-        <h2>Editar Peak ELO</h2>
-        <p class="edit-dialog-sub">Guarda el mejor rango que hayas alcanzado, aunque ya no sea el actual.</p>
-      </div>
+      <h2>Editar Peak ELO</h2>
       <button class="edit-dialog-close" id="competitive-edit-close" type="button" aria-label="Cerrar">×</button>
     </div>
 
