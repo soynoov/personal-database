@@ -14,6 +14,7 @@ import GameDetailComments from "../../components/game-detail/GameDetailComments.
 import GameDetailMetacritic from "../../components/game-detail/GameDetailMetacritic.astro";
 import { buildGameCoverUrl, buildGameHeroUrl } from "../../lib/game-cover-url";
 import { isCompletedStatus, normalizeStatus } from "../../lib/game-status";
+import { getGameTagLabel, hasGameTag } from "../../lib/game-tags";
 import { isCommunityCriterionApplicable } from "../../lib/game-reviews";
 import { findGameBySlug, getPurchasedUnits, getTotalPaidPrice, readGames } from "../../lib/local-games";
 
@@ -58,23 +59,20 @@ const getCoverSourceMeta = () => {
   };
 };
 
-const hasFreeToPlayTag =
-  Array.isArray(game.tags) && game.tags.some((tag: string) => String(tag).toLowerCase() === "free-to-play");
-
-const hasCompetitiveTag =
-  Array.isArray(game.tags) && game.tags.some((tag: string) => String(tag).trim().toLowerCase() === "competitivo");
-const hasPrivateCoopTag =
-  Array.isArray(game.tags) && game.tags.some((tag: string) => String(tag).trim().toLowerCase() === "cooperativo-privado");
+const hasFreeToPlayTag = hasGameTag(game.tags, "free-to-play");
+const hasCompetitiveTag = hasGameTag(game.tags, "competitivo");
+const hasPrivateCoopTag = hasGameTag(game.tags, "cooperativo-privado");
 // Compatibilidad con las fichas antiguas que ya guardaban rango_maximo sin tag.
 const isCompetitive = hasCompetitiveTag || Boolean(game.rango_actual || game.rango_maximo);
 const includeCommunityCriterion = isCommunityCriterionApplicable(game);
 
 const hasEarlyAccess =
-  Array.isArray(game.generos) &&
-  game.generos.some((genre: string) => {
-    const normalized = String(genre).toLowerCase();
-    return normalized === "acceso anticipado" || normalized === "early access";
-  });
+  hasGameTag(game.tags, "early-access") ||
+  (Array.isArray(game.generos) &&
+    game.generos.some((genre: string) => {
+      const normalized = String(genre).toLowerCase();
+      return normalized === "acceso anticipado" || normalized === "early access";
+    }));
 
 const formatCurrency = (value: unknown, fallback = "-") => {
   if (value === null || value === undefined || value === "") return fallback;
@@ -427,15 +425,14 @@ const priceDeltaTone =
         ? "negative"
         : "neutral";
 const genres = Array.isArray(game.generos) && game.generos.length > 0 ? game.generos.join(", ") : "-";
-const tags = Array.isArray(game.tags) && game.tags.length > 0 ? game.tags.join(", ") : "-";
-const tagLabels: Record<string, string> = {
-  "free-to-play": "Free to play",
-  competitivo: "Competitivo",
+const internalTagLabels: Record<string, string> = {
   "cooperativo-privado": "Cooperativo con amigos",
 };
-const heroTagsLabel = Array.isArray(game.tags) && game.tags.length > 0
-  ? game.tags.map((tag) => tagLabels[String(tag).trim().toLowerCase()] ?? String(tag).trim()).join(", ")
-  : "Sin etiquetas";
+const visibleTags = Array.isArray(game.tags)
+  ? game.tags.map((tag) => internalTagLabels[String(tag).trim().toLowerCase()] ?? getGameTagLabel(tag))
+  : [];
+const tags = visibleTags.length > 0 ? visibleTags.join(", ") : "-";
+const heroTagsLabel = visibleTags.length > 0 ? visibleTags.join(", ") : "Sin etiquetas";
 const dlcItems = Array.isArray(game.dlcs?.items) ? game.dlcs.items : [];
 const dlcTotal = Number(game.dlcs?.total ?? dlcItems.length ?? 0);
 

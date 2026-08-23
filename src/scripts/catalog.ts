@@ -10,6 +10,7 @@
 import { buildGameCoverUrl } from "../lib/game-cover-url";
 import type { CatalogGame } from "../lib/catalog-game";
 import { isCompletedStatus, normalizeStatus } from "../lib/game-status";
+import { getGameTagLabel, hasGameTag, normalizeGameTag } from "../lib/game-tags";
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
 
@@ -130,15 +131,21 @@ const platformClassName = (value: unknown): string =>
 // ─── Lógica de precios y tags ─────────────────────────────────────────────────
 
 const hasFreeToPlayTag = (game: CatalogGame): boolean =>
-  Array.isArray(game.tags) &&
-  game.tags.some((tag) => String(tag).toLowerCase() === 'free-to-play');
+  hasGameTag(game.tags, 'free-to-play');
 
 const hasEarlyAccess = (game: CatalogGame): boolean =>
-  Array.isArray(game.generos) &&
-  game.generos.some((g) => {
-    const n = String(g).toLowerCase();
-    return n === 'acceso anticipado' || n === 'early access';
-  });
+  hasGameTag(game.tags, 'early-access') ||
+  (Array.isArray(game.generos) &&
+    game.generos.some((g) => {
+      const n = String(g).toLowerCase();
+      return n === 'acceso anticipado' || n === 'early access';
+    }));
+
+const matchesTagFilter = (game: CatalogGame, filter: string): boolean => {
+  if (!filter) return true;
+  if (hasGameTag(game.tags, filter)) return true;
+  return normalizeGameTag(filter) === 'early-access' && hasEarlyAccess(game);
+};
 
 const getReferencePrice = (game: CatalogGame): number | null => {
   if (game.precio_actual != null && game.precio_actual !== '') return Number(game.precio_actual);
@@ -193,13 +200,15 @@ const formatViewPrice = (game: CatalogGame): string => {
 // ─── Filtros rápidos ──────────────────────────────────────────────────────────
 
 const STATUS_QUICK_FILTERS = new Set(['terminado', 'jugando', 'pendiente', 'wishlist']);
-const QUICK_ONLY_FILTERS = new Set(['profit', 'loss', 'early']);
+const TAG_QUICK_FILTERS: Record<string, string> = {
+  free: 'free-to-play',
+  early: 'early-access',
+};
+const QUICK_ONLY_FILTERS = new Set(['profit', 'loss']);
 const DEFAULT_SORT = 'horas-desc';
 
 const matchesQuickFilter = (game: CatalogGame, quickFilter: string): boolean => {
   if (!quickFilter) return true;
-  if (quickFilter === 'free') return hasFreeToPlayTag(game);
-  if (quickFilter === 'early') return hasEarlyAccess(game);
   if (quickFilter === 'profit' || quickFilter === 'loss') {
     const visual = getPaidPriceVisual(game);
     return quickFilter === 'profit' ? visual.className.includes('profit') : visual.className.includes('loss');
@@ -230,6 +239,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     estado: el<HTMLSelectElement>('#estado'),
     launcher: el<HTMLSelectElement>('#launcher'),
     plataforma: el<HTMLSelectElement>('#plataforma'),
+    tag: el<HTMLSelectElement>('#tag'),
     solo: el<HTMLSelectElement>('#solo'),
     sort: el<HTMLSelectElement>('#sort'),
     mobileSort: document.querySelector<HTMLSelectElement>('#mobile-sort'),
@@ -256,7 +266,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
   // Restaurar params de URL
   const params = new URLSearchParams(window.location.search);
-  for (const key of ['search', 'estado', 'launcher', 'plataforma', 'solo', 'sort', 'precio']) {
+  for (const key of ['search', 'estado', 'launcher', 'plataforma', 'tag', 'solo', 'sort', 'precio']) {
     const el = elements[key as keyof typeof elements] as HTMLInputElement | HTMLSelectElement | null;
     const value = params.get(key);
     if (el && value) el.value = value;
@@ -271,13 +281,17 @@ export function initCatalog(allGames: CatalogGame[]): void {
   // ─── Helpers de vista ──────────────────────────────────────────────────────
 
   const isQuickChipActive = (chipValue: string, filters: Record<string, string>): boolean => {
-    if (chipValue === '') return filters.estado === '' && filters.precio === '' && !activeQuickFilter;
+    if (chipValue === '') {
+      return filters.estado === '' && filters.precio === '' && filters.tag === '' && !activeQuickFilter;
+    }
     if (STATUS_QUICK_FILTERS.has(chipValue)) {
       return chipValue === 'terminado'
         ? isCompletedStatus(filters.estado)
         : normalizeStatus(filters.estado) === chipValue;
     }
-    if (chipValue === 'free') return filters.precio === 'free';
+    if (TAG_QUICK_FILTERS[chipValue]) {
+      return normalizeGameTag(filters.tag) === TAG_QUICK_FILTERS[chipValue];
+    }
     return activeQuickFilter === chipValue;
   };
 
@@ -311,6 +325,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
       estado: elements.estado.value,
       launcher: elements.launcher.value,
       plataforma: elements.plataforma.value,
+      tag: elements.tag.value,
       solo: elements.solo.value,
       sort: elements.sort.value,
       precio: elements.precio.value,
@@ -324,7 +339,8 @@ export function initCatalog(allGames: CatalogGame[]): void {
         const searchMatch =
           textMatch(game.titulo, filters.search) ||
           textMatch(game.launcher, filters.search) ||
-          textMatch(Array.isArray(game.generos) ? game.generos.join(', ') : '', filters.search);
+          textMatch(Array.isArray(game.generos) ? game.generos.join(', ') : '', filters.search) ||
+          textMatch(Array.isArray(game.tags) ? game.tags.map(getGameTagLabel).join(', ') : '', filters.search);
 
         return (
           searchMatch &&
@@ -335,6 +351,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
               : normalizeStatus(game.estado) === normalizeStatus(filters.estado))) &&
           textMatch(game.launcher, filters.launcher) &&
           textMatch(game.plataforma, filters.plataforma) &&
+          matchesTagFilter(game, filters.tag) &&
           (filters.precio ? getPriceFilterBucket(game) === filters.precio : true) &&
           matchesSoloFilter(game.solo, filters.solo)
         );
@@ -398,6 +415,8 @@ export function initCatalog(allGames: CatalogGame[]): void {
           dot.style.background = estadoPillColors[normalizeStatus(value)] ?? '#8b9ab5';
           dot.setAttribute('aria-hidden', 'true');
           button.appendChild(dot);
+        } else if (key === 'tag') {
+          label = `Etiqueta: ${getGameTagLabel(value)}`;
         } else {
           label = `${key}: ${value}`;
         }
@@ -577,6 +596,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
       else if (filter === 'estado') active = normalizeStatus(elements.estado.value) === normalizeStatus(value);
       else if (filter === 'launcher') active = elements.launcher.value === value;
       else if (filter === 'plataforma') active = elements.plataforma.value === value;
+      else if (filter === 'tag') active = normalizeGameTag(elements.tag.value) === normalizeGameTag(value);
       else if (filter === 'solo') active = elements.solo.value === value;
       else if (filter === 'precio') active = elements.precio.value === value;
       item.classList.toggle('is-active', active);
@@ -587,7 +607,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
   // ─── Event listeners ───────────────────────────────────────────────────────
 
-  [elements.search, elements.estado, elements.launcher, elements.plataforma, elements.solo, elements.sort, elements.precio]
+  [elements.search, elements.estado, elements.launcher, elements.plataforma, elements.tag, elements.solo, elements.sort, elements.precio]
     .forEach((el) => { el.addEventListener('input', render); el.addEventListener('change', render); });
 
   elements.mobileSort?.addEventListener('change', () => {
@@ -600,6 +620,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     elements.estado.value = '';
     elements.launcher.value = '';
     elements.plataforma.value = '';
+    elements.tag.value = '';
     elements.solo.value = '';
     elements.sort.value = DEFAULT_SORT;
     if (elements.mobileSort) elements.mobileSort.value = DEFAULT_SORT;
@@ -621,6 +642,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     if (key === 'estado') elements.estado.value = '';
     if (key === 'launcher') elements.launcher.value = '';
     if (key === 'plataforma') elements.plataforma.value = '';
+    if (key === 'tag') elements.tag.value = '';
     if (key === 'solo') elements.solo.value = '';
     if (key === 'precio') elements.precio.value = '';
     if (key === 'quick') activeQuickFilter = '';
@@ -633,6 +655,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
       if (nextValue === '') {
         elements.estado.value = '';
         elements.precio.value = '';
+        elements.tag.value = '';
         activeQuickFilter = '';
       } else if (STATUS_QUICK_FILTERS.has(nextValue)) {
         const isActive = nextValue === 'terminado'
@@ -645,8 +668,9 @@ export function initCatalog(allGames: CatalogGame[]): void {
         );
         elements.estado.value = isActive ? '' : (matchingOption?.value ?? '');
         activeQuickFilter = '';
-      } else if (nextValue === 'free') {
-        elements.precio.value = elements.precio.value === 'free' ? '' : 'free';
+      } else if (TAG_QUICK_FILTERS[nextValue]) {
+        const tag = TAG_QUICK_FILTERS[nextValue];
+        elements.tag.value = normalizeGameTag(elements.tag.value) === tag ? '' : tag;
       } else if (QUICK_ONLY_FILTERS.has(nextValue)) {
         activeQuickFilter = activeQuickFilter === nextValue ? '' : nextValue;
       }
@@ -717,6 +741,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
       else if (filter === 'estado') { elements.estado.value = value; activeQuickFilter = ''; }
       else if (filter === 'launcher') elements.launcher.value = value;
       else if (filter === 'plataforma') elements.plataforma.value = value;
+      else if (filter === 'tag') elements.tag.value = value;
       else if (filter === 'solo') elements.solo.value = value;
       else if (filter === 'precio') elements.precio.value = value;
       closeMobileDrawer();

@@ -284,12 +284,16 @@
       text-transform: uppercase;
     }
 
+    .mock-catalog-controls .catalog-filters-selects > .field {
+      grid-column: auto;
+    }
+
     .mock-catalog-controls .catalog-filters-selects .cf-sort {
       display: none;
     }
 
     .mock-catalog-controls .catalog-filters-selects .cf-price {
-      grid-column: 1 / -1;
+      grid-column: auto;
     }
 
     .catalog-filter-sheet-actions {

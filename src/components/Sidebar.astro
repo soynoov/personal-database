@@ -9,6 +9,7 @@ import githubIcon from '@tabler/icons/outline/brand-github.svg?url';
 import closeIcon from '@tabler/icons/outline/x.svg?url';
 import collapseIcon from '@tabler/icons/outline/chevrons-left.svg?url';
 import TablerIcon from './TablerIcon.astro';
+import { PUBLIC_GAME_TAGS } from '../lib/game-tags';
 
 interface Props {
   orderedDrawerEstados: string[];
@@ -106,6 +107,18 @@ const estadoColor = (estado: string): string => {
         ))}
       </div>
     )}
+
+    <div class='mobile-drawer-section mobile-drawer-section-compact'>
+      <span class='mobile-drawer-section-label'>Etiqueta</span>
+      <button class='mobile-drawer-item' data-drawer-filter='tag' data-value='' type='button'>
+        <span>Todas</span>
+      </button>
+      {PUBLIC_GAME_TAGS.map((tag) => (
+        <button class='mobile-drawer-item' data-drawer-filter='tag' data-value={tag.value} type='button'>
+          <span>{tag.label}</span>
+        </button>
+      ))}
+    </div>
 
     <div class='mobile-drawer-section mobile-drawer-section-compact'>
       <span class='mobile-drawer-section-label'>Modo de juego</span>

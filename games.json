@@ -6657,7 +6657,9 @@
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": [],
+    "tags": [
+      "indie"
+    ],
     "hltb_breakdown": {
       "main": null,
       "main_plus": null,

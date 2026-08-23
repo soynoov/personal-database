@@ -1,6 +1,7 @@
 import type { LocalGame } from "./local-games";
 import { slugifyGameTitle } from "./local-games";
 import { isCompletedStatus, normalizeStatus } from "./game-status";
+import { getGameTagLabel, hasGameTag, normalizeGameTag } from "./game-tags";
 
 export type CatalogGame = Pick<
   LocalGame,
@@ -47,6 +48,7 @@ type CatalogFilters = {
   estado?: string | null;
   launcher?: string | null;
   plataforma?: string | null;
+  tag?: string | null;
 };
 
 const containsText = (value: unknown, search?: string | null): boolean => {
@@ -54,12 +56,25 @@ const containsText = (value: unknown, search?: string | null): boolean => {
   return String(value ?? "").toLowerCase().includes(search.toLowerCase());
 };
 
+const matchesTag = (game: CatalogGame, tag?: string | null): boolean => {
+  if (!tag) return true;
+  if (hasGameTag(game.tags, tag)) return true;
+  if (normalizeGameTag(tag) !== "early-access") return false;
+  return Boolean(
+    game.generos?.some((genre) => {
+      const normalized = normalizeGameTag(genre);
+      return normalized === "early-access" || normalized === "acceso-anticipado";
+    }),
+  );
+};
+
 export function filterCatalogGames(games: CatalogGame[], filters: CatalogFilters = {}) {
   return games.filter((game) => {
     const searchMatches =
       containsText(game.titulo, filters.search) ||
       containsText(game.launcher, filters.search) ||
-      containsText(game.generos?.join(", "), filters.search);
+      containsText(game.generos?.join(", "), filters.search) ||
+      containsText(game.tags?.map(getGameTagLabel).join(", "), filters.search);
 
     return (
       searchMatches &&
@@ -68,7 +83,8 @@ export function filterCatalogGames(games: CatalogGame[], filters: CatalogFilters
           ? isCompletedStatus(game.estado)
           : normalizeStatus(game.estado) === normalizeStatus(filters.estado))) &&
       containsText(game.launcher, filters.launcher) &&
-      containsText(game.plataforma, filters.plataforma)
+      containsText(game.plataforma, filters.plataforma) &&
+      matchesTag(game, filters.tag)
     );
   });
 }

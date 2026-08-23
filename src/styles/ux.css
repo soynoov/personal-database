@@ -140,6 +140,22 @@
     animation: ux-reveal 160ms ease-out;
   }
 
+  @media (min-width: 1181px) {
+    .mock-catalog-controls .catalog-filters-selects {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .mock-catalog-controls .catalog-filters-selects > .field {
+      grid-column: span 3;
+    }
+
+    .mock-catalog-controls .catalog-filters-selects > .cf-sort,
+    .mock-catalog-controls .catalog-filters-selects > .cf-solo,
+    .mock-catalog-controls .catalog-filters-selects > .cf-price {
+      grid-column: span 4;
+    }
+  }
+
   @keyframes ux-reveal {
     from { opacity: 0; transform: translateY(-4px); }
     to { opacity: 1; transform: translateY(0); }
@@ -486,6 +502,10 @@
 
     .catalog-filters-selects {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .catalog-filters-selects .cf-price {
+      grid-column: 1 / -1;
     }
   }
 

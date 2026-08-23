@@ -4,6 +4,7 @@ import filtersIcon from '@tabler/icons/outline/adjustments-horizontal.svg?url';
 import closeIcon from '@tabler/icons/outline/x.svg?url';
 import gridIcon from '@tabler/icons/outline/layout-grid.svg?url';
 import listIcon from '@tabler/icons/outline/list.svg?url';
+import { PUBLIC_GAME_TAGS } from '../lib/game-tags';
 
 interface Props {
   estados: string[];
@@ -78,6 +79,13 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
           {plataformas.map((plataforma) => <option value={plataforma}>{plataforma}</option>)}
         </select>
       </div>
+      <div class='field cf-extra cf-tag'>
+        <label for='tag'>Etiqueta</label>
+        <select id='tag'>
+          <option value=''>Todas</option>
+          {PUBLIC_GAME_TAGS.map((tag) => <option value={tag.value}>{tag.label}</option>)}
+        </select>
+      </div>
       <div class='field cf-main cf-sort'>
         <label for='sort'>Orden</label>
         <select id='sort'>
@@ -86,7 +94,7 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
           <option value='lanzamiento-desc'>Reciente</option>
         </select>
       </div>
-      <div class='field cf-extra'>
+      <div class='field cf-extra cf-solo'>
         <label for='solo'>Solo</label>
         <select id='solo'>
           <option value=''>Da igual</option>
@@ -98,7 +106,6 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
         <label for='precio'>Precio</label>
         <select id='precio'>
           <option value=''>Todos</option>
-          <option value='free'>Free to play</option>
           <option value='cheap'>Hasta 10 EUR</option>
           <option value='mid'>10 a 30 EUR</option>
           <option value='high'>Mas de 30 EUR</option>
