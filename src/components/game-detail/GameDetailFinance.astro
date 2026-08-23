@@ -19,6 +19,7 @@ import coinsIcon from '@tabler/icons/outline/coins.svg?url';
 interface MoneyEditValues {
   precio_pagado: number | null;
   unidades_compradas: number | null;
+  tiendas_compra: string[];
   gasto_microtransacciones: number | null;
   tags: string[];
 }
@@ -28,6 +29,8 @@ interface SnapshotCard {
   value: string;
   note: string;
   tone: string;
+  detail?: string;
+  kind?: string;
 }
 
 interface Props {
@@ -103,10 +106,11 @@ const micropaymentsValue = microtransaccionesCard?.value === '-'
         </div>
 
         <div class="chart-metrics-grid">
-          {moneySnapshotCards.map(({ label, value, note, tone }) => (
-            <article title={note} class:list={["chart-metric-card", `chart-metric-card-${tone}`, value === "-" && "chart-metric-card-empty"]}>
+          {moneySnapshotCards.map(({ label, value, note, tone, detail, kind }) => (
+            <article title={note} class:list={["chart-metric-card", `chart-metric-card-${tone}`, kind && `chart-metric-card-${kind}`, value === "-" && "chart-metric-card-empty"]}>
               <span>{label}</span>
               <strong>{value}</strong>
+              {detail && <small class="chart-metric-detail">{detail}</small>}
             </article>
           ))}
         </div>
@@ -220,6 +224,16 @@ const micropaymentsValue = microtransaccionesCard?.value === '-'
         <label for="money-edit-unidades">Unidades compradas</label>
         <input id="money-edit-unidades" name="unidades_compradas" type="number" step="1" min="1" value={editValues.unidades_compradas ?? 1} />
       </div>
+      <div class="edit-field" id="money-field-tiendas-compra" hidden={isFreeToPlay}>
+        <label for="money-edit-tiendas">Comprado en</label>
+        <input
+          id="money-edit-tiendas"
+          name="tiendas_compra"
+          type="text"
+          placeholder="Instant Gaming, Steam…"
+          value={editValues.tiendas_compra.join(', ')}
+        />
+      </div>
       <div class="edit-field" id="money-field-microtransacciones" hidden={!isFreeToPlay}>
         <label for="money-edit-microtransacciones">Microtransacciones (EUR)</label>
         <input
@@ -268,6 +282,7 @@ const micropaymentsValue = microtransaccionesCard?.value === '-'
     const freeToPlayCheckbox = document.getElementById('money-edit-free-to-play');
     const precioField = document.getElementById('money-field-precio-pagado');
     const unidadesField = document.getElementById('money-field-unidades-compradas');
+    const tiendasField = document.getElementById('money-field-tiendas-compra');
     const microtransaccionesField = document.getElementById('money-field-microtransacciones');
 
     const syncPriceFields = () => {
@@ -275,11 +290,13 @@ const micropaymentsValue = microtransaccionesCard?.value === '-'
         !(freeToPlayCheckbox instanceof HTMLInputElement) ||
         !(precioField instanceof HTMLElement) ||
         !(unidadesField instanceof HTMLElement) ||
+        !(tiendasField instanceof HTMLElement) ||
         !(microtransaccionesField instanceof HTMLElement)
       ) return;
       const isFtp = freeToPlayCheckbox.checked;
       precioField.hidden = isFtp;
       unidadesField.hidden = isFtp;
+      tiendasField.hidden = isFtp;
       microtransaccionesField.hidden = !isFtp;
     };
 
@@ -299,6 +316,7 @@ const micropaymentsValue = microtransaccionesCard?.value === '-'
       const payload = {
         precio_pagado: data.get('precio_pagado'),
         unidades_compradas: data.get('unidades_compradas'),
+        tiendas_compra: data.get('tiendas_compra'),
         gasto_microtransacciones: data.get('gasto_microtransacciones'),
         free_to_play: freeToPlayInput instanceof HTMLInputElement ? freeToPlayInput.checked : false,
       };

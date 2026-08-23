@@ -35,6 +35,7 @@ export type LocalGame = {
   tags?: string[] | null;
   precio_pagado?: number | null;
   unidades_compradas?: number | null;
+  tiendas_compra?: string[] | null;
   precio_actual?: number | null;
   precio_salida?: number | null;
   precio_minimo_historico?: number | null;

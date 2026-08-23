@@ -187,6 +187,7 @@ export const POST: APIRoute = async ({ params, request }) => {
   if (body.unidades_compradas !== undefined) {
     updated.unidades_compradas = toNullablePositiveInteger(body.unidades_compradas);
   }
+  if (body.tiendas_compra !== undefined) updated.tiendas_compra = toTagsArray(body.tiendas_compra);
   if (body.gasto_microtransacciones !== undefined) {
     updated.gasto_microtransacciones = toNullableNumber(body.gasto_microtransacciones);
   }

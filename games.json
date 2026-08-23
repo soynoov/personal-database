@@ -5271,6 +5271,10 @@
       "Simuladores"
     ],
     "precio_pagado": 10.29,
+    "unidades_compradas": 2,
+    "tiendas_compra": [
+      "Instant Gaming"
+    ],
     "precio_actual": 12.99,
     "precio_salida": 19.99,
     "tags": [

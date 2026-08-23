@@ -477,6 +477,9 @@ const normalizeScalePosition = (value: number | null, min: number, max: number) 
 const purchasePrice =
   game.precio_pagado === null || game.precio_pagado === undefined ? null : Number(game.precio_pagado);
 const purchasedUnits = getPurchasedUnits(game);
+const purchaseStores = Array.isArray(game.tiendas_compra)
+  ? game.tiendas_compra.map((store) => String(store).trim()).filter(Boolean)
+  : [];
 const totalPaidPrice = getTotalPaidPrice(game);
 const currentPrice =
   game.precio_actual === null || game.precio_actual === undefined ? null : Number(game.precio_actual);
@@ -683,6 +686,16 @@ const moneySnapshotCards = [
     note: purchasePriceNote,
     tone: priceDeltaTone,
   },
+  ...(purchaseStores.length > 0
+    ? [{
+        label: "Comprado en",
+        value: purchaseStores.join(" · "),
+        detail: `${purchasedUnits} ${purchasedUnits === 1 ? "unidad" : "unidades"}`,
+        note: `${purchasedUnits} ${purchasedUnits === 1 ? "unidad comprada" : "unidades compradas"}`,
+        tone: "neutral",
+        kind: "purchase-store",
+      }]
+    : []),
   {
     label: "Precio actual",
     value: formatCurrency(game.precio_actual),
@@ -880,6 +893,7 @@ const generalEditValues = {
 const moneyEditValues = {
   precio_pagado: purchasePrice,
   unidades_compradas: purchasedUnits,
+  tiendas_compra: purchaseStores,
   gasto_microtransacciones: microtransactionsSpend,
   tags: Array.isArray(game.tags) ? game.tags : [],
 };

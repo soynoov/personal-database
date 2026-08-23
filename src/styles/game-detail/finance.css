@@ -12,15 +12,29 @@
 
 @layer global {
 
-/* La regla genérica de shared.css hace que la 1ª card ocupe todo el
-   ancho y que la 4ª también lo haga SOLO si es la última (caso de 4
-   cards, panel de Horas). Con 5 cards (Dinero, tras sumar
-   "Microtransacciones") esa condición ya no se cumple, así que las
-   4 cards restantes caen solas en un grid 2x2 sin huecos — no hace
-   falta ninguna regla adicional. (Antes había una regla aquí que
-   forzaba la 5ª card a ancho completo dejando la 4ª sola a media
-   anchura con un hueco vacío al lado: era el bug del "contenedor
-   suelto". Se quita.) */
+.game-page-rich #finance .chart-metric-card-purchase-store {
+  align-content: center;
+}
+
+.game-page-rich #finance .chart-metric-card-purchase-store strong {
+  overflow: visible;
+  font-size: clamp(0.92rem, 1.15vw, 1.12rem);
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.chart-metric-detail {
+  color: rgba(218, 202, 244, 0.66);
+  font-size: 0.68rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+}
+
+/* El número de métricas financieras depende de los datos disponibles.
+   No se fuerza la última tarjeta para que el grid pueda reordenarlas
+   sin dejar un hueco intermedio. */
 
 /* ── Finance timeline card ──────────────────────────────────────── */
 .finance-timeline-card {
