@@ -1,4 +1,5 @@
 import { buildGameCoverUrl } from '../lib/game-cover-url';
+import { gameHasMode } from '../lib/game-modes';
 import { normalizeStatus } from '../lib/game-status';
 import type { RouletteGame } from '../lib/roulette-game';
 import gamepadIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
@@ -233,6 +234,7 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
   const addButton = getElement<HTMLButtonElement>('roulette-add');
   const searchInput = getElement<HTMLInputElement>('roulette-search');
   const statusSelect = getElement<HTMLSelectElement>('roulette-status');
+  const modeSelect = getElement<HTMLSelectElement>('roulette-mode');
   const genreSelect = getElement<HTMLSelectElement>('roulette-genre');
   const platformSelect = getElement<HTMLSelectElement>('roulette-platform');
   const launcherSelect = getElement<HTMLSelectElement>('roulette-launcher');
@@ -357,13 +359,15 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
 
   const applyFilters = () => {
     const status = normalizeStatus(statusSelect.value);
+    const mode = modeSelect.value;
     const genre = normalizeText(genreSelect.value);
     const platform = normalizeText(platformSelect.value);
     const launcher = normalizeText(launcherSelect.value);
-    const hasFilters = Boolean(status || genre || platform || launcher);
+    const hasFilters = Boolean(status || mode || genre || platform || launcher);
 
     const matches = games.filter((game) =>
       (!status || normalizeStatus(game.estado) === status) &&
+      (!mode || gameHasMode(game, mode)) &&
       (!genre || game.generos?.some((item) => normalizeText(item) === genre)) &&
       (!platform || normalizeText(game.plataforma) === platform) &&
       (!launcher || normalizeText(game.launcher) === launcher),
@@ -458,7 +462,7 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
     else wheel.addEventListener('transitionend', finish, { once: true });
   };
 
-  [statusSelect, genreSelect, platformSelect, launcherSelect].forEach((select) => {
+  [statusSelect, modeSelect, genreSelect, platformSelect, launcherSelect].forEach((select) => {
     select.addEventListener('change', applyFilters);
   });
   addButton.addEventListener('click', addGameByName);
@@ -471,6 +475,7 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
     pool.clear();
     excluded.clear();
     statusSelect.value = '';
+    modeSelect.value = '';
     genreSelect.value = '';
     platformSelect.value = '';
     launcherSelect.value = '';

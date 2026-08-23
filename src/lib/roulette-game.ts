@@ -10,6 +10,8 @@ export type RouletteGame = Pick<
   | 'horas'
   | 'hltb'
   | 'generos'
+  | 'tags'
+  | 'modos'
   | 'solo'
   | 'steam_appid'
   | 'cover_url'
@@ -27,6 +29,8 @@ export function toRouletteGame(game: LocalGame): RouletteGame {
     horas: game.horas,
     hltb: game.hltb,
     generos: game.generos,
+    tags: game.tags,
+    modos: game.modos,
     solo: game.solo,
     steam_appid: game.steam_appid,
     cover_url: game.cover_url,

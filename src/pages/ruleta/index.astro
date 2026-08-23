@@ -14,6 +14,7 @@ import searchIcon from '@tabler/icons/outline/search.svg?url';
 import trashIcon from '@tabler/icons/outline/trash.svg?url';
 import { getUniqueValues, readGames } from '../../lib/local-games';
 import { normalizeStatus } from '../../lib/game-status';
+import { GAME_MODES } from '../../lib/game-modes';
 import { toRouletteGame } from '../../lib/roulette-game';
 import '../../styles/roulette.css';
 
@@ -120,6 +121,13 @@ const defaultSlugs = rouletteGames
           </div>
 
           <div class='roulette-filter-grid'>
+            <div class='field roulette-filter-mode'>
+              <label for='roulette-mode'>Modo</label>
+              <select id='roulette-mode'>
+                <option value=''>Todos</option>
+                {GAME_MODES.map((mode) => <option value={mode.value}>{mode.label}</option>)}
+              </select>
+            </div>
             <div class='field'>
               <label for='roulette-status'>Estado</label>
               <select id='roulette-status'>
