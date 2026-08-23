@@ -290,10 +290,6 @@
     gap: 0.8rem;
   }
 
-  .roulette-filter-mode {
-    grid-column: 1 / -1;
-  }
-
   .roulette-builder select {
     width: 100%;
     min-height: 46px;
@@ -909,10 +905,6 @@
   @media (max-width: 520px) {
     .roulette-filter-grid {
       grid-template-columns: 1fr;
-    }
-
-    .roulette-filter-mode {
-      grid-column: auto;
     }
 
     .roulette-count {

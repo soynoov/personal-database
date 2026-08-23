@@ -4615,6 +4615,9 @@
     "comentarios": null,
     "lanzamiento": 2021,
     "solo": false,
+    "modos": [
+      "cooperativo"
+    ],
     "hltb": 12.8,
     "cover_url": "https://howlongtobeat.com/games/80199_It_Takes_Two.jpg",
     "steam_appid": 1426210,
