@@ -3,6 +3,7 @@ import path from "node:path";
 import { existsSync } from "node:fs";
 import { BlobPreconditionFailedError, get, put } from "@vercel/blob";
 import { isCompletedStatus, normalizeStatus } from "./game-status";
+import { gameHasMode } from "./game-modes";
 
 export type GameCritique = {
   metascore?: number | null;
@@ -63,6 +64,7 @@ export type LocalGame = {
   critica?: GameCritique | null;
   comentarios?: string | null;
   lanzamiento?: number | null;
+  modos?: string[] | null;
   solo?: boolean | null;
   cover_source?: string | null;
   cover_url?: string | null;
@@ -225,6 +227,7 @@ export function filterGames(
     estado?: string | null;
     launcher?: string | null;
     plataforma?: string | null;
+    modo?: string | null;
     solo?: string | null;
   } = {},
 ) {
@@ -250,6 +253,7 @@ export function filterGames(
           : normalizeStatus(game.estado) === normalizeStatus(filters.estado))) &&
       containsText(game.launcher, filters.launcher) &&
       containsText(game.plataforma, filters.plataforma) &&
+      (!filters.modo || gameHasMode(game, filters.modo)) &&
       matchesSoloFilter(game.solo, filters.solo)
     );
   });

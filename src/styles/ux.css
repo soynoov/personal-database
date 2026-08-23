@@ -150,7 +150,7 @@
     }
 
     .mock-catalog-controls .catalog-filters-selects > .cf-sort,
-    .mock-catalog-controls .catalog-filters-selects > .cf-solo,
+    .mock-catalog-controls .catalog-filters-selects > .cf-mode,
     .mock-catalog-controls .catalog-filters-selects > .cf-price {
       grid-column: span 4;
     }

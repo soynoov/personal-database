@@ -13,13 +13,10 @@ interface Props {
   statusBadge: { class: string; label: string };
   launcherBadge: { class: string; html: string };
   platformBadge: { class: string; label: string };
-  hasFreeToPlayTag: boolean;
-  isCompetitive: boolean;
-  isPrivateCoop: boolean;
-  hasEarlyAccess: boolean;
+  tagBadges: Array<{ value: string; label: string }>;
   genres: string;
   tagsLabel: string;
-  soloLabel: string;
+  modesLabel: string;
 }
 
 const {
@@ -29,22 +26,19 @@ const {
   statusBadge,
   launcherBadge,
   platformBadge,
-  hasFreeToPlayTag,
-  isCompetitive,
-  isPrivateCoop,
-  hasEarlyAccess,
+  tagBadges,
   genres,
   tagsLabel,
-  soloLabel,
+  modesLabel,
 } = Astro.props;
 
-const playMode = isPrivateCoop
-  ? "Cooperativo con amigos"
-  : soloLabel === "Si" || soloLabel === "Sí"
-  ? "Un jugador"
-  : soloLabel === "No"
-    ? "Multijugador"
-    : "Sin registrar";
+const tagBadgeClasses: Record<string, string> = {
+  "free-to-play": "badge-tag-free",
+  competitivo: "badge-tag-competitive",
+  "early-access": "badge-tag-early",
+  indie: "badge-tag-indie",
+  modpacks: "badge-tag-modpacks",
+};
 ---
 
 <section class="game-hero-rich game-hero-cinematic" id="game-header" style={heroCoverStyle}>
@@ -67,9 +61,9 @@ const playMode = isPrivateCoop
         <span class={`badge ${statusBadge.class}`}>{statusBadge.label}</span>
         <span class={`badge ${launcherBadge.class}`} set:html={launcherBadge.html} />
         <span class={`badge ${platformBadge.class}`}>{platformBadge.label}</span>
-        {hasFreeToPlayTag && <span class="badge badge-tag-free">Free to play</span>}
-        {isCompetitive && <span class="badge badge-tag-competitive">Competitivo</span>}
-        {hasEarlyAccess && <span class="badge badge-tag-early">Early Access</span>}
+        {tagBadges.map((tag) => (
+          <span class:list={["badge", tagBadgeClasses[tag.value]]}>{tag.label}</span>
+        ))}
       </div>
       <dl class="game-hero-facts" aria-label="Datos principales">
         <div>
@@ -82,7 +76,7 @@ const playMode = isPrivateCoop
         </div>
         <div>
           <dt>Modo</dt>
-          <dd>{playMode}</dd>
+          <dd>{modesLabel}</dd>
         </div>
       </dl>
     </div>

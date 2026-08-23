@@ -5,6 +5,7 @@ import closeIcon from '@tabler/icons/outline/x.svg?url';
 import gridIcon from '@tabler/icons/outline/layout-grid.svg?url';
 import listIcon from '@tabler/icons/outline/list.svg?url';
 import { PUBLIC_GAME_TAGS } from '../lib/game-tags';
+import { GAME_MODES } from '../lib/game-modes';
 
 interface Props {
   estados: string[];
@@ -94,12 +95,11 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
           <option value='lanzamiento-desc'>Reciente</option>
         </select>
       </div>
-      <div class='field cf-extra cf-solo'>
-        <label for='solo'>Solo</label>
-        <select id='solo'>
-          <option value=''>Da igual</option>
-          <option value='true'>Si</option>
-          <option value='false'>No</option>
+      <div class='field cf-extra cf-mode'>
+        <label for='modo'>Modo</label>
+        <select id='modo'>
+          <option value=''>Todos</option>
+          {GAME_MODES.map((mode) => <option value={mode.value}>{mode.label}</option>)}
         </select>
       </div>
       <div class='field cf-extra cf-price'>

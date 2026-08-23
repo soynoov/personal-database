@@ -14,7 +14,8 @@ import GameDetailComments from "../../components/game-detail/GameDetailComments.
 import GameDetailMetacritic from "../../components/game-detail/GameDetailMetacritic.astro";
 import { buildGameCoverUrl, buildGameHeroUrl } from "../../lib/game-cover-url";
 import { isCompletedStatus, normalizeStatus } from "../../lib/game-status";
-import { getGameTagLabel, hasGameTag } from "../../lib/game-tags";
+import { getGameTagLabel, hasGameTag, normalizeGameTag } from "../../lib/game-tags";
+import { formatGameModes, getGameModes } from "../../lib/game-modes";
 import { isCommunityCriterionApplicable } from "../../lib/game-reviews";
 import { findGameBySlug, getPurchasedUnits, getTotalPaidPrice, readGames } from "../../lib/local-games";
 
@@ -30,12 +31,6 @@ const heroImageUrl = buildGameHeroUrl(game);
 const formatValue = (value: unknown, fallback = "-") => {
   if (value === null || value === undefined || value === "") return fallback;
   return String(value);
-};
-
-const formatSolo = (value: unknown) => {
-  if (value === true) return "Si";
-  if (value === false) return "No";
-  return "-";
 };
 
 const getCoverSourceMeta = () => {
@@ -61,18 +56,9 @@ const getCoverSourceMeta = () => {
 
 const hasFreeToPlayTag = hasGameTag(game.tags, "free-to-play");
 const hasCompetitiveTag = hasGameTag(game.tags, "competitivo");
-const hasPrivateCoopTag = hasGameTag(game.tags, "cooperativo-privado");
 // Compatibilidad con las fichas antiguas que ya guardaban rango_maximo sin tag.
 const isCompetitive = hasCompetitiveTag || Boolean(game.rango_actual || game.rango_maximo);
 const includeCommunityCriterion = isCommunityCriterionApplicable(game);
-
-const hasEarlyAccess =
-  hasGameTag(game.tags, "early-access") ||
-  (Array.isArray(game.generos) &&
-    game.generos.some((genre: string) => {
-      const normalized = String(genre).toLowerCase();
-      return normalized === "acceso anticipado" || normalized === "early access";
-    }));
 
 const formatCurrency = (value: unknown, fallback = "-") => {
   if (value === null || value === undefined || value === "") return fallback;
@@ -425,14 +411,16 @@ const priceDeltaTone =
         ? "negative"
         : "neutral";
 const genres = Array.isArray(game.generos) && game.generos.length > 0 ? game.generos.join(", ") : "-";
-const internalTagLabels: Record<string, string> = {
-  "cooperativo-privado": "Cooperativo con amigos",
-};
-const visibleTags = Array.isArray(game.tags)
-  ? game.tags.map((tag) => internalTagLabels[String(tag).trim().toLowerCase()] ?? getGameTagLabel(tag))
+const heroTagBadges = Array.isArray(game.tags)
+  ? game.tags
+      .filter((tag) => String(tag).trim().toLowerCase() !== "cooperativo-privado")
+      .map((tag) => ({ value: normalizeGameTag(tag), label: getGameTagLabel(tag) }))
   : [];
+const visibleTags = heroTagBadges.map((tag) => tag.label);
 const tags = visibleTags.length > 0 ? visibleTags.join(", ") : "-";
 const heroTagsLabel = visibleTags.length > 0 ? visibleTags.join(", ") : "Sin etiquetas";
+const gameModes = getGameModes(game);
+const modesLabel = formatGameModes(gameModes);
 const dlcItems = Array.isArray(game.dlcs?.items) ? game.dlcs.items : [];
 const dlcTotal = Number(game.dlcs?.total ?? dlcItems.length ?? 0);
 
@@ -859,7 +847,7 @@ const metadataGroups = [
               ? "Falta fecha de inicio para calcularlo"
               : "Necesita fecha_inicio y fecha_fin"),
       },
-      { label: "Solo", value: formatSolo(game.solo) },
+      { label: "Modo", value: modesLabel },
       { label: "Fuente caratula", value: coverSourceMeta.value, note: coverSourceMeta.note },
     ],
   },
@@ -885,7 +873,7 @@ const generalEditValues = {
   fecha_inicio: game.fecha_inicio,
   fecha_fin: game.fecha_fin,
   competitivo: isCompetitive,
-  cooperativo_privado: hasPrivateCoopTag,
+  modos: gameModes,
 };
 
 // Lápiz de Dinero: precio pagado, microtransacciones y el toggle free-to-play.
@@ -913,13 +901,10 @@ const commentsEditValues = {
       statusBadge={statusBadge}
       launcherBadge={launcherBadge}
       platformBadge={platformBadge}
-      hasFreeToPlayTag={hasFreeToPlayTag}
-      isCompetitive={isCompetitive}
-      isPrivateCoop={hasPrivateCoopTag}
-      hasEarlyAccess={hasEarlyAccess}
+      tagBadges={heroTagBadges}
       genres={genres}
       tagsLabel={heroTagsLabel}
-      soloLabel={formatSolo(game.solo)}
+      modesLabel={modesLabel}
     />
 
     <GameDetailNav hasDlcs={dlcTotal > 0} hasOverviewDetails={hasOverviewDetails} isCompetitive={isCompetitive} />

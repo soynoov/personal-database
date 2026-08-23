@@ -8,6 +8,7 @@
 import '../../styles/game-detail/topbar.css';
 import '../../styles/game-detail/edit.css';
 import { normalizeStatus } from '../../lib/game-status';
+import { GAME_MODES } from '../../lib/game-modes';
 import TablerIcon from '../TablerIcon.astro';
 import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg?url';
 import editIcon from '@tabler/icons/outline/edit.svg?url';
@@ -21,7 +22,7 @@ interface EditValues {
   fecha_inicio: string | null;
   fecha_fin: string | null;
   competitivo: boolean;
-  cooperativo_privado: boolean;
+  modos: string[];
 }
 
 interface Props {
@@ -102,20 +103,30 @@ const estadoOptions =
         </div>
       </div>
 
+      <fieldset class="edit-field game-mode-fieldset">
+        <legend>Modos</legend>
+        <div class="game-mode-options">
+          {GAME_MODES.map((mode) => (
+            <label class="game-mode-option">
+              <input
+                type="checkbox"
+                name="modos"
+                value={mode.value}
+                checked={editValues.modos.includes(mode.value)}
+              />
+              <span>{mode.label}</span>
+            </label>
+          ))}
+        </div>
+        <span class="edit-field-hint">Puedes seleccionar varios.</span>
+      </fieldset>
+
       <div class="edit-field edit-field-checkbox">
         <label for="edit-competitivo">
           <input id="edit-competitivo" name="competitivo" type="checkbox" checked={editValues.competitivo} />
           Competitivo
         </label>
         <span class="edit-field-hint">Activa los rangos y el Peak ELO en la ficha.</span>
-      </div>
-
-      <div class="edit-field edit-field-checkbox">
-        <label for="edit-cooperativo-privado">
-          <input id="edit-cooperativo-privado" name="cooperativo_privado" type="checkbox" checked={editValues.cooperativo_privado} />
-          Cooperativo con amigos
-        </label>
-        <span class="edit-field-hint">No activa el criterio Comunidad, salvo que el juego también sea competitivo.</span>
       </div>
 
       <div class="edit-dialog-actions">
@@ -176,8 +187,8 @@ const estadoOptions =
         logros_total: data.get('logros_total'),
         fecha_inicio: data.get('fecha_inicio'),
         fecha_fin: data.get('fecha_fin'),
+        modos: data.getAll('modos').map(String),
         competitivo: data.get('competitivo') === 'on',
-        cooperativo_privado: data.get('cooperativo_privado') === 'on',
       };
 
       submitBtn.disabled = true;

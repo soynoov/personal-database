@@ -611,7 +611,7 @@
   }
 }
 
-/* Mobile: 4 main selects in a row, extra (Solo+Precio) hidden behind toggle */
+/* Mobile: 4 main selects in a row, extra (Modo+Precio) hidden behind toggle */
 @media (max-width: 720px) {
   .catalog-filter-toggle {
     display: flex;
@@ -640,7 +640,7 @@
     align-self: stretch;
     height: auto;
   }
-  /* Extra fields (Solo + Precio): hidden by default */
+  /* Extra fields (Modo + Precio): hidden by default */
   .catalog-filters-selects .cf-extra {
     display: none;
   }

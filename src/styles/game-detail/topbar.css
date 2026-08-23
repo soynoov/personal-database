@@ -23,6 +23,60 @@
   flex: 0 0 auto;
 }
 
+.game-mode-fieldset {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+
+.game-mode-fieldset legend {
+  margin-bottom: 0.45rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.game-mode-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.game-mode-option {
+  display: flex;
+  align-items: center;
+  gap: 0.52rem;
+  min-height: 44px;
+  padding: 0.58rem 0.68rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-2);
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--text);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.game-mode-option:hover {
+  border-color: rgba(201, 168, 255, 0.28);
+  background: rgba(201, 168, 255, 0.055);
+}
+
+.game-mode-option:has(input:checked) {
+  border-color: rgba(201, 168, 255, 0.52);
+  background: rgba(124, 78, 188, 0.17);
+}
+
+.game-mode-option:focus-within {
+  outline: 2px solid rgba(201, 168, 255, 0.58);
+  outline-offset: 2px;
+}
+
+.game-mode-option input {
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  accent-color: #b98cf2;
+}
+
 } /* end @layer global */
 
 @layer global {

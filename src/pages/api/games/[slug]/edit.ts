@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { requireEditor } from "../../../../lib/edit-auth";
+import { getLegacySoloValue, normalizeGameModes } from "../../../../lib/game-modes";
 import { calculatePersonalScore, isCommunityCriterionApplicable } from "../../../../lib/game-reviews";
 import {
   findGameBySlug,
@@ -177,6 +178,11 @@ export const POST: APIRoute = async ({ params, request }) => {
   if (body.fecha_inicio !== undefined) updated.fecha_inicio = toNullableString(body.fecha_inicio);
   if (body.fecha_fin !== undefined) updated.fecha_fin = toNullableString(body.fecha_fin);
   if (body.solo !== undefined) updated.solo = toNullableBoolean(body.solo);
+  if (body.modos !== undefined) {
+    updated.modos = normalizeGameModes(body.modos);
+    updated.solo = getLegacySoloValue(updated.modos);
+  }
+  if (body.generos !== undefined) updated.generos = toTagsArray(body.generos);
   if (body.precio_pagado !== undefined) updated.precio_pagado = toNullableNumber(body.precio_pagado);
   if (body.unidades_compradas !== undefined) {
     updated.unidades_compradas = toNullablePositiveInteger(body.unidades_compradas);
@@ -212,11 +218,15 @@ export const POST: APIRoute = async ({ params, request }) => {
   if (body.cooperativo_privado !== undefined) {
     nextTags = toggleTag(nextTags, PRIVATE_COOP_TAG, body.cooperativo_privado);
   }
+  if (body.modos !== undefined) {
+    nextTags = toggleTag(nextTags, PRIVATE_COOP_TAG, false);
+  }
   if (
     body.tags !== undefined ||
     body.free_to_play !== undefined ||
     body.competitivo !== undefined ||
-    body.cooperativo_privado !== undefined
+    body.cooperativo_privado !== undefined ||
+    body.modos !== undefined
   ) {
     updated.tags = nextTags;
   }

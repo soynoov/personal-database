@@ -2,6 +2,7 @@ import type { LocalGame } from "./local-games";
 import { slugifyGameTitle } from "./local-games";
 import { isCompletedStatus, normalizeStatus } from "./game-status";
 import { getGameTagLabel, hasGameTag, normalizeGameTag } from "./game-tags";
+import { gameHasMode } from "./game-modes";
 
 export type CatalogGame = Pick<
   LocalGame,
@@ -16,6 +17,7 @@ export type CatalogGame = Pick<
   | "precio_actual"
   | "precio_salida"
   | "lanzamiento"
+  | "modos"
   | "solo"
   | "steam_appid"
   | "cover_url"
@@ -37,6 +39,7 @@ export function toCatalogGame(game: LocalGame): CatalogGame {
     precio_actual: game.precio_actual,
     precio_salida: game.precio_salida,
     lanzamiento: game.lanzamiento,
+    modos: game.modos,
     solo: game.solo,
     steam_appid: game.steam_appid,
     cover_url: game.cover_url,
@@ -49,6 +52,7 @@ type CatalogFilters = {
   launcher?: string | null;
   plataforma?: string | null;
   tag?: string | null;
+  modo?: string | null;
 };
 
 const containsText = (value: unknown, search?: string | null): boolean => {
@@ -84,7 +88,8 @@ export function filterCatalogGames(games: CatalogGame[], filters: CatalogFilters
           : normalizeStatus(game.estado) === normalizeStatus(filters.estado))) &&
       containsText(game.launcher, filters.launcher) &&
       containsText(game.plataforma, filters.plataforma) &&
-      matchesTag(game, filters.tag)
+      matchesTag(game, filters.tag) &&
+      (!filters.modo || gameHasMode(game, filters.modo))
     );
   });
 }

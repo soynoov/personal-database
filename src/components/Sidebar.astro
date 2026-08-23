@@ -10,6 +10,7 @@ import closeIcon from '@tabler/icons/outline/x.svg?url';
 import collapseIcon from '@tabler/icons/outline/chevrons-left.svg?url';
 import TablerIcon from './TablerIcon.astro';
 import { PUBLIC_GAME_TAGS } from '../lib/game-tags';
+import { GAME_MODES } from '../lib/game-modes';
 
 interface Props {
   orderedDrawerEstados: string[];
@@ -122,15 +123,14 @@ const estadoColor = (estado: string): string => {
 
     <div class='mobile-drawer-section mobile-drawer-section-compact'>
       <span class='mobile-drawer-section-label'>Modo de juego</span>
-      <button class='mobile-drawer-item' data-drawer-filter='solo' data-value='' type='button'>
+      <button class='mobile-drawer-item' data-drawer-filter='modo' data-value='' type='button'>
         <span>Todos</span>
       </button>
-      <button class='mobile-drawer-item' data-drawer-filter='solo' data-value='true' type='button'>
-        <span>Solo</span>
-      </button>
-      <button class='mobile-drawer-item' data-drawer-filter='solo' data-value='false' type='button'>
-        <span>Multijugador</span>
-      </button>
+      {GAME_MODES.map((mode) => (
+        <button class='mobile-drawer-item' data-drawer-filter='modo' data-value={mode.value} type='button'>
+          <span>{mode.label}</span>
+        </button>
+      ))}
     </div>
 
     <div class='mobile-drawer-section mobile-drawer-section-compact'>

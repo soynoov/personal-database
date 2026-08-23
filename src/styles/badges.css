@@ -199,6 +199,16 @@
     background: #221000; /* pumpkin */
     color: var(--tag-early-fg);
   }
+
+  .badge-tag-indie {
+    background: rgba(92, 72, 134, 0.28);
+    color: #ddcff7;
+  }
+
+  .badge-tag-modpacks {
+    background: rgba(67, 91, 82, 0.34);
+    color: #c6e0d7;
+  }
 } /* end @layer badges */
 
 @layer badges {

@@ -1,4 +1,5 @@
 import type { GameCritique, LocalGame } from './local-games';
+import { getGameModes } from './game-modes';
 
 export type ReviewCriterionKey =
   | 'jugabilidad'
@@ -75,7 +76,7 @@ export const REVIEW_CRITERIA: ReviewCriterionDefinition[] = [
 ];
 
 export function isCommunityCriterionApplicable(
-  game: Pick<LocalGame, 'solo' | 'tags' | 'generos' | 'rango_actual' | 'rango_maximo'>,
+  game: Pick<LocalGame, 'modos' | 'solo' | 'tags' | 'generos' | 'rango_actual' | 'rango_maximo'>,
 ) {
   const normalizedTags = Array.isArray(game.tags)
     ? game.tags.map((tag) => String(tag).trim().toLowerCase())
@@ -85,14 +86,13 @@ export function isCommunityCriterionApplicable(
     : [];
   const hasCompetitiveContext =
     normalizedTags.includes('competitivo') || Boolean(game.rango_actual || game.rango_maximo);
+  const modes = getGameModes(game);
 
   if (hasCompetitiveContext) return true;
-  if (normalizedTags.includes('cooperativo-privado')) return false;
+  if (modes.includes('multijugador')) return true;
+  if (modes.includes('cooperativo')) return false;
 
-  return (
-    game.solo === false ||
-    normalizedGenres.some((genre) => genre.includes('multijugador') || genre.includes('multiplayer'))
-  );
+  return normalizedGenres.some((genre) => genre.includes('multijugador') || genre.includes('multiplayer'));
 }
 
 export type ReviewCriterionScore = ReviewCriterionDefinition & {

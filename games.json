@@ -606,6 +606,9 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2018,
+    "modos": [
+      "cooperativo"
+    ],
     "solo": false,
     "hltb": 113.5,
     "cover_url": null,
@@ -616,9 +619,7 @@
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": [
-      "cooperativo-privado"
-    ],
+    "tags": [],
     "hltb_breakdown": {
       "main": 113.5,
       "main_plus": 235,
@@ -5256,6 +5257,10 @@
     "nota": null,
     "comentarios": "Registro recurrente. 6.9 horas acumuladas a 2026-06-14. Compra registrada 05/07/2026 15:57 vía Revolut Pay.",
     "lanzamiento": 2025,
+    "modos": [
+      "solitario",
+      "cooperativo"
+    ],
     "solo": null,
     "cover_url": "https://howlongtobeat.com/games/152293_Goblin_Cleanup.jpg",
     "steam_appid": 2748340,
@@ -5263,13 +5268,15 @@
       "Aventura",
       "Casual",
       "Indie",
-      "Simuladores",
-      "Acceso anticipado"
+      "Simuladores"
     ],
     "precio_pagado": 10.29,
     "precio_actual": 12.99,
     "precio_salida": 19.99,
-    "tags": [],
+    "tags": [
+      "early-access",
+      "indie"
+    ],
     "hltb": null,
     "hltb_breakdown": {
       "main": null,

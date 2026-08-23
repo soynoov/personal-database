@@ -11,6 +11,7 @@ import { buildGameCoverUrl } from "../lib/game-cover-url";
 import type { CatalogGame } from "../lib/catalog-game";
 import { isCompletedStatus, normalizeStatus } from "../lib/game-status";
 import { getGameTagLabel, hasGameTag, normalizeGameTag } from "../lib/game-tags";
+import { gameHasMode, getGameModeLabel, getGameModes } from "../lib/game-modes";
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
 
@@ -35,12 +36,8 @@ const escapeHtml = (value: unknown): string =>
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
 
-const matchesSoloFilter = (value: boolean | null | undefined, filter: string): boolean => {
-  if (!filter) return true;
-  if (filter === 'true') return value === true;
-  if (filter === 'false') return value === false;
-  return false;
-};
+const matchesModeFilter = (game: CatalogGame, filter: string): boolean =>
+  !filter || gameHasMode(game, filter);
 
 const getCoverUrl = (game: CatalogGame): string => buildGameCoverUrl(game);
 
@@ -240,7 +237,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     launcher: el<HTMLSelectElement>('#launcher'),
     plataforma: el<HTMLSelectElement>('#plataforma'),
     tag: el<HTMLSelectElement>('#tag'),
-    solo: el<HTMLSelectElement>('#solo'),
+    modo: el<HTMLSelectElement>('#modo'),
     sort: el<HTMLSelectElement>('#sort'),
     mobileSort: document.querySelector<HTMLSelectElement>('#mobile-sort'),
     precio: el<HTMLSelectElement>('#precio'),
@@ -266,11 +263,14 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
   // Restaurar params de URL
   const params = new URLSearchParams(window.location.search);
-  for (const key of ['search', 'estado', 'launcher', 'plataforma', 'tag', 'solo', 'sort', 'precio']) {
+  for (const key of ['search', 'estado', 'launcher', 'plataforma', 'tag', 'modo', 'sort', 'precio']) {
     const el = elements[key as keyof typeof elements] as HTMLInputElement | HTMLSelectElement | null;
     const value = params.get(key);
     if (el && value) el.value = value;
   }
+  const legacySolo = params.get('solo');
+  if (!params.get('modo') && legacySolo === 'true') elements.modo.value = 'solitario';
+  if (!params.get('modo') && legacySolo === 'false') elements.modo.value = 'multijugador';
   if (!elements.sort.value) elements.sort.value = DEFAULT_SORT;
   if (elements.mobileSort) elements.mobileSort.value = elements.sort.value;
 
@@ -326,7 +326,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
       launcher: elements.launcher.value,
       plataforma: elements.plataforma.value,
       tag: elements.tag.value,
-      solo: elements.solo.value,
+      modo: elements.modo.value,
       sort: elements.sort.value,
       precio: elements.precio.value,
     };
@@ -340,7 +340,8 @@ export function initCatalog(allGames: CatalogGame[]): void {
           textMatch(game.titulo, filters.search) ||
           textMatch(game.launcher, filters.search) ||
           textMatch(Array.isArray(game.generos) ? game.generos.join(', ') : '', filters.search) ||
-          textMatch(Array.isArray(game.tags) ? game.tags.map(getGameTagLabel).join(', ') : '', filters.search);
+          textMatch(Array.isArray(game.tags) ? game.tags.map(getGameTagLabel).join(', ') : '', filters.search) ||
+          textMatch(getGameModes(game).map(getGameModeLabel).join(', '), filters.search);
 
         return (
           searchMatch &&
@@ -353,7 +354,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
           textMatch(game.plataforma, filters.plataforma) &&
           matchesTagFilter(game, filters.tag) &&
           (filters.precio ? getPriceFilterBucket(game) === filters.precio : true) &&
-          matchesSoloFilter(game.solo, filters.solo)
+          matchesModeFilter(game, filters.modo)
         );
       })
       .sort((a, b) => {
@@ -417,6 +418,8 @@ export function initCatalog(allGames: CatalogGame[]): void {
           button.appendChild(dot);
         } else if (key === 'tag') {
           label = `Etiqueta: ${getGameTagLabel(value)}`;
+        } else if (key === 'modo') {
+          label = `Modo: ${getGameModeLabel(value)}`;
         } else {
           label = `${key}: ${value}`;
         }
@@ -597,7 +600,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
       else if (filter === 'launcher') active = elements.launcher.value === value;
       else if (filter === 'plataforma') active = elements.plataforma.value === value;
       else if (filter === 'tag') active = normalizeGameTag(elements.tag.value) === normalizeGameTag(value);
-      else if (filter === 'solo') active = elements.solo.value === value;
+      else if (filter === 'modo') active = elements.modo.value === value;
       else if (filter === 'precio') active = elements.precio.value === value;
       item.classList.toggle('is-active', active);
     });
@@ -607,7 +610,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
   // ─── Event listeners ───────────────────────────────────────────────────────
 
-  [elements.search, elements.estado, elements.launcher, elements.plataforma, elements.tag, elements.solo, elements.sort, elements.precio]
+  [elements.search, elements.estado, elements.launcher, elements.plataforma, elements.tag, elements.modo, elements.sort, elements.precio]
     .forEach((el) => { el.addEventListener('input', render); el.addEventListener('change', render); });
 
   elements.mobileSort?.addEventListener('change', () => {
@@ -621,7 +624,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     elements.launcher.value = '';
     elements.plataforma.value = '';
     elements.tag.value = '';
-    elements.solo.value = '';
+    elements.modo.value = '';
     elements.sort.value = DEFAULT_SORT;
     if (elements.mobileSort) elements.mobileSort.value = DEFAULT_SORT;
     elements.precio.value = '';
@@ -643,7 +646,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     if (key === 'launcher') elements.launcher.value = '';
     if (key === 'plataforma') elements.plataforma.value = '';
     if (key === 'tag') elements.tag.value = '';
-    if (key === 'solo') elements.solo.value = '';
+    if (key === 'modo') elements.modo.value = '';
     if (key === 'precio') elements.precio.value = '';
     if (key === 'quick') activeQuickFilter = '';
     render();
@@ -742,7 +745,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
       else if (filter === 'launcher') elements.launcher.value = value;
       else if (filter === 'plataforma') elements.plataforma.value = value;
       else if (filter === 'tag') elements.tag.value = value;
-      else if (filter === 'solo') elements.solo.value = value;
+      else if (filter === 'modo') elements.modo.value = value;
       else if (filter === 'precio') elements.precio.value = value;
       closeMobileDrawer();
       render();
