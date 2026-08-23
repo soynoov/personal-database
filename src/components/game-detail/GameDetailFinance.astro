@@ -12,6 +12,9 @@
 import '../../styles/game-detail/shared.css';
 import '../../styles/game-detail/finance.css';
 import '../../styles/game-detail/edit.css';
+import TablerIcon from '../TablerIcon.astro';
+import editIcon from '@tabler/icons/outline/edit.svg?url';
+import coinsIcon from '@tabler/icons/outline/coins.svg?url';
 
 interface MoneyEditValues {
   precio_pagado: number | null;
@@ -57,16 +60,13 @@ const {
 
 const isFreeToPlay = editValues.tags.includes('free-to-play');
 
-// El acordeón se muestra si hay DLCs registrados o si hay microtransacciones
 const microtransaccionesCard = additionalContentCards.find(c => c.label === 'Microtransacciones');
 const hasMicro = microtransaccionesCard?.value !== '-';
-const showAccordion = isFreeToPlay || hasDlcs || hasMicro;
-const visibleAdditionalCards = isFreeToPlay && !hasDlcs
-  ? microtransaccionesCard
-    ? [{ ...microtransaccionesCard, value: microtransaccionesCard.value === '-' ? 'Sin gasto' : microtransaccionesCard.value }]
-    : []
-  : additionalContentCards;
-const additionalContentTitle = isFreeToPlay ? 'Micropagos' : 'Contenido adicional';
+const isMicropaymentsOnly = isFreeToPlay && !hasDlcs;
+const showAccordion = !isMicropaymentsOnly && (hasDlcs || hasMicro);
+const micropaymentsValue = microtransaccionesCard?.value === '-'
+  ? 'Sin gasto'
+  : microtransaccionesCard?.value ?? 'Sin gasto';
 ---
 
 <article class:list={["analysis-panel", "analysis-panel-money", isFreeToPlay && "analysis-panel-money-f2p"]} id="finance">
@@ -80,10 +80,7 @@ const additionalContentTitle = isFreeToPlay ? 'Micropagos' : 'Contenido adiciona
         <span class:list={["section-pill", `section-pill-${priceDeltaTone}`]}>{priceDeltaLabel}</span>
       )}
       <button class="game-edit-trigger game-edit-trigger-sm" id="money-edit-trigger" type="button" aria-label="Editar precio y microtransacciones">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 20h9"></path>
-          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
-        </svg>
+        <TablerIcon src={editIcon} />
       </button>
     </div>
   </div>
@@ -117,11 +114,29 @@ const additionalContentTitle = isFreeToPlay ? 'Micropagos' : 'Contenido adiciona
     </div>
   )}
 
+  {isMicropaymentsOnly && (
+    <section class="micropayments-direct" aria-label="Micropagos">
+      <div class="micropayments-direct-title">
+        <span class="micropayments-direct-icon" aria-hidden="true">
+          <TablerIcon src={coinsIcon} />
+        </span>
+        <div>
+          <strong>Micropagos</strong>
+          <small>Free to play</small>
+        </div>
+      </div>
+      <div class="micropayments-direct-value">
+        <span>Gasto total registrado</span>
+        <strong>{micropaymentsValue}</strong>
+      </div>
+    </section>
+  )}
+
   {/* ── Acordeón "Contenido Adicional" ──────────────────────────── */}
   {showAccordion && (
     <details class:list={["dlc-finance-accordion", isFreeToPlay && "dlc-finance-accordion-f2p"]} open={isFreeToPlay}>
       <summary class="dlc-finance-summary">
-        <span>{additionalContentTitle}</span>
+        <span>Contenido adicional</span>
         {isFreeToPlay && <small>Free to play</small>}
         <svg class="dlc-finance-chevron" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M6 9l6 6 6-6"></path>
@@ -143,7 +158,7 @@ const additionalContentTitle = isFreeToPlay ? 'Micropagos' : 'Contenido adiciona
           </div>
         )}
 
-        <div class:list={["chart-shell", isFreeToPlay && !hasDlcs && "chart-shell-micropayments"]}>
+        <div class="chart-shell">
           {/* ── Chart DLC (izquierda) ─── */}
           {hasDlcs && (
             <div class="chart-visual-card chart-visual-card-dlc">
@@ -161,8 +176,8 @@ const additionalContentTitle = isFreeToPlay ? 'Micropagos' : 'Contenido adiciona
           )}
 
           {/* ── Metric cards (derecha, bento) ─── */}
-          <div class:list={["chart-metrics-grid", "dlc-finance-grid", isFreeToPlay && !hasDlcs && "micropayments-grid"]}>
-            {visibleAdditionalCards.map(({ label, value, note, tone }) => (
+          <div class="chart-metrics-grid dlc-finance-grid">
+            {additionalContentCards.map(({ label, value, note, tone }) => (
               <article title={note} class:list={["chart-metric-card", `chart-metric-card-${tone}`, value === "-" && "chart-metric-card-empty"]}>
                 <span>{label}</span>
                 <strong>{value}</strong>

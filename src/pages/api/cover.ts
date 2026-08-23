@@ -30,18 +30,22 @@ export async function GET({ url }: { url: URL }) {
   const platform = url.searchParams.get('platform');
   const steamAppIdParam = url.searchParams.get('steamAppId');
   const coverUrlParam = url.searchParams.get('coverUrl');
+  const variant = url.searchParams.get('variant') === 'hero' ? 'hero' : 'poster';
 
   const steamAppId =
     steamAppIdParam && Number.isFinite(Number(steamAppIdParam))
       ? Number(steamAppIdParam)
       : null;
 
-  const result = await resolveGameCover({
-    titulo: title,
-    launcher,
-    plataforma: platform,
-    steam_appid: steamAppId,
-  });
+  const result = await resolveGameCover(
+    {
+      titulo: title,
+      launcher,
+      plataforma: platform,
+      steam_appid: steamAppId,
+    },
+    variant,
+  );
 
   if (result.url) {
     try {

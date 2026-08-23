@@ -136,13 +136,23 @@ const formatDecimal = (value: number | null) =>
       ))}
     </div>
 
-    <article class="metacritic-honorary">
-      <div>
+    <article class:list={["metacritic-honorary", honoraryLevel > 0 && "has-value"]}>
+      <div class="metacritic-honorary-level">
         <span class="section-eyebrow">Mención honorífica</span>
-        <strong>{honoraryLevel > 0 ? `${honoraryLevel}/3` : 'Sin mención'}</strong>
-        <small>{honoraryLevel > 0 ? `+${formatDecimal(honoraryLevel * 0.1)} a My score` : 'Sin bonus'}</small>
+        <div>
+          <strong>{honoraryLevel > 0 ? honoraryLevel : '—'}</strong>
+          <small>/3</small>
+        </div>
       </div>
-      {honoraryLevel > 0 && honoraryComment && <p>{honoraryComment}</p>}
+      <div class="metacritic-honorary-bonus">
+        <span>Bonus</span>
+        <strong>{honoraryLevel > 0 ? `+${formatDecimal(honoraryLevel * 0.1)}` : '—'}</strong>
+        <small>My score</small>
+      </div>
+      <div class="metacritic-honorary-reason">
+        <span>Motivo</span>
+        <p>{honoraryLevel > 0 ? honoraryComment || 'Sin comentario' : 'Sin mención'}</p>
+      </div>
     </article>
 
     <div class="metacritic-formula">

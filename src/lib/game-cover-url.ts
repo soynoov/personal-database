@@ -6,10 +6,11 @@ export type CoverLookupGame = {
   cover_url?: string | null;
 };
 
-export function buildGameCoverUrl(game: CoverLookupGame) {
+function buildGameImageUrl(game: CoverLookupGame, variant: 'poster' | 'hero') {
   const params = new URLSearchParams();
 
   params.set('title', game.titulo);
+  params.set('variant', variant);
 
   if (game.launcher) params.set('launcher', game.launcher);
   if (game.plataforma) params.set('platform', game.plataforma);
@@ -21,4 +22,12 @@ export function buildGameCoverUrl(game: CoverLookupGame) {
   params.set('nocache', String(Date.now()));
 
   return `/api/cover?${params.toString()}`;
+}
+
+export function buildGameCoverUrl(game: CoverLookupGame) {
+  return buildGameImageUrl(game, 'poster');
+}
+
+export function buildGameHeroUrl(game: CoverLookupGame) {
+  return buildGameImageUrl(game, 'hero');
 }

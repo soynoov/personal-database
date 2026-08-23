@@ -12,7 +12,7 @@ import GameDetailStats from "../../components/game-detail/GameDetailStats.astro"
 import GameDetailDLCs from "../../components/game-detail/GameDetailDLCs.astro";
 import GameDetailComments from "../../components/game-detail/GameDetailComments.astro";
 import GameDetailMetacritic from "../../components/game-detail/GameDetailMetacritic.astro";
-import { buildGameCoverUrl } from "../../lib/game-cover-url";
+import { buildGameCoverUrl, buildGameHeroUrl } from "../../lib/game-cover-url";
 import { isCompletedStatus, normalizeStatus } from "../../lib/game-status";
 import { isCommunityCriterionApplicable } from "../../lib/game-reviews";
 import { findGameBySlug, getPurchasedUnits, getTotalPaidPrice, readGames } from "../../lib/local-games";
@@ -24,6 +24,7 @@ if (!game) {
 }
 
 const coverUrl = buildGameCoverUrl(game);
+const heroImageUrl = buildGameHeroUrl(game);
 
 const formatValue = (value: unknown, fallback = "-") => {
   if (value === null || value === undefined || value === "") return fallback;
@@ -765,7 +766,7 @@ const additionalContentCards = [
   },
 ];
 
-const heroCoverStyle = `--hero-cover:url("${coverUrl.replace(/"/g, '\\"')}")`;
+const heroCoverStyle = `--hero-cover:url("${heroImageUrl.replace(/"/g, '\\"')}")`;
 
 const clampPercent = (value: number) => Math.max(0, Math.min(100, Number(value.toFixed(1))));
 
@@ -958,7 +959,6 @@ const commentsEditValues = {
     {isCompetitive && (
       <GameDetailCompetitive
         slug={slugParam}
-        currentRank={game.rango_actual ?? null}
         peakRank={game.rango_maximo ?? null}
       />
     )}

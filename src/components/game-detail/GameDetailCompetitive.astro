@@ -1,6 +1,6 @@
 ---
 /**
- * GameDetailCompetitive.astro — rango actual y mejor rango alcanzado.
+ * GameDetailCompetitive.astro — mejor rango competitivo alcanzado.
  * Solo se monta desde la página cuando el juego está marcado como competitivo.
  */
 import '../../styles/game-detail/competitive.css';
@@ -8,15 +8,13 @@ import '../../styles/game-detail/edit.css';
 import TablerIcon from '../TablerIcon.astro';
 import editIcon from '@tabler/icons/outline/edit.svg?url';
 import trophyIcon from '@tabler/icons/outline/trophy.svg?url';
-import medalIcon from '@tabler/icons/outline/medal.svg?url';
 
 interface Props {
   slug: string;
-  currentRank: string | null;
   peakRank: string | null;
 }
 
-const { slug, currentRank, peakRank } = Astro.props;
+const { slug, peakRank } = Astro.props;
 const displayRank = (value: string | null) => value?.trim() || 'Sin registrar';
 ---
 
@@ -24,14 +22,14 @@ const displayRank = (value: string | null) => value?.trim() || 'Sin registrar';
   <div class="section-title-row competitive-section-head">
     <div>
       <span class="section-eyebrow">Competitivo</span>
-      <h2>Clasificatoria</h2>
+      <h2>Peak ELO</h2>
     </div>
     <button
       class="game-edit-trigger game-edit-trigger-sm"
       id="competitive-edit-trigger"
       type="button"
-      aria-label="Editar rangos competitivos"
-      title="Editar rangos competitivos"
+      aria-label="Editar Peak ELO"
+      title="Editar Peak ELO"
     >
       <TablerIcon src={editIcon} />
     </button>
@@ -41,19 +39,10 @@ const displayRank = (value: string | null) => value?.trim() || 'Sin registrar';
     <article class:list={["competitive-rank-card", "competitive-rank-card-peak", !peakRank && "is-empty"]}>
       <div class="competitive-rank-label">
         <TablerIcon src={trophyIcon} />
-        <span>Peak ELO</span>
+        <span>Mejor rango alcanzado</span>
       </div>
       <strong title={displayRank(peakRank)}>{displayRank(peakRank)}</strong>
-      <p>Mejor rango alcanzado</p>
-    </article>
-
-    <article class:list={["competitive-rank-card", "competitive-rank-card-current", !currentRank && "is-empty"]}>
-      <div class="competitive-rank-label">
-        <TablerIcon src={medalIcon} />
-        <span>Rango actual</span>
-      </div>
-      <strong title={displayRank(currentRank)}>{displayRank(currentRank)}</strong>
-      <p>Última división registrada</p>
+      <p>Tu techo histórico en este juego</p>
     </article>
   </div>
 </section>
@@ -62,8 +51,8 @@ const displayRank = (value: string | null) => value?.trim() || 'Sin registrar';
   <div class="edit-dialog-body">
     <div class="edit-dialog-head">
       <div>
-        <h2>Editar clasificatoria</h2>
-        <p class="edit-dialog-sub">Admite divisiones, nombres propios del juego o MMR numérico.</p>
+        <h2>Editar Peak ELO</h2>
+        <p class="edit-dialog-sub">Guarda el mejor rango que hayas alcanzado, aunque ya no sea el actual.</p>
       </div>
       <button class="edit-dialog-close" id="competitive-edit-close" type="button" aria-label="Cerrar">×</button>
     </div>
@@ -71,29 +60,16 @@ const displayRank = (value: string | null) => value?.trim() || 'Sin registrar';
     <p class="edit-dialog-error" id="competitive-edit-error" hidden></p>
 
     <form id="competitive-edit-form" data-slug={slug}>
-      <div class="edit-field-row">
-        <div class="edit-field">
-          <label for="competitive-edit-current">Rango actual</label>
-          <input
-            id="competitive-edit-current"
-            name="rango_actual"
-            type="text"
-            maxlength="80"
-            placeholder="Ej. Oro 3"
-            value={currentRank ?? ''}
-          />
-        </div>
-        <div class="edit-field">
-          <label for="competitive-edit-peak">Peak ELO</label>
-          <input
-            id="competitive-edit-peak"
-            name="rango_maximo"
-            type="text"
-            maxlength="80"
-            placeholder="Ej. Diamante 1 o 1850 MMR"
-            value={peakRank ?? ''}
-          />
-        </div>
+      <div class="edit-field">
+        <label for="competitive-edit-peak">Peak ELO</label>
+        <input
+          id="competitive-edit-peak"
+          name="rango_maximo"
+          type="text"
+          maxlength="80"
+          placeholder="Ej. Diamante 1 o 1850 MMR"
+          value={peakRank ?? ''}
+        />
       </div>
 
       <div class="edit-dialog-actions">
@@ -144,7 +120,6 @@ const displayRank = (value: string | null) => value?.trim() || 'Sin registrar';
       const data = new FormData(form);
       const slug = form.dataset.slug ?? '';
       const payload = {
-        rango_actual: data.get('rango_actual'),
         rango_maximo: data.get('rango_maximo'),
       };
 

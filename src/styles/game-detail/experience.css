@@ -834,62 +834,13 @@
     text-transform: uppercase;
   }
 
-  .game-page-rich .chart-shell-micropayments {
-    grid-template-columns: 1fr;
-  }
-
-  .game-page-rich .micropayments-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .game-page-rich .micropayments-grid .chart-metric-card,
-  .game-page-rich .micropayments-grid .chart-metric-card:first-child {
-    position: relative;
-    min-height: 172px;
-    padding: 1.2rem;
-    align-content: end;
-    overflow: hidden;
-    border-color: rgba(212, 186, 255, 0.18);
-    background:
-      radial-gradient(circle at 84% 18%, rgba(190, 130, 255, 0.3), transparent 12rem),
-      linear-gradient(135deg, rgba(94, 49, 166, 0.42), rgba(16, 17, 28, 0.58) 62%);
-  }
-
-  .game-page-rich .micropayments-grid .chart-metric-card span {
-    color: rgba(235, 224, 250, 0.7);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .game-page-rich .micropayments-grid .chart-metric-card strong {
-    margin-top: 0.2rem;
-    color: #fff;
-    font-size: clamp(1.8rem, 4vw, 3rem);
-  }
-
   @media (min-width: 1181px) {
     .game-page-rich .hero-analysis-grid {
       align-items: stretch;
     }
 
     .game-page-rich .analysis-panel-money-f2p {
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr);
-    }
-
-    .game-page-rich .analysis-panel-money-f2p .dlc-finance-accordion-f2p,
-    .game-page-rich .analysis-panel-money-f2p .dlc-finance-body,
-    .game-page-rich .analysis-panel-money-f2p .chart-shell-micropayments,
-    .game-page-rich .analysis-panel-money-f2p .micropayments-grid,
-    .game-page-rich .analysis-panel-money-f2p .micropayments-grid .chart-metric-card {
-      height: 100%;
-    }
-
-    .game-page-rich .analysis-panel-money-f2p .dlc-finance-accordion-f2p {
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr);
+      align-self: start;
     }
   }
 
@@ -957,9 +908,5 @@
       font-size: clamp(0.78rem, 4.1vw, 1rem);
     }
 
-    .game-page-rich .micropayments-grid .chart-metric-card,
-    .game-page-rich .micropayments-grid .chart-metric-card:first-child {
-      min-height: 138px;
-    }
   }
 }

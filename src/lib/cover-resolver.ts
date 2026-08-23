@@ -43,6 +43,8 @@ export type CoverResult = {
   source: string;
 };
 
+export type CoverVariant = 'poster' | 'hero';
+
 // ─── SVG fallback ─────────────────────────────────────────────────────────────
 
 function escapeXml(v: string): string {
@@ -89,6 +91,7 @@ const WARMUP_BATCH_DELAY_MS = 300; // pausa entre batches para no saturar Steam
 
 type CacheEntry = {
   capsuleUrl: string | null;
+  heroUrl: string | null;
   expiresAt: number;
 };
 const coverCache = new Map<number, CacheEntry>();
@@ -102,8 +105,10 @@ function buildUrl(fmt: string, filename: string): string {
 function buildEntryFromAssets(assets: StoreAssets | undefined): Omit<CacheEntry, 'expiresAt'> {
   const fmt = assets?.asset_url_format;
   const lc = assets?.library_capsule;
+  const hero = assets?.library_hero;
   return {
     capsuleUrl: fmt && lc ? buildUrl(fmt, lc) : null,
+    heroUrl: fmt && hero ? buildUrl(fmt, hero) : null,
   };
 }
 
@@ -171,6 +176,10 @@ async function fetchSteamLibraryCapsule(appId: number): Promise<string | null> {
   return (await fetchSteamAssetsCached(appId)).capsuleUrl;
 }
 
+async function fetchSteamLibraryHero(appId: number): Promise<string | null> {
+  return (await fetchSteamAssetsCached(appId)).heroUrl;
+}
+
 // ─── Warmup: batch al inicio + cada 24h ──────────────────────────────────────
 
 function chunk<T>(array: T[], size: number): T[][] {
@@ -227,9 +236,24 @@ async function runWarmup(): Promise<void> {
 
 // ─── API pública ──────────────────────────────────────────────────────────────
 
-export async function resolveGameCover(game: CoverLookupGame): Promise<CoverResult> {
+export async function resolveGameCover(
+  game: CoverLookupGame,
+  variant: CoverVariant = 'poster',
+): Promise<CoverResult> {
   if (!game.steam_appid) {
     return { url: null, source: 'No steam_appid' };
+  }
+
+  if (variant === 'hero') {
+    const heroUrl = await fetchSteamLibraryHero(game.steam_appid);
+    if (heroUrl) {
+      return { url: heroUrl, source: 'Steam library hero' };
+    }
+
+    return {
+      url: `${CDN_BASE}steam/apps/${game.steam_appid}/header.jpg`,
+      source: 'Steam header',
+    };
   }
 
   const capsuleUrl = await fetchSteamLibraryCapsule(game.steam_appid);
