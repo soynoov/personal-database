@@ -447,19 +447,17 @@
 
   .metacritic-rating-field.is-binary {
     grid-template-columns: minmax(0, 1fr) auto;
-  }
-
-  .metacritic-originality-check {
-    width: 23px;
-    height: 23px;
-    margin: 0 0.5rem;
-    accent-color: #b98cf2;
     cursor: pointer;
   }
 
-  .metacritic-originality-check:focus-visible {
-    outline: 2px solid rgba(201, 168, 255, 0.64);
-    outline-offset: 3px;
+  .metacritic-rating-field.is-binary .form-checkbox-copy > span {
+    display: grid;
+    gap: 0.12rem;
+  }
+
+  .metacritic-rating-field.is-binary:has(.form-checkbox-input:checked) {
+    border-color: rgba(201, 168, 255, 0.38);
+    background: rgba(124, 78, 188, 0.12);
   }
 
   .metacritic-rating-field.is-community {

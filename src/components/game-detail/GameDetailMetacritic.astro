@@ -8,6 +8,7 @@ import {
   getScoreSummary,
   getScoreTone,
 } from '../../lib/game-reviews';
+import FormCheckbox from '../FormCheckbox.astro';
 import TablerIcon from '../TablerIcon.astro';
 import checksIcon from '@tabler/icons/outline/checks.svg?url';
 import divideIcon from '@tabler/icons/outline/divide.svg?url';
@@ -239,19 +240,18 @@ const formatDecimal = (value: number | null) =>
 
         <div class="metacritic-edit-criteria">
           {criterionScores.map((criterion) => criterion.key === 'originalidad' ? (
-            <label class="metacritic-rating-field is-binary" for="edit-originalidad">
+            <FormCheckbox
+              class="metacritic-rating-field is-binary"
+              inputId="edit-originalidad"
+              inputClass="metacritic-originality-check"
+              checked={criterion.value === 1}
+              ariaLabel="El juego aporta una idea, enfoque o combinación propia"
+            >
               <span>
                 Originalidad
                 <small>Aporta algo propio</small>
               </span>
-              <input
-                class="metacritic-originality-check"
-                id="edit-originalidad"
-                type="checkbox"
-                checked={criterion.value === 1}
-                aria-label="El juego aporta una idea, enfoque o combinación propia"
-              />
-            </label>
+            </FormCheckbox>
           ) : (
             <label class:list={["metacritic-rating-field", criterion.key === 'comunidad' && 'is-community']} for={`edit-${criterion.key}`}>
               <span>

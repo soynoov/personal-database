@@ -1,0 +1,49 @@
+---
+import TablerIcon from './TablerIcon.astro';
+import squareIcon from '@tabler/icons/outline/square.svg?url';
+import squareCheckIcon from '@tabler/icons/outline/square-check.svg?url';
+
+interface Props {
+  id?: string;
+  inputId?: string;
+  name?: string;
+  value?: string;
+  checked?: boolean;
+  hidden?: boolean;
+  class?: string;
+  inputClass?: string;
+  dataRow?: number | string;
+  ariaLabel?: string;
+}
+
+const {
+  id,
+  inputId,
+  name,
+  value,
+  checked = false,
+  hidden = false,
+  class: className = '',
+  inputClass = '',
+  dataRow,
+  ariaLabel,
+} = Astro.props;
+---
+
+<label class:list={['form-checkbox', className]} id={id} hidden={hidden}>
+  <input
+    class:list={['form-checkbox-input', inputClass]}
+    id={inputId}
+    type="checkbox"
+    name={name}
+    value={value}
+    checked={checked}
+    data-row={dataRow}
+    aria-label={ariaLabel}
+  />
+  <span class="form-checkbox-copy"><slot /></span>
+  <span class="form-checkbox-state" aria-hidden="true">
+    <TablerIcon src={squareIcon} class="form-checkbox-icon form-checkbox-icon-off" />
+    <TablerIcon src={squareCheckIcon} class="form-checkbox-icon form-checkbox-icon-on" />
+  </span>
+</label>

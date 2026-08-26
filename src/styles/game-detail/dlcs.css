@@ -230,11 +230,11 @@
   cursor: pointer;
 }
 
-.dlc-edit-row-owned input[type='checkbox'] {
-  width: 16px;
-  height: 16px;
-  accent-color: var(--pistachio);
-  cursor: pointer;
+.dlc-edit-row-owned .form-checkbox-state,
+.dlc-edit-row-owned .form-checkbox-icon {
+  width: 18px;
+  height: 18px;
+  flex-basis: 18px;
 }
 
 .dlc-edit-date-input,

@@ -3,6 +3,7 @@ import '../../styles/game-detail/stats.css';
 import '../../styles/game-detail/edit.css';
 import { GAME_MODES } from '../../lib/game-modes';
 import { PUBLIC_GAME_TAGS, normalizeGameTag } from '../../lib/game-tags';
+import FormCheckbox from '../FormCheckbox.astro';
 import TablerIcon from '../TablerIcon.astro';
 import editIcon from '@tabler/icons/outline/edit.svg?url';
 
@@ -55,7 +56,9 @@ const normalizedTags = editValues.tags.map(normalizeGameTag);
         <legend>Modos</legend>
         <div class="game-mode-options">
           {GAME_MODES.map((mode) => (
-            <label class="game-mode-option"><input type="checkbox" name="modos" value={mode.value} checked={editValues.modos.includes(mode.value)} /><span>{mode.label}</span></label>
+            <FormCheckbox class="game-mode-option" name="modos" value={mode.value} checked={editValues.modos.includes(mode.value)}>
+              {mode.label}
+            </FormCheckbox>
           ))}
         </div>
       </fieldset>
@@ -63,7 +66,9 @@ const normalizedTags = editValues.tags.map(normalizeGameTag);
         <legend>Etiquetas</legend>
         <div class="game-mode-options">
           {PUBLIC_GAME_TAGS.map((tag) => (
-            <label class="game-mode-option"><input type="checkbox" name="tags" value={tag.value} checked={normalizedTags.includes(tag.value)} /><span>{tag.label}</span></label>
+            <FormCheckbox class="game-mode-option" name="tags" value={tag.value} checked={normalizedTags.includes(tag.value)}>
+              {tag.label}
+            </FormCheckbox>
           ))}
         </div>
       </fieldset>

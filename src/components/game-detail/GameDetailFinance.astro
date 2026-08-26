@@ -7,6 +7,7 @@ import {
   formatHoursDuration,
   type GameValueMetrics,
 } from '../../lib/game-finance';
+import FormCheckbox from '../FormCheckbox.astro';
 import TablerIcon from '../TablerIcon.astro';
 import chartIcon from '@tabler/icons/outline/chart-line.svg?url';
 import coinsIcon from '@tabler/icons/outline/coins.svg?url';
@@ -202,7 +203,7 @@ const showMarket = showBaseMarket || showDlcMarket;
     <p class="edit-dialog-error" id="money-edit-error" hidden></p>
     <form id="money-edit-form" data-slug={slug}>
       <div class="edit-field edit-field-checkbox">
-        <label for="money-edit-free-to-play"><input id="money-edit-free-to-play" name="free_to_play" type="checkbox" checked={isFreeToPlay} />Free to Play</label>
+        <FormCheckbox inputId="money-edit-free-to-play" name="free_to_play" checked={isFreeToPlay}>Free to Play</FormCheckbox>
       </div>
       <div class="edit-field-row money-base-fields" hidden={isFreeToPlay}>
         <div class="edit-field">

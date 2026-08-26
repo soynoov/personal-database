@@ -24,7 +24,8 @@ export function finishGameEdit(sectionId: string, message = 'Cambios guardados')
   sessionStorage.setItem(STORAGE_KEY, JSON.stringify(feedback));
   const target = new URL(window.location.href);
   target.hash = sectionId;
-  window.location.replace(target.toString());
+  window.history.replaceState(null, '', target);
+  window.location.reload();
 }
 
 export function restoreGameEditFeedback() {

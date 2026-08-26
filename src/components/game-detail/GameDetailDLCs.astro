@@ -10,6 +10,7 @@
 import '../../styles/game-detail/dlcs.css';
 import '../../styles/game-detail/edit.css';
 import DLCCard from './DLCCard.astro';
+import FormCheckbox from '../FormCheckbox.astro';
 import TablerIcon from '../TablerIcon.astro';
 import editIcon from '@tabler/icons/outline/edit.svg?url';
 import xIcon from '@tabler/icons/outline/x.svg?url';
@@ -128,15 +129,14 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
               </span>
             )}
             <span class="dlc-edit-row-title">{formatValue(dlc.titulo, "DLC sin nombre")}</span>
-            <label class="dlc-edit-row-owned">
-              <input
-                type="checkbox"
-                class="dlc-edit-owned-checkbox"
-                data-row={i}
-                checked={dlc.fecha_adquisicion !== null && dlc.fecha_adquisicion !== undefined}
-              />
+            <FormCheckbox
+              class="dlc-edit-row-owned"
+              inputClass="dlc-edit-owned-checkbox"
+              dataRow={i}
+              checked={dlc.fecha_adquisicion !== null && dlc.fecha_adquisicion !== undefined}
+            >
               Lo tengo
-            </label>
+            </FormCheckbox>
             <input
               type="date"
               class="dlc-edit-date-input"
