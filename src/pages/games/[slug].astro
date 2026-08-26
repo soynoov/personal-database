@@ -1,969 +1,295 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import GameDetailChartsScript from "../../components/GameDetailChartsScript.astro";
-import GameDetailHero from "../../components/game-detail/GameDetailHero.astro";
-import GameDetailTopbar from "../../components/game-detail/GameDetailTopbar.astro";
-import GameDetailNav from "../../components/game-detail/GameDetailNav.astro";
-import GameDetailHours from "../../components/game-detail/GameDetailHours.astro";
-import GameDetailFinance from "../../components/game-detail/GameDetailFinance.astro";
-import GameDetailCompetitive from "../../components/game-detail/GameDetailCompetitive.astro";
-import GameDetailSummary from "../../components/game-detail/GameDetailSummary.astro";
-import GameDetailStats from "../../components/game-detail/GameDetailStats.astro";
-import GameDetailDLCs from "../../components/game-detail/GameDetailDLCs.astro";
-import GameDetailComments from "../../components/game-detail/GameDetailComments.astro";
-import GameDetailMetacritic from "../../components/game-detail/GameDetailMetacritic.astro";
-import { buildGameCoverUrl, buildGameHeroUrl } from "../../lib/game-cover-url";
-import { isCompletedStatus, normalizeStatus } from "../../lib/game-status";
-import { getGameTagLabel, hasGameTag, normalizeGameTag } from "../../lib/game-tags";
-import { formatGameModes, getGameModes } from "../../lib/game-modes";
-import { isCommunityCriterionApplicable } from "../../lib/game-reviews";
-import { findGameBySlug, getPurchasedUnits, getTotalPaidPrice, readGames } from "../../lib/local-games";
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GameDetailChartsScript from '../../components/GameDetailChartsScript.astro';
+import GameDetailHero from '../../components/game-detail/GameDetailHero.astro';
+import GameDetailTopbar from '../../components/game-detail/GameDetailTopbar.astro';
+import GameDetailNav from '../../components/game-detail/GameDetailNav.astro';
+import GameDetailHours from '../../components/game-detail/GameDetailHours.astro';
+import GameDetailFinance from '../../components/game-detail/GameDetailFinance.astro';
+import GameDetailCompetitive from '../../components/game-detail/GameDetailCompetitive.astro';
+import GameDetailSummary from '../../components/game-detail/GameDetailSummary.astro';
+import GameDetailStats from '../../components/game-detail/GameDetailStats.astro';
+import GameDetailDLCs from '../../components/game-detail/GameDetailDLCs.astro';
+import GameDetailComments from '../../components/game-detail/GameDetailComments.astro';
+import GameDetailMetacritic from '../../components/game-detail/GameDetailMetacritic.astro';
+import { buildGameCoverUrl, buildGameHeroUrl } from '../../lib/game-cover-url';
+import {
+  formatEuro,
+  getGameValueMetrics,
+  isAcquiredDlc,
+} from '../../lib/game-finance';
+import { normalizeStatus } from '../../lib/game-status';
+import { formatGameModes, getGameModes } from '../../lib/game-modes';
+import { isCommunityCriterionApplicable } from '../../lib/game-reviews';
+import { getGameTagLabel, hasGameTag, normalizeGameTag } from '../../lib/game-tags';
+import { findGameBySlug, readGames } from '../../lib/local-games';
+import gamepadIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
 
-const game = findGameBySlug(await readGames(), Astro.params.slug ?? "");
+const game = findGameBySlug(await readGames(), Astro.params.slug ?? '');
+if (!game) return Astro.redirect('/');
 
-if (!game) {
-  return Astro.redirect("/");
-}
-
+const valueMetrics = getGameValueMetrics(game);
+const slug = Astro.params.slug ?? '';
 const coverUrl = buildGameCoverUrl(game);
 const heroImageUrl = buildGameHeroUrl(game);
+const heroCoverStyle = `--hero-cover:url("${heroImageUrl.replace(/"/g, '\\"')}")`;
 
-const formatValue = (value: unknown, fallback = "-") => {
-  if (value === null || value === undefined || value === "") return fallback;
-  return String(value);
+const formatValue = (value: unknown, fallback = '-') =>
+  value === null || value === undefined || value === '' ? fallback : String(value);
+const formatCurrency = (value: unknown, fallback = '-') => {
+  if (value === null || value === undefined || value === '') return fallback;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? formatEuro(parsed, fallback) : String(value);
 };
-
-const getCoverSourceMeta = () => {
-  if (game.steam_appid) {
-    return {
-      value: "Steam",
-      note: "Library capsule si existe; si no, header de Steam",
-    };
-  }
-
-  if (game.cover_url) {
-    return {
-      value: "HLTB",
-      note: "Usa la portada guardada en cover_url",
-    };
-  }
-
-  return {
-    value: "Fallback local",
-    note: "SVG generado cuando no hay fuente externa",
-  };
-};
-
-const hasFreeToPlayTag = hasGameTag(game.tags, "free-to-play");
-const hasCompetitiveTag = hasGameTag(game.tags, "competitivo");
-// Compatibilidad con las fichas antiguas que ya guardaban rango_maximo sin tag.
-const isCompetitive = hasCompetitiveTag || Boolean(game.rango_actual || game.rango_maximo);
-const includeCommunityCriterion = isCommunityCriterionApplicable(game);
-
-const formatCurrency = (value: unknown, fallback = "-") => {
-  if (value === null || value === undefined || value === "") return fallback;
-  const amount = Number(value);
-  if (Number.isNaN(amount)) return String(value);
-  return `${amount.toFixed(2)} EUR`;
-};
-
-const formatPrice = (value: unknown) => {
-  if (hasFreeToPlayTag) return "Free to play";
-  return formatCurrency(value);
-};
-
-const formatUnitCount = (value: number) => `${value} compra${value !== 1 ? "s" : ""} registrad${value !== 1 ? "as" : "a"}`;
-
-const getReferencePrice = () => {
-  if (game.precio_actual !== null && game.precio_actual !== undefined && game.precio_actual !== "") {
-    return Number(game.precio_actual);
-  }
-  if (game.precio_salida !== null && game.precio_salida !== undefined && game.precio_salida !== "") {
-    return Number(game.precio_salida);
-  }
-  return null;
-};
-
-const getPaidPriceVisual = () => {
-  if (hasFreeToPlayTag) {
-    return {
-      className: "detail-item-price-free",
-      note: "Entrada sin coste",
-      deltaLabel: "0%",
-      delta: 0,
-      percent: 0,
-    };
-  }
-
-  if (game.precio_pagado === null || game.precio_pagado === undefined || game.precio_pagado === "") {
-    return {
-      className: "",
-      note: "",
-      deltaLabel: "",
-      delta: null,
-      percent: null,
-    };
-  }
-
-  const paid = Number(game.precio_pagado);
-  const reference = getReferencePrice();
-  if (Number.isNaN(paid) || reference === null || Number.isNaN(reference) || reference <= 0) {
-    return {
-      className: "detail-item-price-neutral",
-      note: "",
-      deltaLabel: "",
-      delta: null,
-      percent: null,
-    };
-  }
-
-  const delta = Number((reference - paid).toFixed(2));
-  const ratio = delta / reference;
-  const percent = Math.abs(ratio) * 100;
-  const sourceLabel =
-    game.precio_actual !== null && game.precio_actual !== undefined && game.precio_actual !== ""
-      ? "actual"
-      : "de salida";
-
-  if (Math.abs(ratio) < 0.12) {
-    return {
-      className: "detail-item-price-neutral",
-      note: `Variacion estable frente al precio ${sourceLabel}`,
-      deltaLabel: `${delta >= 0 ? "+" : "-"}${percent.toFixed(1)}%`,
-      delta,
-      percent,
-    };
-  }
-
-  if (delta > 0) {
-    if (ratio >= 0.5) {
-      return {
-        className: "detail-item-price-profit-strong",
-        note: `${delta.toFixed(2)} EUR por debajo del precio ${sourceLabel}`,
-        deltaLabel: `+${percent.toFixed(1)}%`,
-        delta,
-        percent,
-      };
-    }
-
-    return {
-      className: "detail-item-price-profit",
-      note: `${delta.toFixed(2)} EUR por debajo del precio ${sourceLabel}`,
-      deltaLabel: `+${percent.toFixed(1)}%`,
-      delta,
-      percent,
-    };
-  }
-
-  if (ratio <= -0.5) {
-    return {
-      className: "detail-item-price-loss-strong",
-      note: `${Math.abs(delta).toFixed(2)} EUR por encima del precio ${sourceLabel}`,
-      deltaLabel: `-${percent.toFixed(1)}%`,
-      delta,
-      percent,
-    };
-  }
-
-  return {
-    className: "detail-item-price-loss",
-    note: `${Math.abs(delta).toFixed(2)} EUR por encima del precio ${sourceLabel}`,
-    deltaLabel: `-${percent.toFixed(1)}%`,
-    delta,
-    percent,
-  };
-};
-
 const formatDate = (value: unknown) => {
-  if (!value) return "-";
+  if (!value) return '-';
   const date = new Date(`${value}T00:00:00`);
   if (Number.isNaN(date.getTime())) return String(value);
-  return new Intl.DateTimeFormat("es-ES", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  }).format(date);
+  return new Intl.DateTimeFormat('es-ES', { day: '2-digit', month: 'long', year: 'numeric' }).format(date);
 };
 
-const parseLocalDate = (value: unknown) => {
-  if (typeof value !== "string" || !value) return null;
-  const date = new Date(`${value}T00:00:00`);
-  return Number.isNaN(date.getTime()) ? null : date;
+const statusClasses: Record<string, string> = {
+  pendiente: 'badge-status-pending',
+  jugando: 'badge-status-playing',
+  terminado: 'badge-status-completed',
+  completado: 'badge-status-completed',
+  recurrente: 'badge-status-recurring',
+  wishlist: 'badge-status-wishlist',
+  pausado: 'badge-status-paused',
+  abandonado: 'badge-status-abandoned',
+  retirado: 'badge-status-abandoned',
 };
-
-const formatElapsedCalendarTime = (startValue: unknown, endValue: unknown) => {
-  const start = parseLocalDate(startValue);
-  const end = parseLocalDate(endValue);
-
-  if (!start || !end) return null;
-  if (end < start) {
-    return {
-      value: "Fechas invalidas",
-      note: "La fecha de fin es anterior al inicio",
-    };
-  }
-
-  let cursor = new Date(start);
-  let months = 0;
-  while (true) {
-    const next = new Date(cursor);
-    next.setMonth(next.getMonth() + 1);
-    if (next <= end) {
-      cursor = next;
-      months++;
-      continue;
-    }
-    break;
-  }
-
-  const msPerDay = 1000 * 60 * 60 * 24;
-  const days = Math.round((end.getTime() - cursor.getTime()) / msPerDay);
-  const totalDays = Math.round((end.getTime() - start.getTime()) / msPerDay);
-
-  if (months === 0) {
-    return {
-      value: `${totalDays} ${totalDays === 1 ? "dia" : "dias"}`,
-      note: "Tiempo transcurrido entre inicio y fin",
-    };
-  }
-
-  if (days === 0) {
-    return {
-      value: `${months} ${months === 1 ? "mes" : "meses"}`,
-      note: `Equivale a ${totalDays} ${totalDays === 1 ? "dia" : "dias"}`,
-    };
-  }
-
-  return {
-    value: `${months} ${months === 1 ? "mes" : "meses"} y ${days} ${days === 1 ? "dia" : "dias"}`,
-    note: `Equivale a ${totalDays} ${totalDays === 1 ? "dia" : "dias"} en total`,
-  };
+const launcherClasses: Record<string, string> = {
+  steam: 'badge-launcher-steam',
+  'epic games': 'badge-launcher-epic',
+  epic: 'badge-launcher-epic',
+  nintendo: 'badge-launcher-nintendo',
+  'nintendo eshop': 'badge-launcher-nintendo',
+  pirata: 'badge-launcher-pirata',
+  gamepass: 'badge-launcher-gamepass',
+  'xbox game pass': 'badge-launcher-gamepass',
+  'riot games': 'badge-launcher-riot',
+  hoyoplay: 'badge-launcher-hoyoplay',
+  'ea app': 'badge-launcher-ea',
+  ubisoft: 'badge-launcher-ubisoft',
+  'ubisoft connect': 'badge-launcher-ubisoft',
+  gog: 'badge-launcher-gog',
+  'itch.io': 'badge-launcher-itch',
 };
+const statusClass = statusClasses[normalizeStatus(game.estado)] ?? 'badge-status-default';
+const launcherClass = launcherClasses[normalizeStatus(game.launcher)] ?? 'badge-launcher-default';
+const platformClass = normalizeStatus(game.plataforma) === 'pc' ? 'badge-platform-pc' : 'badge-platform-default';
 
-const formatTrackedHours = (value: number | null) => {
-  if (value === null || Number.isNaN(value)) return "-";
-  const totalMinutes = Math.round(value * 60);
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-
-  if (minutes === 0) return `${hours} h`;
-  return `${hours} h ${minutes} min`;
-};
-
-const statusClassName = (value: unknown) => {
-  const normalized = normalizeStatus(value);
-  const map: Record<string, string> = {
-    pendiente: "badge-status-pending",
-    jugando: "badge-status-playing",
-    terminado: "badge-status-completed",
-    completado: "badge-status-completed",
-    recurrente: "badge-status-recurring",
-    wishlist: "badge-status-wishlist",
-    pausado: "badge-status-paused",
-    abandonado: "badge-status-abandoned",
-    retirado: "badge-status-abandoned",
-  };
-
-  return map[normalized] ?? "badge-status-default";
-};
-
-const launcherClassName = (value: unknown) => {
-  const normalized = String(value ?? "").trim().toLowerCase();
-  const map: Record<string, string> = {
-    steam: "badge-launcher-steam",
-    "epic games": "badge-launcher-epic",
-    epic: "badge-launcher-epic",
-    nintendo: "badge-launcher-nintendo",
-    "nintendo eshop": "badge-launcher-nintendo",
-    pirata: "badge-launcher-pirata",
-    gamepass: "badge-launcher-gamepass",
-    "xbox game pass": "badge-launcher-gamepass",
-    "riot games": "badge-launcher-riot",
-    hoyoplay: "badge-launcher-hoyoplay",
-    "ea app": "badge-launcher-ea",
-    ubisoft: "badge-launcher-ubisoft",
-    "ubisoft connect": "badge-launcher-ubisoft",
-    gog: "badge-launcher-gog",
-    itch: "badge-launcher-itch",
-    "itch.io": "badge-launcher-itch",
-  };
-
-  return map[normalized] ?? "badge-launcher-default";
-};
-
-const launcherInlineIcon = (value: unknown) => {
-  const normalized = String(value ?? "").trim().toLowerCase();
-  const icons: Record<string, string> = {
-    steam:
-      '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M.329 10.333A8.01 8.01 0 0 0 7.99 16C12.414 16 16 12.418 16 8s-3.586-8-8.009-8A8.006 8.006 0 0 0 0 7.468l.003.006 4.304 1.769A2.2 2.2 0 0 1 5.62 8.88l1.96-2.844-.001-.04a3.046 3.046 0 0 1 3.042-3.043 3.046 3.046 0 0 1 3.042 3.043 3.047 3.047 0 0 1-3.111 3.044l-2.804 2a2.223 2.223 0 0 1-3.075 2.11 2.22 2.22 0 0 1-1.312-1.568L.33 10.333Z"/><path fill="currentColor" d="M4.868 12.683a1.715 1.715 0 0 0 1.318-3.165 1.7 1.7 0 0 0-1.263-.02l1.023.424a1.261 1.261 0 1 1-.97 2.33l-.99-.41a1.7 1.7 0 0 0 .882.84Zm3.726-6.687a2.03 2.03 0 0 0 2.027 2.029 2.03 2.03 0 0 0 2.027-2.029 2.03 2.03 0 0 0-2.027-2.027 2.03 2.03 0 0 0-2.027 2.027m2.03-1.527a1.524 1.524 0 1 1-.002 3.048 1.524 1.524 0 0 1 .002-3.048"/></svg>',
-    "epic games":
-      '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M4.719 0c-1.833 0-2.505.677-2.505 2.505v22.083c0 .209.011.401.027.579.047.401.047.792.421 1.229.036.052.412.328.412.328.203.099.343.172.572.265l11.115 4.656c.573.261.819.371 1.235.355h.005c.421.016.667-.093 1.24-.355l11.109-4.656c.235-.093.369-.167.577-.265 0 0 .376-.287.412-.328.375-.437.375-.828.421-1.229.016-.177.027-.369.027-.573v-22.088c0-1.828-.677-2.505-2.505-2.505zM22.527 4.145h.905c1.511 0 2.251.735 2.251 2.267v2.505H23.85v-2.407c0-.489-.224-.713-.699-.713h-.312c-.489 0-.713.224-.713.713v7.749c0 .489.224.713.713.713h.349c.468 0 .692-.224.692-.713v-2.771h1.833v2.86c0 1.525-.749 2.276-2.265 2.276h-.921c-1.521 0-2.267-.756-2.267-2.276v-7.923c0-1.525.745-2.281 2.267-2.281zM6.276 4.251h4.151v1.703H8.14v3.468h2.204v1.699H8.14v3.697h2.319v1.704H6.276zM11.364 4.251h2.928c1.515 0 2.265.755 2.265 2.28v3.261c0 1.525-.751 2.276-2.265 2.276h-1.057v4.453h-1.871zM17.401 4.251h1.864v12.271h-1.864zM13.229 5.901v4.52H14c.469 0 .693-.228.693-.719v-3.083c0-.489-.224-.719-.693-.719z"/></svg>',
-    "riot games":
-      '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.534 21.77l-1.09-2.81 10.52.54-.451 4.5zM15.06 0 .307 6.969 2.59 17.471H5.6l-.52-7.512.461-.144 1.81 7.656h3.126l-.116-9.15.462-.144 1.582 9.294h3.31l.78-11.053.462-.144.82 11.197h4.376l1.54-15.37Z"/></svg>',
-    hoyoplay:
-      '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m25.9053 34.0474c5.0425-1.4728 6.8196-1.2987 8.3484-1.2948 1.1339.0029 2.2586-.203 3.2921-.6696l.1333-.0602c4.4766-2.0212 6.1813-7.5024 3.6311-11.7001-3.846-6.3305-9.1608-14.0172-11.9794-13.4193-4.7401 1.0056-4.7399 7.1219-4.7399 7.1219s-1.272-.278-4.3376.6715c-3.0947.8498-4.0171 1.7687-4.0171 1.7687s-3.2918-5.1549-7.828-3.4511c-2.6973 1.0131-3.0393 10.3521-2.8734 17.7574.11 4.9105 4.497 8.6125 9.3577 7.9064l.1448-.021c1.1221-.163 2.1809-.5948 3.135-1.2076 1.2864-.8262 2.6904-1.9294 7.7329-3.4022Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m15.9995 38.4489c1.512 3.1381 3.7374 3.1593 5.2644 1.9013 1.527-1.2579 1.6407-4.0191-.0229-6.5644" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m24.4791 30.8374c2.4295-.7096 10.227-.6596 7.9688-6.3871-2.2582-5.7274-5.8688-5.8637-11.1735-4.5849-5.159 1.7775-8.1286 3.8356-6.9491 9.8781 1.1795 6.0425 7.7243 1.8035 10.1538 1.0938Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m19.853 28.218-.9563-3.2738" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m26.9681 26.1398-.9562-3.2738" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m34.7079 32.7399c2.2729 3.9724 2.2263 6.963 2.2263 6.963" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m32.8535 32.7494c-1.4937 4.2834-7.2554 6.9536-12.6733 3.4721" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>',
-    "ea app":
-      '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.7 3.4 7.65v8.7L12 21.3l8.6-4.95v-8.7L12 2.7Zm0 1.98 6.8 3.92v6.8L12 19.32 5.2 15.4V8.6L12 4.68Zm-3.3 4.06h5.43v1.48h-3.55v1.23h3.2v1.42h-3.2v1.92H8.7V8.74Zm6.16 0h.94c1.5 0 2.5 1 2.5 2.48 0 1.55-.97 2.57-2.57 2.57h-.87V8.74Zm.93 1.44v2.18h.14c.6 0 .97-.38.97-1.09 0-.72-.37-1.1-.97-1.1h-.14Z"/></svg>',
-  };
-
-  if (!icons[normalized]) return "";
-  return `<span class="launcher-inline-icon" aria-hidden="true">${icons[normalized]}</span>`;
-};
-
-const launcherBadgeContent = (value: unknown) => `${launcherInlineIcon(value)}<span>${formatValue(value, "Sin launcher")}</span>`;
-
-const platformClassName = (value: unknown) => {
-  const normalized = String(value ?? "").trim().toLowerCase();
-  return normalized === "pc" ? "badge-platform-pc" : "badge-platform-default";
-};
-
-const hoursValue = game.horas === null || game.horas === undefined ? null : Number(game.horas);
-const hltbValue = game.hltb === null || game.hltb === undefined ? null : Number(game.hltb);
-const hltbBreakdown = {
-  main:
-    game.hltb_breakdown?.main === null || game.hltb_breakdown?.main === undefined
-      ? null
-      : Number(game.hltb_breakdown.main),
-  mainPlus:
-    game.hltb_breakdown?.main_plus === null || game.hltb_breakdown?.main_plus === undefined
-      ? null
-      : Number(game.hltb_breakdown.main_plus),
-  completionist:
-    game.hltb_breakdown?.completionist === null || game.hltb_breakdown?.completionist === undefined
-      ? null
-      : Number(game.hltb_breakdown.completionist),
-};
-
-const timeDelta =
-  hoursValue !== null && hltbValue !== null && hltbValue > 0 ? Number((hoursValue - hltbValue).toFixed(1)) : null;
-const timeRatio =
-  hoursValue !== null && hltbValue !== null && hltbValue > 0 ? Number(((hoursValue - hltbValue) / hltbValue).toFixed(4)) : null;
-
-let hltbVisualClass = "";
-let hltbNote = "";
-let hoursDeltaLabel = "";
-let hoursDeltaTone = "neutral";
-if (timeDelta !== null && timeRatio !== null) {
-  if (Math.abs(timeRatio) < 0.12) {
-    hltbNote = `Tiempo muy cercano a HLTB (${Math.abs(timeDelta).toFixed(1)} h de diferencia)`;
-    hoursDeltaLabel = `${timeDelta >= 0 ? "+" : "-"}${Math.abs(timeRatio * 100).toFixed(1)}%`;
-    hoursDeltaTone = "neutral";
-  } else if (timeRatio > 0) {
-    hltbVisualClass = "detail-item-hltb-long";
-    hltbNote = `Has jugado ${Math.abs(timeDelta).toFixed(1)} h mas que la estimacion`;
-    hoursDeltaLabel = `+${Math.abs(timeRatio * 100).toFixed(1)}%`;
-    hoursDeltaTone = "positive";
-  } else {
-    hltbVisualClass = "detail-item-hltb-short";
-    hltbNote = `Has jugado ${Math.abs(timeDelta).toFixed(1)} h menos que la estimacion`;
-    hoursDeltaLabel = `-${Math.abs(timeRatio * 100).toFixed(1)}%`;
-    hoursDeltaTone = "negative";
-  }
-}
-
-const achievements =
-  game.logros && (game.logros.actual !== null || game.logros.total !== null)
-    ? `${formatValue(game.logros.actual)} / ${formatValue(game.logros.total)}`
-    : "-";
-
-const steamCards =
-  game.steam_cromos && (game.steam_cromos.actual !== null || game.steam_cromos.total !== null)
-    ? `${formatValue(game.steam_cromos.actual)} / ${formatValue(game.steam_cromos.total)}`
-    : "-";
-
-const achievementsProgress =
-  game.logros &&
-  game.logros.actual !== null &&
-  game.logros.actual !== undefined &&
-  game.logros.total !== null &&
-  game.logros.total !== undefined &&
-  Number(game.logros.total) > 0
-    ? Math.max(0, Math.min(100, (Number(game.logros.actual) / Number(game.logros.total)) * 100))
-    : null;
-
-const cardsProgress =
-  game.steam_cromos &&
-  game.steam_cromos.actual !== null &&
-  game.steam_cromos.actual !== undefined &&
-  game.steam_cromos.total !== null &&
-  game.steam_cromos.total !== undefined &&
-  Number(game.steam_cromos.total) > 0
-    ? Math.max(0, Math.min(100, (Number(game.steam_cromos.actual) / Number(game.steam_cromos.total)) * 100))
-    : null;
-
-const normalizedStatus = normalizeStatus(game.estado);
-let statusCellClass = "";
-if (isCompletedStatus(game.estado)) statusCellClass = "detail-item-status-completed";
-else if (normalizedStatus === "jugando") statusCellClass = "detail-item-status-playing";
-else if (normalizedStatus === "pendiente") statusCellClass = "detail-item-status-pending";
-else if (normalizedStatus === "recurrente") statusCellClass = "detail-item-status-recurring";
-else if (normalizedStatus === "wishlist") statusCellClass = "detail-item-status-wishlist";
-else if (normalizedStatus === "pausado") statusCellClass = "detail-item-status-paused";
-else if (normalizedStatus === "abandonado" || normalizedStatus === "retirado") statusCellClass = "detail-item-status-abandoned";
-
-const pricePaidVisual = getPaidPriceVisual();
-const priceDeltaTone =
-  hasFreeToPlayTag || pricePaidVisual.deltaLabel === ""
-    ? "neutral"
-    : String(pricePaidVisual.deltaLabel).startsWith("+")
-      ? "positive"
-      : String(pricePaidVisual.deltaLabel).startsWith("-")
-        ? "negative"
-        : "neutral";
-const genres = Array.isArray(game.generos) && game.generos.length > 0 ? game.generos.join(", ") : "-";
-const heroTagBadges = Array.isArray(game.tags)
-  ? game.tags
-      .filter((tag) => String(tag).trim().toLowerCase() !== "cooperativo-privado")
-      .map((tag) => ({ value: normalizeGameTag(tag), label: getGameTagLabel(tag) }))
-  : [];
-const visibleTags = heroTagBadges.map((tag) => tag.label);
-const tags = visibleTags.length > 0 ? visibleTags.join(", ") : "-";
-const heroTagsLabel = visibleTags.length > 0 ? visibleTags.join(", ") : "Sin etiquetas";
 const gameModes = getGameModes(game);
 const modesLabel = formatGameModes(gameModes);
-const dlcItems = Array.isArray(game.dlcs?.items) ? game.dlcs.items : [];
-const dlcTotal = Number(game.dlcs?.total ?? dlcItems.length ?? 0);
+const genresList = Array.isArray(game.generos) ? game.generos : [];
+const genres = genresList.length > 0 ? genresList.join(', ') : '-';
+const rawTags = Array.isArray(game.tags) ? game.tags : [];
+const tagBadges = rawTags
+  .filter((tag) => normalizeGameTag(tag) !== 'cooperativo-privado')
+  .map((tag) => ({ value: normalizeGameTag(tag), label: getGameTagLabel(tag) }));
+const tagsLabel = tagBadges.length > 0 ? tagBadges.map((tag) => tag.label).join(', ') : 'Sin etiquetas';
+const isCompetitive = hasGameTag(game.tags, 'competitivo') || Boolean(game.rango_actual || game.rango_maximo);
+const includeCommunity = isCommunityCriterionApplicable(game);
 
-// DLCs adquiridos vs pendientes
-const dlcOwnedItems  = dlcItems.filter((dlc: any) => dlc.fecha_adquisicion !== null && dlc.fecha_adquisicion !== undefined);
-const dlcPendingItems = dlcItems.filter((dlc: any) => dlc.fecha_adquisicion === null || dlc.fecha_adquisicion === undefined);
+const achievements = game.logros && (game.logros.actual !== null || game.logros.total !== null)
+  ? `${formatValue(game.logros.actual)} / ${formatValue(game.logros.total)}`
+  : '-';
+const achievementProgress = game.logros?.actual !== null && game.logros?.actual !== undefined && Number(game.logros?.total) > 0
+  ? Math.max(0, Math.min(100, Number(game.logros?.actual) / Number(game.logros?.total) * 100))
+  : null;
+const steamCards = game.steam_cromos && (game.steam_cromos.actual !== null || game.steam_cromos.total !== null)
+  ? `${formatValue(game.steam_cromos.actual)} / ${formatValue(game.steam_cromos.total)}`
+  : '-';
+const steamCardsProgress = game.steam_cromos?.actual !== null && game.steam_cromos?.actual !== undefined && Number(game.steam_cromos?.total) > 0
+  ? Math.max(0, Math.min(100, Number(game.steam_cromos?.actual) / Number(game.steam_cromos?.total) * 100))
+  : null;
 
-// Gastado (precio_pagado de los adquiridos)
-const dlcSpendItems = dlcOwnedItems.filter((dlc: any) =>
-  dlc.precio_pagado !== null && dlc.precio_pagado !== undefined && Number.isFinite(Number(dlc.precio_pagado))
-);
-const dlcSpend = dlcSpendItems.reduce((sum: number, dlc: any) => sum + Number(dlc.precio_pagado), 0);
+const dlcItems = game.dlcs?.items ?? [];
+const dlcTotal = Number(game.dlcs?.total ?? dlcItems.length);
+const acquiredDlcs = dlcItems.filter(isAcquiredDlc);
+const pendingDlcs = dlcItems.filter((dlc) => !isAcquiredDlc(dlc));
+const sumKnown = (items: typeof dlcItems, key: 'precio_pagado' | 'precio_actual' | 'precio_salida') =>
+  items.reduce((total, item) => {
+    const parsed = item[key] === null || item[key] === undefined ? null : Number(item[key]);
+    return total + (parsed !== null && Number.isFinite(parsed) ? parsed : 0);
+  }, 0);
+const countKnown = (items: typeof dlcItems, key: 'precio_pagado' | 'precio_actual' | 'precio_salida') =>
+  items.filter((item) => item[key] !== null && item[key] !== undefined && Number.isFinite(Number(item[key]))).length;
+const dlcMarketPoints = [
+  { label: 'Salida', value: sumKnown(acquiredDlcs, 'precio_salida'), count: countKnown(acquiredDlcs, 'precio_salida') },
+  { label: 'Pagado', value: sumKnown(acquiredDlcs, 'precio_pagado'), count: countKnown(acquiredDlcs, 'precio_pagado') },
+  { label: 'Actual', value: sumKnown(acquiredDlcs, 'precio_actual'), count: countKnown(acquiredDlcs, 'precio_actual') },
+].filter((point) => point.count > 0).map(({ label, value }) => ({ label, value: Number(value.toFixed(2)) }));
+const dlcChartPayload = dlcMarketPoints.length >= 2
+  ? { points: dlcMarketPoints, seriesLabel: 'Contenido adicional', metric: 'currency' }
+  : null;
 
-// Precio de salida total (adquiridos con precio_salida conocido)
-const dlcSalidaItems = dlcOwnedItems.filter((dlc: any) =>
-  dlc.precio_salida !== null && dlc.precio_salida !== undefined && Number.isFinite(Number(dlc.precio_salida))
-);
-const dlcSalidaTotal = dlcSalidaItems.reduce((sum: number, dlc: any) => sum + Number(dlc.precio_salida), 0);
-
-// Valor actual total (adquiridos con precio_actual conocido)
-const dlcActualItems = dlcOwnedItems.filter((dlc: any) =>
-  dlc.precio_actual !== null && dlc.precio_actual !== undefined && Number.isFinite(Number(dlc.precio_actual))
-);
-const dlcActualTotal = dlcActualItems.reduce((sum: number, dlc: any) => sum + Number(dlc.precio_actual), 0);
-
-// Coste para adquirir los pendientes (precio_actual de los no adquiridos)
-const dlcPendingPriceItems = dlcPendingItems.filter((dlc: any) =>
-  dlc.precio_actual !== null && dlc.precio_actual !== undefined && Number.isFinite(Number(dlc.precio_actual))
-);
-const dlcPendingTotal = dlcPendingPriceItems.reduce((sum: number, dlc: any) => sum + Number(dlc.precio_actual), 0);
-
-// DLC chart — línea de totales agregados (mismo formato que moneyChartPayload)
-const dlcChartPoints: Array<{ label: string; value: number }> = [];
-if (dlcSalidaItems.length > 0)  dlcChartPoints.push({ label: 'P. de salida', value: +dlcSalidaTotal.toFixed(2) });
-if (dlcSpendItems.length > 0)   dlcChartPoints.push({ label: 'Lo que pagué', value: +dlcSpend.toFixed(2) });
-if (dlcActualItems.length > 0)  dlcChartPoints.push({ label: 'Valor actual', value: +dlcActualTotal.toFixed(2) });
-
-const dlcChartPayload = dlcChartPoints.length >= 2 ? {
-  points: dlcChartPoints,
-  seriesLabel: 'Contenido adicional',
-  metric: 'currency',
-} : null;
-const historicalLowPrice =
-  game.precio_minimo_historico === null || game.precio_minimo_historico === undefined
-    ? null
-    : Number(game.precio_minimo_historico);
-
-const normalizeScalePosition = (value: number | null, min: number, max: number) => {
-  if (value === null || Number.isNaN(value)) return null;
-  if (max <= min) return 50;
-  return Number((((value - min) / (max - min)) * 100).toFixed(2));
-};
-
-const purchasePrice =
-  game.precio_pagado === null || game.precio_pagado === undefined ? null : Number(game.precio_pagado);
-const purchasedUnits = getPurchasedUnits(game);
-const purchaseStores = Array.isArray(game.tiendas_compra)
-  ? game.tiendas_compra.map((store) => String(store).trim()).filter(Boolean)
-  : [];
-const totalPaidPrice = getTotalPaidPrice(game);
-const currentPrice =
-  game.precio_actual === null || game.precio_actual === undefined ? null : Number(game.precio_actual);
-const launchPrice =
-  game.precio_salida === null || game.precio_salida === undefined ? null : Number(game.precio_salida);
-const microtransactionsSpend =
-  game.gasto_microtransacciones === null || game.gasto_microtransacciones === undefined
-    ? null
-    : Number(game.gasto_microtransacciones);
-
-const moneyScaleValues = [purchasePrice, currentPrice, launchPrice, historicalLowPrice].filter(
-  (value): value is number => value !== null && !Number.isNaN(value),
-);
-const moneyMin = moneyScaleValues.length > 0 ? Math.min(...moneyScaleValues) : 0;
-const moneyMax = moneyScaleValues.length > 0 ? Math.max(...moneyScaleValues) : 1;
-
-const moneyReferenceLines = [
-  {
-    label: "Precio salida",
-    value: launchPrice,
-    display: formatCurrency(launchPrice),
-    note: "PVP inicial del mercado",
-    tone:
-      purchasePrice !== null && launchPrice !== null ? (launchPrice >= purchasePrice ? "up" : "down") : "neutral",
-  },
-  {
-    label: "Precio actual",
-    value: currentPrice,
-    display: formatCurrency(currentPrice),
-    note: "Mercado actual",
-    tone:
-      purchasePrice !== null && currentPrice !== null ? (currentPrice >= purchasePrice ? "up" : "down") : "neutral",
-  },
-  {
-    label: "Min. historico",
-    value: historicalLowPrice,
-    display: formatCurrency(historicalLowPrice),
-    note: historicalLowPrice === null ? "Sin dato historico" : "Suelo historico conocido",
-    tone:
-      purchasePrice !== null && historicalLowPrice !== null
-        ? historicalLowPrice >= purchasePrice
-          ? "up"
-          : "down"
-        : "neutral",
-  },
-].map((entry) => ({
-  ...entry,
-  position: normalizeScalePosition(entry.value, moneyMin, moneyMax),
-}));
-
-const purchasePriceNote = (() => {
-  const baseNote = pricePaidVisual.note || "Sin dato de compra";
-  if (hasFreeToPlayTag || purchasePrice === null) return baseNote;
-  if (purchasedUnits <= 1 || totalPaidPrice === null) return baseNote;
-  return `${formatUnitCount(purchasedUnits)} · ${formatCurrency(totalPaidPrice)} en total`;
-})();
-
-const moneyPurchasePoint =
-  purchasePrice === null
-    ? null
-    : {
-        label: "Tu compra",
-        value: purchasePrice,
-        display: formatPrice(purchasePrice),
-        note: purchasePriceNote,
-        position: normalizeScalePosition(purchasePrice, moneyMin, moneyMax),
-        tone: hasFreeToPlayTag ? "free" : pricePaidVisual.delta !== null && pricePaidVisual.delta >= 0 ? "up" : "down",
-      };
-
-const hoursScaleValues = [hoursValue, hltbValue].filter((value): value is number => value !== null && !Number.isNaN(value));
-const hoursMin = hoursScaleValues.length > 0 ? Math.min(...hoursScaleValues) : 0;
-const hoursMax = hoursScaleValues.length > 0 ? Math.max(...hoursScaleValues) : 1;
-
-const hoursReferenceLine =
-  hltbValue === null
-    ? null
-    : {
-        label: "HLTB estimado",
-        value: hltbValue,
-        display: `${hltbValue.toFixed(1)} h`,
-        note: "Linea base de referencia",
-        position: normalizeScalePosition(hltbValue, hoursMin, hoursMax),
-      };
-
-const hoursPoint =
-  hoursValue === null
-    ? null
-    : {
-        label: "Tus horas",
-        value: hoursValue,
-        display: `${hoursValue.toFixed(1)} h`,
-        note: hltbNote || "Sin comparativa HLTB",
-        position: normalizeScalePosition(hoursValue, hoursMin, hoursMax),
-        tone: timeRatio === null ? "neutral" : timeRatio >= 0 ? "up" : "down",
-      };
-
-const summaryCards = [
-  {
-    label: "Estado",
-    value: formatValue(game.estado),
-    note: "Actual",
-    className: statusCellClass,
-  },
-  {
-    label: "Logros",
-    value: achievements,
-    note: achievementsProgress === null ? "Sin datos" : `${achievementsProgress.toFixed(0)}% completado`,
-    className: achievementsProgress !== null ? "detail-item-achievements" : "",
-    progress: achievementsProgress,
-  },
-  {
-    label: "Cromos Steam",
-    value: steamCards,
-    note: cardsProgress === null ? "Sin datos" : `${cardsProgress.toFixed(0)}% completado`,
-    className: cardsProgress !== null ? "detail-item-achievements" : "",
-    progress: cardsProgress,
-  },
-  {
-    label: "DLCs",
-    value: dlcTotal > 0 ? String(dlcTotal) : "-",
-    note: dlcTotal > 0 ? "Registrados" : "Sin DLCs",
-  },
+const paidUnitPrice = game.precio_pagado === null || game.precio_pagado === undefined ? null : Number(game.precio_pagado);
+const currentPrice = game.precio_actual === null || game.precio_actual === undefined ? null : Number(game.precio_actual);
+const launchPrice = game.precio_salida === null || game.precio_salida === undefined ? null : Number(game.precio_salida);
+const historicLow = game.precio_minimo_historico === null || game.precio_minimo_historico === undefined
+  ? null
+  : Number(game.precio_minimo_historico);
+const moneyChartPoints = [
+  { label: 'Salida', value: launchPrice },
+  { label: 'Compra', value: paidUnitPrice },
+  { label: 'Mín. histórico', value: historicLow },
+  { label: 'Actual', value: currentPrice },
+].filter((point): point is { label: string; value: number } => point.value !== null && Number.isFinite(point.value));
+const moneyChartPayload = { points: moneyChartPoints, seriesLabel: 'Precio', metric: 'currency' };
+const pendingDlcMarketValue = sumKnown(pendingDlcs, 'precio_actual');
+const marketCards = [
+  { label: 'Pagado / copia', value: formatCurrency(paidUnitPrice, '—') },
+  { label: 'Precio actual', value: formatCurrency(currentPrice, '—') },
+  { label: 'Precio de salida', value: formatCurrency(launchPrice, '—') },
+  { label: 'Mínimo histórico', value: formatCurrency(historicLow, '—') },
+  { label: 'DLC pendientes', value: pendingDlcMarketValue > 0 ? formatCurrency(pendingDlcMarketValue, '—') : '—' },
 ];
-const hasOverviewDetails = summaryCards.some(({ label, value }) => label !== "Estado" && value !== "-");
 
-const formatHoursValue = (value: number | null) => formatTrackedHours(value);
-const elapsedCalendarTime = formatElapsedCalendarTime(game.fecha_inicio, game.fecha_fin);
-const coverSourceMeta = getCoverSourceMeta();
-
-// Barras HLTB: escala cromática Blanco → Rosa → Morado → (Dinámico = Mis horas)
-const hltbBars = [
-  { label: "Main",          value: hltbBreakdown.main,          color: "#f0ece8" }, // blanco cálido
-  { label: "Main+Extras",   value: hltbBreakdown.mainPlus,      color: "#f7638c" }, // rosa lollipop
-  { label: "Completionist", value: hltbBreakdown.completionist, color: "#c9a8ff" }, // morado indigo
-].filter((bar): bar is { label: string; value: number; color: string } =>
-  bar.value !== null && !Number.isNaN(bar.value)
-);
-
-// Color de la línea de mis horas:
-//   verde  → mis horas ≥ Main+Extras  (supero la media)
-//   rojo   → mis horas < Main          (no llego al mínimo)
-//   naranja → entre Main y Main+Extras (en progreso)
-const hoursLineColor = (() => {
-  if (hoursValue === null) return "#718096";
-  if (hltbBreakdown.main !== null && hoursValue < hltbBreakdown.main)    return "#c51e3a"; // rojo
-  if (hltbBreakdown.mainPlus !== null && hoursValue >= hltbBreakdown.mainPlus) return "#93c572"; // verde
-  return "#ff7518"; // naranja
-})();
-
-// hoursChartPoints: alias de hltbBars para el check de renderizado en el componente
-const hoursChartPoints = hltbBars;
-
+const hltbBreakdown = {
+  main: game.hltb_breakdown?.main == null ? null : Number(game.hltb_breakdown.main),
+  mainPlus: game.hltb_breakdown?.main_plus == null ? null : Number(game.hltb_breakdown.main_plus),
+  completionist: game.hltb_breakdown?.completionist == null ? null : Number(game.hltb_breakdown.completionist),
+};
+const hltbBars = valueMetrics.showHltbTarget
+  ? [
+      { label: 'Main', value: hltbBreakdown.main, color: '#f0ece8' },
+      { label: 'Main+Extras', value: hltbBreakdown.mainPlus, color: '#c993a8' },
+      { label: 'Completionist', value: hltbBreakdown.completionist, color: '#b59bd5' },
+    ].filter((bar): bar is { label: string; value: number; color: string } => bar.value !== null && Number.isFinite(bar.value))
+  : [];
+const hoursLineColor = valueMetrics.realHours === null
+  ? '#718096'
+  : hltbBreakdown.main !== null && valueMetrics.realHours < hltbBreakdown.main
+    ? '#c56f7a'
+    : hltbBreakdown.mainPlus !== null && valueMetrics.realHours >= hltbBreakdown.mainPlus
+      ? '#93c572'
+      : '#c49a72';
 const hoursChartPayload = {
-  type:      "hours-vs-hltb",
-  myHours:   hoursValue,
+  type: 'hours-vs-hltb',
+  myHours: valueMetrics.realHours,
   hltbBars,
   lineColor: hoursLineColor,
 };
 
-const moneyChartPoints = [
-  { label: "Salida", value: launchPrice },
-  { label: "Compra", value: purchasePrice },
-  { label: "Min. historico", value: historicalLowPrice },
-  { label: "Actual", value: currentPrice },
-].filter((point): point is { label: string; value: number } => point.value !== null && !Number.isNaN(point.value));
-
-const moneyChartPayload = {
-  seriesLabel: "Precio",
-  metric: "currency",
-  points: moneyChartPoints,
-};
-
-const hoursSnapshotCards = [
+const summaryCards = [
+  { label: 'Estado', value: formatValue(game.estado), note: 'Actual', className: statusClass },
   {
-    label: "Horas totales",
-    value: formatHoursValue(hoursValue),
-    note: hoursValue !== null ? "Registradas en tu ficha" : "Sin horas cargadas",
-    tone: "hours",
+    label: 'Logros', value: achievements,
+    note: achievementProgress === null ? 'Sin datos' : `${achievementProgress.toFixed(0)}% completado`,
+    className: achievementProgress === null ? '' : 'detail-item-achievements', progress: achievementProgress,
   },
   {
-    label: "Referencia HLTB",
-    value: formatHoursValue(hltbValue),
-    note: hltbValue !== null ? "Base activa de comparacion" : "HLTB no disponible",
-    tone: "neutral",
+    label: 'Cromos Steam', value: steamCards,
+    note: steamCardsProgress === null ? 'Sin datos' : `${steamCardsProgress.toFixed(0)}% completado`,
+    className: steamCardsProgress === null ? '' : 'detail-item-achievements', progress: steamCardsProgress,
   },
-  {
-    label: "Desviacion",
-    value: timeDelta !== null ? `${timeDelta > 0 ? "+" : ""}${timeDelta.toFixed(1)} h` : "-",
-    note: hltbNote || "Sin comparativa suficiente",
-    tone: hoursDeltaTone,
-  },
-  {
-    label: "Completionist",
-    value: formatHoursValue(hltbBreakdown.completionist),
-    note: hltbBreakdown.completionist !== null ? "Techo estimado de contenido" : "Sin valor completionist",
-    tone: "neutral",
-  },
+  { label: 'DLCs', value: dlcTotal > 0 ? String(dlcTotal) : '-', note: dlcTotal > 0 ? 'Registrados' : 'Sin DLCs' },
 ];
+const hasOverviewDetails = summaryCards.some((card) => card.label !== 'Estado' && card.value !== '-');
 
-const moneySnapshotCards = [
-  {
-    label: "Precio pagado",
-    value: formatPrice(game.precio_pagado),
-    note: purchasePriceNote,
-    tone: priceDeltaTone,
-  },
-  ...(purchaseStores.length > 0
-    ? [{
-        label: "Comprado en",
-        value: purchaseStores.join(" · "),
-        detail: `${purchasedUnits} ${purchasedUnits === 1 ? "unidad" : "unidades"}`,
-        note: `${purchasedUnits} ${purchasedUnits === 1 ? "unidad comprada" : "unidades compradas"}`,
-        tone: "neutral",
-        kind: "purchase-store",
-      }]
-    : []),
-  {
-    label: "Precio actual",
-    value: formatCurrency(game.precio_actual),
-    note: currentPrice !== null ? "Lectura actual del mercado" : "Sin precio actual",
-    tone: "money",
-  },
-  {
-    label: "Min. historico",
-    value: formatCurrency(historicalLowPrice),
-    note: historicalLowPrice !== null ? "Suelo historico conocido" : "No hay historico cargado",
-    tone: historicalLowPrice !== null ? "money" : "neutral",
-  },
-  {
-    label: "Lectura",
-    value: pricePaidVisual.deltaLabel || "-",
-    note: hasFreeToPlayTag ? "Entrada gratuita" : pricePaidVisual.note || "Sin lectura financiera",
-    tone: priceDeltaTone,
-  },
-];
-
-// Cards para el acordeón "Contenido Adicional" — primera card = bento destacada (ancho completo)
-const additionalContentCards = [
-  {
-    label: "Lo que has gastado",
-    value: dlcSpendItems.length > 0 ? formatCurrency(dlcSpend) : "-",
-    note: dlcSpendItems.length > 0
-      ? `${dlcSpendItems.length} DLC${dlcSpendItems.length !== 1 ? 's' : ''} con precio pagado`
-      : "Sin gastos en DLCs registrados",
-    tone: dlcSpend > 0 ? "money" : "neutral",
-  },
-  {
-    label: "Precio de salida total",
-    value: dlcSalidaItems.length > 0 ? formatCurrency(dlcSalidaTotal) : "-",
-    note: dlcSalidaItems.length > 0
-      ? `${dlcSalidaItems.length} DLCs con precio de salida`
-      : "Sin precios de salida registrados",
-    tone: dlcSalidaItems.length > 0 ? "money" : "neutral",
-  },
-  {
-    label: "Valor actual total",
-    value: dlcActualItems.length > 0 ? formatCurrency(dlcActualTotal) : "-",
-    note: dlcActualItems.length > 0
-      ? `${dlcActualItems.length} DLCs con precio actual`
-      : "Sin precios actuales — usa Actualizar precios",
-    tone: dlcActualItems.length > 0 ? "money" : "neutral",
-  },
-  {
-    label: "Pendiente de adquirir",
-    value: dlcPendingPriceItems.length > 0 ? formatCurrency(dlcPendingTotal) : "-",
-    note: dlcPendingPriceItems.length > 0
-      ? `${dlcPendingPriceItems.length} DLCs sin adquirir con precio conocido`
-      : dlcPendingItems.length > 0
-        ? `${dlcPendingItems.length} DLCs sin adquirir — sin precio actual`
-        : "Tienes todos los DLCs",
-    tone: dlcPendingTotal > 0 ? "negative" : "neutral",
-  },
-  {
-    label: "Microtransacciones",
-    value: formatCurrency(microtransactionsSpend),
-    note: microtransactionsSpend !== null
-      ? "Gasto dentro del juego"
-      : hasFreeToPlayTag
-        ? "Free-to-play sin gasto registrado"
-        : "Sin compras dentro del juego",
-    tone: microtransactionsSpend !== null && microtransactionsSpend > 0 ? "negative" : "neutral",
-  },
-];
-
-const heroCoverStyle = `--hero-cover:url("${heroImageUrl.replace(/"/g, '\\"')}")`;
-
-const clampPercent = (value: number) => Math.max(0, Math.min(100, Number(value.toFixed(1))));
-
-const hoursTarget = hltbValue && hltbValue > 0 ? hltbValue : hoursValue && hoursValue > 0 ? hoursValue : 1;
-const hoursPlayedPercent = hoursValue !== null ? clampPercent((hoursValue / hoursTarget) * 100) : 0;
-const hoursEstimatePercent = hltbValue !== null ? clampPercent((hltbValue / Math.max(hoursValue ?? 0, hltbValue, 1)) * 100) : 0;
-const hoursDiffPercent =
-  timeRatio === null ? 50 : clampPercent(50 + Math.max(-50, Math.min(50, timeRatio * 50)));
-
-const moneyReferenceMax = Math.max(purchasePrice ?? 0, currentPrice ?? 0, launchPrice ?? 0, historicalLowPrice ?? 0, 1);
-const purchasePercent = purchasePrice !== null ? clampPercent((purchasePrice / moneyReferenceMax) * 100) : 0;
-const currentPercent = currentPrice !== null ? clampPercent((currentPrice / moneyReferenceMax) * 100) : 0;
-const launchPercent = launchPrice !== null ? clampPercent((launchPrice / moneyReferenceMax) * 100) : 0;
-const financeTimelineBase = [launchPrice, purchasePrice, currentPrice].filter(
-  (value): value is number => value !== null && !Number.isNaN(value),
-);
-const financeTimelineMin = financeTimelineBase.length > 0 ? Math.min(...financeTimelineBase) : 0;
-const financeTimelineMax = financeTimelineBase.length > 0 ? Math.max(...financeTimelineBase) : 1;
-const financeTimelineRange = financeTimelineMax - financeTimelineMin;
-const financeTimelineChartWidth = 160;
-const financeTimelineGuideStart = 14;
-const financeTimelineGuideEnd = 146;
-const financeTimelineSlots = [
-  { key: "launch", label: "Salida", shortLabel: "Salida", value: launchPrice, x: 18 },
-  { key: "purchase", label: "Compra", shortLabel: "Compra", value: purchasePrice, x: 80 },
-  { key: "current", label: "Actual", shortLabel: "Actual", value: currentPrice, x: 142 },
-].map((point) => {
-  if (point.value === null || Number.isNaN(point.value)) {
-    return {
-      ...point,
-      y: null,
-      valueLabel: "-",
-    };
-  }
-
-  const normalized =
-    financeTimelineRange <= 0 ? 0.5 : (point.value - financeTimelineMin) / financeTimelineRange;
-
-  return {
-    ...point,
-    y: Number((90 - normalized * 58).toFixed(2)),
-    valueLabel: formatCurrency(point.value),
-  };
-});
-const financeTimelinePoints = financeTimelineSlots.filter(
-  (point): point is (typeof financeTimelineSlots)[number] & { y: number } => point.y !== null,
-);
-const financeTimelinePolyline = financeTimelinePoints.map((point) => `${point.x},${point.y}`).join(" ");
-const financeTimelineArea =
-  financeTimelinePoints.length >= 2
-    ? `${financeTimelinePoints[0].x},90 ${financeTimelinePoints
-        .map((point) => `${point.x},${point.y}`)
-        .join(" ")} ${financeTimelinePoints[financeTimelinePoints.length - 1].x},90`
-    : "";
-const financeTimelineSummary =
-  financeTimelinePoints.length >= 2
-    ? "Lectura temporal entre precio de salida, precio de compra y precio actual."
-    : "Faltan al menos dos precios para dibujar la evolucion.";
-const financeTimelineTone =
-  priceDeltaTone === "positive" ? "profit" : priceDeltaTone === "negative" ? "loss" : "neutral";
-const financeTimelineGuides = [22, 40, 58, 76];
-
+const start = game.fecha_inicio ? new Date(`${game.fecha_inicio}T00:00:00`) : null;
+const end = game.fecha_fin ? new Date(`${game.fecha_fin}T00:00:00`) : null;
+const elapsedDays = start && end && end >= start ? Math.round((end.getTime() - start.getTime()) / 86_400_000) : null;
+const updatedDate = game.actualizado_en ? new Date(game.actualizado_en) : null;
 const metadataGroups = [
   {
-    title: "Catalogacion",
+    title: 'Catalogación',
     items: [
-      { label: "Generos", value: genres },
-      { label: "Tags", value: tags },
-      { label: "Launcher", value: formatValue(game.launcher, "Sin launcher") },
-      { label: "Plataforma", value: formatValue(game.plataforma) },
-      ...(game.tamano ? [{ label: "Tamaño instalado", value: game.tamano }] : []),
-      { label: "Steam AppID", value: formatValue(game.steam_appid) },
-      { label: "Coincidencia HLTB", value: formatValue(game.hltb_match) },
+      { label: 'Géneros', value: genres },
+      { label: 'Etiquetas', value: tagsLabel === 'Sin etiquetas' ? '-' : tagsLabel },
+      { label: 'Modos', value: modesLabel },
+      { label: 'Launcher', value: formatValue(game.launcher, 'Sin launcher') },
+      { label: 'Plataforma', value: formatValue(game.plataforma) },
+      ...(game.tamano ? [{ label: 'Tamaño instalado', value: game.tamano }] : []),
+      { label: 'Steam AppID', value: formatValue(game.steam_appid) },
     ],
   },
   {
-    title: "Cronologia",
+    title: 'Cronología',
     items: [
-      { label: "Lanzamiento", value: formatValue(game.lanzamiento) },
-      { label: "Fecha inicio", value: formatDate(game.fecha_inicio) },
-      { label: "Fecha fin", value: formatDate(game.fecha_fin) },
-      { label: "Dificultad", value: formatValue(game.dificultad) },
-      {
-        label: "Tiempo en pasarlo",
-        value:
-          elapsedCalendarTime?.value ??
-          (game.fecha_inicio || game.fecha_fin ? "-" : "Sin fechas"),
-        note:
-          elapsedCalendarTime?.note ??
-          (game.fecha_inicio && !game.fecha_fin
-            ? "Falta fecha de fin para calcularlo"
-            : !game.fecha_inicio && game.fecha_fin
-              ? "Falta fecha de inicio para calcularlo"
-              : "Necesita fecha_inicio y fecha_fin"),
-      },
-      { label: "Modo", value: modesLabel },
-      { label: "Fuente caratula", value: coverSourceMeta.value, note: coverSourceMeta.note },
+      { label: 'Lanzamiento', value: formatValue(game.lanzamiento) },
+      { label: 'Fecha inicio', value: formatDate(game.fecha_inicio) },
+      { label: 'Fecha fin', value: formatDate(game.fecha_fin) },
+      { label: 'Dificultad', value: formatValue(game.dificultad) },
+      { label: 'Tiempo en pasarlo', value: elapsedDays === null ? '-' : `${elapsedDays} ${elapsedDays === 1 ? 'día' : 'días'}` },
+      { label: 'HLTB match', value: formatValue(game.hltb_match) },
+      { label: 'Última edición', value: updatedDate && !Number.isNaN(updatedDate.getTime()) ? new Intl.DateTimeFormat('es-ES', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Europe/Madrid' }).format(updatedDate) : '-' },
     ],
   },
 ];
 
-// Props del Hero
-const statusBadge = { class: statusClassName(game.estado), label: formatValue(game.estado) };
-const launcherBadge = { class: launcherClassName(game.launcher), html: launcherBadgeContent(game.launcher) };
-const platformBadge = { class: platformClassName(game.plataforma), label: formatValue(game.plataforma) };
-const legacyPersonalRating = game.nota !== null && game.nota !== undefined && Number.isFinite(Number(game.nota))
-  ? Number(game.nota)
-  : null;
-
-const slugParam = Astro.params.slug ?? '';
-
-// Lápiz general (topbar): solo lo que no tiene lápiz propio en su sección.
-const generalEditValues = {
-  estado: game.estado,
-  horas: hoursValue,
-  dificultad: game.dificultad ?? null,
-  logros_actual: game.logros?.actual ?? null,
-  logros_total: game.logros?.total ?? null,
-  fecha_inicio: game.fecha_inicio,
-  fecha_fin: game.fecha_fin,
-  competitivo: isCompetitive,
-  modos: gameModes,
-};
-
-// Lápiz de Dinero: precio pagado, microtransacciones y el toggle free-to-play.
-const moneyEditValues = {
-  precio_pagado: purchasePrice,
-  unidades_compradas: purchasedUnits,
-  tiendas_compra: purchaseStores,
-  gasto_microtransacciones: microtransactionsSpend,
-  tags: Array.isArray(game.tags) ? game.tags : [],
-};
-
-// Lápiz de Comentario.
-const commentsEditValues = {
-  comentarios: game.comentarios ?? null,
-};
+const legacyScore = game.nota !== null && game.nota !== undefined && Number.isFinite(Number(game.nota)) ? Number(game.nota) : null;
+const purchaseStores = (game.tiendas_compra ?? []).map((store) => String(store).trim()).filter(Boolean);
 ---
 
 <BaseLayout title={`${game.titulo} | Personal Database`}>
   <main class="shell game-page game-page-rich">
-    <GameDetailTopbar slug={slugParam} editValues={generalEditValues} />
-
+    <GameDetailTopbar
+      slug={slug}
+      editValues={{
+        estado: game.estado,
+        dificultad: game.dificultad ?? null,
+        logros_actual: game.logros?.actual ?? null,
+        logros_total: game.logros?.total ?? null,
+        fecha_inicio: game.fecha_inicio,
+        fecha_fin: game.fecha_fin,
+      }}
+    />
     <GameDetailHero
       title={game.titulo}
       coverUrl={coverUrl}
       heroCoverStyle={heroCoverStyle}
-      statusBadge={statusBadge}
-      launcherBadge={launcherBadge}
-      platformBadge={platformBadge}
-      tagBadges={heroTagBadges}
+      statusBadge={{ class: statusClass, label: formatValue(game.estado) }}
+      launcherBadge={{ class: launcherClass, label: formatValue(game.launcher, 'Sin launcher'), icon: gamepadIcon }}
+      platformBadge={{ class: platformClass, label: formatValue(game.plataforma) }}
+      tagBadges={tagBadges}
       genres={genres}
-      tagsLabel={heroTagsLabel}
+      tagsLabel={tagsLabel}
       modesLabel={modesLabel}
     />
-
     <GameDetailNav hasDlcs={dlcTotal > 0} hasOverviewDetails={hasOverviewDetails} isCompetitive={isCompetitive} />
-
     {hasOverviewDetails && <GameDetailSummary summaryCards={summaryCards} />}
 
     <section class="hero-analysis-grid" aria-label="Análisis de juego">
       <GameDetailHours
+        slug={slug}
+        metrics={valueMetrics}
         hoursChartPayload={hoursChartPayload}
-        hoursChartPoints={hoursChartPoints}
-        hoursDeltaLabel={hoursDeltaLabel}
-        hoursDeltaTone={hoursDeltaTone}
-        hoursSnapshotCards={hoursSnapshotCards}
+        hoursChartPoints={hltbBars}
         hltbBreakdown={hltbBreakdown}
-        hltbValue={hltbValue}
-        hltbVisualClass={hltbVisualClass}
+        editValues={{ horas: valueMetrics.realHours, fecha_inicio: game.fecha_inicio, fecha_fin: game.fecha_fin }}
       />
-
       <GameDetailFinance
-        slug={slugParam}
+        slug={slug}
+        metrics={valueMetrics}
+        paidUnitPrice={paidUnitPrice}
         moneyChartPayload={moneyChartPayload}
         moneyChartPoints={moneyChartPoints}
-        priceDeltaLabel={pricePaidVisual.deltaLabel}
-        priceDeltaTone={priceDeltaTone}
-        moneySnapshotCards={moneySnapshotCards}
-        additionalContentCards={additionalContentCards}
         dlcChartPayload={dlcChartPayload}
-        dlcChartPoints={dlcChartPoints}
+        dlcChartPoints={dlcMarketPoints}
         hasDlcs={dlcTotal > 0}
-        editValues={moneyEditValues}
+        marketCards={marketCards}
+        editValues={{
+          precio_pagado: paidUnitPrice,
+          unidades_compradas: valueMetrics.purchasedUnits,
+          tiendas_compra: purchaseStores,
+          gasto_microtransacciones: game.gasto_microtransacciones ?? null,
+          tags: rawTags.map(normalizeGameTag),
+        }}
       />
     </section>
 
-    {isCompetitive && (
-      <GameDetailCompetitive
-        slug={slugParam}
-        peakRank={game.rango_maximo ?? null}
-      />
-    )}
-
-    <GameDetailStats metadataGroups={metadataGroups} />
-
+    {isCompetitive && <GameDetailCompetitive slug={slug} peakRank={game.rango_maximo ?? null} />}
+    <GameDetailStats
+      slug={slug}
+      metadataGroups={metadataGroups}
+      editValues={{ generos: genresList, tags: rawTags, modos: gameModes }}
+    />
     {dlcTotal > 0 && (
       <GameDetailDLCs
-        slug={slugParam}
+        slug={slug}
         dlcItems={dlcItems}
         dlcTotal={dlcTotal}
         formatDate={formatDate}
@@ -971,15 +297,8 @@ const commentsEditValues = {
         formatCurrency={formatCurrency}
       />
     )}
-
-    <GameDetailMetacritic
-      slug={slugParam}
-      critique={game.critica ?? null}
-      legacyScore={legacyPersonalRating}
-      includeCommunity={includeCommunityCriterion}
-    />
-
-    <GameDetailComments slug={slugParam} comentarios={formatValue(game.comentarios)} editValues={commentsEditValues} />
+    <GameDetailMetacritic slug={slug} critique={game.critica ?? null} legacyScore={legacyScore} includeCommunity={includeCommunity} />
+    <GameDetailComments slug={slug} comentarios={formatValue(game.comentarios)} editValues={{ comentarios: game.comentarios ?? null }} />
   </main>
   <GameDetailChartsScript />
 </BaseLayout>

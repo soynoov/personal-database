@@ -1,54 +1,166 @@
 @import '../theme.css';
 
-/* ================================================================
-   game-detail/hours.css — sección Horas (perfil de horas + HLTB)
-   Selectores: .chart-canvas-wrap-hours, .game-page-section-inline
-   Override de .hero-analysis-grid para layout horas (column span).
-   Los estilos base de chart-*, section-title-row, analysis-panel, etc.
-   viven en shared.css — aquí solo los específicos de la sección horas.
-   Extraídos de src/styles/game-page.css
-   ================================================================ */
-
 @layer global {
+  .analysis-panel-hours {
+    display: grid;
+    gap: 1rem;
+  }
 
-/* ── hero-analysis-grid layout override ─────────────────────────── */
-/* La sección horas ocupa toda la anchura dentro del grid de análisis */
-.hero-analysis-grid {
-  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
-  align-items: start;
-}
+  .hours-priority-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.8rem;
+  }
 
-.hero-analysis-grid > .analysis-panel {
-  grid-column: 1 / -1;
-}
+  .value-kpi,
+  .hours-progress-card {
+    min-width: 0;
+    border: 1px solid rgba(211, 194, 235, 0.13);
+    border-radius: var(--radius-2);
+    background: rgba(10, 11, 17, 0.5);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  }
 
-/* ── game-page-section anidada dentro de .analysis-panel ─────────── */
-/* .game-page-section-inline (bloque HLTB) cuelga de .analysis-panel
-   (nivel 1), así que aquí baja un nivel respecto a su uso normal como
-   contenedor de primer nivel en DLCs/Stats/Resumen. */
-.game-page-section-inline {
-  border-radius: var(--radius-2);
-}
+  .value-kpi {
+    display: flex;
+    min-height: 132px;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 1rem 1.1rem;
+  }
 
-.game-page-section-inline .detail-item {
-  border-radius: var(--radius-3);
-}
+  .value-kpi-primary {
+    background:
+      radial-gradient(circle at 12% 5%, rgba(166, 125, 221, 0.16), transparent 15rem),
+      rgba(15, 13, 22, 0.72);
+  }
 
-/* ── Range chart card app-mode override ─────────────────────────── */
-.range-chart-card {
-  border-radius: var(--radius-2);
-  background: linear-gradient(
-    180deg,
-    rgba(20, 23, 29, 0.88),
-    rgba(13, 15, 20, 0.82)
-  );
-}
+  .value-kpi-icon {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    place-items: center;
+    border: 1px solid rgba(205, 181, 239, 0.18);
+    border-radius: 14px;
+    background: rgba(141, 101, 199, 0.12);
+    color: #cdb4ee;
+  }
 
-/* ── Responsive ─────────────────────────────────────────────────── */
-@media (max-width: 1180px) {
-  .hero-analysis-grid {
-    grid-template-columns: 1fr;
+  .value-kpi-icon .tabler-icon {
+    width: 21px;
+    height: 21px;
+  }
+
+  .value-kpi > div {
+    display: grid;
+    min-width: 0;
+    gap: 0.2rem;
+  }
+
+  .value-kpi span:not(.value-kpi-icon),
+  .hours-progress-head span {
+    color: rgba(221, 211, 233, 0.68);
+    font-size: 0.69rem;
+    font-weight: 750;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .value-kpi strong {
+    overflow: hidden;
+    color: #fffaf6;
+    font-size: clamp(1.45rem, 3vw, 2.5rem);
+    line-height: 1.05;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .value-kpi small,
+  .hours-progress-foot {
+    color: rgba(218, 209, 229, 0.63);
+    font-size: 0.75rem;
+  }
+
+  .value-kpi.is-muted {
+    opacity: 0.72;
+  }
+
+  .hours-progress-card {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: 0.65rem;
+    padding: 0.95rem 1.05rem;
+  }
+
+  .hours-progress-head,
+  .hours-progress-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+  }
+
+  .hours-progress-head strong,
+  .hours-progress-foot strong {
+    color: #efe5fb;
+  }
+
+  .hours-secondary-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
+    gap: 0.8rem;
+    padding: 0 0.8rem 0.8rem;
+  }
+
+  .hours-breakdown-grid {
+    display: grid;
+    gap: 0.55rem;
+    margin: 0;
+  }
+
+  .hours-breakdown-grid > div {
+    display: grid;
+    gap: 0.25rem;
+    padding: 0.8rem 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.075);
+    border-radius: var(--radius-3);
+    background: rgba(8, 9, 14, 0.54);
+  }
+
+  .hours-breakdown-grid dt {
+    color: rgba(216, 207, 226, 0.62);
+    font-size: 0.67rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .hours-breakdown-grid dd {
+    margin: 0;
+    color: #f6f0fa;
+    font-size: 1.05rem;
+    font-weight: 760;
+  }
+
+  @media (max-width: 720px) {
+    .hours-priority-grid,
+    .hours-secondary-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .value-kpi {
+      min-height: 104px;
+      padding: 0.85rem;
+    }
+
+    .value-kpi strong {
+      font-size: clamp(1.25rem, 8vw, 1.85rem);
+    }
+
+    .hours-progress-foot {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
   }
 }
-
-} /* end @layer global */

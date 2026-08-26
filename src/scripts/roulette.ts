@@ -18,6 +18,7 @@ const WHEEL_COLORS = [
 
 const imageCache = new Map<string, Promise<HTMLImageElement | null>>();
 const coverUrlCache = new Map<string, string>();
+const FILTER_STORAGE_KEY = 'personal-db:roulette-filters:v1';
 
 const getElement = <T extends HTMLElement>(id: string): T => {
   const element = document.getElementById(id);
@@ -257,6 +258,40 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
   let spinning = false;
   let lastWinner: RouletteGame | null = null;
   let lastParticipants: RouletteGame[] = [];
+  const filterSelects = {
+    status: statusSelect,
+    mode: modeSelect,
+    tag: tagSelect,
+    genre: genreSelect,
+    platform: platformSelect,
+    launcher: launcherSelect,
+  };
+
+  const persistFilters = () => {
+    const values = Object.fromEntries(
+      Object.entries(filterSelects).map(([key, select]) => [key, select.value]),
+    );
+    if (Object.values(values).every((value) => value === '')) {
+      localStorage.removeItem(FILTER_STORAGE_KEY);
+      return;
+    }
+    localStorage.setItem(FILTER_STORAGE_KEY, JSON.stringify(values));
+  };
+
+  const restoreFilters = () => {
+    const raw = localStorage.getItem(FILTER_STORAGE_KEY);
+    if (!raw) return;
+    try {
+      const values = JSON.parse(raw) as Record<string, unknown>;
+      Object.entries(filterSelects).forEach(([key, select]) => {
+        const candidate = typeof values[key] === 'string' ? String(values[key]) : '';
+        const isValid = Array.from(select.options).some((option) => option.value === candidate);
+        if (isValid) select.value = candidate;
+      });
+    } catch {
+      localStorage.removeItem(FILTER_STORAGE_KEY);
+    }
+  };
 
   const poolGames = (): RouletteGame[] =>
     [...pool]
@@ -467,7 +502,10 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
   };
 
   [statusSelect, modeSelect, tagSelect, genreSelect, platformSelect, launcherSelect].forEach((select) => {
-    select.addEventListener('change', applyFilters);
+    select.addEventListener('change', () => {
+      persistFilters();
+      applyFilters();
+    });
   });
   addButton.addEventListener('click', addGameByName);
   searchInput.addEventListener('keydown', (event) => {
@@ -484,6 +522,7 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
     genreSelect.value = '';
     platformSelect.value = '';
     launcherSelect.value = '';
+    persistFilters();
     searchInput.value = '';
     feedback.textContent = 'La ruleta está vacía.';
     renderCandidates();
@@ -521,5 +560,6 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
   resizeObserver.observe(wheel);
   resizeObserver.observe(resultWheel);
 
-  renderCandidates();
+  restoreFilters();
+  applyFilters();
 }

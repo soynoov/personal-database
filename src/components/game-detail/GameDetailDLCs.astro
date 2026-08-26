@@ -168,6 +168,7 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
 
 <script>
   import { editorFetch } from '../../scripts/editor-auth';
+  import { finishGameEdit } from '../../scripts/game-edit-feedback';
 
   const trigger = document.getElementById('dlcs-edit-trigger');
   const dialog = document.getElementById('dlcs-edit-dialog');
@@ -253,7 +254,7 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
         if (!response.ok || !result.ok) {
           throw new Error(result.error || `No se pudo guardar (HTTP ${response.status}).`);
         }
-        window.location.reload();
+        finishGameEdit('dlcs', 'DLCs actualizados');
       } catch (error) {
         showError(error instanceof Error ? error.message : 'No se pudo guardar.');
         submitBtn.disabled = false;
@@ -394,7 +395,7 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
           if (result.added > 0) parts.push(`${result.added} nuevo(s)`);
           if (result.backfilled > 0) parts.push(`${result.backfilled} completado(s) con su portada`);
           syncStatus.textContent = `Steam: ${parts.join(', ')}. Recargando…`;
-          window.location.reload();
+          finishGameEdit('dlcs', 'Biblioteca de DLC actualizada');
         } else {
           syncStatus.textContent = 'No hay DLCs nuevos en Steam.';
           syncBtn.disabled = false;

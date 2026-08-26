@@ -3,7 +3,8 @@
 /* Navegación primaria móvil con iconos oficiales de Tabler. */
 @layer global {
   @media (max-width: 1180px) {
-    .shell-desktop-app {
+    .shell-desktop-app,
+    .game-page-rich {
       padding-bottom: calc(6.25rem + env(safe-area-inset-bottom));
     }
 

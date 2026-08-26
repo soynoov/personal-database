@@ -6,6 +6,7 @@
     "sync:steam-capsules": "node scripts/sync-steam-library-capsules.mjs",
     "dev": "astro dev",
     "build": "astro build",
+    "test:finance": "node scripts/verify-game-finance.mjs",
     "preview": "astro preview"
   },
   "dependencies": {

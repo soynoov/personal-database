@@ -78,6 +78,7 @@ const displayRank = (value: string | null) => value?.trim() || 'Sin registrar';
 
 <script>
   import { editorFetch } from '../../scripts/editor-auth';
+  import { finishGameEdit } from '../../scripts/game-edit-feedback';
 
   const trigger = document.getElementById('competitive-edit-trigger');
   const dialog = document.getElementById('competitive-edit-dialog');
@@ -129,7 +130,7 @@ const displayRank = (value: string | null) => value?.trim() || 'Sin registrar';
         });
         const result = await response.json().catch(() => ({}));
         if (!response.ok || !result.ok) throw new Error(result.error || `HTTP ${response.status}`);
-        window.location.reload();
+        finishGameEdit('competitive', 'Peak ELO actualizado');
       } catch (error) {
         showError(error instanceof Error ? error.message : 'No se pudo guardar.');
         submitBtn.disabled = false;

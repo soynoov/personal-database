@@ -1,194 +1,172 @@
 ---
-/**
- * GameDetailFinance.astro — Panel financiero.
- *
- * Bloque 1: fotografía financiera del juego BASE (chart + metric cards).
- *   — Oculto si el juego es Free-to-Play (no hay precio de compra).
- *
- * Bloque 2: acordeón "Contenido Adicional" (DLCs + microtransacciones).
- *   — Siempre visible cuando hasDlcs=true o hay microtransacciones.
- *   — Botón "Actualizar precios DLC" → POST /api/games/[slug]/dlcs/sync-prices
- */
 import '../../styles/game-detail/shared.css';
 import '../../styles/game-detail/finance.css';
 import '../../styles/game-detail/edit.css';
+import {
+  formatEuro,
+  formatHoursDuration,
+  type GameValueMetrics,
+} from '../../lib/game-finance';
 import TablerIcon from '../TablerIcon.astro';
-import editIcon from '@tabler/icons/outline/edit.svg?url';
+import chartIcon from '@tabler/icons/outline/chart-line.svg?url';
 import coinsIcon from '@tabler/icons/outline/coins.svg?url';
+import editIcon from '@tabler/icons/outline/edit.svg?url';
+import targetIcon from '@tabler/icons/outline/target-arrow.svg?url';
 
 interface MoneyEditValues {
   precio_pagado: number | null;
-  unidades_compradas: number | null;
+  unidades_compradas: number;
   tiendas_compra: string[];
   gasto_microtransacciones: number | null;
   tags: string[];
 }
 
-interface SnapshotCard {
-  label: string;
-  value: string;
-  note: string;
-  tone: string;
-  detail?: string;
-  kind?: string;
-}
-
 interface Props {
   slug: string;
+  metrics: GameValueMetrics;
+  paidUnitPrice: number | null;
   moneyChartPayload: object;
   moneyChartPoints: Array<{ label: string; value: number }>;
-  priceDeltaLabel: string;
-  priceDeltaTone: string;
-  moneySnapshotCards: SnapshotCard[];
-  additionalContentCards: SnapshotCard[];
   dlcChartPayload: object | null;
   dlcChartPoints: Array<{ label: string; value: number }>;
   hasDlcs: boolean;
+  marketCards: Array<{ label: string; value: string }>;
   editValues: MoneyEditValues;
 }
 
 const {
   slug,
+  metrics,
+  paidUnitPrice,
   moneyChartPayload,
   moneyChartPoints,
-  priceDeltaLabel,
-  priceDeltaTone,
-  moneySnapshotCards,
-  additionalContentCards,
   dlcChartPayload,
   dlcChartPoints,
   hasDlcs,
+  marketCards,
   editValues,
 } = Astro.props;
-
 const isFreeToPlay = editValues.tags.includes('free-to-play');
-
-const microtransaccionesCard = additionalContentCards.find(c => c.label === 'Microtransacciones');
-const hasMicro = microtransaccionesCard?.value !== '-';
-const isMicropaymentsOnly = isFreeToPlay && !hasDlcs;
-const showAccordion = !isMicropaymentsOnly && (hasDlcs || hasMicro);
-const micropaymentsValue = microtransaccionesCard?.value === '-'
-  ? 'Sin gasto'
-  : microtransaccionesCard?.value ?? 'Sin gasto';
+const progress = Math.max(0, Math.min(100, metrics.economicProgressPercent ?? 0));
+const isAmortized = metrics.dataComplete && metrics.realHours !== null && (metrics.economicRemainingHours ?? 0) === 0;
+const economicState = !metrics.dataComplete
+  ? 'Datos incompletos'
+  : metrics.realHours === null
+    ? 'Sin horas registradas'
+    : (metrics.economicRemainingHours ?? 0) > 0
+      ? `Faltan ${formatHoursDuration(metrics.economicRemainingHours)}`
+      : metrics.recordedSpend === 0
+        ? 'Amortizado'
+        : `${metrics.economicMultiple?.toLocaleString('es-ES', { maximumFractionDigits: 2 }) ?? '1'}× amortizado`;
+const baseBreakdown = metrics.baseSpend === null
+  ? 'Pendiente'
+  : metrics.isFreeToPlay
+    ? formatEuro(0)
+    : formatEuro(metrics.baseSpend);
 ---
 
-<article class:list={["analysis-panel", "analysis-panel-money", isFreeToPlay && "analysis-panel-money-f2p"]} id="finance">
+<article class="analysis-panel analysis-panel-money" id="finance">
   <div class="section-title-row analysis-head">
     <div>
-      <span class="section-eyebrow">Finanzas</span>
+      <span class="section-eyebrow">Rentabilidad</span>
       <h2>Dinero</h2>
     </div>
-    <div class="section-title-actions">
-      {!isFreeToPlay && priceDeltaLabel && (
-        <span class:list={["section-pill", `section-pill-${priceDeltaTone}`]}>{priceDeltaLabel}</span>
-      )}
-      <button class="game-edit-trigger game-edit-trigger-sm" id="money-edit-trigger" type="button" aria-label="Editar precio y microtransacciones">
-        <TablerIcon src={editIcon} />
-      </button>
-    </div>
+    <button class="game-edit-trigger game-edit-trigger-sm" id="money-edit-trigger" type="button" aria-label="Editar gasto registrado">
+      <TablerIcon src={editIcon} />
+    </button>
   </div>
 
-  {/* ── Bloque base: oculto si F2P ──────────────────────────────── */}
-  {!isFreeToPlay && (
-    <div class="range-chart-card">
-      <div class="chart-shell">
-        <div class="chart-visual-card chart-visual-card-money">
-          <div class="chart-header">
-            <strong>Historial de precio</strong>
-          </div>
-          {moneyChartPoints.length >= 2 ? (
-            <div class="chart-canvas-wrap chart-canvas-wrap-money">
-              <canvas id="money-detail-chart" data-chart={JSON.stringify(moneyChartPayload)}></canvas>
-            </div>
-          ) : (
-            <div class="chart-empty">Faltan al menos dos puntos validos para dibujar la grafica financiera.</div>
-          )}
-        </div>
-
-        <div class="chart-metrics-grid">
-          {moneySnapshotCards.map(({ label, value, note, tone, detail, kind }) => (
-            <article title={note} class:list={["chart-metric-card", `chart-metric-card-${tone}`, kind && `chart-metric-card-${kind}`, value === "-" && "chart-metric-card-empty"]}>
-              <span>{label}</span>
-              <strong>{value}</strong>
-              {detail && <small class="chart-metric-detail">{detail}</small>}
-            </article>
-          ))}
-        </div>
+  <div class="finance-priority-grid">
+    <article class:list={["finance-goal-card", isAmortized && "is-complete", !metrics.dataComplete && "is-incomplete"]}>
+      <div class="finance-goal-icon"><TablerIcon src={targetIcon} /></div>
+      <div class="finance-goal-copy">
+        <span>Meta económica</span>
+        <strong>{metrics.economicTargetHours === null ? '—' : formatHoursDuration(metrics.economicTargetHours)}</strong>
+        <small>{economicState}</small>
       </div>
+      <div class="finance-goal-cost">
+        <span>Gasto registrado</span>
+        <strong>{metrics.dataComplete ? formatEuro(metrics.recordedSpend) : 'Incompleto'}</strong>
+      </div>
+    </article>
+
+    <article class="finance-progress-card">
+      <div class="finance-progress-head">
+        <span>Horas ponderadas / meta</span>
+        <strong>{metrics.economicProgressPercent === null ? '—' : `${Math.round(metrics.economicProgressPercent)}%`}</strong>
+      </div>
+      <div class="value-progress" role="progressbar" aria-label="Progreso de la meta económica" aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(progress)}>
+        <span style={`--value-progress:${progress}%`}></span>
+      </div>
+      <span class="finance-progress-status">{economicState}</span>
+    </article>
+  </div>
+
+  {!metrics.dataComplete && (
+    <ul class="finance-incomplete-list" aria-label="Datos financieros pendientes">
+      {metrics.incompleteReasons.map((reason) => <li>{reason}</li>)}
+    </ul>
+  )}
+
+  <div class="finance-kpi-grid">
+    <article><span>Coste/h real</span><strong>{metrics.costPerRealHour === null ? '—' : `${formatEuro(metrics.costPerRealHour)}/h`}</strong></article>
+    <article><span>Coste/h ponderada</span><strong>{metrics.adjustedCostPerHour === null ? '—' : `${formatEuro(metrics.adjustedCostPerHour)}/h`}</strong></article>
+    <article><span>Horas ponderadas</span><strong>{formatHoursDuration(metrics.weightedHours)}</strong></article>
+    <article>
+      <span>Bonus My Score</span>
+      <strong>{metrics.scoreBonusPercent > 0 ? `+${metrics.scoreBonusPercent.toLocaleString('es-ES')}%` : 'Sin bonus'}</strong>
+      <small>{metrics.scoreComplete ? `×${metrics.scoreMultiplier.toFixed(2).replace('.', ',')}` : 'Crítica incompleta'}</small>
+    </article>
+    {isAmortized && metrics.recordedSpend > 0 && (
+      <>
+        <article><span>Múltiplo</span><strong>{metrics.economicMultiple === null ? '—' : `${metrics.economicMultiple.toLocaleString('es-ES', { maximumFractionDigits: 2 })}×`}</strong></article>
+        <article><span>Excedente</span><strong>{formatHoursDuration(metrics.economicSurplusHours)}</strong></article>
+      </>
+    )}
+  </div>
+
+  <section class="finance-breakdown" aria-labelledby="finance-breakdown-title">
+    <div class="finance-breakdown-head">
+      <span class="finance-breakdown-icon"><TablerIcon src={coinsIcon} /></span>
+      <h3 id="finance-breakdown-title">De dónde sale la meta</h3>
     </div>
-  )}
+    <dl>
+      <div>
+        <dt>Juego base</dt>
+        <dd>{baseBreakdown}</dd>
+        <dd class="finance-breakdown-note">{metrics.isFreeToPlay ? 'Free to Play' : paidUnitPrice === null ? 'Sin precio pagado' : `${formatEuro(paidUnitPrice)} × ${metrics.purchasedUnits}`}</dd>
+      </div>
+      <div><dt>DLC adquiridos</dt><dd>{formatEuro(metrics.dlcSpend)}</dd><dd class="finance-breakdown-note">{metrics.acquiredDlcCount} registrados</dd></div>
+      <div><dt>Micropagos</dt><dd>{formatEuro(metrics.microtransactionSpend)}</dd><dd class="finance-breakdown-note">Gasto dentro del juego</dd></div>
+      <div class="finance-breakdown-total"><dt>Total</dt><dd>{metrics.dataComplete ? formatEuro(metrics.recordedSpend) : 'Incompleto'}</dd><dd class="finance-breakdown-note">1 € = 1 h ponderada</dd></div>
+    </dl>
+  </section>
 
-  {isMicropaymentsOnly && (
-    <section class="micropayments-direct" aria-label="Micropagos">
-      <div class="micropayments-direct-title">
-        <span class="micropayments-direct-icon" aria-hidden="true">
-          <TablerIcon src={coinsIcon} />
-        </span>
-        <div>
-          <strong>Micropagos</strong>
-          <small>Free to play</small>
+  {(moneyChartPoints.length > 0 || dlcChartPoints.length > 0 || marketCards.some((card) => card.value !== '—')) && (
+    <details class="value-secondary-details finance-market-details">
+      <summary><TablerIcon src={chartIcon} /><span>Mercado</span></summary>
+      <div class="finance-market-grid">
+        <div class="chart-visual-card chart-visual-card-money">
+          <div class="chart-header"><strong>Precios del juego base</strong></div>
+          {moneyChartPoints.length >= 2 ? (
+            <div class="chart-canvas-wrap chart-canvas-wrap-money"><canvas id="money-detail-chart" data-chart={JSON.stringify(moneyChartPayload)}></canvas></div>
+          ) : <div class="chart-empty">Sin referencias suficientes</div>}
         </div>
-      </div>
-      <div class="micropayments-direct-value">
-        <span>Gasto total registrado</span>
-        <strong>{micropaymentsValue}</strong>
-      </div>
-    </section>
-  )}
-
-  {/* ── Acordeón "Contenido Adicional" ──────────────────────────── */}
-  {showAccordion && (
-    <details class:list={["dlc-finance-accordion", isFreeToPlay && "dlc-finance-accordion-f2p"]} open={isFreeToPlay}>
-      <summary class="dlc-finance-summary">
-        <span>Contenido adicional</span>
-        {isFreeToPlay && <small>Free to play</small>}
-        <svg class="dlc-finance-chevron" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M6 9l6 6 6-6"></path>
-        </svg>
-      </summary>
-
-      <div class="dlc-finance-body">
+        <dl class="finance-market-values">
+          {marketCards.map((card) => <div><dt>{card.label}</dt><dd>{card.value}</dd></div>)}
+        </dl>
         {hasDlcs && (
-          <div class="dlc-finance-actions">
-            <button
-              type="button"
-              class="dlc-sync-prices-btn"
-              id="dlc-sync-prices-btn"
-              data-slug={slug}
-            >
-              Actualizar precios DLC
-            </button>
+          <div class="chart-visual-card chart-visual-card-dlc">
+            <div class="chart-header finance-market-dlc-head">
+              <strong>Precios de DLC</strong>
+              <button type="button" class="dlc-sync-prices-btn" id="dlc-sync-prices-btn" data-slug={slug}>Actualizar</button>
+            </div>
             <span class="dlc-sync-prices-status" id="dlc-sync-prices-status" aria-live="polite"></span>
+            {dlcChartPoints.length >= 2 ? (
+              <div class="chart-canvas-wrap"><canvas id="dlc-finance-chart" data-chart={JSON.stringify(dlcChartPayload)}></canvas></div>
+            ) : <div class="chart-empty">Sin referencias suficientes</div>}
           </div>
         )}
-
-        <div class="chart-shell">
-          {/* ── Chart DLC (izquierda) ─── */}
-          {hasDlcs && (
-            <div class="chart-visual-card chart-visual-card-dlc">
-              <div class="chart-header">
-                <strong>Precio de los DLC</strong>
-              </div>
-              {dlcChartPoints.length >= 2 ? (
-                <div class="chart-canvas-wrap">
-                  <canvas id="dlc-finance-chart" data-chart={JSON.stringify(dlcChartPayload)}></canvas>
-                </div>
-              ) : (
-                <div class="chart-empty">Faltan al menos dos puntos de precio para dibujar la gráfica de DLC.</div>
-              )}
-            </div>
-          )}
-
-          {/* ── Metric cards (derecha, bento) ─── */}
-          <div class="chart-metrics-grid dlc-finance-grid">
-            {additionalContentCards.map(({ label, value, note, tone }) => (
-              <article title={note} class:list={["chart-metric-card", `chart-metric-card-${tone}`, value === "-" && "chart-metric-card-empty"]}>
-                <span>{label}</span>
-                <strong>{value}</strong>
-              </article>
-            ))}
-          </div>
-        </div>
       </div>
     </details>
   )}
@@ -200,52 +178,29 @@ const micropaymentsValue = microtransaccionesCard?.value === '-'
       <h2>Editar dinero</h2>
       <button class="edit-dialog-close" id="money-edit-close" type="button" aria-label="Cerrar">×</button>
     </div>
-
     <p class="edit-dialog-error" id="money-edit-error" hidden></p>
-
     <form id="money-edit-form" data-slug={slug}>
       <div class="edit-field edit-field-checkbox">
-        <label for="money-edit-free-to-play">
-          <input
-            id="money-edit-free-to-play"
-            name="free_to_play"
-            type="checkbox"
-            checked={isFreeToPlay}
-          />
-          Free to play
-        </label>
+        <label for="money-edit-free-to-play"><input id="money-edit-free-to-play" name="free_to_play" type="checkbox" checked={isFreeToPlay} />Free to Play</label>
       </div>
-
-      <div class="edit-field" id="money-field-precio-pagado" hidden={isFreeToPlay}>
-        <label for="money-edit-precio">Precio pagado por copia (EUR)</label>
-        <input id="money-edit-precio" name="precio_pagado" type="number" step="0.01" min="0" value={editValues.precio_pagado ?? ''} />
+      <div class="edit-field-row money-base-fields" hidden={isFreeToPlay}>
+        <div class="edit-field">
+          <label for="money-edit-precio">Precio por copia (EUR)</label>
+          <input id="money-edit-precio" name="precio_pagado" type="number" step="0.01" min="0" value={editValues.precio_pagado ?? ''} />
+        </div>
+        <div class="edit-field">
+          <label for="money-edit-unidades">Copias compradas</label>
+          <input id="money-edit-unidades" name="unidades_compradas" type="number" step="1" min="1" value={editValues.unidades_compradas} />
+        </div>
       </div>
-      <div class="edit-field" id="money-field-unidades-compradas" hidden={isFreeToPlay}>
-        <label for="money-edit-unidades">Unidades compradas</label>
-        <input id="money-edit-unidades" name="unidades_compradas" type="number" step="1" min="1" value={editValues.unidades_compradas ?? 1} />
-      </div>
-      <div class="edit-field" id="money-field-tiendas-compra" hidden={isFreeToPlay}>
+      <div class="edit-field money-base-fields" hidden={isFreeToPlay}>
         <label for="money-edit-tiendas">Comprado en</label>
-        <input
-          id="money-edit-tiendas"
-          name="tiendas_compra"
-          type="text"
-          placeholder="Instant Gaming, Steam…"
-          value={editValues.tiendas_compra.join(', ')}
-        />
+        <input id="money-edit-tiendas" name="tiendas_compra" type="text" placeholder="Instant Gaming, Steam…" value={editValues.tiendas_compra.join(', ')} />
       </div>
-      <div class="edit-field" id="money-field-microtransacciones" hidden={!isFreeToPlay}>
-        <label for="money-edit-microtransacciones">Microtransacciones (EUR)</label>
-        <input
-          id="money-edit-microtransacciones"
-          name="gasto_microtransacciones"
-          type="number"
-          step="0.01"
-          min="0"
-          value={editValues.gasto_microtransacciones ?? ''}
-        />
+      <div class="edit-field">
+        <label for="money-edit-microtransacciones">Micropagos (EUR)</label>
+        <input id="money-edit-microtransacciones" name="gasto_microtransacciones" type="number" step="0.01" min="0" value={editValues.gasto_microtransacciones ?? ''} />
       </div>
-
       <div class="edit-dialog-actions">
         <button class="edit-dialog-cancel" id="money-edit-cancel" type="button">Cancelar</button>
         <button class="edit-dialog-submit" id="money-edit-submit" type="submit">Guardar cambios</button>
@@ -256,112 +211,67 @@ const micropaymentsValue = microtransaccionesCard?.value === '-'
 
 <script>
   import { editorFetch } from '../../scripts/editor-auth';
-
-  // ── Editor de Dinero ─────────────────────────────────────────────
+  import { finishGameEdit } from '../../scripts/game-edit-feedback';
   const trigger = document.getElementById('money-edit-trigger');
   const dialog = document.getElementById('money-edit-dialog');
   const form = document.getElementById('money-edit-form');
-  const closeBtn = document.getElementById('money-edit-close');
-  const cancelBtn = document.getElementById('money-edit-cancel');
   const errorBox = document.getElementById('money-edit-error');
-  const submitBtn = document.getElementById('money-edit-submit');
-
-  if (
-    trigger instanceof HTMLButtonElement &&
-    dialog instanceof HTMLDialogElement &&
-    form instanceof HTMLFormElement &&
-    errorBox instanceof HTMLElement &&
-    submitBtn instanceof HTMLButtonElement
-  ) {
-    const hideError = () => errorBox.setAttribute('hidden', '');
-    const showError = (message: string) => {
-      errorBox.textContent = message;
-      errorBox.removeAttribute('hidden');
+  const submit = document.getElementById('money-edit-submit');
+  if (trigger instanceof HTMLButtonElement && dialog instanceof HTMLDialogElement && form instanceof HTMLFormElement && errorBox instanceof HTMLElement && submit instanceof HTMLButtonElement) {
+    const close = () => dialog.close();
+    const free = document.getElementById('money-edit-free-to-play');
+    const syncBaseFields = () => {
+      const hidden = free instanceof HTMLInputElement && free.checked;
+      document.querySelectorAll<HTMLElement>('.money-base-fields').forEach((field) => { field.hidden = hidden; });
     };
-
-    const freeToPlayCheckbox = document.getElementById('money-edit-free-to-play');
-    const precioField = document.getElementById('money-field-precio-pagado');
-    const unidadesField = document.getElementById('money-field-unidades-compradas');
-    const tiendasField = document.getElementById('money-field-tiendas-compra');
-    const microtransaccionesField = document.getElementById('money-field-microtransacciones');
-
-    const syncPriceFields = () => {
-      if (
-        !(freeToPlayCheckbox instanceof HTMLInputElement) ||
-        !(precioField instanceof HTMLElement) ||
-        !(unidadesField instanceof HTMLElement) ||
-        !(tiendasField instanceof HTMLElement) ||
-        !(microtransaccionesField instanceof HTMLElement)
-      ) return;
-      const isFtp = freeToPlayCheckbox.checked;
-      precioField.hidden = isFtp;
-      unidadesField.hidden = isFtp;
-      tiendasField.hidden = isFtp;
-      microtransaccionesField.hidden = !isFtp;
-    };
-
-    freeToPlayCheckbox?.addEventListener('change', syncPriceFields);
-
-    trigger.addEventListener('click', () => { hideError(); dialog.showModal(); });
-    closeBtn?.addEventListener('click', () => dialog.close());
-    cancelBtn?.addEventListener('click', () => dialog.close());
-    dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
-
+    free?.addEventListener('change', syncBaseFields);
+    trigger.addEventListener('click', () => { errorBox.hidden = true; dialog.showModal(); });
+    document.getElementById('money-edit-close')?.addEventListener('click', close);
+    document.getElementById('money-edit-cancel')?.addEventListener('click', close);
+    dialog.addEventListener('click', (event) => { if (event.target === dialog) close(); });
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
-      hideError();
-      const slug = form.dataset.slug ?? '';
       const data = new FormData(form);
-      const freeToPlayInput = document.getElementById('money-edit-free-to-play');
-      const payload = {
-        precio_pagado: data.get('precio_pagado'),
-        unidades_compradas: data.get('unidades_compradas'),
-        tiendas_compra: data.get('tiendas_compra'),
-        gasto_microtransacciones: data.get('gasto_microtransacciones'),
-        free_to_play: freeToPlayInput instanceof HTMLInputElement ? freeToPlayInput.checked : false,
-      };
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Guardando…';
+      submit.disabled = true;
+      submit.textContent = 'Guardando…';
       try {
-        const response = await editorFetch(`/api/games/${slug}/edit`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+        const response = await editorFetch(`/api/games/${form.dataset.slug ?? ''}/edit`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            precio_pagado: data.get('precio_pagado'),
+            unidades_compradas: data.get('unidades_compradas'),
+            tiendas_compra: data.get('tiendas_compra'),
+            gasto_microtransacciones: data.get('gasto_microtransacciones'),
+            free_to_play: free instanceof HTMLInputElement && free.checked,
+          }),
         });
         const result = await response.json().catch(() => ({}));
         if (!response.ok || !result.ok) throw new Error(result.error || `HTTP ${response.status}`);
-        window.location.reload();
+        finishGameEdit('finance', 'Dinero actualizado');
       } catch (error) {
-        showError(error instanceof Error ? error.message : 'No se pudo guardar.');
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Guardar cambios';
+        errorBox.textContent = error instanceof Error ? error.message : 'No se pudo guardar.';
+        errorBox.hidden = false;
+        submit.disabled = false;
+        submit.textContent = 'Guardar cambios';
       }
     });
   }
 
-  // ── Actualizar precios DLC ───────────────────────────────────────
-  const syncPricesBtn = document.getElementById('dlc-sync-prices-btn');
-  const syncPricesStatus = document.getElementById('dlc-sync-prices-status');
-
-  if (syncPricesBtn instanceof HTMLButtonElement && syncPricesStatus instanceof HTMLElement) {
-    syncPricesBtn.addEventListener('click', async () => {
-      const slug = syncPricesBtn.dataset.slug ?? '';
-      syncPricesBtn.disabled = true;
-      syncPricesStatus.textContent = 'Consultando Steam…';
+  const syncButton = document.getElementById('dlc-sync-prices-btn');
+  const syncStatus = document.getElementById('dlc-sync-prices-status');
+  if (syncButton instanceof HTMLButtonElement && syncStatus instanceof HTMLElement) {
+    syncButton.addEventListener('click', async () => {
+      syncButton.disabled = true;
+      syncStatus.textContent = 'Consultando…';
       try {
-        const response = await editorFetch(`/api/games/${slug}/dlcs/sync-prices`, { method: 'POST' });
+        const response = await editorFetch(`/api/games/${syncButton.dataset.slug ?? ''}/dlcs/sync-prices`, { method: 'POST' });
         const result = await response.json().catch(() => ({}));
         if (!response.ok || !result.ok) throw new Error(result.error || `HTTP ${response.status}`);
-        if (result.updated > 0) {
-          syncPricesStatus.textContent = `${result.updated} DLC${result.updated !== 1 ? 's' : ''} actualizados. Recargando…`;
-          window.location.reload();
-        } else {
-          syncPricesStatus.textContent = result.message ?? 'Sin cambios.';
-          syncPricesBtn.disabled = false;
-        }
+        if (result.updated > 0) finishGameEdit('finance', 'Precios de DLC actualizados');
+        else { syncStatus.textContent = result.message ?? 'Sin cambios'; syncButton.disabled = false; }
       } catch (error) {
-        syncPricesStatus.textContent = error instanceof Error ? error.message : 'No se pudo consultar Steam.';
-        syncPricesBtn.disabled = false;
+        syncStatus.textContent = error instanceof Error ? error.message : 'No se pudo actualizar.';
+        syncButton.disabled = false;
       }
     });
   }

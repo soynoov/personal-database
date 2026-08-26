@@ -320,6 +320,7 @@ const formatDecimal = (value: number | null) =>
 
 <script>
   import { editorFetch } from '../../scripts/editor-auth';
+  import { finishGameEdit } from '../../scripts/game-edit-feedback';
 
   const trigger = document.getElementById('metacritic-edit-trigger');
   const dialog = document.getElementById('metacritic-edit-dialog');
@@ -419,7 +420,7 @@ const formatDecimal = (value: number | null) =>
         if (!response.ok || !result.ok) {
           throw new Error(result.error || `No se pudo guardar (HTTP ${response.status}).`);
         }
-        window.location.reload();
+        finishGameEdit('metacritica', 'Metacrítica actualizada');
       } catch (error) {
         showError(error instanceof Error ? error.message : 'No se pudo guardar.');
         submitBtn.disabled = false;

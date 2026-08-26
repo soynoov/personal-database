@@ -7,6 +7,48 @@
 
 @layer global {
 
+.game-save-toast {
+  position: fixed;
+  z-index: 1200;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(199, 175, 238, 0.28);
+  border-radius: var(--radius-pill);
+  background: rgba(24, 22, 31, 0.94);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.34);
+  color: #f6f0ff;
+  font: 700 0.82rem/1.2 var(--font-body);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 160ms ease, transform 160ms ease;
+  backdrop-filter: blur(18px) saturate(118%);
+}
+
+.game-save-toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.date-proposal {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(196, 171, 229, 0.17);
+  border-radius: var(--radius-3);
+  background: rgba(132, 91, 188, 0.08);
+  color: #e9def4;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+.date-proposal[hidden] {
+  display: none;
+}
+
 .game-edit-trigger {
   display: inline-flex;
   align-items: center;

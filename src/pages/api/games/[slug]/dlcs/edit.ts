@@ -1,124 +1,101 @@
-import type { APIRoute } from "astro";
-import { requireEditor } from "../../../../../lib/edit-auth";
-import { findGameBySlug, readGames, slugifyGameTitle, writeGames } from "../../../../../lib/local-games";
+import type { APIRoute } from 'astro';
+import { requireEditor } from '../../../../../lib/edit-auth';
+import {
+  findGameBySlug,
+  GamesVersionConflictError,
+  readGames,
+  slugifyGameTitle,
+  writeGames,
+} from '../../../../../lib/local-games';
 
-function jsonResponse(status: number, body: Record<string, unknown>) {
-  return new Response(JSON.stringify(body), {
+const jsonResponse = (status: number, body: Record<string, unknown>) =>
+  new Response(JSON.stringify(body), {
     status,
-    headers: { "Content-Type": "application/json" },
+    headers: { 'Content-Type': 'application/json' },
   });
-}
 
-function toNullableNumber(value: unknown): number | null {
-  if (value === null || value === undefined) return null;
-  const str = String(value).trim();
-  if (str === "") return null;
-  const num = Number(str);
-  return Number.isFinite(num) ? num : null;
-}
+const toNullableNumber = (value: unknown): number | null => {
+  if (value === null || value === undefined || String(value).trim() === '') return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+};
 
-function todayIso() {
-  return new Date().toISOString().slice(0, 10);
-}
+const toNullableIsoDate = (value: unknown): string | null => {
+  const text = typeof value === 'string' ? value.trim() : '';
+  return /^\d{4}-\d{2}-\d{2}$/.test(text) ? text : null;
+};
 
-const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const todayInMadrid = () => new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'Europe/Madrid',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+}).format(new Date());
 
-// <input type="date"> manda "" cuando está vacío y "YYYY-MM-DD" cuando no.
-// null/undefined/"" se tratan igual: "el usuario no tocó este campo".
-function toNullableIsoDate(value: unknown): string | null {
-  if (typeof value !== "string") return null;
-  const trimmed = value.trim();
-  return ISO_DATE_RE.test(trimmed) ? trimmed : null;
-}
-
-/**
- * Patchea precio_pagado y fecha_adquisicion de cada DLC ya registrado en
- * games.json (por posición en el array, mismo orden que se renderizó en
- * la ficha). No añade ni borra entradas — eso lo hace /dlcs/sync.
- *
- * "No adquirido" se representa reutilizando fecha_adquisicion=null y
- * precio_pagado=null (sin campo nuevo en el esquema), tal como se decidió
- * al plantear esta función.
- */
 export const POST: APIRoute = async ({ params, request }) => {
   const authenticationError = requireEditor(request);
   if (authenticationError) return authenticationError;
-
-  const slug = params.slug ?? "";
-  if (!slug) {
-    return jsonResponse(400, { ok: false, error: "Falta el slug del juego." });
-  }
+  const slug = params.slug ?? '';
+  if (!slug) return jsonResponse(400, { ok: false, error: 'Falta el slug del juego.' });
 
   let body: Record<string, unknown>;
   try {
     body = await request.json();
   } catch {
-    return jsonResponse(400, { ok: false, error: "Cuerpo de la petición no es JSON válido." });
+    return jsonResponse(400, { ok: false, error: 'Cuerpo de la petición no es JSON válido.' });
   }
+  const patches = Array.isArray(body.items) ? body.items : null;
+  if (!patches) return jsonResponse(400, { ok: false, error: 'Falta el array items.' });
 
-  const items = Array.isArray(body.items) ? body.items : null;
-  if (!items) {
-    return jsonResponse(400, { ok: false, error: "Falta el array items en el cuerpo de la petición." });
-  }
-
-  const games = await readGames();
-  const game = findGameBySlug(games, slug);
-  if (!game) {
-    return jsonResponse(404, { ok: false, error: `No se encontró ningún juego con slug "${slug}".` });
-  }
-
-  const index = games.findIndex((g) => slugifyGameTitle(g.titulo) === slug);
-  const existingItems = Array.isArray(game.dlcs?.items) ? game.dlcs!.items! : [];
-
-  if (items.length !== existingItems.length) {
-    return jsonResponse(400, {
-      ok: false,
-      error: `El número de DLCs enviados (${items.length}) no coincide con los registrados (${existingItems.length}). Recarga la página e inténtalo de nuevo.`,
-    });
-  }
-
-  const nextItems = existingItems.map((item, i) => {
-    const patch = items[i] as { owned?: unknown; fecha_adquisicion?: unknown; precio_pagado?: unknown } | undefined;
-    if (!patch) return item;
-
-    const wasOwned = item.fecha_adquisicion !== null && item.fecha_adquisicion !== undefined;
-    const nowOwned = patch.owned === true;
-
-    if (!nowOwned) {
-      return { ...item, fecha_adquisicion: null, precio_pagado: null };
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const games = await readGames();
+    const game = findGameBySlug(games, slug);
+    if (!game) return jsonResponse(404, { ok: false, error: 'No se encontró el juego.' });
+    const existing = game.dlcs?.items ?? [];
+    if (patches.length !== existing.length) {
+      return jsonResponse(400, {
+        ok: false,
+        error: 'El número de DLCs cambió. Recarga la página e inténtalo de nuevo.',
+      });
     }
 
-    // Fecha: prioridad a la que mandó el usuario en el input. Si la dejó
-    // vacía, se conserva la que ya hubiera (no se pisa con la de hoy solo
-    // por reguardar el precio). Si nunca tuvo ninguna, hoy como aproximación.
-    const patchedDate = toNullableIsoDate(patch.fecha_adquisicion);
-    const fecha_adquisicion = patchedDate ?? (wasOwned ? item.fecha_adquisicion : todayIso());
-
-    return {
-      ...item,
-      fecha_adquisicion,
-      precio_pagado: toNullableNumber(patch.precio_pagado),
-    };
-  });
-
-  const updated = {
-    ...game,
-    dlcs: {
-      total: nextItems.length,
-      items: nextItems,
-    },
-  };
-
-  games[index] = updated;
-
-  try {
-    await writeGames(games);
-  } catch (error) {
-    return jsonResponse(500, {
-      ok: false,
-      error: `No se pudo guardar la biblioteca: ${error instanceof Error ? error.message : String(error)}`,
+    const items = existing.map((item, index) => {
+      const patch = patches[index] as Record<string, unknown> | undefined;
+      if (!patch) return item;
+      const wasOwned = Boolean(item.fecha_adquisicion);
+      if (patch.owned !== true) return { ...item, fecha_adquisicion: null, precio_pagado: null };
+      return {
+        ...item,
+        fecha_adquisicion:
+          toNullableIsoDate(patch.fecha_adquisicion) ??
+          (wasOwned ? item.fecha_adquisicion : todayInMadrid()),
+        precio_pagado: toNullableNumber(patch.precio_pagado),
+      };
     });
+    const updated = {
+      ...game,
+      actualizado_en: new Date().toISOString(),
+      dlcs: { total: items.length, items },
+    };
+    games[games.findIndex((item) => slugifyGameTitle(item.titulo) === slug)] = updated;
+
+    try {
+      await writeGames(games);
+      return jsonResponse(200, { ok: true, game: updated });
+    } catch (error) {
+      if (error instanceof GamesVersionConflictError) {
+        if (attempt === 0) continue;
+        return jsonResponse(409, {
+          ok: false,
+          error: 'La biblioteca volvió a cambiar. Recarga la página e inténtalo de nuevo.',
+        });
+      }
+      return jsonResponse(500, {
+        ok: false,
+        error: `No se pudo guardar la biblioteca: ${error instanceof Error ? error.message : String(error)}`,
+      });
+    }
   }
 
-  return jsonResponse(200, { ok: true, game: updated });
+  return jsonResponse(409, { ok: false, error: 'No se pudo resolver el conflicto de edición.' });
 };

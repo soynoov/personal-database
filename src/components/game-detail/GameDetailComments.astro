@@ -69,6 +69,7 @@ const { slug, comentarios, editValues } = Astro.props;
 
 <script>
   import { editorFetch } from '../../scripts/editor-auth';
+  import { finishGameEdit } from '../../scripts/game-edit-feedback';
 
   const trigger = document.getElementById('comments-edit-trigger');
   const dialog = document.getElementById('comments-edit-dialog');
@@ -126,7 +127,7 @@ const { slug, comentarios, editValues } = Astro.props;
         if (!response.ok || !result.ok) {
           throw new Error(result.error || `No se pudo guardar (HTTP ${response.status}).`);
         }
-        window.location.reload();
+        finishGameEdit('comentario', 'Comentario actualizado');
       } catch (error) {
         showError(error instanceof Error ? error.message : 'No se pudo guardar.');
         submitBtn.disabled = false;

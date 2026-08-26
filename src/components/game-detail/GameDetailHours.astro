@@ -1,96 +1,173 @@
 ---
-/**
- * GameDetailHours.astro — Panel de horas de juego.
- * Muestra el chart de horas (Chart.js), las métricas snapshot y el desglose HLTB.
- * Renderiza dentro de .hero-analysis-grid > article.analysis-panel
- * Datos: todos computados en [slug].astro y recibidos como props.
- */
 import '../../styles/game-detail/shared.css';
 import '../../styles/game-detail/hours.css';
+import '../../styles/game-detail/edit.css';
+import { formatHoursDuration, type GameValueMetrics } from '../../lib/game-finance';
+import TablerIcon from '../TablerIcon.astro';
+import chartIcon from '@tabler/icons/outline/chart-bar.svg?url';
+import clockIcon from '@tabler/icons/outline/clock.svg?url';
+import editIcon from '@tabler/icons/outline/edit.svg?url';
+import targetIcon from '@tabler/icons/outline/target-arrow.svg?url';
 
 interface Props {
+  slug: string;
+  metrics: GameValueMetrics;
   hoursChartPayload: object;
   hoursChartPoints: Array<{ label: string; value: number; color?: string }>;
-  hoursDeltaLabel: string;
-  hoursDeltaTone: string;
-  hoursSnapshotCards: Array<{ label: string; value: string; note: string; tone: string }>;
   hltbBreakdown: { main: number | null; mainPlus: number | null; completionist: number | null };
-  hltbValue: number | null;
-  hltbVisualClass: string;
+  editValues: { horas: number | null; fecha_inicio: string | null; fecha_fin: string | null };
 }
 
-const {
-  hoursChartPayload,
-  hoursChartPoints,
-  hoursDeltaLabel,
-  hoursDeltaTone,
-  hoursSnapshotCards,
-  hltbBreakdown,
-  hltbValue,
-  hltbVisualClass,
-} = Astro.props;
+const { slug, metrics, hoursChartPayload, hoursChartPoints, hltbBreakdown, editValues } = Astro.props;
+const progress = Math.max(0, Math.min(100, metrics.hltbProgressPercent ?? 0));
+const hltbState = !metrics.showHltbTarget
+  ? 'No aplica'
+  : metrics.hltbTargetHours === null
+    ? 'Sin referencia'
+    : metrics.realHours === null
+      ? 'Sin horas registradas'
+      : (metrics.hltbRemainingHours ?? 0) > 0
+        ? `Faltan ${formatHoursDuration(metrics.hltbRemainingHours)}`
+        : `${metrics.hltbMultiple?.toLocaleString('es-ES', { maximumFractionDigits: 2 }) ?? '1'}× alcanzado`;
 ---
 
 <article class="analysis-panel analysis-panel-hours" id="hours">
   <div class="section-title-row analysis-head">
     <div>
-      <span class="section-eyebrow">Progreso</span>
+      <span class="section-eyebrow">Tiempo registrado</span>
       <h2>Horas</h2>
     </div>
-    {hoursDeltaLabel && (
-      <span class:list={["section-pill", `section-pill-${hoursDeltaTone}`]}>{hoursDeltaLabel}</span>
+    <button class="game-edit-trigger game-edit-trigger-sm" id="hours-edit-trigger" type="button" aria-label="Editar horas y fechas">
+      <TablerIcon src={editIcon} />
+    </button>
+  </div>
+
+  <div class="hours-priority-grid">
+    <article class="value-kpi value-kpi-primary">
+      <span class="value-kpi-icon"><TablerIcon src={clockIcon} /></span>
+      <div>
+        <span>Horas reales</span>
+        <strong>{metrics.realHours === null ? 'Sin registrar' : formatHoursDuration(metrics.realHours)}</strong>
+      </div>
+    </article>
+
+    <article class:list={["value-kpi", "value-kpi-target", !metrics.showHltbTarget && "is-muted"]}>
+      <span class="value-kpi-icon"><TablerIcon src={targetIcon} /></span>
+      <div>
+        <span>Meta HLTB</span>
+        <strong>{metrics.hltbTargetHours === null ? '—' : formatHoursDuration(metrics.hltbTargetHours)}</strong>
+        <small>{hltbState}</small>
+      </div>
+    </article>
+
+    {metrics.hltbTargetHours !== null && (
+      <article class="hours-progress-card">
+        <div class="hours-progress-head">
+          <span>Progreso HLTB</span>
+          <strong>{metrics.hltbProgressPercent === null ? '—' : `${Math.round(metrics.hltbProgressPercent)}%`}</strong>
+        </div>
+        <div class="value-progress" role="progressbar" aria-label="Progreso de la meta HLTB" aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(progress)}>
+          <span style={`--value-progress:${progress}%`}></span>
+        </div>
+        <div class="hours-progress-foot">
+          <span>{hltbState}</span>
+          {metrics.hltbRemainingHours === 0 && <strong>Meta completada</strong>}
+        </div>
+      </article>
     )}
   </div>
 
-  <div class="range-chart-card">
-    <div class="chart-shell">
-      <div class="chart-visual-card">
-        <div class="chart-header">
-          <strong>Tu tiempo vs. HLTB</strong>
+  {metrics.showHltbTarget && (hoursChartPoints.length > 0 || hltbBreakdown.mainPlus !== null || hltbBreakdown.completionist !== null) && (
+    <details class="value-secondary-details">
+      <summary><TablerIcon src={chartIcon} /><span>Comparativa y desglose HLTB</span></summary>
+      <div class="hours-secondary-grid">
+        <div class="chart-visual-card">
+          <div class="chart-header"><strong>Tu tiempo vs. HLTB</strong></div>
+          {hoursChartPoints.length > 0 ? (
+            <div class="chart-canvas-wrap chart-canvas-wrap-hours">
+              <canvas id="hours-detail-chart" data-chart={JSON.stringify(hoursChartPayload)}></canvas>
+            </div>
+          ) : <div class="chart-empty">Sin referencias suficientes</div>}
         </div>
-        {hoursChartPoints.length >= 1 ? (
-          <div class="chart-canvas-wrap chart-canvas-wrap-hours">
-            <canvas id="hours-detail-chart" data-chart={JSON.stringify(hoursChartPayload)}></canvas>
-          </div>
-        ) : (
-          <div class="chart-empty">Faltan al menos dos puntos validos para dibujar la grafica de horas.</div>
-        )}
+        <dl class="hours-breakdown-grid">
+          <div><dt>Historia</dt><dd>{formatHoursDuration(hltbBreakdown.main)}</dd></div>
+          <div><dt>Historia + extras</dt><dd>{formatHoursDuration(hltbBreakdown.mainPlus)}</dd></div>
+          <div><dt>100%</dt><dd>{formatHoursDuration(hltbBreakdown.completionist)}</dd></div>
+        </dl>
       </div>
-
-      <div class="chart-metrics-grid">
-        {hoursSnapshotCards.map(({ label, value, note, tone }) => (
-          <article title={note} class:list={["chart-metric-card", `chart-metric-card-${tone}`, value === "-" && "chart-metric-card-empty"]}>
-            <span>{label}</span>
-            <strong>{value}</strong>
-          </article>
-        ))}
-      </div>
-    </div>
-  </div>
-
-  <div class="game-page-section game-page-section-inline">
-    <div class="section-title-row">
-      <div>
-        <h2>Desglose HLTB</h2>
-      </div>
-    </div>
-    <dl class="detail-grid detail-grid-4">
-      <div class={`detail-item ${hltbBreakdown.main !== null ? "" : "detail-item-empty"}`}>
-        <dt>Historia</dt>
-        <dd>{hltbBreakdown.main !== null ? `${hltbBreakdown.main.toFixed(1)} h` : "-"}</dd>
-      </div>
-      <div class={`detail-item ${hltbBreakdown.mainPlus !== null ? "" : "detail-item-empty"}`}>
-        <dt>Historia + extras</dt>
-        <dd>{hltbBreakdown.mainPlus !== null ? `${hltbBreakdown.mainPlus.toFixed(1)} h` : "-"}</dd>
-      </div>
-      <div class={`detail-item ${hltbBreakdown.completionist !== null ? "" : "detail-item-empty"}`}>
-        <dt>100%</dt>
-        <dd>{hltbBreakdown.completionist !== null ? `${hltbBreakdown.completionist.toFixed(1)} h` : "-"}</dd>
-      </div>
-      <div class={`detail-item ${hltbValue !== null ? hltbVisualClass : "detail-item-empty"}`}>
-        <dt>Referencia</dt>
-        <dd>{hltbValue !== null ? `${hltbValue.toFixed(1)} h` : "-"}</dd>
-      </div>
-    </dl>
-  </div>
+    </details>
+  )}
 </article>
+
+<dialog class="edit-dialog" id="hours-edit-dialog">
+  <div class="edit-dialog-body">
+    <div class="edit-dialog-head">
+      <h2>Editar horas</h2>
+      <button class="edit-dialog-close" id="hours-edit-close" type="button" aria-label="Cerrar">×</button>
+    </div>
+    <p class="edit-dialog-error" id="hours-edit-error" hidden></p>
+    <form id="hours-edit-form" data-slug={slug}>
+      <div class="edit-field">
+        <label for="hours-edit-value">Horas jugadas</label>
+        <input id="hours-edit-value" name="horas" type="number" step="0.01" min="0" value={editValues.horas ?? ''} />
+      </div>
+      <div class="edit-field-row">
+        <div class="edit-field">
+          <label for="hours-edit-start">Fecha de inicio</label>
+          <input id="hours-edit-start" name="fecha_inicio" type="date" value={editValues.fecha_inicio ?? ''} />
+        </div>
+        <div class="edit-field">
+          <label for="hours-edit-end">Fecha de fin</label>
+          <input id="hours-edit-end" name="fecha_fin" type="date" value={editValues.fecha_fin ?? ''} />
+        </div>
+      </div>
+      <div class="edit-dialog-actions">
+        <button class="edit-dialog-cancel" id="hours-edit-cancel" type="button">Cancelar</button>
+        <button class="edit-dialog-submit" id="hours-edit-submit" type="submit">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<script>
+  import { editorFetch } from '../../scripts/editor-auth';
+  import { finishGameEdit } from '../../scripts/game-edit-feedback';
+
+  const trigger = document.getElementById('hours-edit-trigger');
+  const dialog = document.getElementById('hours-edit-dialog');
+  const form = document.getElementById('hours-edit-form');
+  const errorBox = document.getElementById('hours-edit-error');
+  const submit = document.getElementById('hours-edit-submit');
+  if (trigger instanceof HTMLButtonElement && dialog instanceof HTMLDialogElement && form instanceof HTMLFormElement && errorBox instanceof HTMLElement && submit instanceof HTMLButtonElement) {
+    const close = () => dialog.close();
+    trigger.addEventListener('click', () => { errorBox.hidden = true; dialog.showModal(); });
+    document.getElementById('hours-edit-close')?.addEventListener('click', close);
+    document.getElementById('hours-edit-cancel')?.addEventListener('click', close);
+    dialog.addEventListener('click', (event) => { if (event.target === dialog) close(); });
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      submit.disabled = true;
+      submit.textContent = 'Guardando…';
+      try {
+        const response = await editorFetch(`/api/games/${form.dataset.slug ?? ''}/edit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            horas: data.get('horas'),
+            fecha_inicio: data.get('fecha_inicio'),
+            fecha_fin: data.get('fecha_fin'),
+          }),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) throw new Error(result.error || `HTTP ${response.status}`);
+        finishGameEdit('hours', 'Horas actualizadas');
+      } catch (error) {
+        errorBox.textContent = error instanceof Error ? error.message : 'No se pudo guardar.';
+        errorBox.hidden = false;
+        submit.disabled = false;
+        submit.textContent = 'Guardar cambios';
+      }
+    });
+  }
+</script>

@@ -271,7 +271,7 @@ const nextGapGame = gapGroups.flatMap((group) => group.items)[0] ?? null;
           <div class='recap-quality-grid'>
             <div class='recap-quality-metric'><strong>{quality.pctFechaFinCompleta}%</strong><span>Fechas de fin</span></div>
             <div class='recap-quality-metric'><strong>{quality.pctPrecioCompleto}%</strong><span>Precios reales</span></div>
-            <div class='recap-quality-metric'><strong>{recap.gastoEstimadoCount}</strong><span>Estimaciones</span></div>
+            <div class='recap-quality-metric'><strong>{recap.gastoIncompletoCount}</strong><span>Gastos incompletos</span></div>
           </div>
           {nextGapGame && (
             <a class='stats-quality-next' href={`/games/${nextGapGame.slug}`}>
@@ -302,7 +302,8 @@ const nextGapGame = gapGroups.flatMap((group) => group.items)[0] ?? null;
         <dl class='recap-methodology'>
           <div><dt>Completados</dt><dd>Estado terminado y fecha de fin dentro del año.</dd></div>
           <div><dt>Horas</dt><dd>Atribuidas al año de inicio.</dd></div>
-          <div><dt>Gasto</dt><dd>Precio pagado; si falta, precio actual estimado.</dd></div>
+          <div><dt>Gasto base</dt><dd>Precio pagado × copias, más micropagos, atribuido al año de inicio.</dd></div>
+          <div><dt>DLC</dt><dd>Cada compra se atribuye a su fecha de adquisición.</dd></div>
         </dl>
       </details>
     </div>

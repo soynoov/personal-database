@@ -1,86 +1,63 @@
 ---
-/**
- * GameDetailTopbar.astro — Barra superior de la ficha: volver a la izquierda,
- * lápiz general a la derecha. El lápiz general edita solo lo que no tiene
- * un lápiz propio en otra sección (estado, horas, fechas, nota). Precio,
- * microtransacciones y el comentario se editan desde sus paneles respectivos.
- */
 import '../../styles/game-detail/topbar.css';
 import '../../styles/game-detail/edit.css';
 import { normalizeStatus } from '../../lib/game-status';
-import { GAME_MODES } from '../../lib/game-modes';
 import TablerIcon from '../TablerIcon.astro';
 import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg?url';
 import editIcon from '@tabler/icons/outline/edit.svg?url';
 
 interface EditValues {
   estado: string | null;
-  horas: number | null;
   dificultad: string | null;
   logros_actual: number | null;
   logros_total: number | null;
   fecha_inicio: string | null;
   fecha_fin: string | null;
-  competitivo: boolean;
-  modos: string[];
 }
 
-interface Props {
-  slug: string;
-  editValues: EditValues;
-}
-
+interface Props { slug: string; editValues: EditValues }
 const { slug, editValues } = Astro.props;
-
 const KNOWN_ESTADOS = ['Jugando', 'Terminado', 'Pendiente', 'Wishlist', 'Pausado', 'Abandonado', 'Retirado', 'Recurrente'];
-const normalizedEditStatus = normalizeStatus(editValues.estado);
-const estadoOptions =
-  editValues.estado && !KNOWN_ESTADOS.some((estado) => normalizeStatus(estado) === normalizedEditStatus)
-    ? [...KNOWN_ESTADOS, editValues.estado]
-    : KNOWN_ESTADOS;
+const currentStatus = normalizeStatus(editValues.estado);
+const estadoOptions = editValues.estado && !KNOWN_ESTADOS.some((estado) => normalizeStatus(estado) === currentStatus)
+  ? [...KNOWN_ESTADOS, editValues.estado]
+  : KNOWN_ESTADOS;
 ---
 
 <div class="game-page-topbar">
-  <a class="back-link" href="/">
-    <TablerIcon src={arrowLeftIcon} />
-    <span>Biblioteca</span>
-  </a>
-
-  <button class="game-edit-trigger" id="game-edit-trigger" type="button" aria-label="Editar datos generales de este juego">
+  <a class="back-link" href="/"><TablerIcon src={arrowLeftIcon} /><span>Biblioteca</span></a>
+  <button class="game-edit-trigger" id="game-edit-trigger" type="button" aria-label="Editar resumen">
     <TablerIcon src={editIcon} />
-    <span>Editar ficha</span>
+    <span class="game-edit-trigger-label">Editar resumen</span>
   </button>
 </div>
 
 <dialog class="edit-dialog" id="game-edit-dialog">
   <div class="edit-dialog-body">
     <div class="edit-dialog-head">
-      <h2>Editar datos generales</h2>
+      <h2>Editar resumen</h2>
       <button class="edit-dialog-close" id="game-edit-close" type="button" aria-label="Cerrar">×</button>
     </div>
-
     <p class="edit-dialog-error" id="game-edit-error" hidden></p>
-
-    <form id="game-edit-form" data-slug={slug}>
+    <form id="game-edit-form" data-slug={slug} data-start-date={editValues.fecha_inicio ?? ''} data-end-date={editValues.fecha_fin ?? ''}>
       <div class="edit-field">
         <label for="edit-estado">Estado</label>
         <select id="edit-estado" name="estado">
-          {estadoOptions.map((estado) => (
-            <option value={estado} selected={normalizeStatus(estado) === normalizedEditStatus}>{estado}</option>
-          ))}
+          {estadoOptions.map((estado) => <option value={estado} selected={normalizeStatus(estado) === currentStatus}>{estado}</option>)}
         </select>
       </div>
-
-      <div class="edit-field">
-        <label for="edit-horas">Horas jugadas</label>
-        <input id="edit-horas" name="horas" type="number" step="0.1" min="0" value={editValues.horas ?? ''} />
-      </div>
-
+      <label class="date-proposal" id="start-date-proposal" hidden>
+        <input id="start-date-proposal-input" type="checkbox" checked />
+        <span>Registrar hoy como fecha de inicio</span>
+      </label>
+      <label class="date-proposal" id="end-date-proposal" hidden>
+        <input id="end-date-proposal-input" type="checkbox" checked />
+        <span>Registrar hoy como fecha de fin</span>
+      </label>
       <div class="edit-field">
         <label for="edit-dificultad">Dificultad</label>
         <input id="edit-dificultad" name="dificultad" type="text" placeholder="Fácil, normal, difícil…" value={editValues.dificultad ?? ''} />
       </div>
-
       <div class="edit-field-row">
         <div class="edit-field">
           <label for="edit-logros-actual">Logros conseguidos</label>
@@ -91,42 +68,6 @@ const estadoOptions =
           <input id="edit-logros-total" name="logros_total" type="number" step="1" min="0" value={editValues.logros_total ?? ''} />
         </div>
       </div>
-
-      <div class="edit-field-row">
-        <div class="edit-field">
-          <label for="edit-fecha-inicio">Fecha inicio</label>
-          <input id="edit-fecha-inicio" name="fecha_inicio" type="date" value={editValues.fecha_inicio ?? ''} />
-        </div>
-        <div class="edit-field">
-          <label for="edit-fecha-fin">Fecha fin</label>
-          <input id="edit-fecha-fin" name="fecha_fin" type="date" value={editValues.fecha_fin ?? ''} />
-        </div>
-      </div>
-
-      <fieldset class="edit-field game-mode-fieldset">
-        <legend>Modos</legend>
-        <div class="game-mode-options">
-          {GAME_MODES.map((mode) => (
-            <label class="game-mode-option">
-              <input
-                type="checkbox"
-                name="modos"
-                value={mode.value}
-                checked={editValues.modos.includes(mode.value)}
-              />
-              <span>{mode.label}</span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
-      <div class="edit-field edit-field-checkbox">
-        <label for="edit-competitivo">
-          <input id="edit-competitivo" name="competitivo" type="checkbox" checked={editValues.competitivo} />
-          Competitivo
-        </label>
-      </div>
-
       <div class="edit-dialog-actions">
         <button class="edit-dialog-cancel" id="game-edit-cancel" type="button">Cancelar</button>
         <button class="edit-dialog-submit" id="game-edit-submit" type="submit">Guardar cambios</button>
@@ -137,76 +78,58 @@ const estadoOptions =
 
 <script>
   import { editorFetch } from '../../scripts/editor-auth';
+  import { finishGameEdit, getMadridToday, restoreGameEditFeedback } from '../../scripts/game-edit-feedback';
 
+  restoreGameEditFeedback();
   const trigger = document.getElementById('game-edit-trigger');
   const dialog = document.getElementById('game-edit-dialog');
   const form = document.getElementById('game-edit-form');
-  const closeBtn = document.getElementById('game-edit-close');
-  const cancelBtn = document.getElementById('game-edit-cancel');
   const errorBox = document.getElementById('game-edit-error');
-  const submitBtn = document.getElementById('game-edit-submit');
-
-  if (
-    trigger instanceof HTMLButtonElement &&
-    dialog instanceof HTMLDialogElement &&
-    form instanceof HTMLFormElement &&
-    errorBox instanceof HTMLElement &&
-    submitBtn instanceof HTMLButtonElement
-  ) {
-    const hideError = () => errorBox.setAttribute('hidden', '');
-    const showError = (message: string) => {
-      errorBox.textContent = message;
-      errorBox.removeAttribute('hidden');
+  const submit = document.getElementById('game-edit-submit');
+  if (trigger instanceof HTMLButtonElement && dialog instanceof HTMLDialogElement && form instanceof HTMLFormElement && errorBox instanceof HTMLElement && submit instanceof HTMLButtonElement) {
+    const status = document.getElementById('edit-estado');
+    const startProposal = document.getElementById('start-date-proposal');
+    const endProposal = document.getElementById('end-date-proposal');
+    const syncDateProposal = () => {
+      if (!(status instanceof HTMLSelectElement) || !(startProposal instanceof HTMLElement) || !(endProposal instanceof HTMLElement)) return;
+      const normalized = status.value.trim().toLowerCase();
+      startProposal.hidden = normalized !== 'jugando' || Boolean(form.dataset.startDate);
+      endProposal.hidden = !['terminado', 'completado'].includes(normalized) || Boolean(form.dataset.endDate);
     };
-
-    trigger.addEventListener('click', () => {
-      hideError();
-      dialog.showModal();
-    });
-
-    closeBtn?.addEventListener('click', () => dialog.close());
-    cancelBtn?.addEventListener('click', () => dialog.close());
-
-    dialog.addEventListener('click', (event) => {
-      if (event.target === dialog) dialog.close();
-    });
-
+    status?.addEventListener('change', syncDateProposal);
+    syncDateProposal();
+    const close = () => dialog.close();
+    trigger.addEventListener('click', () => { errorBox.hidden = true; dialog.showModal(); });
+    document.getElementById('game-edit-close')?.addEventListener('click', close);
+    document.getElementById('game-edit-cancel')?.addEventListener('click', close);
+    dialog.addEventListener('click', (event) => { if (event.target === dialog) close(); });
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
-      hideError();
-
-      const slug = form.dataset.slug ?? '';
       const data = new FormData(form);
-      const payload = {
+      const startChoice = document.getElementById('start-date-proposal-input');
+      const endChoice = document.getElementById('end-date-proposal-input');
+      const payload: Record<string, unknown> = {
         estado: data.get('estado'),
-        horas: data.get('horas'),
         dificultad: data.get('dificultad'),
         logros_actual: data.get('logros_actual'),
         logros_total: data.get('logros_total'),
-        fecha_inicio: data.get('fecha_inicio'),
-        fecha_fin: data.get('fecha_fin'),
-        modos: data.getAll('modos').map(String),
-        competitivo: data.get('competitivo') === 'on',
       };
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Guardando…';
-
+      if (!form.dataset.startDate && startProposal instanceof HTMLElement && !startProposal.hidden && startChoice instanceof HTMLInputElement && startChoice.checked) payload.fecha_inicio = getMadridToday();
+      if (!form.dataset.endDate && endProposal instanceof HTMLElement && !endProposal.hidden && endChoice instanceof HTMLInputElement && endChoice.checked) payload.fecha_fin = getMadridToday();
+      submit.disabled = true;
+      submit.textContent = 'Guardando…';
       try {
-        const response = await editorFetch(`/api/games/${slug}/edit`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+        const response = await editorFetch(`/api/games/${form.dataset.slug ?? ''}/edit`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
         });
         const result = await response.json().catch(() => ({}));
-        if (!response.ok || !result.ok) {
-          throw new Error(result.error || `No se pudo guardar (HTTP ${response.status}).`);
-        }
-        window.location.reload();
+        if (!response.ok || !result.ok) throw new Error(result.error || `HTTP ${response.status}`);
+        finishGameEdit('game-header', 'Resumen actualizado');
       } catch (error) {
-        showError(error instanceof Error ? error.message : 'No se pudo guardar.');
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Guardar cambios';
+        errorBox.textContent = error instanceof Error ? error.message : 'No se pudo guardar.';
+        errorBox.hidden = false;
+        submit.disabled = false;
+        submit.textContent = 'Guardar cambios';
       }
     });
   }

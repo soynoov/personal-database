@@ -5,13 +5,14 @@
  * Datos: todos computados en [slug].astro y recibidos como props.
  */
 import '../../styles/game-detail/hero.css';
+import TablerIcon from '../TablerIcon.astro';
 
 interface Props {
   title: string;
   coverUrl: string;
   heroCoverStyle: string;
   statusBadge: { class: string; label: string };
-  launcherBadge: { class: string; html: string };
+  launcherBadge: { class: string; label: string; icon?: string };
   platformBadge: { class: string; label: string };
   tagBadges: Array<{ value: string; label: string }>;
   genres: string;
@@ -59,7 +60,10 @@ const tagBadgeClasses: Record<string, string> = {
       <h1>{title}</h1>
       <div class="badges game-page-badges">
         <span class={`badge ${statusBadge.class}`}>{statusBadge.label}</span>
-        <span class={`badge ${launcherBadge.class}`} set:html={launcherBadge.html} />
+        <span class={`badge ${launcherBadge.class}`}>
+          {launcherBadge.icon && <TablerIcon src={launcherBadge.icon} />}
+          <span>{launcherBadge.label}</span>
+        </span>
         <span class={`badge ${platformBadge.class}`}>{platformBadge.label}</span>
         {tagBadges.map((tag) => (
           <span class:list={["badge", tagBadgeClasses[tag.value]]}>{tag.label}</span>

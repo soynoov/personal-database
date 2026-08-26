@@ -74,7 +74,7 @@ const { hasDlcs, hasOverviewDetails, isCompetitive } = Astro.props;
   };
 
   const updateActiveSection = () => {
-    const activationLine = window.innerHeight * 0.44;
+    const activationLine = Math.min(160, window.innerHeight * 0.24);
     let visibleId = sectionById.keys().next().value as string | undefined;
 
     if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {

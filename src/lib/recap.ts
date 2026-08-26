@@ -1,47 +1,34 @@
-/**
- * recap.ts — Lógica del "Wrapped" de /estadisticas/.
- *
- * Decisiones de negocio (tomadas con el usuario el 2026-06-30):
- *  - "Completados este año" usa fecha_fin ESTRICTA. Si fecha_fin está vacía,
- *    el juego no cuenta, aunque esté marcado "Terminado". Es la definición
- *    correcta a largo plazo, pero hoy mismo puede dar 0 si faltan datos.
- *  - "Horas" y "Gasto" del año usan fecha_inicio como PROXY de actividad,
- *    porque no existe un campo de fecha de compra en los juegos base.
- *    Es una aproximación: un juego que empezaste en 2026 cuenta entero
- *    en 2026 aunque sigas jugándolo en 2027.
- *  - Si falta precio_pagado, se usa precio_actual como estimación (excepto
- *    en juegos "Pirata", que se asumen gratis). Esas estimaciones se cuentan
- *    aparte para poder avisar en la UI.
- */
 import type { LocalGame } from './local-games';
-import { getPaidUnitPrice, getPurchasedUnits, slugifyGameTitle } from './local-games';
+import { slugifyGameTitle } from './local-games';
 import { isCompletedStatus, normalizeStatus } from './game-status';
+import {
+  getGameValueMetrics,
+  getRecordedBaseSpend,
+  getRecordedMicrotransactionSpend,
+  isAcquiredDlc,
+} from './game-finance';
 
-function isTerminado(estado: string | null | undefined) {
-  return isCompletedStatus(estado);
-}
+const yearOf = (date: string | null | undefined): number | null => {
+  if (!date) return null;
+  const year = Number(String(date).slice(0, 4));
+  return Number.isFinite(year) && year > 1990 && year < 2200 ? year : null;
+};
 
-function yearOf(dateStr: string | null | undefined): number | null {
-  if (!dateStr) return null;
-  const y = Number(String(dateStr).slice(0, 4));
-  return Number.isFinite(y) && y > 1990 && y < 2200 ? y : null;
-}
-
-function monthOf(dateStr: string | null | undefined): number | null {
-  if (!dateStr) return null;
-  const m = Number(String(dateStr).slice(5, 7));
-  return Number.isFinite(m) && m >= 1 && m <= 12 ? m : null;
-}
+const monthOf = (date: string | null | undefined): number | null => {
+  if (!date) return null;
+  const month = Number(String(date).slice(5, 7));
+  return Number.isFinite(month) && month >= 1 && month <= 12 ? month : null;
+};
 
 export function getAvailableYears(games: LocalGame[]): number[] {
-  const years = new Set<number>();
-  years.add(new Date().getFullYear());
-  for (const g of games) {
-    const yi = yearOf(g.fecha_inicio);
-    const yf = yearOf(g.fecha_fin);
-    if (yi) years.add(yi);
-    if (yf) years.add(yf);
-  }
+  const years = new Set<number>([new Date().getFullYear()]);
+  games.forEach((game) => {
+    [yearOf(game.fecha_inicio), yearOf(game.fecha_fin)].forEach((year) => year && years.add(year));
+    (game.dlcs?.items ?? []).forEach((dlc) => {
+      const year = yearOf(dlc.fecha_adquisicion);
+      if (year) years.add(year);
+    });
+  });
   return [...years].sort((a, b) => b - a);
 }
 
@@ -65,7 +52,7 @@ export type YearRecap = {
   iniciados: RecapGameRef[];
   horasAtribuidas: number;
   gastoAtribuido: number;
-  gastoEstimadoCount: number;
+  gastoIncompletoCount: number;
   generosTop: Array<{ name: string; count: number; pct: number }>;
   launchersTop: Array<{ name: string; count: number; pct: number }>;
   monthly: MonthlyPoint[];
@@ -73,99 +60,74 @@ export type YearRecap = {
   promedioHorasPorJuego: number;
 };
 
-function toRef(g: LocalGame, precioAtribuido: number | null, precioEstimado: boolean): RecapGameRef {
-  return {
-    titulo: g.titulo,
-    slug: slugifyGameTitle(g.titulo),
-    horas: g.horas ?? null,
-    fecha_inicio: g.fecha_inicio,
-    fecha_fin: g.fecha_fin,
-    launcher: g.launcher,
-    generos: g.generos ?? null,
-    precioAtribuido,
-    precioEstimado,
-  };
-}
+const toRef = (game: LocalGame, precioAtribuido: number | null): RecapGameRef => ({
+  titulo: game.titulo,
+  slug: slugifyGameTitle(game.titulo),
+  horas: game.horas ?? null,
+  fecha_inicio: game.fecha_inicio,
+  fecha_fin: game.fecha_fin,
+  launcher: game.launcher,
+  generos: game.generos ?? null,
+  precioAtribuido,
+  precioEstimado: false,
+});
 
 export function getYearRecap(games: LocalGame[], year: number): YearRecap {
   const completados = games
-    .filter((g) => isTerminado(g.estado) && yearOf(g.fecha_fin) === year)
-    .map((g) => toRef(g, null, false))
+    .filter((game) => isCompletedStatus(game.estado) && yearOf(game.fecha_fin) === year)
+    .map((game) => toRef(game, null))
     .sort((a, b) => (b.fecha_fin ?? '').localeCompare(a.fecha_fin ?? ''));
-
-  const iniciadosRaw = games.filter((g) => yearOf(g.fecha_inicio) === year);
-
-  let horasAtribuidas = 0;
-  let gastoAtribuido = 0;
-  let gastoEstimadoCount = 0;
-  const generoCounts = new Map<string, number>();
+  const iniciadosRaw = games.filter((game) => yearOf(game.fecha_inicio) === year);
+  const monthly: MonthlyPoint[] = Array.from({ length: 12 }, (_, index) => ({ month: index + 1, horas: 0 }));
+  const genreCounts = new Map<string, number>();
   const launcherCounts = new Map<string, number>();
-  const monthly: MonthlyPoint[] = Array.from({ length: 12 }, (_, i) => ({ month: i + 1, horas: 0 }));
   const iniciados: RecapGameRef[] = [];
+  let horasAtribuidas = 0;
 
-  for (const g of iniciadosRaw) {
-    const horas = Number(g.horas ?? 0);
-    const horasValidas = Number.isFinite(horas) ? horas : 0;
-    horasAtribuidas += horasValidas;
+  iniciadosRaw.forEach((game) => {
+    const hours = Number(game.horas ?? 0);
+    const validHours = Number.isFinite(hours) ? hours : 0;
+    horasAtribuidas += validHours;
+    const month = monthOf(game.fecha_inicio);
+    if (month) monthly[month - 1].horas += validHours;
+    (game.generos ?? []).forEach((genre) => genreCounts.set(genre, (genreCounts.get(genre) ?? 0) + 1));
+    const launcher = game.launcher ?? '(sin launcher)';
+    launcherCounts.set(launcher, (launcherCounts.get(launcher) ?? 0) + 1);
+    const base = getRecordedBaseSpend(game);
+    const micro = getRecordedMicrotransactionSpend(game);
+    iniciados.push(toRef(game, base === null && micro === 0 ? null : (base ?? 0) + micro));
+  });
 
-    const launcherLower = String(g.launcher ?? '').trim().toLowerCase();
-    const esGratisOPirata = launcherLower === 'pirata';
-
-    let precio: number | null = null;
-    let estimado = false;
-    if (g.precio_pagado !== null && g.precio_pagado !== undefined) {
-      const unitPrice = getPaidUnitPrice(g);
-      if (unitPrice !== null) {
-        precio = Number((unitPrice * getPurchasedUnits(g)).toFixed(2));
-      }
-    } else if (!esGratisOPirata && g.precio_actual !== null && g.precio_actual !== undefined) {
-      const currentPrice = Number(g.precio_actual);
-      if (Number.isFinite(currentPrice)) {
-        precio = Number((currentPrice * getPurchasedUnits(g)).toFixed(2));
-      }
-      estimado = true;
-    }
-    if (precio !== null && Number.isFinite(precio)) {
-      gastoAtribuido += precio;
-      if (estimado) gastoEstimadoCount++;
+  let gastoAtribuido = 0;
+  let gastoIncompletoCount = 0;
+  games.forEach((game) => {
+    if (yearOf(game.fecha_inicio) === year) {
+      const base = getRecordedBaseSpend(game);
+      if (base === null) gastoIncompletoCount += 1;
+      else gastoAtribuido += base;
+      gastoAtribuido += getRecordedMicrotransactionSpend(game);
     }
 
-    // Microtransacciones (compras dentro del juego, típico en free-to-play):
-    // van aparte de precio_pagado, nunca se estiman, se suman tal cual si hay dato.
-    const microtransacciones =
-      g.gasto_microtransacciones !== null && g.gasto_microtransacciones !== undefined
-        ? Number(g.gasto_microtransacciones)
-        : 0;
-    if (Number.isFinite(microtransacciones) && microtransacciones > 0) {
-      gastoAtribuido += microtransacciones;
-    }
-
-    for (const genero of g.generos ?? []) {
-      generoCounts.set(genero, (generoCounts.get(genero) ?? 0) + 1);
-    }
-    const launcherLabel = g.launcher ?? '(sin launcher)';
-    launcherCounts.set(launcherLabel, (launcherCounts.get(launcherLabel) ?? 0) + 1);
-
-    const mes = monthOf(g.fecha_inicio);
-    if (mes) monthly[mes - 1].horas += horasValidas;
-
-    const precioTotalGasto =
-      precio !== null || microtransacciones > 0 ? (precio ?? 0) + microtransacciones : null;
-    iniciados.push(toRef(g, precioTotalGasto, estimado));
-  }
+    (game.dlcs?.items ?? []).filter(isAcquiredDlc).forEach((dlc) => {
+      if (yearOf(dlc.fecha_adquisicion) !== year) return;
+      const paid = dlc.precio_pagado === null || dlc.precio_pagado === undefined
+        ? null
+        : Number(dlc.precio_pagado);
+      if (paid === null || !Number.isFinite(paid) || paid < 0) gastoIncompletoCount += 1;
+      else gastoAtribuido += paid;
+    });
+  });
 
   const total = iniciadosRaw.length || 1;
-  const generosTop = [...generoCounts.entries()]
+  const generosTop = [...genreCounts.entries()]
     .sort((a, b) => b[1] - a[1])
     .slice(0, 6)
-    .map(([name, count]) => ({ name, count, pct: Math.round((count / total) * 100) }));
-
+    .map(([name, count]) => ({ name, count, pct: Math.round(count / total * 100) }));
   const launchersTop = [...launcherCounts.entries()]
     .sort((a, b) => b[1] - a[1])
-    .map(([name, count]) => ({ name, count, pct: Math.round((count / total) * 100) }));
-
+    .map(([name, count]) => ({ name, count, pct: Math.round(count / total * 100) }));
   const juegoConMasHoras = iniciados.length
-    ? iniciados.reduce((max, g) => (Number(g.horas ?? 0) > Number(max.horas ?? 0) ? g : max))
+    ? iniciados.reduce((max, game) => Number(game.horas ?? 0) > Number(max.horas ?? 0) ? game : max)
     : null;
 
   return {
@@ -174,7 +136,7 @@ export function getYearRecap(games: LocalGame[], year: number): YearRecap {
     iniciados,
     horasAtribuidas: Number(horasAtribuidas.toFixed(1)),
     gastoAtribuido: Number(gastoAtribuido.toFixed(2)),
-    gastoEstimadoCount,
+    gastoIncompletoCount,
     generosTop,
     launchersTop,
     monthly,
@@ -183,17 +145,11 @@ export function getYearRecap(games: LocalGame[], year: number): YearRecap {
   };
 }
 
-// Estados donde un campo vacío es esperado, no un hueco de datos.
-const NO_EMPIEZA_AUN = new Set(['wishlist', 'pendiente']); // sin fecha_inicio es normal
-const NO_ADQUIRIDO_AUN = new Set(['wishlist']); // sin precio_pagado es normal
-
-function toGameRef(g: LocalGame) {
-  return { titulo: g.titulo, slug: slugifyGameTitle(g.titulo) };
-}
-
-function sortByTitulo(list: Array<{ titulo: string; slug: string }>) {
-  return [...list].sort((a, b) => a.titulo.localeCompare(b.titulo, 'es'));
-}
+const NO_START_EXPECTED = new Set(['wishlist', 'pendiente']);
+const NO_PRICE_EXPECTED = new Set(['wishlist']);
+const toGameRef = (game: LocalGame) => ({ titulo: game.titulo, slug: slugifyGameTitle(game.titulo) });
+const sortByTitle = (list: Array<{ titulo: string; slug: string }>) =>
+  [...list].sort((a, b) => a.titulo.localeCompare(b.titulo, 'es'));
 
 export type DataQuality = {
   totalJuegos: number;
@@ -201,47 +157,38 @@ export type DataQuality = {
   pctFechaFinCompleta: number;
   pctPrecioCompleto: number;
   gaps: {
-    /** "Terminado" sin fecha_fin: bloquea que cuenten en "Completados" de cualquier año. */
     terminadosSinFecha: Array<{ titulo: string; slug: string }>;
-    /** En curso/terminados sin fecha_inicio: no entran en horas/gasto/géneros/launchers de ningún año. */
     sinFechaInicio: Array<{ titulo: string; slug: string }>;
-    /** Adquiridos sin precio_pagado: el gasto se estima o se queda fuera. */
     sinPrecio: Array<{ titulo: string; slug: string }>;
-    /** Sin géneros: no aparecen en el desglose "Dónde se fue el año". */
     sinGeneros: Array<{ titulo: string; slug: string }>;
   };
 };
 
 export function getDataQuality(games: LocalGame[]): DataQuality {
-  const terminados = games.filter((g) => isTerminado(g.estado));
-  const terminadosSinFecha = terminados.filter((g) => !g.fecha_fin);
-
+  const completed = games.filter((game) => isCompletedStatus(game.estado));
+  const terminadosSinFecha = completed.filter((game) => !game.fecha_fin);
   const sinFechaInicio = games.filter(
-    (g) => !g.fecha_inicio && !NO_EMPIEZA_AUN.has(normalizeStatus(g.estado)),
+    (game) => !game.fecha_inicio && !NO_START_EXPECTED.has(normalizeStatus(game.estado)),
   );
-
   const sinPrecio = games.filter(
-    (g) =>
-      (g.precio_pagado === null || g.precio_pagado === undefined) &&
-      !NO_ADQUIRIDO_AUN.has(normalizeStatus(g.estado)),
+    (game) => !NO_PRICE_EXPECTED.has(normalizeStatus(game.estado)) && !getGameValueMetrics(game).dataComplete,
   );
-
-  const sinGeneros = games.filter((g) => !g.generos || g.generos.length === 0);
+  const sinGeneros = games.filter((game) => !game.generos || game.generos.length === 0);
 
   return {
     totalJuegos: games.length,
-    totalTerminados: terminados.length,
-    pctFechaFinCompleta: terminados.length
-      ? Math.round(((terminados.length - terminadosSinFecha.length) / terminados.length) * 100)
+    totalTerminados: completed.length,
+    pctFechaFinCompleta: completed.length
+      ? Math.round((completed.length - terminadosSinFecha.length) / completed.length * 100)
       : 100,
     pctPrecioCompleto: games.length
-      ? Math.round(((games.length - sinPrecio.length) / games.length) * 100)
+      ? Math.round((games.length - sinPrecio.length) / games.length * 100)
       : 100,
     gaps: {
-      terminadosSinFecha: sortByTitulo(terminadosSinFecha.map(toGameRef)),
-      sinFechaInicio: sortByTitulo(sinFechaInicio.map(toGameRef)),
-      sinPrecio: sortByTitulo(sinPrecio.map(toGameRef)),
-      sinGeneros: sortByTitulo(sinGeneros.map(toGameRef)),
+      terminadosSinFecha: sortByTitle(terminadosSinFecha.map(toGameRef)),
+      sinFechaInicio: sortByTitle(sinFechaInicio.map(toGameRef)),
+      sinPrecio: sortByTitle(sinPrecio.map(toGameRef)),
+      sinGeneros: sortByTitle(sinGeneros.map(toGameRef)),
     },
   };
 }

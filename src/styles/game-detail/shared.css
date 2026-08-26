@@ -12,6 +12,76 @@
 
 @layer global {
 
+.game-page-rich .hero-analysis-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.game-page-rich .hero-analysis-grid > .analysis-panel {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.value-progress {
+  position: relative;
+  height: 8px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.value-progress > span {
+  display: block;
+  width: var(--value-progress, 0%);
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #9e79d8, #c09ee9);
+}
+
+.value-secondary-details {
+  overflow: hidden;
+  border: 1px solid rgba(209, 190, 236, 0.13);
+  border-radius: var(--radius-2);
+  background: rgba(11, 12, 18, 0.42);
+}
+
+.value-secondary-details > summary {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.75rem 1rem;
+  color: #e9e1f3;
+  cursor: pointer;
+  font: 700 0.84rem/1.2 var(--font-body);
+  list-style: none;
+}
+
+.value-secondary-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.value-secondary-details > summary::after {
+  width: 8px;
+  height: 8px;
+  margin-left: auto;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  content: '';
+  opacity: 0.62;
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 160ms ease;
+}
+
+.value-secondary-details[open] > summary::after {
+  transform: rotate(225deg) translate(-2px, -2px);
+}
+
+.value-secondary-details > summary .tabler-icon {
+  width: 18px;
+  height: 18px;
+  color: #c6adeb;
+}
+
 /* ── Hero analysis grid ─────────────────────────────────────────── */
 .hero-analysis-grid {
   display: grid;

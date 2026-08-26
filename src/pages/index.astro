@@ -8,7 +8,8 @@ import menuIcon from '@tabler/icons/outline/menu-2.svg?url';
 import gridIcon from '@tabler/icons/outline/layout-grid.svg?url';
 import listIcon from '@tabler/icons/outline/list.svg?url';
 import { toCatalogGame } from '../lib/catalog-game';
-import { getStats, getTotalPaidPrice, getUniqueValues, readGames } from '../lib/local-games';
+import { getStats, getUniqueValues, readGames } from '../lib/local-games';
+import { getGameValueMetrics } from '../lib/game-finance';
 import { isCompletedStatus, normalizeStatus } from '../lib/game-status';
 
 const games = await readGames();
@@ -34,19 +35,7 @@ const orderedDrawerEstados = [
 
 const activeGames = games.filter((g) => normalizeStatus(g.estado) === 'jugando').length;
 const completedGames = games.filter((g) => isCompletedStatus(g.estado)).length;
-const totalLibraryValue = games.reduce((sum, g) => {
-  const base = getTotalPaidPrice(g) ?? 0;
-  const microtransacciones = Number(g.gasto_microtransacciones ?? 0);
-  const dlc = Array.isArray(g.dlcs?.items)
-    ? g.dlcs.items.reduce((acc, d) => acc + Number(d.precio_pagado ?? 0), 0)
-    : 0;
-  return (
-    sum +
-    (Number.isNaN(base) ? 0 : base) +
-    (Number.isNaN(microtransacciones) ? 0 : microtransacciones) +
-    dlc
-  );
-}, 0);
+const totalLibraryValue = games.reduce((sum, game) => sum + getGameValueMetrics(game).recordedSpend, 0);
 const formatMoney = (value: number) =>
   new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value);
 const initialView = Astro.url.searchParams.get('view') === 'table' ? 'table' : 'cards';
@@ -129,7 +118,7 @@ const initialView = Astro.url.searchParams.get('view') === 'table' ? 'table' : '
               </span>
               <div class='pc-stat-copy'>
                 <strong>{formatMoney(totalLibraryValue)}</strong>
-                <span class='muted'>valor</span>
+                <span class='muted'>gasto registrado</span>
               </div>
             </article>
             <article class='stat stat-accent'>

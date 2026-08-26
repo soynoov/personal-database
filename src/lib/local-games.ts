@@ -25,6 +25,8 @@ export type GameCritique = {
 
 export type LocalGame = {
   titulo: string;
+  /** Última edición manual realizada desde la web. */
+  actualizado_en?: string | null;
   estado: string | null;
   launcher: string | null;
   plataforma: string | null;
@@ -96,6 +98,13 @@ const parentGamesPath = path.resolve(process.cwd(), "..", "games.json");
 const gamesPath = existsSync(localGamesPath) ? localGamesPath : parentGamesPath;
 const productionGamesPath = "personal-database/games.json";
 const gamesVersions = new WeakMap<LocalGame[], string | null>();
+
+export class GamesVersionConflictError extends Error {
+  constructor() {
+    super('La biblioteca cambió mientras editabas.');
+    this.name = 'GamesVersionConflictError';
+  }
+}
 
 export function hasProductionGameStorage() {
   return Boolean(
@@ -181,9 +190,7 @@ export async function writeGames(games: LocalGame[]) {
     gamesVersions.set(games, saved.etag);
   } catch (error) {
     if (error instanceof BlobPreconditionFailedError) {
-      throw new Error(
-        "La biblioteca cambió mientras editabas. Recarga la página y vuelve a intentarlo.",
-      );
+      throw new GamesVersionConflictError();
     }
     throw error;
   }
