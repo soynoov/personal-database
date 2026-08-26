@@ -44,3 +44,54 @@ No actionable P0/P1/P2 findings remain.
 - P3: artwork color and focal subject naturally vary by game because the page uses live dynamic hero assets.
 
 final result: passed
+
+---
+
+# Design QA — Bloques planos de ficha
+
+- Source visual truth: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\hours-1440-final.png`
+- Implementation screenshots: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\finance-1440-final.png`, `data-1440-final.png`, `metacritic-1440-final.png`
+- Combined comparison input: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\flat-blocks-source-vs-implementation.png`
+- Focused graph evidence: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\finance-market-1440-final.png`
+- Responsive evidence: `finance-900-final.png`, `data-900-final.png`, `metacritic-900-final.png`, `finance-390-final.png`, `data-390-final.png`, `metacritic-390-final.png`
+- Viewports: 1440 × 1200, 900 × 1400, and 390 × 1800/1900 CSS px; dark theme; section-isolated states.
+- Density normalization: deviceScaleFactor 1. The source is 1440 × 920 px. Desktop implementations are 1440 × 1200 px and were cropped to the same 1440 × 920 comparison region. The combined board is 2880 × 1840 px.
+- Primary interactions tested: Mercado expand/collapse; Dinero, Datos, and Metacrítica editor open/close with Escape; detail navigation to `#finance`; home route rendering.
+- Console/page errors checked: none in the final browser runs.
+- Accessibility: scoped WCAG 2 A/AA audits report 0 violations for `#finance`, `#technical`, and `#metacritica`. Finance retains one axe incomplete result where overlap prevents automatic contrast calculation; it is not a detected violation.
+
+## Full-view comparison evidence
+
+Dinero, Datos, and Metacrítica now reuse the approved Hours language: one solid section surface, independent inset cards, 15 px major radii, 12–13 px secondary radii, restrained one-pixel borders, flat icon wells, no gradients, no shadows, and no backdrop blur. Data density and ordering remain domain-specific instead of forcing identical layouts.
+
+Dinero preserves the economic goal, recorded spend, amortization multiple, progress bar, five KPI states, spend breakdown, market disclosure, price graph, discount, and price references. Datos preserves all three groups and every metadata/null state. Metacrítica preserves all three scores, all applicable criteria, progress bars, formula chips, conditional community criterion, and conditional honorary mention.
+
+## Focused comparison evidence
+
+The focused Mercado capture confirms that the original line/area price graph remains visible, correctly sized at 771 × 218 canvas pixels, and integrated into the same flat card system. Focused mobile captures confirm readable two-column KPIs where space allows and single-column content where labels need the full width.
+
+## Required fidelity surfaces
+
+- Fonts and typography: the product's existing display/body fonts and optical hierarchy remain intact. Section headings, uppercase labels, primary figures, metadata, and null-state notes match the approved Hours weight and spacing rhythm without truncation.
+- Spacing and layout rhythm: desktop uses a 12-column bento; 900 px retains the compact desktop composition; 390 px collapses without overflow. The last odd financial KPI spans the mobile row to avoid a visible hole.
+- Colors and visual tokens: solid `#12131c`, `#0e0f17`, and `#0b0c13` surfaces replace the former glass/gradient layers. Purple is limited to accents and progress; green remains a semantic amortized state. Empty data is greyed without losing WCAG contrast.
+- Image quality and asset fidelity: these blocks contain no target raster imagery. Existing Tabler icons and the Chart.js canvas are preserved; no placeholder, CSS-drawn, inline-SVG, or synthetic replacement assets were introduced.
+- Copy and content: all existing dynamic labels and values remain. Marvel Rivals still exposes only Micropagos in its spend breakdown and omits HLTB; a level-0 honorary mention stays hidden; Originalidad remains present.
+- Icons and controls: edit icons are visible and aligned in consistent 40 px controls. The Metacrítica label is visually removed while its accessible label remains.
+- States and interactions: complete, incomplete, free-to-play, empty metadata, market-open, form-open, and Escape-close states were exercised without errors or data mutation.
+
+## Comparison history
+
+1. Baseline: P1 — Dinero, Datos, and Metacrítica used divider-led rows that no longer matched the approved Hours bento; P1 — global glass rules retained gradients, blur, and shadow on these blocks.
+2. First implementation: introduced the shared flat surfaces and preserved all content. P2 — the Metacrítica edit icon was hidden together with its text; P2 — 900 px stacked cards too early; P2 — an odd financial KPI left an empty mobile grid cell; P2 — dimmed null metadata failed automated contrast.
+3. Final implementation: limited text hiding to the non-icon span, retained the desktop bento at 900 px, expanded the last odd mobile KPI, and replaced parent opacity with accessible muted text tokens. Post-fix evidence is the combined comparison board and the final 900/390 captures. No actionable P0/P1/P2 findings remain.
+
+## Findings
+
+No actionable P0/P1/P2 findings remain.
+
+## Follow-up polish
+
+- P3: games with unusually long localized values may need a future content-specific truncation review; current acceptance cases do not overflow.
+
+final result: passed
