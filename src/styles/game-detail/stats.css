@@ -9,7 +9,7 @@
 
 .game-data-groups {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(300px, 0.72fr) minmax(0, 1.28fr);
   gap: 1.15rem;
 }
 
@@ -47,6 +47,28 @@
 .game-page-rich .data-group-card {
   border-radius: var(--radius-2);
   padding: 0.95rem;
+}
+
+.data-edit-fieldset {
+  margin: 0 0 1rem;
+  padding: 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-2);
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.data-edit-fieldset > legend {
+  padding: 0 0.35rem;
+  color: #cfb2ee;
+  font-size: 0.76rem;
+  font-weight: 760;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.data-edit-fieldset > .edit-field:last-child,
+.data-edit-fieldset > .edit-field-row:last-child .edit-field {
+  margin-bottom: 0;
 }
 
 @media (max-width: 1180px) {

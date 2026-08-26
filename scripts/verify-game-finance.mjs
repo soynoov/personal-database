@@ -106,6 +106,18 @@ try {
   assert.equal(manualEdit.game.comentarios, 'Se conserva');
   assert.match(manualEdit.game.actualizado_en, /^\d{4}-\d{2}-\d{2}T/);
 
+  const technicalEdit = applyManualGamePatch(game(), {
+    launcher: 'Epic Games', plataforma: 'PC', tamano: '30.32 GB',
+    lanzamiento: 2024, steam_appid: 123456, hltb_match: 'Test Game',
+  });
+  assert.equal(technicalEdit.ok, true);
+  assert.equal(technicalEdit.game.launcher, 'Epic Games');
+  assert.equal(technicalEdit.game.plataforma, 'PC');
+  assert.equal(technicalEdit.game.tamano, '30.32 GB');
+  assert.equal(technicalEdit.game.lanzamiento, 2024);
+  assert.equal(technicalEdit.game.steam_appid, 123456);
+  assert.equal(technicalEdit.game.hltb_match, 'Test Game');
+
   const invalidAchievements = applyManualGamePatch(game(), {
     logros_actual: 11,
     logros_total: 10,

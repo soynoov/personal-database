@@ -195,6 +195,7 @@ const hoursChartPayload = {
 
 const summaryCards = [
   { label: 'Estado', value: formatValue(game.estado), note: 'Actual', className: statusClass },
+  { label: 'Dificultad', value: formatValue(game.dificultad), note: 'Partida registrada' },
   {
     label: 'Logros', value: achievements,
     note: achievementProgress === null ? 'Sin registrar' : `${achievementProgress.toFixed(0)}% completado`,
@@ -220,20 +221,16 @@ const metadataGroups = [
       { label: 'Géneros', value: genres },
       { label: 'Etiquetas', value: tagsLabel === 'Sin etiquetas' ? '-' : tagsLabel },
       { label: 'Modos', value: modesLabel },
-      { label: 'Launcher', value: formatValue(game.launcher, 'Sin launcher') },
-      { label: 'Plataforma', value: formatValue(game.plataforma) },
-      ...(game.tamano ? [{ label: 'Tamaño instalado', value: game.tamano }] : []),
-      { label: 'Steam AppID', value: formatValue(game.steam_appid) },
     ],
   },
   {
-    title: 'Cronología',
+    title: 'Ficha técnica',
     items: [
+      { label: 'Launcher', value: formatValue(game.launcher, 'Sin launcher') },
+      { label: 'Plataforma', value: formatValue(game.plataforma) },
+      ...(game.tamano ? [{ label: 'Tamaño instalado', value: game.tamano }] : []),
       { label: 'Lanzamiento', value: formatValue(game.lanzamiento) },
-      { label: 'Fecha inicio', value: formatDate(game.fecha_inicio) },
-      { label: 'Fecha fin', value: formatDate(game.fecha_fin) },
-      { label: 'Dificultad', value: formatValue(game.dificultad) },
-      { label: 'Tiempo en pasarlo', value: elapsedDays === null ? '-' : `${elapsedDays} ${elapsedDays === 1 ? 'día' : 'días'}` },
+      { label: 'Steam AppID', value: formatValue(game.steam_appid) },
       { label: 'HLTB match', value: formatValue(game.hltb_match) },
       { label: 'Última edición', value: updatedDate && !Number.isNaN(updatedDate.getTime()) ? new Intl.DateTimeFormat('es-ES', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Europe/Madrid' }).format(updatedDate) : '-' },
     ],
@@ -279,6 +276,7 @@ const purchaseStores = (game.tiendas_compra ?? []).map((store) => String(store).
         hoursChartPayload={hoursChartPayload}
         hoursChartPoints={hltbBars}
         hltbBreakdown={hltbBreakdown}
+        period={{ startLabel: formatDate(game.fecha_inicio), endLabel: formatDate(game.fecha_fin), elapsedDays }}
         editValues={{ horas: valueMetrics.realHours, fecha_inicio: game.fecha_inicio, fecha_fin: game.fecha_fin }}
       />
       <GameDetailFinance
@@ -305,7 +303,17 @@ const purchaseStores = (game.tiendas_compra ?? []).map((store) => String(store).
     <GameDetailStats
       slug={slug}
       metadataGroups={metadataGroups}
-      editValues={{ generos: genresList, tags: rawTags, modos: gameModes }}
+      editValues={{
+        generos: genresList,
+        tags: rawTags,
+        modos: gameModes,
+        launcher: game.launcher,
+        plataforma: game.plataforma,
+        tamano: game.tamano ?? null,
+        lanzamiento: game.lanzamiento ?? null,
+        steam_appid: game.steam_appid ?? null,
+        hltb_match: game.hltb_match ?? null,
+      }}
     />
     {dlcTotal > 0 && (
       <GameDetailDLCs

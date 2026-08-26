@@ -13,7 +13,17 @@ interface Props {
     title: string;
     items: Array<{ label: string; value: string; className?: string; note?: string }>;
   }>;
-  editValues: { generos: string[]; tags: string[]; modos: string[] };
+  editValues: {
+    generos: string[];
+    tags: string[];
+    modos: string[];
+    launcher: string | null;
+    plataforma: string | null;
+    tamano: string | null;
+    lanzamiento: number | null;
+    steam_appid: number | null;
+    hltb_match: string | null;
+  };
 }
 const { slug, metadataGroups, editValues } = Astro.props;
 const normalizedTags = editValues.tags.map(normalizeGameTag);
@@ -22,7 +32,7 @@ const normalizedTags = editValues.tags.map(normalizeGameTag);
 <section class="game-page-section" id="technical">
   <div class="section-title-row">
     <div><span class="section-eyebrow">Ficha técnica</span><h2>Datos</h2></div>
-    <button class="game-edit-trigger game-edit-trigger-sm" id="data-edit-trigger" type="button" aria-label="Editar datos"><TablerIcon src={editIcon} /></button>
+    <button class="game-edit-trigger game-edit-trigger-sm" id="data-edit-trigger" type="button" aria-label="Editar catalogación y ficha técnica"><TablerIcon src={editIcon} /></button>
   </div>
   <div class="game-data-groups">
     {metadataGroups.map((group) => (
@@ -48,28 +58,64 @@ const normalizedTags = editValues.tags.map(normalizeGameTag);
     </div>
     <p class="edit-dialog-error" id="data-edit-error" hidden></p>
     <form id="data-edit-form" data-slug={slug}>
-      <div class="edit-field">
-        <label for="data-edit-genres">Géneros</label>
-        <input id="data-edit-genres" name="generos" type="text" value={editValues.generos.join(', ')} placeholder="Acción, Aventura…" />
-      </div>
-      <fieldset class="edit-field game-mode-fieldset">
-        <legend>Modos</legend>
-        <div class="game-mode-options">
-          {GAME_MODES.map((mode) => (
-            <FormCheckbox class="game-mode-option" name="modos" value={mode.value} checked={editValues.modos.includes(mode.value)}>
-              {mode.label}
-            </FormCheckbox>
-          ))}
+      <fieldset class="data-edit-fieldset">
+        <legend>Catalogación</legend>
+        <div class="edit-field">
+          <label for="data-edit-genres">Géneros</label>
+          <input id="data-edit-genres" name="generos" type="text" value={editValues.generos.join(', ')} placeholder="Acción, Aventura…" />
         </div>
+        <fieldset class="edit-field game-mode-fieldset">
+          <legend>Modos</legend>
+          <div class="game-mode-options">
+            {GAME_MODES.map((mode) => (
+              <FormCheckbox class="game-mode-option" name="modos" value={mode.value} checked={editValues.modos.includes(mode.value)}>
+                {mode.label}
+              </FormCheckbox>
+            ))}
+          </div>
+        </fieldset>
+        <fieldset class="edit-field game-mode-fieldset">
+          <legend>Etiquetas</legend>
+          <div class="game-mode-options">
+            {PUBLIC_GAME_TAGS.map((tag) => (
+              <FormCheckbox class="game-mode-option" name="tags" value={tag.value} checked={normalizedTags.includes(tag.value)}>
+                {tag.label}
+              </FormCheckbox>
+            ))}
+          </div>
+        </fieldset>
       </fieldset>
-      <fieldset class="edit-field game-mode-fieldset">
-        <legend>Etiquetas</legend>
-        <div class="game-mode-options">
-          {PUBLIC_GAME_TAGS.map((tag) => (
-            <FormCheckbox class="game-mode-option" name="tags" value={tag.value} checked={normalizedTags.includes(tag.value)}>
-              {tag.label}
-            </FormCheckbox>
-          ))}
+      <fieldset class="data-edit-fieldset">
+        <legend>Ficha técnica</legend>
+        <div class="edit-field-row">
+          <div class="edit-field">
+            <label for="data-edit-launcher">Launcher</label>
+            <input id="data-edit-launcher" name="launcher" type="text" value={editValues.launcher ?? ''} />
+          </div>
+          <div class="edit-field">
+            <label for="data-edit-platform">Plataforma</label>
+            <input id="data-edit-platform" name="plataforma" type="text" value={editValues.plataforma ?? ''} />
+          </div>
+        </div>
+        <div class="edit-field-row">
+          <div class="edit-field">
+            <label for="data-edit-size">Tamaño instalado</label>
+            <input id="data-edit-size" name="tamano" type="text" value={editValues.tamano ?? ''} placeholder="30.32 GB" />
+          </div>
+          <div class="edit-field">
+            <label for="data-edit-release">Año de lanzamiento</label>
+            <input id="data-edit-release" name="lanzamiento" type="number" step="1" min="1" value={editValues.lanzamiento ?? ''} />
+          </div>
+        </div>
+        <div class="edit-field-row">
+          <div class="edit-field">
+            <label for="data-edit-steam-appid">Steam AppID</label>
+            <input id="data-edit-steam-appid" name="steam_appid" type="number" step="1" min="1" value={editValues.steam_appid ?? ''} />
+          </div>
+          <div class="edit-field">
+            <label for="data-edit-hltb-match">Coincidencia HLTB</label>
+            <input id="data-edit-hltb-match" name="hltb_match" type="text" value={editValues.hltb_match ?? ''} />
+          </div>
         </div>
       </fieldset>
       <div class="edit-dialog-actions">
@@ -102,7 +148,17 @@ const normalizedTags = editValues.tags.map(normalizeGameTag);
       try {
         const response = await editorFetch(`/api/games/${form.dataset.slug ?? ''}/edit`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ generos: data.get('generos'), modos: data.getAll('modos'), tags: data.getAll('tags') }),
+          body: JSON.stringify({
+            generos: data.get('generos'),
+            modos: data.getAll('modos'),
+            tags: data.getAll('tags'),
+            launcher: data.get('launcher'),
+            plataforma: data.get('plataforma'),
+            tamano: data.get('tamano'),
+            lanzamiento: data.get('lanzamiento'),
+            steam_appid: data.get('steam_appid'),
+            hltb_match: data.get('hltb_match'),
+          }),
         });
         const result = await response.json().catch(() => ({}));
         if (!response.ok || !result.ok) throw new Error(result.error || `HTTP ${response.status}`);

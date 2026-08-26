@@ -95,8 +95,14 @@ export function applyManualGamePatch(
   const updated: LocalGame = { ...game };
 
   if (body.estado !== undefined) updated.estado = toNullableString(body.estado) ?? game.estado;
+  if (body.launcher !== undefined) updated.launcher = toNullableString(body.launcher);
+  if (body.plataforma !== undefined) updated.plataforma = toNullableString(body.plataforma);
   if (body.horas !== undefined) updated.horas = toNullableNumber(body.horas);
   if (body.dificultad !== undefined) updated.dificultad = toNullableString(body.dificultad);
+  if (body.tamano !== undefined) updated.tamano = toNullableString(body.tamano);
+  if (body.lanzamiento !== undefined) updated.lanzamiento = toNullablePositiveInteger(body.lanzamiento);
+  if (body.steam_appid !== undefined) updated.steam_appid = toNullablePositiveInteger(body.steam_appid);
+  if (body.hltb_match !== undefined) updated.hltb_match = toNullableString(body.hltb_match);
   if (body.fecha_inicio !== undefined) updated.fecha_inicio = toNullableString(body.fecha_inicio);
   if (body.fecha_fin !== undefined) updated.fecha_fin = toNullableString(body.fecha_fin);
   if (body.solo !== undefined) updated.solo = toNullableBoolean(body.solo);
