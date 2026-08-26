@@ -5056,7 +5056,15 @@
     "critica": {
       "metascore": 78,
       "userscore": 4.7
-    }
+    },
+    "gasto_microtransacciones": 23.69,
+    "microtransacciones_detalle": [
+      {
+        "fecha": "2026-08-26",
+        "concepto": "Riot Points (Instant Gaming)",
+        "precio_eur": 23.69
+      }
+    ]
   },
   {
     "titulo": "Teamfight Tactics",
