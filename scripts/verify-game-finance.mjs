@@ -135,6 +135,21 @@ try {
   assert.equal(optionalHonoraryComment.game.critica.mencion_honorifica.nivel, 2);
   assert.equal(optionalHonoraryComment.game.critica.mencion_honorifica.comentario, null);
 
+  const zeroScoreReview = applyManualGamePatch(game({ tags: ['competitivo'] }), {
+    critica: {
+      criterios: {
+        jugabilidad: 0, historia: 0, musica: 0, graficos_arte: 0,
+        entretenimiento: 0, originalidad: 0, comunidad: 0,
+      },
+      mencion_honorifica: { nivel: 0, comentario: null },
+    },
+  });
+  assert.equal(zeroScoreReview.ok, true);
+  assert.equal(zeroScoreReview.game.critica.criterios.jugabilidad, 0);
+  assert.equal(zeroScoreReview.game.critica.criterios.musica, 0);
+  assert.equal(zeroScoreReview.game.critica.criterios.comunidad, 0);
+  assert.equal(zeroScoreReview.game.nota, 0);
+
   console.log('game-finance: cálculos y edición manual verificados');
 } finally {
   await server.close();

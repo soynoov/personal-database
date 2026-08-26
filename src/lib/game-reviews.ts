@@ -24,7 +24,7 @@ export const REVIEW_CRITERIA: ReviewCriterionDefinition[] = [
   {
     key: 'jugabilidad',
     label: 'Jugabilidad',
-    min: 1,
+    min: 0,
     max: 5,
     weight: 1,
     measures: 'La experiencia al jugar y el funcionamiento de sus mecánicas.',
@@ -32,7 +32,7 @@ export const REVIEW_CRITERIA: ReviewCriterionDefinition[] = [
   {
     key: 'historia',
     label: 'Historia',
-    min: 1,
+    min: 0,
     max: 5,
     weight: 1,
     measures: 'La calidad de la historia y cómo está contada.',
@@ -40,11 +40,12 @@ export const REVIEW_CRITERIA: ReviewCriterionDefinition[] = [
   {
     key: 'musica',
     label: 'Música (OST)',
-    min: 1,
+    min: 0,
     max: 3,
     weight: 1,
     measures: 'El impacto y el recuerdo que deja su banda sonora.',
     scale: {
+      0: 'No aporta nada o perjudica activamente la experiencia.',
       1: 'Música que no impacta ni recuerdas.',
       2: 'Música que acompaña, pero no recuerdas.',
       3: 'Temas que quieres escuchar y recordarás.',
@@ -53,7 +54,7 @@ export const REVIEW_CRITERIA: ReviewCriterionDefinition[] = [
   {
     key: 'graficos_arte',
     label: 'Gráficos / arte',
-    min: 1,
+    min: 0,
     max: 5,
     weight: 1,
     measures: 'La calidad visual y su dirección artística.',
@@ -61,7 +62,7 @@ export const REVIEW_CRITERIA: ReviewCriterionDefinition[] = [
   {
     key: 'entretenimiento',
     label: 'Entretenimiento',
-    min: 1,
+    min: 0,
     max: 5,
     weight: 1,
     measures: 'Lo que lo has disfrutado y lo que te ha gustado.',
@@ -81,11 +82,12 @@ export const REVIEW_CRITERIA: ReviewCriterionDefinition[] = [
   {
     key: 'comunidad',
     label: 'Comunidad',
-    min: 1,
+    min: 0,
     max: 5,
     weight: 0.5,
     measures: 'La limpieza, deportividad y trato entre quienes juegan.',
     scale: {
+      0: 'Inaceptable: la toxicidad, las trampas o el acoso arruinan la experiencia.',
       1: 'Muy tóxica o insegura: los insultos, las trampas o el acoso son habituales.',
       2: 'Poco agradable: predominan los conflictos y las conductas negativas.',
       3: 'Mixta: alterna gente agradable con episodios frecuentes de toxicidad.',
