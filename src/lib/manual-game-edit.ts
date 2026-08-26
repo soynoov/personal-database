@@ -1,5 +1,6 @@
 import { getLegacySoloValue, normalizeGameModes } from './game-modes';
 import { calculatePersonalScore, isCommunityCriterionApplicable } from './game-reviews';
+import { getGameGenres } from './game-genres';
 import type { GameCritique, LocalGame } from './local-games';
 
 type PatchError = { ok: false; status: number; error: string };
@@ -103,7 +104,7 @@ export function applyManualGamePatch(
     updated.modos = normalizeGameModes(body.modos);
     updated.solo = getLegacySoloValue(updated.modos);
   }
-  if (body.generos !== undefined) updated.generos = toStringArray(body.generos);
+  if (body.generos !== undefined) updated.generos = getGameGenres(toStringArray(body.generos));
   if (body.precio_pagado !== undefined) updated.precio_pagado = toNullableNumber(body.precio_pagado);
   if (body.unidades_compradas !== undefined) {
     updated.unidades_compradas = toNullablePositiveInteger(body.unidades_compradas);

@@ -1,5 +1,6 @@
 import type { LocalGame } from './local-games';
 import { slugifyGameTitle } from './local-games';
+import { getGameGenres } from './game-genres';
 
 export type RouletteGame = Pick<
   LocalGame,
@@ -28,7 +29,7 @@ export function toRouletteGame(game: LocalGame): RouletteGame {
     plataforma: game.plataforma,
     horas: game.horas,
     hltb: game.hltb,
-    generos: game.generos,
+    generos: getGameGenres(game.generos),
     tags: game.tags,
     modos: game.modos,
     solo: game.solo,

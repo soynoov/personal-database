@@ -82,8 +82,21 @@
     font-size: 0.75rem;
   }
 
-  .value-kpi.is-muted {
-    opacity: 0.72;
+  .value-kpi.is-null {
+    border-color: rgba(190, 190, 201, 0.08);
+    background: rgba(8, 9, 13, 0.34);
+    box-shadow: none;
+    filter: saturate(0.15);
+    opacity: 0.48;
+  }
+
+  .value-kpi.is-null .value-kpi-icon {
+    border-color: rgba(210, 210, 220, 0.1);
+    background: rgba(190, 190, 201, 0.05);
+  }
+
+  .value-kpi.is-null strong {
+    color: rgba(230, 226, 232, 0.52);
   }
 
   .hours-progress-card {

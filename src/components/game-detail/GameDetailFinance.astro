@@ -56,13 +56,34 @@ const economicState = !metrics.dataComplete
     : (metrics.economicRemainingHours ?? 0) > 0
       ? `Faltan ${formatHoursDuration(metrics.economicRemainingHours)}`
       : metrics.recordedSpend === 0
-        ? 'Amortizado'
-        : `${metrics.economicMultiple?.toLocaleString('es-ES', { maximumFractionDigits: 2 }) ?? '1'}× amortizado`;
+        ? 'Sin coste que amortizar'
+        : 'Amortizado';
+const economicMultipleLabel = !metrics.dataComplete || metrics.realHours === null
+  ? '—'
+  : metrics.recordedSpend === 0
+    ? 'Sin coste'
+    : `${metrics.economicMultiple?.toLocaleString('es-ES', { maximumFractionDigits: 2 }) ?? '0'}×`;
+const economicProgressLabel = metrics.economicProgressPercent === null
+  ? 'Sin progreso calculable'
+  : `${Math.round(metrics.economicProgressPercent)}% de la meta`;
 const baseBreakdown = metrics.baseSpend === null
   ? 'Pendiente'
   : metrics.isFreeToPlay
     ? formatEuro(0)
     : formatEuro(metrics.baseSpend);
+const showBaseBreakdown = !metrics.isFreeToPlay;
+const showDlcBreakdown = hasDlcs || metrics.acquiredDlcCount > 0;
+const showMicroBreakdown = metrics.isFreeToPlay || metrics.microtransactionSpend > 0 || editValues.gasto_microtransacciones !== null;
+const breakdownSourceCount = [showBaseBreakdown, showDlcBreakdown, showMicroBreakdown].filter(Boolean).length;
+const showTotalBreakdown = breakdownSourceCount > 1;
+const visibleMarketCards = metrics.isFreeToPlay
+  ? marketCards.filter((card) => card.label === 'DLC pendientes')
+  : marketCards;
+const showBaseMarket = !metrics.isFreeToPlay && (
+  moneyChartPoints.length > 0 || visibleMarketCards.some((card) => card.value !== '—')
+);
+const showDlcMarket = hasDlcs;
+const showMarket = showBaseMarket || showDlcMarket;
 ---
 
 <article class="analysis-panel analysis-panel-money" id="finance">
@@ -90,15 +111,18 @@ const baseBreakdown = metrics.baseSpend === null
       </div>
     </article>
 
-    <article class="finance-progress-card">
+    <article class:list={["finance-progress-card", metrics.economicProgressPercent === null && "is-null"]}>
       <div class="finance-progress-head">
-        <span>Horas ponderadas / meta</span>
-        <strong>{metrics.economicProgressPercent === null ? '—' : `${Math.round(metrics.economicProgressPercent)}%`}</strong>
+        <span>Rentabilidad</span>
+        <small>{economicProgressLabel}</small>
       </div>
-      <div class="value-progress" role="progressbar" aria-label="Progreso de la meta económica" aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(progress)}>
-        <span style={`--value-progress:${progress}%`}></span>
-      </div>
+      <strong class="finance-progress-multiple">{economicMultipleLabel}</strong>
       <span class="finance-progress-status">{economicState}</span>
+      {metrics.economicProgressPercent !== null && (
+        <div class="value-progress" role="progressbar" aria-label="Progreso de la meta económica" aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(progress)}>
+          <span style={`--value-progress:${progress}%`}></span>
+        </div>
+      )}
     </article>
   </div>
 
@@ -109,57 +133,54 @@ const baseBreakdown = metrics.baseSpend === null
   )}
 
   <div class="finance-kpi-grid">
-    <article><span>Coste/h real</span><strong>{metrics.costPerRealHour === null ? '—' : `${formatEuro(metrics.costPerRealHour)}/h`}</strong></article>
-    <article><span>Coste/h ponderada</span><strong>{metrics.adjustedCostPerHour === null ? '—' : `${formatEuro(metrics.adjustedCostPerHour)}/h`}</strong></article>
-    <article><span>Horas ponderadas</span><strong>{formatHoursDuration(metrics.weightedHours)}</strong></article>
-    <article>
+    <article class:list={[metrics.costPerRealHour === null && "is-null"]}><span>Coste/h real</span><strong>{metrics.costPerRealHour === null ? '—' : `${formatEuro(metrics.costPerRealHour)}/h`}</strong></article>
+    <article class:list={[metrics.adjustedCostPerHour === null && "is-null"]}><span>Coste/h ponderada</span><strong>{metrics.adjustedCostPerHour === null ? '—' : `${formatEuro(metrics.adjustedCostPerHour)}/h`}</strong></article>
+    <article class:list={[metrics.weightedHours === null && "is-null"]}><span>Horas ponderadas</span><strong>{formatHoursDuration(metrics.weightedHours)}</strong></article>
+    <article class:list={[!metrics.scoreComplete && "is-null"]}>
       <span>Bonus My Score</span>
       <strong>{metrics.scoreBonusPercent > 0 ? `+${metrics.scoreBonusPercent.toLocaleString('es-ES')}%` : 'Sin bonus'}</strong>
       <small>{metrics.scoreComplete ? `×${metrics.scoreMultiplier.toFixed(2).replace('.', ',')}` : 'Crítica incompleta'}</small>
     </article>
     {isAmortized && metrics.recordedSpend > 0 && (
-      <>
-        <article><span>Múltiplo</span><strong>{metrics.economicMultiple === null ? '—' : `${metrics.economicMultiple.toLocaleString('es-ES', { maximumFractionDigits: 2 })}×`}</strong></article>
-        <article><span>Excedente</span><strong>{formatHoursDuration(metrics.economicSurplusHours)}</strong></article>
-      </>
+      <article><span>Excedente</span><strong>{formatHoursDuration(metrics.economicSurplusHours)}</strong></article>
     )}
   </div>
 
-  <section class="finance-breakdown" aria-labelledby="finance-breakdown-title">
+  <section class:list={["finance-breakdown", breakdownSourceCount === 1 && "is-single-source"]} aria-labelledby="finance-breakdown-title">
     <div class="finance-breakdown-head">
       <span class="finance-breakdown-icon"><TablerIcon src={coinsIcon} /></span>
-      <h3 id="finance-breakdown-title">De dónde sale la meta</h3>
+      <h3 id="finance-breakdown-title">Gasto registrado</h3>
     </div>
     <dl>
-      <div>
+      {showBaseBreakdown && <div>
         <dt>Juego base</dt>
         <dd>{baseBreakdown}</dd>
-        <dd class="finance-breakdown-note">{metrics.isFreeToPlay ? 'Free to Play' : paidUnitPrice === null ? 'Sin precio pagado' : `${formatEuro(paidUnitPrice)} × ${metrics.purchasedUnits}`}</dd>
-      </div>
-      <div><dt>DLC adquiridos</dt><dd>{formatEuro(metrics.dlcSpend)}</dd><dd class="finance-breakdown-note">{metrics.acquiredDlcCount} registrados</dd></div>
-      <div><dt>Micropagos</dt><dd>{formatEuro(metrics.microtransactionSpend)}</dd><dd class="finance-breakdown-note">Gasto dentro del juego</dd></div>
-      <div class="finance-breakdown-total"><dt>Total</dt><dd>{metrics.dataComplete ? formatEuro(metrics.recordedSpend) : 'Incompleto'}</dd><dd class="finance-breakdown-note">1 € = 1 h ponderada</dd></div>
+        <dd class="finance-breakdown-note">{paidUnitPrice === null ? 'Sin precio pagado' : `${formatEuro(paidUnitPrice)} × ${metrics.purchasedUnits}`}</dd>
+      </div>}
+      {showDlcBreakdown && <div><dt>DLC adquiridos</dt><dd>{formatEuro(metrics.dlcSpend)}</dd><dd class="finance-breakdown-note">{metrics.acquiredDlcCount} registrados</dd></div>}
+      {showMicroBreakdown && <div class:list={[breakdownSourceCount === 1 && "finance-breakdown-featured"]}><dt>Micropagos</dt><dd>{formatEuro(metrics.microtransactionSpend)}</dd><dd class="finance-breakdown-note">Gasto dentro del juego</dd></div>}
+      {showTotalBreakdown && <div class="finance-breakdown-total"><dt>Total</dt><dd>{metrics.dataComplete ? formatEuro(metrics.recordedSpend) : 'Incompleto'}</dd><dd class="finance-breakdown-note">1 € = 1 h ponderada</dd></div>}
     </dl>
   </section>
 
-  {(moneyChartPoints.length > 0 || dlcChartPoints.length > 0 || marketCards.some((card) => card.value !== '—')) && (
+  {showMarket && (
     <details class="value-secondary-details finance-market-details">
       <summary><TablerIcon src={chartIcon} /><span>Mercado</span></summary>
-      <div class="finance-market-grid">
-        <div class="chart-visual-card chart-visual-card-money">
-          <div class="chart-header"><strong>Precios del juego base</strong></div>
+      <div class:list={["finance-market-grid", !showBaseMarket && "is-dlc-only"]}>
+        {showBaseMarket && <div class="chart-visual-card chart-visual-card-money">
+          <div class="chart-header"><strong>Precios del juego base</strong><span class="chart-badge">{moneyChartPoints.length} valores</span></div>
           {moneyChartPoints.length >= 2 ? (
             <div class="chart-canvas-wrap chart-canvas-wrap-money"><canvas id="money-detail-chart" data-chart={JSON.stringify(moneyChartPayload)}></canvas></div>
           ) : <div class="chart-empty">Sin referencias suficientes</div>}
-        </div>
-        <dl class="finance-market-values">
-          {marketCards.map((card) => <div><dt>{card.label}</dt><dd>{card.value}</dd></div>)}
-        </dl>
-        {hasDlcs && (
+        </div>}
+        {showBaseMarket && <dl class="finance-market-values">
+          {visibleMarketCards.map((card) => <div class:list={[card.value === '—' && "is-null"]}><dt>{card.label}</dt><dd>{card.value}</dd></div>)}
+        </dl>}
+        {showDlcMarket && (
           <div class="chart-visual-card chart-visual-card-dlc">
             <div class="chart-header finance-market-dlc-head">
               <strong>Precios de DLC</strong>
-              <button type="button" class="dlc-sync-prices-btn" id="dlc-sync-prices-btn" data-slug={slug}>Actualizar</button>
+              <div class="finance-market-dlc-actions"><span class="chart-badge">{dlcChartPoints.length} valores</span><button type="button" class="dlc-sync-prices-btn" id="dlc-sync-prices-btn" data-slug={slug}>Actualizar</button></div>
             </div>
             <span class="dlc-sync-prices-status" id="dlc-sync-prices-status" aria-live="polite"></span>
             {dlcChartPoints.length >= 2 ? (

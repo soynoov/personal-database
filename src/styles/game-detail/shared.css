@@ -121,25 +121,18 @@
   gap: 0.85rem;
   min-width: 0;
   padding: 1rem;
-  border: 1px solid rgba(132, 146, 166, 0.12);
+  border: 1px solid rgba(203, 187, 222, 0.13);
   border-radius: var(--radius-3);
   background:
-    radial-gradient(
-      circle at top right,
-      rgba(197, 108, 255, 0.12),
-      transparent 32%
-    ),
-    linear-gradient(180deg, rgba(17, 21, 29, 0.96), rgba(11, 14, 20, 0.94));
+    linear-gradient(145deg, rgba(29, 25, 37, 0.72), rgba(10, 11, 17, 0.82));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    0 14px 38px rgba(0, 0, 0, 0.14);
+  backdrop-filter: blur(18px);
 }
 
 .chart-visual-card-money {
-  background:
-    radial-gradient(
-      circle at top right,
-      rgba(155, 255, 131, 0.12),
-      transparent 32%
-    ),
-    linear-gradient(180deg, rgba(17, 21, 29, 0.96), rgba(11, 14, 20, 0.94));
+  background: linear-gradient(145deg, rgba(27, 25, 34, 0.76), rgba(10, 11, 17, 0.84));
 }
 
 /* ── Chart header ───────────────────────────────────────────────── */
@@ -170,16 +163,17 @@
   padding: 0.32rem 0.72rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.03);
-  color: #e8edf3;
-  font-size: 0.72rem;
+  background: rgba(183, 146, 229, 0.075);
+  color: rgba(231, 220, 240, 0.76);
+  font-size: 0.68rem;
+  font-weight: 700;
 }
 
 /* ── Chart canvas wrap ──────────────────────────────────────────── */
 .chart-canvas-wrap {
   position: relative;
-  min-height: 310px;
-  padding: 0.4rem 0.1rem 0 0;
+  min-height: 278px;
+  padding: 0.3rem 0.1rem 0 0;
 }
 
 .chart-canvas-wrap canvas {

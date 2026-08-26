@@ -20,6 +20,7 @@ interface Props {
 
 const { slug, metrics, hoursChartPayload, hoursChartPoints, hltbBreakdown, editValues } = Astro.props;
 const progress = Math.max(0, Math.min(100, metrics.hltbProgressPercent ?? 0));
+const chartValueCount = hoursChartPoints.length + (metrics.realHours === null ? 0 : 1);
 const hltbState = !metrics.showHltbTarget
   ? 'No aplica'
   : metrics.hltbTargetHours === null
@@ -51,7 +52,10 @@ const hltbState = !metrics.showHltbTarget
       </div>
     </article>
 
-    <article class:list={["value-kpi", "value-kpi-target", !metrics.showHltbTarget && "is-muted"]}>
+    <article
+      class:list={["value-kpi", "value-kpi-target", metrics.hltbTargetHours === null && "is-null"]}
+      aria-label={metrics.hltbTargetHours === null ? `Meta HLTB: ${hltbState}` : undefined}
+    >
       <span class="value-kpi-icon"><TablerIcon src={targetIcon} /></span>
       <div>
         <span>Meta HLTB</span>
@@ -82,7 +86,7 @@ const hltbState = !metrics.showHltbTarget
       <summary><TablerIcon src={chartIcon} /><span>Comparativa y desglose HLTB</span></summary>
       <div class="hours-secondary-grid">
         <div class="chart-visual-card">
-          <div class="chart-header"><strong>Tu tiempo vs. HLTB</strong></div>
+          <div class="chart-header"><strong>Tu tiempo vs. HLTB</strong><span class="chart-badge">{chartValueCount} valores</span></div>
           {hoursChartPoints.length > 0 ? (
             <div class="chart-canvas-wrap chart-canvas-wrap-hours">
               <canvas id="hours-detail-chart" data-chart={JSON.stringify(hoursChartPayload)}></canvas>

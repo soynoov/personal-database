@@ -1,6 +1,7 @@
 import type { LocalGame } from './local-games';
 import { slugifyGameTitle } from './local-games';
 import { isCompletedStatus, normalizeStatus } from './game-status';
+import { getGameGenres } from './game-genres';
 import {
   getGameValueMetrics,
   getRecordedBaseSpend,
@@ -67,7 +68,7 @@ const toRef = (game: LocalGame, precioAtribuido: number | null): RecapGameRef =>
   fecha_inicio: game.fecha_inicio,
   fecha_fin: game.fecha_fin,
   launcher: game.launcher,
-  generos: game.generos ?? null,
+  generos: getGameGenres(game.generos),
   precioAtribuido,
   precioEstimado: false,
 });
@@ -90,7 +91,7 @@ export function getYearRecap(games: LocalGame[], year: number): YearRecap {
     horasAtribuidas += validHours;
     const month = monthOf(game.fecha_inicio);
     if (month) monthly[month - 1].horas += validHours;
-    (game.generos ?? []).forEach((genre) => genreCounts.set(genre, (genreCounts.get(genre) ?? 0) + 1));
+    getGameGenres(game.generos).forEach((genre) => genreCounts.set(genre, (genreCounts.get(genre) ?? 0) + 1));
     const launcher = game.launcher ?? '(sin launcher)';
     launcherCounts.set(launcher, (launcherCounts.get(launcher) ?? 0) + 1);
     const base = getRecordedBaseSpend(game);
@@ -173,7 +174,7 @@ export function getDataQuality(games: LocalGame[]): DataQuality {
   const sinPrecio = games.filter(
     (game) => !NO_PRICE_EXPECTED.has(normalizeStatus(game.estado)) && !getGameValueMetrics(game).dataComplete,
   );
-  const sinGeneros = games.filter((game) => !game.generos || game.generos.length === 0);
+  const sinGeneros = games.filter((game) => getGameGenres(game.generos).length === 0);
 
   return {
     totalJuegos: games.length,

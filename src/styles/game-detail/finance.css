@@ -112,20 +112,52 @@
   .finance-progress-card {
     display: grid;
     align-content: center;
-    gap: 0.72rem;
-    padding: 1rem;
+    gap: 0.45rem;
+    min-height: 150px;
+    padding: 1.05rem;
   }
 
   .finance-progress-head {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
     gap: 0.6rem;
   }
 
-  .finance-progress-head strong {
-    color: #f1e8fa;
-    font-size: 1.1rem;
+  .finance-progress-head small {
+    color: rgba(218, 208, 228, 0.55);
+    font-size: 0.68rem;
+    white-space: nowrap;
+  }
+
+  .finance-progress-multiple {
+    overflow: hidden;
+    color: #f7effc;
+    font-size: clamp(2rem, 3.4vw, 3rem);
+    line-height: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .finance-progress-card .value-progress {
+    height: 6px;
+    margin-top: 0.3rem;
+  }
+
+  .finance-progress-card.is-null,
+  .finance-kpi-grid article.is-null,
+  .finance-market-values > div.is-null {
+    border-color: rgba(190, 190, 201, 0.08);
+    background: rgba(8, 9, 13, 0.34);
+    box-shadow: none;
+    filter: saturate(0.15);
+    opacity: 0.48;
+  }
+
+  .finance-progress-card.is-null .finance-progress-multiple,
+  .finance-kpi-grid article.is-null strong,
+  .finance-market-values > div.is-null dd {
+    color: rgba(230, 226, 232, 0.52);
   }
 
   .finance-incomplete-list {
@@ -192,7 +224,7 @@
 
   .finance-breakdown dl {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
     gap: 0.65rem;
     margin: 0;
   }
@@ -225,6 +257,31 @@
   .finance-breakdown-total {
     border-color: rgba(200, 173, 236, 0.2);
     background: rgba(133, 91, 190, 0.1);
+  }
+
+  .finance-breakdown.is-single-source dl {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .finance-breakdown dl > .finance-breakdown-featured {
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: 104px;
+    align-items: center;
+    padding: 1rem 1.1rem;
+    border-color: rgba(195, 163, 235, 0.16);
+    background: rgba(112, 78, 155, 0.09);
+  }
+
+  .finance-breakdown-featured dt,
+  .finance-breakdown-featured .finance-breakdown-note {
+    grid-column: 1;
+  }
+
+  .finance-breakdown-featured > dd:not(.finance-breakdown-note) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    font-size: clamp(1.65rem, 3vw, 2.35rem);
+    white-space: nowrap;
   }
 
   .finance-market-grid {
@@ -269,11 +326,21 @@
     grid-column: 1 / -1;
   }
 
+  .finance-market-grid.is-dlc-only {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .finance-market-dlc-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.8rem;
+  }
+
+  .finance-market-dlc-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
   }
 
   .dlc-sync-prices-btn {
@@ -331,6 +398,32 @@
 
     .finance-goal-copy > strong {
       font-size: clamp(1.45rem, 9vw, 2.1rem);
+    }
+
+    .finance-progress-multiple {
+      font-size: clamp(1.9rem, 12vw, 2.6rem);
+    }
+
+    .finance-progress-head {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .finance-market-dlc-head,
+    .finance-market-dlc-actions {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .finance-breakdown dl > .finance-breakdown-featured {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .finance-breakdown-featured > dd:not(.finance-breakdown-note) {
+      grid-column: 1;
+      grid-row: auto;
+      white-space: normal;
     }
   }
 }

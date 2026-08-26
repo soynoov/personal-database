@@ -20,6 +20,7 @@ import {
 } from '../../lib/game-finance';
 import { normalizeStatus } from '../../lib/game-status';
 import { formatGameModes, getGameModes } from '../../lib/game-modes';
+import { getGameGenres } from '../../lib/game-genres';
 import { isCommunityCriterionApplicable } from '../../lib/game-reviews';
 import { getGameTagLabel, hasGameTag, normalizeGameTag } from '../../lib/game-tags';
 import { findGameBySlug, readGames } from '../../lib/local-games';
@@ -82,7 +83,7 @@ const platformClass = normalizeStatus(game.plataforma) === 'pc' ? 'badge-platfor
 
 const gameModes = getGameModes(game);
 const modesLabel = formatGameModes(gameModes);
-const genresList = Array.isArray(game.generos) ? game.generos : [];
+const genresList = getGameGenres(game.generos);
 const genres = genresList.length > 0 ? genresList.join(', ') : '-';
 const rawTags = Array.isArray(game.tags) ? game.tags : [];
 const tagBadges = rawTags
@@ -117,12 +118,12 @@ const sumKnown = (items: typeof dlcItems, key: 'precio_pagado' | 'precio_actual'
 const countKnown = (items: typeof dlcItems, key: 'precio_pagado' | 'precio_actual' | 'precio_salida') =>
   items.filter((item) => item[key] !== null && item[key] !== undefined && Number.isFinite(Number(item[key]))).length;
 const dlcMarketPoints = [
-  { label: 'Salida', value: sumKnown(acquiredDlcs, 'precio_salida'), count: countKnown(acquiredDlcs, 'precio_salida') },
-  { label: 'Pagado', value: sumKnown(acquiredDlcs, 'precio_pagado'), count: countKnown(acquiredDlcs, 'precio_pagado') },
-  { label: 'Actual', value: sumKnown(acquiredDlcs, 'precio_actual'), count: countKnown(acquiredDlcs, 'precio_actual') },
-].filter((point) => point.count > 0).map(({ label, value }) => ({ label, value: Number(value.toFixed(2)) }));
+  { label: 'Salida', value: sumKnown(acquiredDlcs, 'precio_salida'), count: countKnown(acquiredDlcs, 'precio_salida'), color: '#7f758d' },
+  { label: 'Pagado', value: sumKnown(acquiredDlcs, 'precio_pagado'), count: countKnown(acquiredDlcs, 'precio_pagado'), color: '#b792e5' },
+  { label: 'Actual', value: sumKnown(acquiredDlcs, 'precio_actual'), count: countKnown(acquiredDlcs, 'precio_actual'), color: '#8b85a2' },
+].filter((point) => point.count > 0).map(({ label, value, color }) => ({ label, value: Number(value.toFixed(2)), color }));
 const dlcChartPayload = dlcMarketPoints.length >= 2
-  ? { points: dlcMarketPoints, seriesLabel: 'Contenido adicional', metric: 'currency' }
+  ? { type: 'market-comparison', points: dlcMarketPoints, seriesLabel: 'Contenido adicional', metric: 'currency' }
   : null;
 
 const paidUnitPrice = game.precio_pagado === null || game.precio_pagado === undefined ? null : Number(game.precio_pagado);
@@ -132,12 +133,12 @@ const historicLow = game.precio_minimo_historico === null || game.precio_minimo_
   ? null
   : Number(game.precio_minimo_historico);
 const moneyChartPoints = [
-  { label: 'Salida', value: launchPrice },
-  { label: 'Compra', value: paidUnitPrice },
-  { label: 'Mín. histórico', value: historicLow },
-  { label: 'Actual', value: currentPrice },
-].filter((point): point is { label: string; value: number } => point.value !== null && Number.isFinite(point.value));
-const moneyChartPayload = { points: moneyChartPoints, seriesLabel: 'Precio', metric: 'currency' };
+  { label: 'Salida', value: launchPrice, color: '#7f758d' },
+  { label: 'Compra', value: paidUnitPrice, color: '#b792e5' },
+  { label: 'Mín. histórico', value: historicLow, color: '#8da081' },
+  { label: 'Actual', value: currentPrice, color: '#8b85a2' },
+].filter((point): point is { label: string; value: number; color: string } => point.value !== null && Number.isFinite(point.value));
+const moneyChartPayload = { type: 'market-comparison', points: moneyChartPoints, seriesLabel: 'Precio', metric: 'currency' };
 const pendingDlcMarketValue = sumKnown(pendingDlcs, 'precio_actual');
 const marketCards = [
   { label: 'Pagado / copia', value: formatCurrency(paidUnitPrice, '—') },
@@ -154,23 +155,23 @@ const hltbBreakdown = {
 };
 const hltbBars = valueMetrics.showHltbTarget
   ? [
-      { label: 'Main', value: hltbBreakdown.main, color: '#f0ece8' },
-      { label: 'Main+Extras', value: hltbBreakdown.mainPlus, color: '#c993a8' },
-      { label: 'Completionist', value: hltbBreakdown.completionist, color: '#b59bd5' },
+      { label: 'Historia', value: hltbBreakdown.main, color: '#81798c' },
+      { label: 'Historia + extras', value: hltbBreakdown.mainPlus, color: '#9985b3' },
+      { label: '100%', value: hltbBreakdown.completionist, color: '#746b80' },
     ].filter((bar): bar is { label: string; value: number; color: string } => bar.value !== null && Number.isFinite(bar.value))
   : [];
-const hoursLineColor = valueMetrics.realHours === null
+const myHoursColor = valueMetrics.realHours === null
   ? '#718096'
   : hltbBreakdown.main !== null && valueMetrics.realHours < hltbBreakdown.main
-    ? '#c56f7a'
+    ? '#b9777f'
     : hltbBreakdown.mainPlus !== null && valueMetrics.realHours >= hltbBreakdown.mainPlus
-      ? '#93c572'
-      : '#c49a72';
+      ? '#8ea779'
+      : '#b18d6a';
 const hoursChartPayload = {
   type: 'hours-vs-hltb',
   myHours: valueMetrics.realHours,
   hltbBars,
-  lineColor: hoursLineColor,
+  myHoursColor,
 };
 
 const summaryCards = [

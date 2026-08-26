@@ -1,240 +1,120 @@
 <script>
   import {
     Chart,
-    Filler,
     Tooltip,
     CategoryScale,
     LinearScale,
-    LineController,
-    LineElement,
-    PointElement,
     BarController,
     BarElement,
-  } from "chart.js";
+  } from 'chart.js';
 
-  Chart.register(
-    Filler,
-    Tooltip,
-    CategoryScale,
-    LinearScale,
-    LineController,
-    LineElement,
-    PointElement,
-    BarController,
-    BarElement,
+  Chart.register(Tooltip, CategoryScale, LinearScale, BarController, BarElement);
+
+  const charts = new Map<string, Chart>();
+  const numberFormatter = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 2 });
+
+  const formatMetricValue = (metric: string, value: number) => (
+    metric === 'currency'
+      ? `${numberFormatter.format(value)} €`
+      : `${numberFormatter.format(value)} h`
   );
 
-  const charts = new Map();
+  const formatAxisValue = (metric: string, value: number) => (
+    metric === 'currency'
+      ? `${numberFormatter.format(value)} €`
+      : `${numberFormatter.format(value)} h`
+  );
 
-  /* ── Helpers ─────────────────────────────────────────────────── */
-
-  const formatMetricValue = (metric, value) => {
-    if (metric === "currency") return `${Number(value).toFixed(2)} EUR`;
-    return `${Number(value).toFixed(1)} h`;
-  };
-
-  const buildGradient = (ctx, area, colorStops) => {
-    const gradient = ctx.createLinearGradient(0, area.top, 0, area.bottom);
-    colorStops.forEach(([stop, color]) => gradient.addColorStop(stop, color));
-    return gradient;
-  };
-
-  const hexToRgba = (hex, alpha) => {
+  const hexToRgba = (hex: string, alpha: number) => {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    if (!result) return `rgba(150,150,150,${alpha})`;
-    return `rgba(${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)},${alpha})`;
+    if (!result) return `rgba(150, 145, 160, ${alpha})`;
+    return `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${alpha})`;
   };
 
-  const readChartPayload = (canvasId) => {
+  const wrapLabel = (label: string) => {
+    if (label === 'Historia + extras') return ['Historia +', 'extras'];
+    if (label === 'Mín. histórico') return ['Mín.', 'histórico'];
+    return label;
+  };
+
+  const readChartPayload = (canvasId: string) => {
     const canvas = document.getElementById(canvasId);
     if (!(canvas instanceof HTMLCanvasElement)) return null;
     try {
-      return { canvas, payload: JSON.parse(canvas.dataset.chart ?? "null") };
+      return { canvas, payload: JSON.parse(canvas.dataset.chart ?? 'null') };
     } catch {
       return null;
     }
   };
 
-  /* ── Chart: Horas vs HLTB (barras + línea horizontal) ────────── */
-  /*
-   * Barras:  cada valor HLTB (Main, Main+Extras, Completionist)
-   * Línea:   mis horas — horizontal, mismo valor en todos los x
-   * Color línea:
-   *   verde  (#93c572) si mis horas ≥ Main+Extras
-   *   rojo   (#c51e3a) si mis horas < Main
-   *   naranja (#ff7518) si entre ambos
-   */
-  /*
-   * Plugin inline: dibuja una línea horizontal de borde a borde del área del chart.
-   * Se pasa por configuración en options.plugins.fullWidthLine
-   */
-  const fullWidthLinePlugin = {
-    id: "fullWidthLine",
-    afterDatasetsDraw(chart) {
-      const opts = chart.options.plugins?.fullWidthLine;
-      if (!opts || opts.value === null || opts.value === undefined) return;
-
-      const { ctx, chartArea: { left, right }, scales: { y } } = chart;
-      const yPixel = y.getPixelForValue(opts.value);
-
-      ctx.save();
-      ctx.strokeStyle = opts.color ?? "#ffffff";
-      ctx.lineWidth   = opts.lineWidth ?? 2;
-      ctx.setLineDash(opts.dash ?? []);
-      ctx.globalAlpha = opts.alpha ?? 1;
-      ctx.beginPath();
-      ctx.moveTo(left,  yPixel);
-      ctx.lineTo(right, yPixel);
-      ctx.stroke();
-      ctx.restore();
-    },
-  };
-
-  const renderHoursBarLineChart = (canvasId) => {
+  const renderComparisonBars = (
+    canvasId: string,
+    expectedType: string,
+    payloadOverride: Record<string, unknown> | null = null,
+  ) => {
     const chartData = readChartPayload(canvasId);
     if (!chartData) return;
 
-    const { canvas, payload } = chartData;
-    if (payload?.type !== "hours-vs-hltb") return;
+    const { canvas } = chartData;
+    const payload = payloadOverride ?? chartData.payload;
+    if (payload?.type !== expectedType) return;
 
-    const { hltbBars, myHours, lineColor } = payload;
-    if (!Array.isArray(hltbBars) || hltbBars.length === 0) return;
-
-    charts.get(canvasId)?.destroy();
-
-    // Barras: HLTB + "Mis horas" al final con color dinámico
-    const allBars = [...hltbBars];
-    if (myHours !== null) {
-      allBars.push({ label: "Mis horas", value: Number(myHours), color: lineColor });
-    }
-
-    const labels     = allBars.map((b) => b.label);
-    const barValues  = allBars.map((b) => Number(b.value));
-    const barBorders = allBars.map((b) => b.color);
-    const barFills   = allBars.map((b) => hexToRgba(b.color, 0.28));
-
-    const datasets = [
-      {
-        type: "bar",
-        label: "Horas",
-        data: barValues,
-        backgroundColor: barFills,
-        borderColor: barBorders,
-        borderWidth: 2,
-        borderRadius: 6,
-        borderSkipped: false,
-      },
-    ];
-
-    const chart = new Chart(canvas, {
-      type: "bar",
-      plugins: [fullWidthLinePlugin],   // plugin inline — línea borde a borde
-      data: { labels, datasets },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        interaction: { intersect: false, mode: "index" },
-        plugins: {
-          legend: { display: false },
-          // Configuración del plugin de línea horizontal
-          fullWidthLine: myHours !== null
-            ? { value: Number(myHours), color: lineColor, lineWidth: 2, alpha: 0.85 }
-            : { value: null },
-          tooltip: {
-            displayColors: true,
-            backgroundColor: "rgba(13, 18, 26, 0.94)",
-            borderColor: "rgba(255, 255, 255, 0.1)",
-            borderWidth: 1,
-            padding: 12,
-            titleColor: "#f7f1ee",
-            bodyColor: "#dbe4ef",
-            callbacks: {
-              label(context) {
-                const val = Number(context.parsed.y);
-                const label = context.dataset.label ?? "";
-                return `${label}: ${val.toFixed(1)} h`;
-              },
-            },
-          },
-        },
-        scales: {
-          x: {
-            border: { display: false },
-            grid: { display: false },
-            ticks: { color: "rgba(218, 226, 236, 0.62)", font: { size: 11 } },
-          },
-          y: {
-            border: { display: false },
-            grid: { color: "rgba(132, 146, 166, 0.16)", drawTicks: false },
-            ticks: {
-              color: "rgba(218, 226, 236, 0.5)",
-              padding: 10,
-              font: { size: 11 },
-              callback: (value) => `${Number(value).toFixed(0)} h`,
-            },
-          },
-        },
-      },
-    });
-
-    charts.set(canvasId, chart);
-  };
-
-  /* ── Chart: Línea genérica (dinero) ───────────────────────────── */
-
-  const renderLineChart = (canvasId, palette) => {
-    const chartData = readChartPayload(canvasId);
-    if (!chartData) return;
-
-    const { canvas, payload } = chartData;
-    const labels = Array.isArray(payload?.points) ? payload.points.map((point) => point.label) : [];
-    const values = Array.isArray(payload?.points) ? payload.points.map((point) => Number(point.value)) : [];
-    if (labels.length < 2 || values.some((value) => Number.isNaN(value))) return;
+    const sourcePoints = Array.isArray(payload.points) ? payload.points : [];
+    const points = sourcePoints
+      .map((point: Record<string, unknown>) => ({
+        label: String(point.label ?? ''),
+        value: Number(point.value),
+        color: String(point.color ?? '#9387a4'),
+      }))
+      .filter((point: { label: string; value: number; color: string }) => point.label && Number.isFinite(point.value));
+    if (points.length < 2) return;
 
     charts.get(canvasId)?.destroy();
+    const values = points.map((point: { value: number }) => point.value);
+    const colors = points.map((point: { color: string }) => point.color);
+    const metric = String(payload.metric ?? 'hours');
 
     const chart = new Chart(canvas, {
-      type: "line",
+      type: 'bar',
       data: {
-        labels,
-        datasets: [
-          {
-            label: payload.seriesLabel,
-            data: values,
-            fill: true,
-            tension: 0.34,
-            borderWidth: 2,
-            borderColor: palette.stroke,
-            pointRadius: 3,
-            pointHoverRadius: 5,
-            pointBackgroundColor: palette.stroke,
-            pointBorderWidth: 0,
-            backgroundColor(context) {
-              const { chart } = context;
-              const { ctx, chartArea } = chart;
-              if (!chartArea) return palette.fillFallback;
-              return buildGradient(ctx, chartArea, palette.fill);
-            },
-          },
-        ],
+        labels: points.map((point: { label: string }) => wrapLabel(point.label)),
+        datasets: [{
+          label: String(payload.seriesLabel ?? ''),
+          data: values,
+          backgroundColor: colors.map((color: string) => hexToRgba(color, 0.34)),
+          hoverBackgroundColor: colors.map((color: string) => hexToRgba(color, 0.48)),
+          borderColor: colors,
+          borderWidth: 1.5,
+          borderRadius: 10,
+          borderSkipped: false,
+          barPercentage: 0.62,
+          categoryPercentage: 0.78,
+          maxBarThickness: 82,
+        }],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        interaction: { intersect: false, mode: "index" },
+        animation: { duration: 420, easing: 'easeOutQuart' },
+        interaction: { intersect: false, mode: 'index' },
+        layout: { padding: { top: 8 } },
         plugins: {
           legend: { display: false },
           tooltip: {
             displayColors: false,
-            backgroundColor: "rgba(13, 18, 26, 0.94)",
-            borderColor: "rgba(255, 255, 255, 0.1)",
+            backgroundColor: 'rgba(12, 12, 18, 0.96)',
+            borderColor: 'rgba(204, 181, 235, 0.18)',
             borderWidth: 1,
-            padding: 12,
-            titleColor: "#f7f1ee",
-            bodyColor: "#dbe4ef",
+            padding: 11,
+            cornerRadius: 9,
+            titleColor: '#f7f1ee',
+            bodyColor: '#d8cfdf',
             callbacks: {
+              title(items) {
+                return items.length ? points[items[0].dataIndex]?.label ?? '' : '';
+              },
               label(context) {
-                return formatMetricValue(payload.metric, context.parsed.y);
+                return formatMetricValue(metric, Number(context.parsed.y));
               },
             },
           },
@@ -243,18 +123,27 @@
           x: {
             border: { display: false },
             grid: { display: false },
-            ticks: { color: "rgba(218, 226, 236, 0.62)", font: { size: 11 } },
+            ticks: {
+              color: 'rgba(224, 216, 231, 0.67)',
+              font: { size: 11, weight: 600 },
+              maxRotation: 0,
+              minRotation: 0,
+            },
           },
           y: {
+            beginAtZero: true,
+            suggestedMax: Math.max(...values, 1) * 1.12,
             border: { display: false },
-            grid: { color: "rgba(132, 146, 166, 0.16)", drawTicks: false },
+            grid: {
+              color: 'rgba(181, 169, 194, 0.11)',
+              drawTicks: false,
+            },
             ticks: {
-              color: "rgba(218, 226, 236, 0.5)",
+              color: 'rgba(218, 210, 225, 0.5)',
               padding: 10,
-              font: { size: 11 },
-              callback(value) {
-                return formatMetricValue(payload.metric, value);
-              },
+              maxTicksLimit: 5,
+              font: { size: 10 },
+              callback: (value) => formatAxisValue(metric, Number(value)),
             },
           },
         },
@@ -264,47 +153,42 @@
     charts.set(canvasId, chart);
   };
 
-  const renderDlcPricesChart = (canvasId) => {
-    renderLineChart(canvasId, {
-      stroke: "#b58af5",
-      fillFallback: "rgba(181, 138, 245, 0.16)",
-      fill: [
-        [0, "rgba(181, 138, 245, 0.28)"],
-        [1, "rgba(181, 138, 245, 0.02)"],
-      ],
+  const renderHoursChart = () => {
+    const chartData = readChartPayload('hours-detail-chart');
+    if (!chartData || chartData.payload?.type !== 'hours-vs-hltb') return;
+    const { payload } = chartData;
+    const points = Array.isArray(payload.hltbBars) ? [...payload.hltbBars] : [];
+    if (payload.myHours !== null && payload.myHours !== undefined) {
+      points.push({
+        label: 'Mis horas',
+        value: Number(payload.myHours),
+        color: String(payload.myHoursColor ?? '#a98bd0'),
+      });
+    }
+    renderComparisonBars('hours-detail-chart', 'hours-comparison', {
+      type: 'hours-comparison',
+      points,
+      seriesLabel: 'Horas',
+      metric: 'hours',
     });
   };
 
-  /* ── Render all ───────────────────────────────────────────────── */
-
   const renderAllCharts = () => {
-    // Horas: barras HLTB + línea mis horas
-    renderHoursBarLineChart("hours-detail-chart");
-
-    // Dinero: línea temporal de precios
-    renderLineChart("money-detail-chart", {
-      stroke: "#9bff83",
-      fillFallback: "rgba(155, 255, 131, 0.18)",
-      fill: [
-        [0, "rgba(155, 255, 131, 0.26)"],
-        [1, "rgba(155, 255, 131, 0.03)"],
-      ],
-    });
-
-    // DLC prices: se renderiza si el acordeón ya está abierto
-    renderDlcPricesChart("dlc-finance-chart");
+    renderHoursChart();
+    renderComparisonBars('money-detail-chart', 'market-comparison');
+    renderComparisonBars('dlc-finance-chart', 'market-comparison');
   };
 
   renderAllCharts();
-  window.addEventListener("resize", renderAllCharts);
-
-  // Reinicializar el chart DLC cuando se abre el acordeón por primera vez
-  const dlcAccordion = document.querySelector(".dlc-finance-accordion");
-  if (dlcAccordion instanceof HTMLDetailsElement) {
-    dlcAccordion.addEventListener("toggle", () => {
-      if (dlcAccordion.open) {
-        renderDlcPricesChart("dlc-finance-chart");
-      }
+  document.querySelectorAll<HTMLDetailsElement>('.value-secondary-details').forEach((details) => {
+    details.addEventListener('toggle', () => {
+      if (details.open) window.requestAnimationFrame(renderAllCharts);
     });
-  }
+  });
+
+  let resizeTimer = 0;
+  window.addEventListener('resize', () => {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(renderAllCharts, 120);
+  });
 </script>

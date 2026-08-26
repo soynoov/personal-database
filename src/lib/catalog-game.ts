@@ -3,6 +3,7 @@ import { slugifyGameTitle } from "./local-games";
 import { isCompletedStatus, normalizeStatus } from "./game-status";
 import { getGameTagLabel, hasGameTag, normalizeGameTag } from "./game-tags";
 import { gameHasMode } from "./game-modes";
+import { getGameGenres } from "./game-genres";
 
 export type CatalogGame = Pick<
   LocalGame,
@@ -33,7 +34,7 @@ export function toCatalogGame(game: LocalGame): CatalogGame {
     launcher: game.launcher,
     plataforma: game.plataforma,
     horas: game.horas,
-    generos: game.generos,
+    generos: getGameGenres(game.generos),
     tags: game.tags,
     precio_pagado: game.precio_pagado,
     precio_actual: game.precio_actual,

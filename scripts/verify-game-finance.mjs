@@ -13,6 +13,7 @@ try {
     getScoreMultiplier,
   } = await server.ssrLoadModule('/src/lib/game-finance.ts');
   const { applyManualGamePatch } = await server.ssrLoadModule('/src/lib/manual-game-edit.ts');
+  const { getGameGenres } = await server.ssrLoadModule('/src/lib/game-genres.ts');
 
   const game = (overrides = {}) => ({
     titulo: 'Prueba', estado: 'Pendiente', launcher: 'Steam', plataforma: 'PC',
@@ -90,6 +91,16 @@ try {
   });
   assert.equal(invalidAchievements.ok, false);
   assert.equal(invalidAchievements.status, 400);
+
+  assert.deepEqual(
+    getGameGenres(['Acción', 'Free to Play', 'Acción']),
+    ['Acción'],
+  );
+  const editedGenres = applyManualGamePatch(game(), {
+    generos: ['Acción', 'Free to Play'],
+  });
+  assert.equal(editedGenres.ok, true);
+  assert.deepEqual(editedGenres.game.generos, ['Acción']);
 
   console.log('game-finance: cálculos y edición manual verificados');
 } finally {
