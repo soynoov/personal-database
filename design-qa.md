@@ -12,15 +12,15 @@
 
 ## Full-view comparison evidence
 
-The final hero matches the reference composition: 180 px panoramic band, 136 × 168 px cover aligned at the same horizontal origin, display title and badges centered in the copy column, cover overlap across the navigation seam, and an editorial tab bar directly below. “Resumen” is absent and “Horas” is the first active tab.
+The final hero matches the reference composition: 180 px panoramic band, 136 × 168 px cover aligned at the same horizontal origin, display title and badges centered in the copy column, cover overlap across the navigation seam, left-to-right frosted fade, diagonal cutout, and an editorial tab bar directly below. “Resumen” is absent and “Horas” is the first active tab.
 
 The background artwork differs because the implementation uses each game's canonical dynamic hero asset. This is an intentional product constraint; the treatment, crop, blur, contrast, and foreground hierarchy match the reference direction.
 
 ## Required fidelity surfaces
 
 - Fonts and typography: existing display and body families retained; title scale, line height, optical weight, and badge hierarchy are aligned with the source.
-- Spacing and layout rhythm: poster, title, badges, hero height, navigation seam, and first-tab offset align closely after normalization.
-- Colors and visual tokens: dark violet surface, purple active state, semantic status badges, and subdued background overlay remain consistent with the product theme and reference.
+- Spacing and layout rhythm: poster, title, badges, hero height, 26 × 32 px diagonal navigation cut, cover overlap, and first-tab offset align closely after normalization.
+- Colors and visual tokens: the frosted layer is strongest at the left and fades toward transparency at the right; the dark violet surface, purple active state, semantic status badges, and subdued background overlay remain consistent with the product theme and reference.
 - Image quality and asset fidelity: real cover and dynamic hero assets are used; no placeholder, CSS-drawn, or synthetic replacement imagery was introduced.
 - Copy and content: title and metadata remain data-driven. The requested “Resumen” label was removed. Indie, Early Access, and play-mode badges surface the metadata previously hidden in the facts row.
 
@@ -31,6 +31,7 @@ Focused region comparison was not needed because the supplied source is itself a
 1. Baseline: P1 — nested glass card and three-column facts row made the hero too tall and dense; P1 — obsolete “Resumen” tab remained.
 2. First implementation: removed the facts row and obsolete tab, then matched title/poster alignment. P2 — hero still had excess vertical height and the cover did not overlap the navigation seam correctly.
 3. Final implementation: fixed the 180 px frame, 168 px poster, 7 px seam overlap, background treatment, badge set, and navigation offset. Post-fix evidence is `hero-comparison.png`; no actionable P0/P1/P2 differences remain.
+4. User follow-up: P2 — the frosted left-to-right fade and the reference's diagonal navigation seam were still missing. Added a masked 13 px backdrop blur that fades across the hero and a measured polygonal cut from x=195 to x=221 over 32 px. The final comparison confirms both details without horizontal overflow or mobile clipping.
 
 ## Findings
 
