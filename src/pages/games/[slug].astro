@@ -24,6 +24,7 @@ import { getGameGenres } from '../../lib/game-genres';
 import { isCommunityCriterionApplicable } from '../../lib/game-reviews';
 import { getGameTagLabel, hasGameTag, normalizeGameTag } from '../../lib/game-tags';
 import { findGameBySlug, readGames } from '../../lib/local-games';
+import { normalizePurchaseStores } from '../../lib/purchase-stores';
 import gamepadIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
 
 const game = findGameBySlug(await readGames(), Astro.params.slug ?? '');
@@ -239,7 +240,7 @@ const metadataGroups = [
 ];
 
 const legacyScore = game.nota !== null && game.nota !== undefined && Number.isFinite(Number(game.nota)) ? Number(game.nota) : null;
-const purchaseStores = (game.tiendas_compra ?? []).map((store) => String(store).trim()).filter(Boolean);
+const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
 ---
 
 <BaseLayout title={`${game.titulo} | Personal Database`}>
@@ -291,6 +292,7 @@ const purchaseStores = (game.tiendas_compra ?? []).map((store) => String(store).
           precio_pagado: paidUnitPrice,
           unidades_compradas: valueMetrics.purchasedUnits,
           tiendas_compra: purchaseStores,
+          plataforma: game.plataforma,
           gasto_microtransacciones: game.gasto_microtransacciones ?? null,
           tags: rawTags.map(normalizeGameTag),
         }}

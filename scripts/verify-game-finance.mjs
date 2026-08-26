@@ -17,6 +17,7 @@ try {
   } = await server.ssrLoadModule('/src/lib/game-finance.ts');
   const { applyManualGamePatch } = await server.ssrLoadModule('/src/lib/manual-game-edit.ts');
   const { getGameGenres } = await server.ssrLoadModule('/src/lib/game-genres.ts');
+  const { getPurchaseStoreOptions } = await server.ssrLoadModule('/src/lib/purchase-stores.ts');
 
   const game = (overrides = {}) => ({
     titulo: 'Prueba', estado: 'Pendiente', launcher: 'Steam', plataforma: 'PC',
@@ -117,6 +118,13 @@ try {
   assert.equal(technicalEdit.game.lanzamiento, 2024);
   assert.equal(technicalEdit.game.steam_appid, 123456);
   assert.equal(technicalEdit.game.hltb_match, 'Test Game');
+
+  const purchaseStoreEdit = applyManualGamePatch(game(), {
+    tiendas_compra: ['Instang Gaming', 'Steam', 'Steam'],
+  });
+  assert.equal(purchaseStoreEdit.ok, true);
+  assert.deepEqual(purchaseStoreEdit.game.tiendas_compra, ['Instant Gaming']);
+  assert.deepEqual(getPurchaseStoreOptions('Nintendo Switch'), ['eShop', 'Instant Gaming']);
 
   const invalidAchievements = applyManualGamePatch(game(), {
     logros_actual: 11,

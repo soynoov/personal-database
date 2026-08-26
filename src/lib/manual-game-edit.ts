@@ -2,6 +2,7 @@ import { getLegacySoloValue, normalizeGameModes } from './game-modes';
 import { calculatePersonalScore, isCommunityCriterionApplicable } from './game-reviews';
 import { getGameGenres } from './game-genres';
 import type { GameCritique, LocalGame } from './local-games';
+import { normalizePurchaseStores } from './purchase-stores';
 
 type PatchError = { ok: false; status: number; error: string };
 type PatchSuccess = { ok: true; game: LocalGame };
@@ -115,7 +116,9 @@ export function applyManualGamePatch(
   if (body.unidades_compradas !== undefined) {
     updated.unidades_compradas = toNullablePositiveInteger(body.unidades_compradas);
   }
-  if (body.tiendas_compra !== undefined) updated.tiendas_compra = toStringArray(body.tiendas_compra);
+  if (body.tiendas_compra !== undefined) {
+    updated.tiendas_compra = normalizePurchaseStores(body.tiendas_compra).slice(0, 1);
+  }
   if (body.gasto_microtransacciones !== undefined) {
     updated.gasto_microtransacciones = toNullableNumber(body.gasto_microtransacciones);
   }

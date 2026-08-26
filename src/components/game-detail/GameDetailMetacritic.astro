@@ -50,6 +50,12 @@ const toNullableScore = (value: unknown) => {
 
 const metascore = toNullableScore(critique?.metascore);
 const userscore = toNullableScore(critique?.userscore);
+const hasMetacriticData = metascore !== null
+  || userscore !== null
+  || displayedPersonalScore !== null
+  || hasCriterionData
+  || honoraryLevel > 0
+  || Boolean(honoraryComment);
 const formatDecimal = (value: number | null) =>
   value === null
     ? '—'
@@ -69,13 +75,14 @@ const formatDecimal = (value: number | null) =>
       class="metacritic-edit-trigger"
       id="metacritic-edit-trigger"
       type="button"
-      aria-label="Editar puntuaciones de Metacrítica"
+      aria-label={hasMetacriticData ? 'Editar puntuaciones de Metacrítica' : 'Añadir puntuaciones de Metacrítica'}
     >
       <TablerIcon src={editIcon} />
-      <span>Editar</span>
+      <span>{hasMetacriticData ? 'Editar' : 'Añadir crítica'}</span>
     </button>
   </header>
 
+  {hasMetacriticData ? <>
   <div class="metacritic-score-grid">
     <article class={`metacritic-score-card is-${getScoreTone(metascore, 100)}`}>
       <div class="metacritic-score-copy">
@@ -144,37 +151,48 @@ const formatDecimal = (value: number | null) =>
       ))}
     </div>
 
-    {honoraryLevel > 0 && (
-      <article class:list={["metacritic-honorary", "has-value", honoraryComment && "has-comment"]}>
-        <div class="metacritic-honorary-level">
-          <span class="section-eyebrow">Mención honorífica</span>
-          <div>
-            <strong>{honoraryLabel}</strong>
-            <small>{honoraryLevel}/3</small>
+    <div class:list={["metacritic-breakdown-footer", honoraryLevel > 0 && "has-honorary", honoraryComment && "has-comment"]}>
+      {honoraryLevel > 0 && (
+        <article class:list={["metacritic-honorary", "has-value", honoraryComment && "has-comment"]}>
+          <div class="metacritic-honorary-level">
+            <span class="section-eyebrow">Mención honorífica</span>
+            <div>
+              <strong>{honoraryLabel}</strong>
+              <small>{honoraryLevel}/3</small>
+            </div>
           </div>
-        </div>
-        <div class="metacritic-honorary-bonus">
-          <span>Bonus</span>
-          <strong>+{formatDecimal(honoraryLevel * 0.1)}</strong>
-          <small>My score</small>
-        </div>
-        {honoraryComment && (
-          <div class="metacritic-honorary-reason">
-            <span>Apunte</span>
-            <p>{honoraryComment}</p>
+          <div class="metacritic-honorary-bonus">
+            <span>Bonus</span>
+            <strong>+{formatDecimal(honoraryLevel * 0.1)}</strong>
+            <small>My score</small>
           </div>
-        )}
-      </article>
-    )}
+          {honoraryComment && (
+            <div class="metacritic-honorary-reason">
+              <span>Apunte</span>
+              <p>{honoraryComment}</p>
+            </div>
+          )}
+        </article>
+      )}
 
-    <div class="metacritic-formula">
-      <span><TablerIcon src={checksIcon} /> Todos los criterios</span>
-      <span><TablerIcon src={divideIcon} /> Puntos obtenidos / máximos</span>
-      {includeCommunity && <span><TablerIcon src={usersIcon} /> Comunidad ×0,5</span>}
-      {honoraryLevel > 0 && <span><TablerIcon src={starIcon} /> Mención +0,1 por nivel</span>}
-      <span><TablerIcon src={equalIcon} /> Máximo 10</span>
+      <div class="metacritic-formula">
+        <span><TablerIcon src={checksIcon} /> Todos los criterios</span>
+        <span><TablerIcon src={divideIcon} /> Puntos obtenidos / máximos</span>
+        {includeCommunity && <span><TablerIcon src={usersIcon} /> Comunidad ×0,5</span>}
+        {honoraryLevel > 0 && <span><TablerIcon src={starIcon} /> Mención +0,1 por nivel</span>}
+        <span><TablerIcon src={equalIcon} /> Máximo 10</span>
+      </div>
     </div>
   </div>
+  </> : (
+    <div class="metacritic-empty-state">
+      <span class="metacritic-empty-icon"><TablerIcon src={starIcon} /></span>
+      <div>
+        <strong>Sin valoración todavía</strong>
+        <p>Añade la crítica cuando tengas criterio suficiente sobre el juego.</p>
+      </div>
+    </div>
+  )}
 </section>
 
 <dialog class="edit-dialog metacritic-edit-dialog" id="metacritic-edit-dialog">

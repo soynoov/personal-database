@@ -7,6 +7,7 @@ import {
   formatHoursDuration,
   type GameValueMetrics,
 } from '../../lib/game-finance';
+import { getPurchaseStoreOptions, normalizePurchaseStores } from '../../lib/purchase-stores';
 import FormCheckbox from '../FormCheckbox.astro';
 import TablerIcon from '../TablerIcon.astro';
 import chartIcon from '@tabler/icons/outline/chart-line.svg?url';
@@ -18,6 +19,7 @@ interface MoneyEditValues {
   precio_pagado: number | null;
   unidades_compradas: number;
   tiendas_compra: string[];
+  plataforma: string | null;
   gasto_microtransacciones: number | null;
   tags: string[];
 }
@@ -48,6 +50,9 @@ const {
   editValues,
 } = Astro.props;
 const isFreeToPlay = editValues.tags.includes('free-to-play');
+const purchaseStoreOptions = getPurchaseStoreOptions(editValues.plataforma);
+const selectedPurchaseStores = normalizePurchaseStores(editValues.tiendas_compra);
+const selectedPurchaseStore = selectedPurchaseStores[0] ?? '';
 const progress = Math.max(0, Math.min(100, metrics.economicProgressPercent ?? 0));
 const isAmortized = metrics.dataComplete && metrics.realHours !== null && (metrics.economicRemainingHours ?? 0) === 0;
 const economicState = !metrics.dataComplete
@@ -64,9 +69,13 @@ const economicMultipleLabel = !metrics.dataComplete || metrics.realHours === nul
   : metrics.recordedSpend === 0
     ? 'Sin coste'
     : `${metrics.economicMultiple?.toLocaleString('es-ES', { maximumFractionDigits: 2 }) ?? '0'}×`;
-const economicProgressLabel = metrics.economicProgressPercent === null
-  ? 'Sin progreso calculable'
-  : `${Math.round(metrics.economicProgressPercent)}% de la meta`;
+const economicProgressLabel = !metrics.dataComplete
+  ? 'Datos incompletos'
+  : metrics.recordedSpend === 0
+    ? 'Sin meta económica'
+    : metrics.economicProgressPercent === null
+      ? 'Sin progreso calculable'
+      : `${formatHoursDuration(metrics.weightedHours)} / ${formatHoursDuration(metrics.economicTargetHours)}`;
 const baseBreakdown = metrics.baseSpend === null
   ? 'Pendiente'
   : metrics.isFreeToPlay
@@ -101,31 +110,33 @@ const showMarket = showBaseMarket || showDlcMarket;
   </div>
 
   <div class="finance-priority-grid">
-    <article class:list={["finance-goal-card", isAmortized && "is-complete", !metrics.dataComplete && "is-incomplete"]}>
-      <div class="finance-goal-icon"><TablerIcon src={targetIcon} /></div>
-      <div class="finance-goal-copy">
-        <span>Meta económica</span>
-        <strong>{metrics.economicTargetHours === null ? '—' : formatHoursDuration(metrics.economicTargetHours)}</strong>
-        <small>{economicState}</small>
-      </div>
-      <div class="finance-goal-cost">
-        <span>Gasto registrado</span>
-        <strong>{metrics.dataComplete ? formatEuro(metrics.recordedSpend) : 'Incompleto'}</strong>
-      </div>
-    </article>
-
-    <article class:list={["finance-progress-card", metrics.economicProgressPercent === null && "is-null"]}>
+    <article class:list={["finance-progress-card", isAmortized && "is-complete", metrics.economicProgressPercent === null && "is-null"]}>
       <div class="finance-progress-head">
         <span>Rentabilidad</span>
         <small>{economicProgressLabel}</small>
       </div>
       <strong class="finance-progress-multiple">{economicMultipleLabel}</strong>
       <span class="finance-progress-status">{economicState}</span>
-      {metrics.economicProgressPercent !== null && (
+      {metrics.economicProgressPercent !== null && metrics.recordedSpend > 0 && (
         <div class="value-progress" role="progressbar" aria-label="Progreso de la meta económica" aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(progress)}>
           <span style={`--value-progress:${progress}%`}></span>
         </div>
       )}
+    </article>
+
+    <article class:list={["finance-goal-card", isAmortized && "is-complete", !metrics.dataComplete && "is-incomplete"]}>
+      <div class="finance-goal-primary">
+        <div class="finance-goal-icon"><TablerIcon src={targetIcon} /></div>
+        <div class="finance-goal-copy">
+          <span>Meta económica</span>
+          <strong>{metrics.economicTargetHours === null ? '—' : formatHoursDuration(metrics.economicTargetHours)}</strong>
+          <small>{economicState}</small>
+        </div>
+      </div>
+      <div class="finance-goal-cost">
+        <span>Gasto registrado</span>
+        <strong>{metrics.dataComplete ? formatEuro(metrics.recordedSpend) : 'Incompleto'}</strong>
+      </div>
     </article>
   </div>
 
@@ -218,8 +229,13 @@ const showMarket = showBaseMarket || showDlcMarket;
         </div>
       </div>
       <div class="edit-field money-base-fields" hidden={isFreeToPlay}>
-        <label for="money-edit-tiendas">Comprado en</label>
-        <input id="money-edit-tiendas" name="tiendas_compra" type="text" placeholder="Instant Gaming, Steam…" value={editValues.tiendas_compra.join(', ')} />
+        <label for="money-edit-store">Comprado en</label>
+        <select class="purchase-store-select" id="money-edit-store" name="tiendas_compra">
+          <option value="" selected={!selectedPurchaseStore}>Sin registrar</option>
+          {purchaseStoreOptions.map((store) => (
+            <option value={store} selected={selectedPurchaseStore === store}>{store}</option>
+          ))}
+        </select>
       </div>
       <div class="edit-field">
         <label for="money-edit-microtransacciones">Micropagos (EUR)</label>
@@ -264,7 +280,7 @@ const showMarket = showBaseMarket || showDlcMarket;
           body: JSON.stringify({
             precio_pagado: data.get('precio_pagado'),
             unidades_compradas: data.get('unidades_compradas'),
-            tiendas_compra: data.get('tiendas_compra'),
+            tiendas_compra: free instanceof HTMLInputElement && free.checked ? [] : data.get('tiendas_compra'),
             gasto_microtransacciones: data.get('gasto_microtransacciones'),
             free_to_play: free instanceof HTMLInputElement && free.checked,
           }),

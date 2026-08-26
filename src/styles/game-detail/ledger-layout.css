@@ -1,0 +1,830 @@
+@import '../theme.css';
+
+/* Jerarquía final inspirada en el mockup elegido: cada dominio conserva
+   su bloque propio y los datos interiores se ordenan con divisores, no con
+   una sucesión de tarjetas anidadas. */
+@layer global {
+  .game-page-rich {
+    --ledger-surface: rgba(16, 17, 25, 0.76);
+    --ledger-surface-deep: rgba(9, 10, 16, 0.68);
+    --ledger-line: rgba(236, 228, 247, 0.13);
+    --ledger-line-soft: rgba(236, 228, 247, 0.075);
+    --ledger-text: #f4eff6;
+    --ledger-muted: rgba(219, 209, 226, 0.57);
+    --ledger-accent: #bfa2dd;
+    width: min(1440px, calc(100% - 1.5rem));
+    gap: 0.82rem;
+    padding-bottom: 5rem;
+  }
+
+  .game-page-rich .game-page-backdrop {
+    opacity: 0.3;
+    filter: blur(42px) saturate(0.66) contrast(1.04);
+  }
+
+  .game-page-rich .game-hero-cinematic,
+  .game-page-rich .analysis-panel,
+  .game-page-rich #technical,
+  .game-page-rich #competitive,
+  .game-page-rich #dlcs,
+  .game-page-rich .game-metacritic,
+  .game-page-rich .detail-comments-vault {
+    overflow: clip;
+    border: 1px solid var(--ledger-line);
+    border-radius: 22px;
+    background:
+      linear-gradient(132deg, rgba(31, 28, 42, 0.69), rgba(11, 12, 18, 0.74) 54%, rgba(22, 20, 30, 0.68));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.055),
+      0 18px 48px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(24px) saturate(1.08);
+    -webkit-backdrop-filter: blur(24px) saturate(1.08);
+  }
+
+  .game-page-rich .analysis-panel,
+  .game-page-rich #technical,
+  .game-page-rich #competitive,
+  .game-page-rich #dlcs,
+  .game-page-rich .game-metacritic,
+  .game-page-rich .detail-comments-vault {
+    padding: clamp(1rem, 1.55vw, 1.4rem);
+  }
+
+  .game-page-rich .analysis-head,
+  .game-page-rich #technical > .section-title-row,
+  .game-page-rich .game-metacritic-head {
+    align-items: center;
+    margin-bottom: 0.6rem;
+  }
+
+  .game-page-rich .analysis-panel-hours,
+  .game-page-rich .analysis-panel-money {
+    gap: 0;
+  }
+
+  .game-page-rich .section-eyebrow {
+    color: var(--ledger-accent);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+  }
+
+  .game-page-rich .analysis-head h2,
+  .game-page-rich #technical > .section-title-row h2,
+  .game-page-rich .game-metacritic-head h2 {
+    margin-top: 0.12rem;
+    color: var(--ledger-text);
+    font-family: var(--font-body);
+    font-size: clamp(1.4rem, 1.1rem + 0.8vw, 1.9rem);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+  }
+
+  .game-page-rich .game-edit-trigger,
+  .game-page-rich .metacritic-edit-trigger {
+    border-color: rgba(220, 205, 236, 0.16);
+    background: rgba(191, 162, 221, 0.07);
+    color: #d8c5eb;
+    box-shadow: none;
+  }
+
+  .game-page-rich .game-edit-trigger:hover,
+  .game-page-rich .game-edit-trigger:focus-visible,
+  .game-page-rich .metacritic-edit-trigger:hover,
+  .game-page-rich .metacritic-edit-trigger:focus-visible {
+    border-color: rgba(220, 205, 236, 0.34);
+    background: rgba(191, 162, 221, 0.12);
+  }
+
+  /* Portada: una sola capa de vidrio sobre la imagen horizontal. */
+  .game-page-rich .game-hero-cinematic {
+    min-height: 268px;
+    background: rgba(8, 9, 14, 0.34);
+  }
+
+  .game-page-rich .game-hero-cinematic::before {
+    opacity: 0.94;
+    filter: saturate(0.82) contrast(1.05);
+    background:
+      linear-gradient(90deg, rgba(8, 8, 14, 0.88) 0%, rgba(8, 8, 14, 0.61) 42%, rgba(8, 8, 14, 0.18) 78%, rgba(8, 8, 14, 0.38) 100%),
+      var(--hero-cover);
+    background-position: center 32%;
+    background-size: cover;
+  }
+
+  .game-page-rich .game-hero-cinematic::after {
+    background: linear-gradient(180deg, rgba(8, 8, 14, 0.03), rgba(8, 8, 14, 0.3));
+  }
+
+  .game-page-rich .game-overview-card.game-overview-card-cinematic {
+    width: calc(100% - 1.15rem);
+    min-height: 244px;
+    margin: 0.575rem;
+    padding: clamp(1.1rem, 2.3vw, 1.9rem) clamp(1.15rem, 3vw, 2.5rem);
+    grid-template-columns: 136px minmax(0, 1fr);
+    gap: clamp(1.25rem, 2.5vw, 2.3rem);
+    border: 1px solid rgba(244, 237, 250, 0.14);
+    border-radius: 18px;
+    background: linear-gradient(112deg, rgba(19, 19, 29, 0.7), rgba(13, 14, 21, 0.36) 72%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px) saturate(1.03);
+    -webkit-backdrop-filter: blur(20px) saturate(1.03);
+  }
+
+  .game-page-rich .game-overview-card.game-overview-card-cinematic .game-overview-media {
+    width: 136px;
+    max-width: 136px;
+    border-color: rgba(244, 237, 250, 0.22);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.42);
+  }
+
+  .game-page-rich .game-overview-copy h1 {
+    max-width: 22ch;
+    color: #f6f0ef;
+    letter-spacing: -0.025em;
+  }
+
+  .game-page-rich .game-hero-facts {
+    width: min(100%, 860px);
+    gap: 0;
+    margin-top: 0.45rem;
+  }
+
+  .game-page-rich .game-hero-facts > div {
+    min-height: 48px;
+    padding: 0.35rem 0.85rem;
+    border: 0;
+    border-left: 1px solid var(--ledger-line-soft);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .game-page-rich .game-hero-facts > div:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  /* Horas: los valores forman una única banda y todos los datos registrados permanecen visibles. */
+  .game-page-rich .hours-priority-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    overflow: hidden;
+    border-top: 1px solid var(--ledger-line-soft);
+    border-bottom: 1px solid var(--ledger-line-soft);
+    border-radius: 0;
+  }
+
+  .game-page-rich .hours-priority-grid[data-hltb='false'] {
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+  }
+
+  .game-page-rich .hours-priority-grid > article {
+    min-width: 0;
+    min-height: 112px;
+    padding: 1rem clamp(0.85rem, 1.5vw, 1.3rem);
+    border: 0;
+    border-left: 1px solid var(--ledger-line-soft);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .game-page-rich .hours-priority-grid > article:first-child {
+    border-left: 0;
+  }
+
+  .game-page-rich .hours-period-card,
+  .game-page-rich .hours-progress-card {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--ledger-line-soft);
+    border-left: 0;
+  }
+
+  .game-page-rich .hours-priority-grid[data-hltb='false'] .hours-period-card {
+    grid-column: 2;
+    border-top: 0;
+    border-left: 1px solid var(--ledger-line-soft);
+  }
+
+  .game-page-rich .value-kpi-primary {
+    background: linear-gradient(90deg, rgba(191, 162, 221, 0.075), transparent 80%);
+  }
+
+  .game-page-rich .value-kpi strong {
+    color: var(--ledger-text);
+    font-size: clamp(1.9rem, 1.35rem + 1.4vw, 2.75rem);
+    letter-spacing: -0.045em;
+  }
+
+  .game-page-rich .value-kpi-target strong {
+    font-size: clamp(1.7rem, 1.28rem + 1.05vw, 2.35rem);
+  }
+
+  .game-page-rich .value-kpi-icon,
+  .game-page-rich .finance-goal-icon,
+  .game-page-rich .finance-breakdown-icon,
+  .game-page-rich .data-group-icon,
+  .game-page-rich .metacritic-empty-icon {
+    border-color: rgba(213, 192, 235, 0.18);
+    background: rgba(191, 162, 221, 0.08);
+    color: #c9addf;
+    box-shadow: none;
+  }
+
+  .game-page-rich .hours-period-card {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 0.7rem;
+  }
+
+  .game-page-rich .hours-period-dates {
+    gap: 0;
+  }
+
+  .game-page-rich .hours-period-dates > div {
+    padding: 0.3rem 0.65rem;
+    border: 0;
+    border-left: 1px solid var(--ledger-line-soft);
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .game-page-rich .hours-progress-card .value-progress,
+  .game-page-rich .finance-progress-card .value-progress {
+    height: 5px;
+    background: rgba(255, 255, 255, 0.085);
+  }
+
+  .game-page-rich .hours-progress-card .value-progress > span,
+  .game-page-rich .finance-progress-card .value-progress > span {
+    background: linear-gradient(90deg, #8e6cac, #c4a4de);
+  }
+
+  /* Dinero: el múltiplo es la lectura principal; meta y gasto quedan en el mismo eje. */
+  .game-page-rich .finance-priority-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(270px, 0.82fr) minmax(0, 1.18fr);
+    gap: 0;
+    overflow: hidden;
+    border-top: 1px solid var(--ledger-line-soft);
+    border-bottom: 1px solid var(--ledger-line-soft);
+  }
+
+  .game-page-rich .finance-priority-grid:has(.finance-progress-card .value-progress) {
+    padding-bottom: 1.45rem;
+  }
+
+  .game-page-rich .finance-progress-card,
+  .game-page-rich .finance-goal-card,
+  .game-page-rich .finance-goal-primary,
+  .game-page-rich .finance-goal-cost {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .game-page-rich .finance-progress-card {
+    display: grid;
+    min-height: 150px;
+    align-content: center;
+    padding: 1rem clamp(0.9rem, 1.8vw, 1.45rem);
+    background: linear-gradient(90deg, rgba(191, 162, 221, 0.075), transparent 90%);
+  }
+
+  .game-page-rich .finance-progress-card .value-progress {
+    position: absolute;
+    right: 1.15rem;
+    bottom: 0.72rem;
+    left: 1.15rem;
+    width: auto;
+    margin: 0;
+  }
+
+  .game-page-rich .finance-progress-head {
+    align-items: center;
+  }
+
+  .game-page-rich .finance-progress-head small {
+    color: var(--ledger-muted);
+  }
+
+  .game-page-rich .finance-progress-multiple {
+    margin-top: 0.2rem;
+    color: #d0b3e8;
+    font-size: clamp(2.25rem, 1.55rem + 1.8vw, 3.4rem);
+    letter-spacing: -0.055em;
+  }
+
+  .game-page-rich .finance-progress-status {
+    color: rgba(217, 205, 224, 0.68);
+  }
+
+  .game-page-rich .finance-goal-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(170px, 0.55fr);
+    min-height: 150px;
+    gap: 0;
+    border-left: 1px solid var(--ledger-line-soft);
+  }
+
+  .game-page-rich .finance-goal-primary {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.9rem;
+    padding: 1rem clamp(0.9rem, 1.8vw, 1.45rem);
+  }
+
+  .game-page-rich .finance-goal-copy > strong {
+    color: var(--ledger-text);
+    font-size: clamp(1.7rem, 1.25rem + 1.25vw, 2.65rem);
+    letter-spacing: -0.045em;
+  }
+
+  .game-page-rich .finance-goal-cost {
+    display: grid;
+    align-content: center;
+    justify-content: start;
+    padding: 1rem clamp(0.85rem, 1.5vw, 1.2rem);
+    border-left: 1px solid var(--ledger-line-soft);
+  }
+
+  .game-page-rich .finance-goal-cost strong {
+    color: var(--ledger-text);
+    font-size: clamp(1.35rem, 1.05rem + 0.8vw, 1.95rem);
+  }
+
+  .game-page-rich .finance-goal-card.is-complete .finance-goal-primary,
+  .game-page-rich .finance-goal-card.is-complete .finance-goal-cost,
+  .game-page-rich .finance-goal-card.is-incomplete .finance-goal-primary,
+  .game-page-rich .finance-goal-card.is-incomplete .finance-goal-cost {
+    border-color: transparent;
+    background: transparent;
+  }
+
+  .game-page-rich .finance-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0;
+    margin-top: 0.75rem;
+    border-bottom: 1px solid var(--ledger-line-soft);
+  }
+
+  .game-page-rich .finance-kpi-grid article {
+    min-height: 70px;
+    padding: 0.7rem 0.85rem;
+    border: 0;
+    border-left: 1px solid var(--ledger-line-soft);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .game-page-rich .finance-kpi-grid article:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .game-page-rich .finance-breakdown {
+    margin-top: 0;
+    padding: 0.8rem 0 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .game-page-rich .finance-breakdown-head {
+    margin-bottom: 0.55rem;
+  }
+
+  .game-page-rich .finance-breakdown dl {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 0;
+  }
+
+  .game-page-rich .finance-breakdown dl > div {
+    min-height: 72px;
+    padding: 0.55rem 0.85rem;
+    border: 0;
+    border-left: 1px solid var(--ledger-line-soft);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .game-page-rich .finance-breakdown dl > div:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .game-page-rich .finance-breakdown dl > .finance-breakdown-featured {
+    min-height: 72px;
+    padding: 0.55rem 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .game-page-rich .finance-breakdown-featured > dd:not(.finance-breakdown-note) {
+    font-size: 1.2rem;
+  }
+
+  /* Datos: tres filas encajadas dentro del bloque, con todos sus campos. */
+  .game-page-rich .game-data-groups {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--ledger-line-soft);
+  }
+
+  .game-page-rich .data-group-card,
+  .game-page-rich .data-group-catalog,
+  .game-page-rich .data-group-progress,
+  .game-page-rich .data-group-technical {
+    display: grid;
+    grid-template-columns: minmax(138px, 0.18fr) minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-column: 1;
+    min-height: 92px;
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid var(--ledger-line-soft);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .game-page-rich .data-group-card:last-child {
+    border-bottom: 0;
+  }
+
+  .game-page-rich .data-group-head {
+    align-items: flex-start;
+    align-content: center;
+    margin: 0;
+    padding: 0.85rem 0.8rem 0.85rem 0;
+  }
+
+  .game-page-rich .data-group-card .data-group-grid,
+  .game-page-rich .data-group-progress .data-group-grid,
+  .game-page-rich .data-group-technical .data-group-grid[data-count='6'],
+  .game-page-rich .data-group-technical .data-group-grid[data-count='7'] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-rows: auto;
+    gap: 0;
+    min-height: 100%;
+  }
+
+  .game-page-rich .data-group-card .data-group-grid > .detail-item,
+  .game-page-rich .data-group-progress .detail-item:nth-child(1),
+  .game-page-rich .data-group-progress .detail-item:nth-child(2),
+  .game-page-rich .data-group-progress .detail-item:nth-child(3),
+  .game-page-rich .data-group-technical .data-group-grid[data-count='7'] .detail-item:last-child {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .game-page-rich .data-group-card .detail-item,
+  .game-page-rich .data-group-progress .detail-item,
+  .game-page-rich .data-group-technical .detail-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    align-content: center;
+    align-items: start;
+    min-width: 0;
+    min-height: 92px;
+    padding: 0.72rem 0.85rem;
+    border: 0;
+    border-left: 1px solid var(--ledger-line-soft);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .game-page-rich .data-group-technical .detail-item dd {
+    margin-top: 0.22rem;
+    text-align: left;
+  }
+
+  .game-page-rich .data-group-card .detail-item-empty {
+    opacity: 0.38;
+    filter: saturate(0.15);
+  }
+
+  .game-page-rich .data-group-card .detail-item-empty dd {
+    filter: blur(1.2px);
+  }
+
+  /* Metacrítica: estado vacío compacto; con datos mantiene scores, criterios y mención. */
+  .game-page-rich .metacritic-empty-state {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    min-height: 76px;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--ledger-line-soft);
+  }
+
+  .game-page-rich .metacritic-empty-icon {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 1px solid;
+    border-radius: 11px;
+  }
+
+  .game-page-rich .metacritic-empty-icon .tabler-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .game-page-rich .metacritic-empty-state strong {
+    color: var(--ledger-text);
+    font-size: 0.95rem;
+  }
+
+  .game-page-rich .metacritic-empty-state p {
+    margin: 0.2rem 0 0;
+    color: var(--ledger-muted);
+    font-size: 0.76rem;
+  }
+
+  .game-page-rich .metacritic-score-grid {
+    gap: 0;
+    border-top: 1px solid var(--ledger-line-soft);
+    border-bottom: 1px solid var(--ledger-line-soft);
+  }
+
+  .game-page-rich .metacritic-score-card {
+    min-height: 116px;
+    padding: 0.85rem 1rem;
+    border: 0;
+    border-left: 1px solid var(--ledger-line-soft);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .game-page-rich .metacritic-score-card:first-child {
+    border-left: 0;
+  }
+
+  .game-page-rich .metacritic-breakdown {
+    margin-top: 0;
+    padding: 0.9rem 0 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .game-page-rich .metacritic-criteria {
+    gap: 0;
+    border-top: 1px solid var(--ledger-line-soft);
+  }
+
+  .game-page-rich .metacritic-criterion {
+    padding: 0.68rem 0.85rem;
+    border: 0;
+    border-bottom: 1px solid var(--ledger-line-soft);
+    border-left: 1px solid var(--ledger-line-soft);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .game-page-rich .metacritic-criterion:nth-child(odd) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .game-page-rich .metacritic-honorary,
+  .game-page-rich .metacritic-formula {
+    border-color: var(--ledger-line-soft);
+    background: rgba(191, 162, 221, 0.035);
+    box-shadow: none;
+  }
+
+  .game-page-rich .value-secondary-details {
+    margin-top: 0.75rem;
+    border-color: var(--ledger-line-soft);
+    border-radius: 12px;
+    background: rgba(7, 8, 13, 0.18);
+  }
+
+  .game-page-rich .chart-visual-card,
+  .game-page-rich .chart-metric-card,
+  .game-page-rich .game-page-section-inline {
+    border-color: var(--ledger-line-soft);
+    background: rgba(7, 8, 13, 0.22);
+    box-shadow: none;
+  }
+
+  @media (max-width: 1040px) {
+    .game-page-rich .finance-priority-grid {
+      grid-template-columns: minmax(240px, 0.72fr) minmax(0, 1.28fr);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .game-page-rich {
+      width: min(100% - 0.75rem, 1440px);
+      gap: 0.65rem;
+      padding-bottom: 6rem;
+    }
+
+    .game-page-rich .analysis-panel,
+    .game-page-rich #technical,
+    .game-page-rich #competitive,
+    .game-page-rich #dlcs,
+    .game-page-rich .game-metacritic,
+    .game-page-rich .detail-comments-vault {
+      padding: 0.82rem;
+      border-radius: 17px;
+    }
+
+    .game-page-rich .game-hero-cinematic {
+      min-height: 0;
+      border-radius: 18px;
+    }
+
+    .game-page-rich .game-overview-card.game-overview-card-cinematic {
+      width: calc(100% - 0.7rem);
+      min-height: 0;
+      margin: 0.35rem;
+      padding: 0.75rem;
+      grid-template-columns: 82px minmax(0, 1fr);
+      gap: 0.75rem;
+      border-radius: 14px;
+    }
+
+    .game-page-rich .game-overview-card.game-overview-card-cinematic .game-overview-media {
+      width: 82px;
+      max-width: 82px;
+    }
+
+    .game-page-rich .game-hero-facts {
+      display: none;
+    }
+
+    .game-page-rich .hours-priority-grid,
+    .game-page-rich .hours-priority-grid[data-hltb='false'],
+    .game-page-rich .finance-priority-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .game-page-rich .hours-priority-grid > article,
+    .game-page-rich .hours-priority-grid[data-hltb='false'] .hours-period-card {
+      grid-column: 1;
+      min-height: 96px;
+      border-left: 0;
+      border-top: 1px solid var(--ledger-line-soft);
+    }
+
+    .game-page-rich .hours-priority-grid > article:first-child {
+      border-top: 0;
+    }
+
+    .game-page-rich .hours-period-card {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .game-page-rich .finance-goal-card {
+      grid-template-columns: minmax(0, 1.25fr) minmax(125px, 0.75fr);
+      border-top: 1px solid var(--ledger-line-soft);
+      border-left: 0;
+    }
+
+    .game-page-rich .finance-progress-card,
+    .game-page-rich .finance-goal-card {
+      min-height: 126px;
+    }
+
+    .game-page-rich .finance-kpi-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .game-page-rich .finance-kpi-grid article {
+      padding-left: 0.7rem;
+      border-top: 1px solid var(--ledger-line-soft);
+    }
+
+    .game-page-rich .finance-kpi-grid article:nth-child(odd) {
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    .game-page-rich .finance-breakdown dl {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .game-page-rich .finance-breakdown dl > div:nth-child(odd) {
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    .game-page-rich .data-group-card,
+    .game-page-rich .data-group-catalog,
+    .game-page-rich .data-group-progress,
+    .game-page-rich .data-group-technical {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .game-page-rich .data-group-head {
+      padding: 0.7rem 0 0.45rem;
+    }
+
+    .game-page-rich .data-group-card .data-group-grid,
+    .game-page-rich .data-group-progress .data-group-grid,
+    .game-page-rich .data-group-technical .data-group-grid[data-count='6'],
+    .game-page-rich .data-group-technical .data-group-grid[data-count='7'] {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .game-page-rich .data-group-card .detail-item,
+    .game-page-rich .data-group-progress .detail-item,
+    .game-page-rich .data-group-technical .detail-item {
+      min-height: 76px;
+      border-top: 1px solid var(--ledger-line-soft);
+    }
+
+    .game-page-rich .metacritic-score-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .game-page-rich .metacritic-score-card,
+    .game-page-rich .metacritic-score-card:first-child {
+      min-height: 88px;
+      border-left: 0;
+      border-top: 1px solid var(--ledger-line-soft);
+    }
+
+    .game-page-rich .metacritic-score-card:first-child {
+      border-top: 0;
+    }
+  }
+
+  @media (max-width: 430px) {
+    .game-page-rich .finance-goal-card,
+    .game-page-rich .finance-breakdown dl,
+    .game-page-rich .data-group-card .data-group-grid,
+    .game-page-rich .data-group-progress .data-group-grid,
+    .game-page-rich .data-group-technical .data-group-grid[data-count='6'],
+    .game-page-rich .data-group-technical .data-group-grid[data-count='7'],
+    .game-page-rich .metacritic-criteria {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .game-page-rich .finance-goal-cost {
+      min-height: 78px;
+      border-top: 1px solid var(--ledger-line-soft);
+      border-left: 0;
+    }
+
+    .game-page-rich .finance-breakdown dl > div,
+    .game-page-rich .finance-breakdown dl > div:nth-child(odd) {
+      padding: 0.55rem 0;
+      border-top: 1px solid var(--ledger-line-soft);
+      border-left: 0;
+    }
+
+    .game-page-rich .metacritic-criterion,
+    .game-page-rich .metacritic-criterion:nth-child(odd) {
+      padding-inline: 0;
+      border-left: 0;
+    }
+
+    .game-page-rich .metacritic-empty-state p {
+      max-width: 28ch;
+    }
+  }
+}

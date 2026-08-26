@@ -391,6 +391,13 @@
     font-size: 0.72rem;
   }
 
+  .purchase-store-select {
+    width: 100%;
+    min-height: 44px;
+    color-scheme: dark;
+    cursor: pointer;
+  }
+
   @media (max-width: 820px) {
     .finance-priority-grid,
     .finance-market-grid {
