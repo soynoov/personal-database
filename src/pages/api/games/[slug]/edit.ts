@@ -54,6 +54,7 @@ function toGameCritique(value: unknown): GameCritique {
       musica: toBoundedNumber(criteriaSource.musica, 1, 3),
       graficos_arte: toBoundedNumber(criteriaSource.graficos_arte, 1, 5),
       entretenimiento: toBoundedNumber(criteriaSource.entretenimiento, 1, 5),
+      originalidad: toBoundedNumber(criteriaSource.originalidad, 0, 1),
       comunidad: toBoundedNumber(criteriaSource.comunidad, 1, 5),
     },
     mencion_honorifica: {

@@ -19,6 +19,7 @@ const games = await readGames();
 const estados = getUniqueValues(games, 'estado');
 const launchers = getUniqueValues(games, 'launcher');
 const plataformas = getUniqueValues(games, 'plataforma');
+const baseCriterionCount = REVIEW_CRITERIA.filter((criterion) => criterion.key !== 'comunidad').length;
 
 const drawerEstadosOrdered = [
   'Jugando', 'Terminado', 'Pendiente', 'Wishlist',
@@ -107,8 +108,8 @@ const formatRating = (rating: number) =>
           <span class='criterion-count'>Resultado final sobre 10</span>
         </div>
 
-        <div class='criterion-formula' role='group' aria-label='Puntos obtenidos entre puntos máximos, comunidad con peso cero coma cinco cuando aplica, mención honorífica con bonus de hasta cero coma tres y resultado máximo de diez'>
-          <span><TablerIcon src={checksIcon} /> 5 criterios base</span>
+        <div class='criterion-formula' role='group' aria-label={`${baseCriterionCount} criterios base, puntos obtenidos entre puntos máximos, comunidad con peso cero coma cinco cuando aplica, mención honorífica con bonus de hasta cero coma tres y resultado máximo de diez`}>
+          <span><TablerIcon src={checksIcon} /> {baseCriterionCount} criterios base</span>
           <span><TablerIcon src={divideIcon} /> Puntos obtenidos / máximos</span>
           <span><TablerIcon src={usersIcon} /> Comunidad ×0,5 cuando aplica</span>
           <span><TablerIcon src={starIcon} /> Mención: hasta +0,3</span>
@@ -121,8 +122,8 @@ const formatRating = (rating: number) =>
               <summary class='criterion-method-card-head'>
                 <h3>{criterion.label}</h3>
                 <div>
-                  <span>1–{criterion.max}</span>
-                  <span>{criterion.weight === 1 ? `${criterion.max} puntos máximos` : `Peso ×${String(criterion.weight).replace('.', ',')}`}</span>
+                  <span>{criterion.min}–{criterion.max}</span>
+                  <span>{criterion.weight === 1 ? `${criterion.max} ${criterion.max === 1 ? 'punto máximo' : 'puntos máximos'}` : `Peso ×${String(criterion.weight).replace('.', ',')}`}</span>
                   {criterion.key === 'comunidad' && <span>Solo comunidad pública / competitivo</span>}
                 </div>
                 <TablerIcon src={chevronDownIcon} class='criterion-method-chevron' />

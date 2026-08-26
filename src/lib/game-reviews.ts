@@ -7,11 +7,13 @@ export type ReviewCriterionKey =
   | 'musica'
   | 'graficos_arte'
   | 'entretenimiento'
+  | 'originalidad'
   | 'comunidad';
 
 export type ReviewCriterionDefinition = {
   key: ReviewCriterionKey;
   label: string;
+  min: number;
   max: number;
   weight: number;
   measures: string;
@@ -22,6 +24,7 @@ export const REVIEW_CRITERIA: ReviewCriterionDefinition[] = [
   {
     key: 'jugabilidad',
     label: 'Jugabilidad',
+    min: 1,
     max: 5,
     weight: 1,
     measures: 'La experiencia al jugar y el funcionamiento de sus mecánicas.',
@@ -29,6 +32,7 @@ export const REVIEW_CRITERIA: ReviewCriterionDefinition[] = [
   {
     key: 'historia',
     label: 'Historia',
+    min: 1,
     max: 5,
     weight: 1,
     measures: 'La calidad de la historia y cómo está contada.',
@@ -36,6 +40,7 @@ export const REVIEW_CRITERIA: ReviewCriterionDefinition[] = [
   {
     key: 'musica',
     label: 'Música (OST)',
+    min: 1,
     max: 3,
     weight: 1,
     measures: 'El impacto y el recuerdo que deja su banda sonora.',
@@ -48,6 +53,7 @@ export const REVIEW_CRITERIA: ReviewCriterionDefinition[] = [
   {
     key: 'graficos_arte',
     label: 'Gráficos / arte',
+    min: 1,
     max: 5,
     weight: 1,
     measures: 'La calidad visual y su dirección artística.',
@@ -55,13 +61,27 @@ export const REVIEW_CRITERIA: ReviewCriterionDefinition[] = [
   {
     key: 'entretenimiento',
     label: 'Entretenimiento',
+    min: 1,
     max: 5,
     weight: 1,
     measures: 'Lo que lo has disfrutado y lo que te ha gustado.',
   },
   {
+    key: 'originalidad',
+    label: 'Originalidad',
+    min: 0,
+    max: 1,
+    weight: 1,
+    measures: 'Si aporta una idea, enfoque o combinación claramente propia.',
+    scale: {
+      0: 'No: sigue fórmulas conocidas sin un giro propio claro.',
+      1: 'Sí: aporta una idea, enfoque o combinación claramente propia.',
+    },
+  },
+  {
     key: 'comunidad',
     label: 'Comunidad',
+    min: 1,
     max: 5,
     weight: 0.5,
     measures: 'La limpieza, deportividad y trato entre quienes juegan.',
@@ -117,7 +137,11 @@ export function getReviewCriterionScores(
     : REVIEW_CRITERIA.filter((criterion) => criterion.key !== 'comunidad');
 
   return applicableCriteria.map((criterion) => {
-    const value = toBoundedNumber(critique?.criterios?.[criterion.key], 1, criterion.max);
+    const value = toBoundedNumber(
+      critique?.criterios?.[criterion.key],
+      criterion.min,
+      criterion.max,
+    );
     return {
       ...criterion,
       value,
@@ -140,6 +164,8 @@ export type PersonalScoreCalculation = {
  * Así, una escala de 3 puntos influye menos que una de 5 de forma natural.
  * Comunidad solo aplica a juegos con comunidad pública o competitivos y pesa 0,5.
  * El cooperativo privado entre amigos queda fuera salvo que también sea competitivo.
+ * Originalidad aporta 0 o 1 punto. Si falta en una reseña anterior, se excluye
+ * del cálculo para conservar la nota hasta que se valore explícitamente.
  * La mención honorífica suma 0,1 por nivel y la nota final nunca supera 10.
  */
 export function getPersonalScoreCalculation(
@@ -147,13 +173,18 @@ export function getPersonalScoreCalculation(
   includeCommunity = false,
 ): PersonalScoreCalculation | null {
   const scores = getReviewCriterionScores(critique, includeCommunity);
-  if (scores.some((score) => score.value === null)) return null;
+  const requiredScores = scores.filter((score) => score.key !== 'originalidad');
+  if (requiredScores.some((score) => score.value === null)) return null;
 
-  const earnedPoints = scores.reduce(
-    (total, score) => total + (score.value ?? 0) * score.weight,
+  const scoredCriteria = scores.filter(
+    (score): score is ReviewCriterionScore & { value: number } => score.value !== null,
+  );
+
+  const earnedPoints = scoredCriteria.reduce(
+    (total, score) => total + score.value * score.weight,
     0,
   );
-  const possiblePoints = scores.reduce(
+  const possiblePoints = scoredCriteria.reduce(
     (total, score) => total + score.max * score.weight,
     0,
   );

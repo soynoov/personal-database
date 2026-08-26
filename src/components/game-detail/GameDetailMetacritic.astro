@@ -239,12 +239,19 @@ const formatDecimal = (value: number | null) =>
             <label class:list={["metacritic-rating-field", criterion.key === 'comunidad' && 'is-community']} for={`edit-${criterion.key}`}>
               <span>
                 {criterion.label}
-                <small>1–{criterion.max}</small>
+                <small>{criterion.min}–{criterion.max}</small>
               </span>
               <select id={`edit-${criterion.key}`} name={criterion.key}>
                 <option value="" selected={criterion.value === null}>Sin puntuar</option>
-                {Array.from({ length: criterion.max }, (_, index) => index + 1).map((score) => (
-                  <option value={score} selected={criterion.value === score}>{score} / {criterion.max}</option>
+                {Array.from(
+                  { length: criterion.max - criterion.min + 1 },
+                  (_, index) => index + criterion.min,
+                ).map((score) => (
+                  <option value={score} selected={criterion.value === score}>
+                    {criterion.key === 'originalidad'
+                      ? `${score === 1 ? 'Sí' : 'No'} · ${score}/${criterion.max}`
+                      : `${score} / ${criterion.max}`}
+                  </option>
                 ))}
               </select>
             </label>
@@ -388,6 +395,7 @@ const formatDecimal = (value: number | null) =>
             musica: data.get('musica'),
             graficos_arte: data.get('graficos_arte'),
             entretenimiento: data.get('entretenimiento'),
+            originalidad: data.get('originalidad'),
             comunidad: data.get('comunidad'),
           },
           mencion_honorifica: {
