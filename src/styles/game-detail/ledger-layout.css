@@ -143,89 +143,7 @@
     letter-spacing: -0.025em;
   }
 
-  .game-page-rich .game-hero-facts {
-    width: min(100%, 860px);
-    gap: 0;
-    margin-top: 0.45rem;
-  }
-
-  .game-page-rich .game-hero-facts > div {
-    min-height: 48px;
-    padding: 0.35rem 0.85rem;
-    border: 0;
-    border-left: 1px solid var(--ledger-line-soft);
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-
-  .game-page-rich .game-hero-facts > div:first-child {
-    padding-left: 0;
-    border-left: 0;
-  }
-
-  /* Horas: los valores forman una única banda y todos los datos registrados permanecen visibles. */
-  .game-page-rich .hours-priority-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0;
-    overflow: hidden;
-    border-top: 1px solid var(--ledger-line-soft);
-    border-bottom: 1px solid var(--ledger-line-soft);
-    border-radius: 0;
-  }
-
-  .game-page-rich .hours-priority-grid[data-hltb='false'] {
-    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
-  }
-
-  .game-page-rich .hours-priority-grid > article {
-    min-width: 0;
-    min-height: 112px;
-    padding: 1rem clamp(0.85rem, 1.5vw, 1.3rem);
-    border: 0;
-    border-left: 1px solid var(--ledger-line-soft);
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-
-  .game-page-rich .hours-priority-grid > article:first-child {
-    border-left: 0;
-  }
-
-  .game-page-rich .hours-period-card,
-  .game-page-rich .hours-progress-card {
-    grid-column: 1 / -1;
-    border-top: 1px solid var(--ledger-line-soft);
-    border-left: 0;
-  }
-
-  .game-page-rich .hours-priority-grid[data-hltb='false'] .hours-period-card {
-    grid-column: 2;
-    border-top: 0;
-    border-left: 1px solid var(--ledger-line-soft);
-  }
-
-  .game-page-rich .value-kpi-primary {
-    background: linear-gradient(90deg, rgba(191, 162, 221, 0.075), transparent 80%);
-  }
-
-  .game-page-rich .value-kpi strong {
-    color: var(--ledger-text);
-    font-size: clamp(1.9rem, 1.35rem + 1.4vw, 2.75rem);
-    letter-spacing: -0.045em;
-  }
-
-  .game-page-rich .value-kpi-target strong {
-    font-size: clamp(1.7rem, 1.28rem + 1.05vw, 2.35rem);
-  }
-
-  .game-page-rich .value-kpi-icon,
+  /* Horas tiene su propio lenguaje visual en hours.css. */
   .game-page-rich .finance-goal-icon,
   .game-page-rich .finance-breakdown-icon,
   .game-page-rich .data-group-icon,
@@ -236,30 +154,11 @@
     box-shadow: none;
   }
 
-  .game-page-rich .hours-period-card {
-    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-    gap: 0.7rem;
-  }
-
-  .game-page-rich .hours-period-dates {
-    gap: 0;
-  }
-
-  .game-page-rich .hours-period-dates > div {
-    padding: 0.3rem 0.65rem;
-    border: 0;
-    border-left: 1px solid var(--ledger-line-soft);
-    border-radius: 0;
-    background: transparent;
-  }
-
-  .game-page-rich .hours-progress-card .value-progress,
   .game-page-rich .finance-progress-card .value-progress {
     height: 5px;
     background: rgba(255, 255, 255, 0.085);
   }
 
-  .game-page-rich .hours-progress-card .value-progress > span,
   .game-page-rich .finance-progress-card .value-progress > span {
     background: linear-gradient(90deg, #8e6cac, #c4a4de);
   }
@@ -711,25 +610,7 @@
       display: none;
     }
 
-    .game-page-rich .hours-priority-grid,
-    .game-page-rich .hours-priority-grid[data-hltb='false'],
     .game-page-rich .finance-priority-grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
-    .game-page-rich .hours-priority-grid > article,
-    .game-page-rich .hours-priority-grid[data-hltb='false'] .hours-period-card {
-      grid-column: 1;
-      min-height: 96px;
-      border-left: 0;
-      border-top: 1px solid var(--ledger-line-soft);
-    }
-
-    .game-page-rich .hours-priority-grid > article:first-child {
-      border-top: 0;
-    }
-
-    .game-page-rich .hours-period-card {
       grid-template-columns: minmax(0, 1fr);
     }
 

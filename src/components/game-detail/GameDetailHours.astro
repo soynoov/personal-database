@@ -62,7 +62,7 @@ const hltbState = !metrics.showHltbTarget
   <div class="hours-priority-grid" data-hltb={showHltbCard ? 'true' : 'false'}>
     <article class="value-kpi value-kpi-primary">
       <span class="value-kpi-icon"><TablerIcon src={clockIcon} /></span>
-      <div>
+      <div class="value-kpi-copy">
         <span>Horas reales</span>
         <strong>{metrics.realHours === null ? 'Sin registrar' : formatHoursDuration(metrics.realHours)}</strong>
       </div>
@@ -71,7 +71,7 @@ const hltbState = !metrics.showHltbTarget
     {showHltbCard && (
       <article class:list={["value-kpi", "value-kpi-target", !hasHltbTarget && "is-null"]}>
         <span class="value-kpi-icon"><TablerIcon src={targetIcon} /></span>
-        <div>
+        <div class="value-kpi-copy hours-target-copy">
           <span>Meta HLTB</span>
           <strong>{hasHltbTarget ? formatHoursDuration(metrics.hltbTargetHours) : '—'}</strong>
           <small>{hltbState}</small>
@@ -79,24 +79,28 @@ const hltbState = !metrics.showHltbTarget
       </article>
     )}
 
-    <article class:list={["hours-period-card", !hasPeriodData && "is-null"]}>
-      <div class="hours-period-head">
-        <span class="value-kpi-icon"><TablerIcon src={calendarIcon} /></span>
-        <div>
-          <span>Periodo de juego</span>
-          <strong>{periodSummary}</strong>
-        </div>
+    <article class:list={["hours-info-card", "hours-period-summary", !hasPeriodData && "is-null"]}>
+      <span class="hours-info-icon"><TablerIcon src={calendarIcon} /></span>
+      <div>
+        <span>Periodo de juego</span>
+        <strong>{periodSummary}</strong>
       </div>
-      <dl class="hours-period-dates">
-        <div class:list={[!hasStartDate && "is-null"]}>
-          <dt><TablerIcon src={playerPlayIcon} /> Inicio</dt>
-          <dd>{hasStartDate ? period.startLabel : 'Sin registrar'}</dd>
-        </div>
-        <div class:list={[!hasEndDate && "is-null"]}>
-          <dt><TablerIcon src={flagIcon} /> Fin</dt>
-          <dd>{hasEndDate ? period.endLabel : 'Sin registrar'}</dd>
-        </div>
-      </dl>
+    </article>
+
+    <article class:list={["hours-info-card", "hours-date-start", !hasStartDate && "is-null"]}>
+      <span class="hours-info-icon"><TablerIcon src={playerPlayIcon} /></span>
+      <div>
+        <span>Inicio</span>
+        <strong>{hasStartDate ? period.startLabel : 'Sin registrar'}</strong>
+      </div>
+    </article>
+
+    <article class:list={["hours-info-card", "hours-date-end", !hasEndDate && "is-null"]}>
+      <span class="hours-info-icon"><TablerIcon src={flagIcon} /></span>
+      <div>
+        <span>Fin</span>
+        <strong>{hasEndDate ? period.endLabel : 'Sin registrar'}</strong>
+      </div>
     </article>
 
     {hasHltbTarget && (
@@ -117,24 +121,28 @@ const hltbState = !metrics.showHltbTarget
   </div>
 
   {metrics.showHltbTarget && (hoursChartPoints.length > 0 || hltbBreakdown.mainPlus !== null || hltbBreakdown.completionist !== null) && (
-    <details class="value-secondary-details" open>
-      <summary><TablerIcon src={chartIcon} /><span>Comparativa y desglose HLTB</span></summary>
-      <div class="hours-secondary-grid">
-        <div class="chart-visual-card">
-          <div class="chart-header"><strong>Tu tiempo vs. HLTB</strong><span class="chart-badge">{chartValueCount} valores</span></div>
-          {hoursChartPoints.length > 0 ? (
-            <div class="chart-canvas-wrap chart-canvas-wrap-hours">
-              <canvas id="hours-detail-chart" data-chart={JSON.stringify(hoursChartPayload)}></canvas>
-            </div>
-          ) : <div class="chart-empty">Sin referencias suficientes</div>}
+    <div class="hours-secondary-grid">
+      <section class="hours-chart-card" aria-labelledby="hours-chart-title">
+        <div class="hours-chart-heading">
+          <span class="hours-info-icon"><TablerIcon src={chartIcon} /></span>
+          <div>
+            <span>Comparativa HLTB</span>
+            <h3 id="hours-chart-title">Tu tiempo vs. HLTB</h3>
+          </div>
+          <span class="chart-badge">{chartValueCount} valores</span>
         </div>
-        <dl class="hours-breakdown-grid">
-          <div><dt>Historia</dt><dd>{formatHoursDuration(hltbBreakdown.main)}</dd></div>
-          <div><dt>Historia + extras</dt><dd>{formatHoursDuration(hltbBreakdown.mainPlus)}</dd></div>
-          <div><dt>100%</dt><dd>{formatHoursDuration(hltbBreakdown.completionist)}</dd></div>
-        </dl>
-      </div>
-    </details>
+        {hoursChartPoints.length > 0 ? (
+          <div class="chart-canvas-wrap chart-canvas-wrap-hours">
+            <canvas id="hours-detail-chart" data-chart={JSON.stringify(hoursChartPayload)}></canvas>
+          </div>
+        ) : <div class="chart-empty">Sin referencias suficientes</div>}
+      </section>
+      <dl class="hours-breakdown-grid" aria-label="Desglose HLTB">
+        <div class:list={[hltbBreakdown.main === null && "is-null"]}><dt>Historia</dt><dd>{formatHoursDuration(hltbBreakdown.main)}</dd></div>
+        <div class:list={[hltbBreakdown.mainPlus === null && "is-null"]}><dt>Historia + extras</dt><dd>{formatHoursDuration(hltbBreakdown.mainPlus)}</dd></div>
+        <div class:list={[hltbBreakdown.completionist === null && "is-null"]}><dt>100%</dt><dd>{formatHoursDuration(hltbBreakdown.completionist)}</dd></div>
+      </dl>
+    </div>
   )}
 </article>
 

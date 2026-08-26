@@ -27,10 +27,19 @@
   const charts = new Map<string, Chart>();
   const numberFormatter = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 2 });
 
+  const formatHoursDuration = (value: number) => {
+    const totalMinutes = Math.max(0, Math.round(value * 60));
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    if (hours === 0) return `${minutes} min`;
+    if (minutes === 0) return `${hours} h`;
+    return `${hours} h ${minutes} min`;
+  };
+
   const formatMetricValue = (metric: string, value: number) => (
     metric === 'currency'
       ? `${numberFormatter.format(value)} €`
-      : `${numberFormatter.format(value)} h`
+      : formatHoursDuration(value)
   );
 
   const formatAxisValue = (metric: string, value: number) => (
@@ -114,7 +123,7 @@
 
         ctx.save();
         ctx.strokeStyle = referenceColor;
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1;
         ctx.globalAlpha = 0.9;
         ctx.beginPath();
         ctx.moveTo(chartArea.left, y);
@@ -124,19 +133,25 @@
       },
     };
 
+    const labels = points.map((point: { label: string; value: number }) => {
+      const wrappedLabel = wrapLabel(point.label);
+      if (expectedType !== 'hours-comparison') return wrappedLabel;
+      const labelLines = Array.isArray(wrappedLabel) ? wrappedLabel : [wrappedLabel];
+      return [...labelLines, formatMetricValue(metric, point.value)];
+    });
     const chart = new Chart(canvas, {
       type: 'bar',
       plugins: referenceValue === null ? [] : [referenceLinePlugin],
       data: {
-        labels: points.map((point: { label: string }) => wrapLabel(point.label)),
+        labels,
         datasets: [{
           label: String(payload.seriesLabel ?? ''),
           data: values,
-          backgroundColor: colors.map((color: string) => hexToRgba(color, 0.34)),
-          hoverBackgroundColor: colors.map((color: string) => hexToRgba(color, 0.48)),
+          backgroundColor: colors.map((color: string) => hexToRgba(color, 0.3)),
+          hoverBackgroundColor: colors.map((color: string) => hexToRgba(color, 0.4)),
           borderColor: colors,
-          borderWidth: 1.5,
-          borderRadius: 10,
+          borderWidth: 1.2,
+          borderRadius: 8,
           borderSkipped: false,
           barPercentage: 0.62,
           categoryPercentage: 0.78,
@@ -176,7 +191,12 @@
             grid: { display: false },
             ticks: {
               color: 'rgba(224, 216, 231, 0.67)',
-              font: { size: 11, weight: 600 },
+              autoSkip: false,
+              font: (context) => ({
+                size: context.chart.width < 520 ? 9 : 11,
+                weight: 600,
+                lineHeight: context.chart.width < 520 ? 1.35 : 1.55,
+              }),
               maxRotation: 0,
               minRotation: 0,
             },
@@ -188,6 +208,7 @@
             grid: {
               color: 'rgba(181, 169, 194, 0.11)',
               drawTicks: false,
+              borderDash: [3, 4],
             },
             ticks: {
               color: 'rgba(218, 210, 225, 0.5)',
