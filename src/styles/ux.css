@@ -148,12 +148,6 @@
     .mock-catalog-controls .catalog-filters-selects > .field {
       grid-column: span 3;
     }
-
-    .mock-catalog-controls .catalog-filters-selects > .cf-sort,
-    .mock-catalog-controls .catalog-filters-selects > .cf-mode,
-    .mock-catalog-controls .catalog-filters-selects > .cf-price {
-      grid-column: span 4;
-    }
   }
 
   @keyframes ux-reveal {
@@ -501,11 +495,7 @@
     }
 
     .catalog-filters-selects {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .catalog-filters-selects .cf-price {
-      grid-column: 1 / -1;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
 

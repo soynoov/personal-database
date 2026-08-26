@@ -4,7 +4,10 @@ import { isCompletedStatus, normalizeStatus } from "./game-status";
 import { getGameTagLabel, hasGameTag, normalizeGameTag } from "./game-tags";
 import { gameHasMode } from "./game-modes";
 import { getGameGenres } from "./game-genres";
-import { isGameAmortized } from "./game-finance";
+import {
+  getGameProfitabilityStatus,
+  type GameProfitabilityStatus,
+} from "./game-finance";
 
 export type CatalogGame = Pick<
   LocalGame,
@@ -26,12 +29,16 @@ export type CatalogGame = Pick<
 > & {
   slug: string;
   amortizado: boolean;
+  rentabilidad: GameProfitabilityStatus;
 };
 
 export function toCatalogGame(game: LocalGame): CatalogGame {
+  const rentabilidad = getGameProfitabilityStatus(game);
+
   return {
     slug: slugifyGameTitle(game.titulo),
-    amortizado: isGameAmortized(game),
+    amortizado: rentabilidad === 'amortized',
+    rentabilidad,
     titulo: game.titulo,
     estado: game.estado,
     launcher: game.launcher,

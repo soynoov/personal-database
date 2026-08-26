@@ -193,11 +193,18 @@ export function getGameValueMetrics(game: LocalGame): GameValueMetrics {
   };
 }
 
-export function isGameAmortized(game: LocalGame): boolean {
+export type GameProfitabilityStatus = 'amortized' | 'unamortized' | 'incomplete';
+
+export function getGameProfitabilityStatus(game: LocalGame): GameProfitabilityStatus {
   const metrics = getGameValueMetrics(game);
-  if (!metrics.dataComplete) return false;
-  if (metrics.recordedSpend === 0) return true;
-  return metrics.economicRemainingHours !== null && metrics.economicRemainingHours <= 0;
+  if (!metrics.dataComplete) return 'incomplete';
+  if (metrics.recordedSpend === 0) return 'amortized';
+  if (metrics.economicRemainingHours === null) return 'incomplete';
+  return metrics.economicRemainingHours <= 0 ? 'amortized' : 'unamortized';
+}
+
+export function isGameAmortized(game: LocalGame): boolean {
+  return getGameProfitabilityStatus(game) === 'amortized';
 }
 
 export function formatHoursDuration(value: number | null, fallback = '—') {

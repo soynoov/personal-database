@@ -112,6 +112,15 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
           <option value='unknown'>Sin dato</option>
         </select>
       </div>
+      <div class='field cf-extra cf-profitability'>
+        <label for='rentabilidad'>Rentabilidad</label>
+        <select id='rentabilidad'>
+          <option value=''>Todas</option>
+          <option value='amortized'>Amortizados</option>
+          <option value='unamortized'>No amortizados</option>
+          <option value='incomplete'>Datos incompletos</option>
+        </select>
+      </div>
       <div class='catalog-filter-sheet-actions'>
         <button class='catalog-filter-reset-mobile' id='reset-filters-mobile' type='button'>Limpiar</button>
         <button class='catalog-filter-apply' id='catalog-filter-apply' type='button'>

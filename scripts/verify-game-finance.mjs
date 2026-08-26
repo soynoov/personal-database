@@ -9,6 +9,7 @@ const server = await createServer({
 try {
   const {
     formatHoursDuration,
+    getGameProfitabilityStatus,
     getGameValueMetrics,
     getScoreMultiplier,
     isGameAmortized,
@@ -64,6 +65,9 @@ try {
   assert.equal(isGameAmortized(game({ precio_pagado: 10, horas: 9.9 })), false);
   assert.equal(isGameAmortized(game({ precio_pagado: 0, horas: null })), true);
   assert.equal(isGameAmortized(game({ precio_pagado: null, horas: 100 })), false);
+  assert.equal(getGameProfitabilityStatus(game({ precio_pagado: 10, horas: 10 })), 'amortized');
+  assert.equal(getGameProfitabilityStatus(game({ precio_pagado: 10, horas: 9.9 })), 'unamortized');
+  assert.equal(getGameProfitabilityStatus(game({ precio_pagado: null, horas: 100 })), 'incomplete');
 
   const baldursGate = getGameValueMetrics(game({ precio_pagado: 60, horas: 58.5, hltb_breakdown: { main: 72.9 } }));
   assert.equal(formatHoursDuration(baldursGate.economicRemainingHours), '1 h 30 min');

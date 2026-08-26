@@ -225,6 +225,9 @@
       margin: 0;
       padding: 0.9rem;
       overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable;
+      -webkit-overflow-scrolling: touch;
       border: 1px solid rgba(201, 168, 255, 0.24);
       border-radius: 22px;
       background: linear-gradient(145deg, rgba(29, 26, 40, 0.97), rgba(14, 14, 21, 0.98));
@@ -292,8 +295,8 @@
       display: none;
     }
 
-    .mock-catalog-controls .catalog-filters-selects .cf-price {
-      grid-column: auto;
+    .mock-catalog-controls .catalog-filters-selects .cf-profitability {
+      grid-column: 1 / -1;
     }
 
     .catalog-filter-sheet-actions {

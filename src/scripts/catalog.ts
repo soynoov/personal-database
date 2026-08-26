@@ -169,15 +169,10 @@ const TAG_QUICK_FILTERS: Record<string, string> = {
   free: 'free-to-play',
   early: 'early-access',
 };
-const QUICK_ONLY_FILTERS = new Set(['amortized']);
-const DEFAULT_SORT = 'horas-desc';
-
-const matchesQuickFilter = (game: CatalogGame, quickFilter: string): boolean => {
-  if (!quickFilter) return true;
-  if (quickFilter === 'amortized') return game.amortizado;
-  if (quickFilter === 'terminado') return isCompletedStatus(game.estado);
-  return normalizeStatus(game.estado) === quickFilter;
+const PROFITABILITY_QUICK_FILTERS: Record<string, CatalogGame['rentabilidad']> = {
+  amortized: 'amortized',
 };
+const DEFAULT_SORT = 'horas-desc';
 
 // ─── Constructores de DOM ─────────────────────────────────────────────────────
 
@@ -206,6 +201,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     sort: el<HTMLSelectElement>('#sort'),
     mobileSort: document.querySelector<HTMLSelectElement>('#mobile-sort'),
     precio: el<HTMLSelectElement>('#precio'),
+    rentabilidad: el<HTMLSelectElement>('#rentabilidad'),
     mobileFilterToggle: document.querySelector<HTMLButtonElement>('#mobile-filter-toggle'),
     mobileExtraFilters: document.querySelector<HTMLElement>('#mobile-extra-filters'),
     mobileFilterBackdrop: document.querySelector<HTMLButtonElement>('#catalog-filter-backdrop'),
@@ -228,7 +224,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
   // Restaurar params de URL
   const params = new URLSearchParams(window.location.search);
-  for (const key of ['search', 'estado', 'launcher', 'plataforma', 'tag', 'modo', 'sort', 'precio']) {
+  for (const key of ['search', 'estado', 'launcher', 'plataforma', 'tag', 'modo', 'sort', 'precio', 'rentabilidad']) {
     const el = elements[key as keyof typeof elements] as HTMLInputElement | HTMLSelectElement | null;
     const value = params.get(key);
     if (el && value) el.value = value;
@@ -239,7 +235,6 @@ export function initCatalog(allGames: CatalogGame[]): void {
   if (!elements.sort.value) elements.sort.value = DEFAULT_SORT;
   if (elements.mobileSort) elements.mobileSort.value = elements.sort.value;
 
-  let activeQuickFilter = '';
   let activeView = params.get('view') === 'table' ? 'table' : 'cards';
   let mobileExtraFiltersOpen = false;
 
@@ -247,7 +242,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
   const isQuickChipActive = (chipValue: string, filters: Record<string, string>): boolean => {
     if (chipValue === '') {
-      return filters.estado === '' && filters.precio === '' && filters.tag === '' && !activeQuickFilter;
+      return filters.estado === '' && filters.precio === '' && filters.tag === '' && filters.rentabilidad === '';
     }
     if (STATUS_QUICK_FILTERS.has(chipValue)) {
       return chipValue === 'terminado'
@@ -257,7 +252,30 @@ export function initCatalog(allGames: CatalogGame[]): void {
     if (TAG_QUICK_FILTERS[chipValue]) {
       return normalizeGameTag(filters.tag) === TAG_QUICK_FILTERS[chipValue];
     }
-    return activeQuickFilter === chipValue;
+    if (PROFITABILITY_QUICK_FILTERS[chipValue]) {
+      return filters.rentabilidad === PROFITABILITY_QUICK_FILTERS[chipValue];
+    }
+    return false;
+  };
+
+  const usesMobileFilterSheet = (): boolean => window.matchMedia('(max-width: 820px)').matches;
+
+  const syncFilterViewportState = (): void => {
+    const mobileSheetOpen = mobileExtraFiltersOpen && usesMobileFilterSheet();
+    document.body.style.overflow = mobileSheetOpen ? 'hidden' : '';
+
+    if (mobileSheetOpen) {
+      elements.mobileExtraFilters?.setAttribute('role', 'dialog');
+      elements.mobileExtraFilters?.setAttribute('aria-modal', 'true');
+      elements.mobileExtraFilters?.setAttribute('aria-labelledby', 'catalog-filter-sheet-title');
+    } else {
+      elements.mobileExtraFilters?.removeAttribute('role');
+      elements.mobileExtraFilters?.removeAttribute('aria-modal');
+      elements.mobileExtraFilters?.removeAttribute('aria-labelledby');
+    }
+
+    elements.mobileFilterBackdrop?.classList.toggle('is-open', mobileSheetOpen);
+    if (elements.mobileFilterBackdrop) elements.mobileFilterBackdrop.hidden = !mobileSheetOpen;
   };
 
   const updateViewMode = (): void => {
@@ -277,7 +295,6 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
   const closeMobileFilters = (): void => {
     mobileExtraFiltersOpen = false;
-    document.body.style.overflow = '';
     render();
     elements.mobileFilterToggle?.focus();
   };
@@ -294,6 +311,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
       modo: elements.modo.value,
       sort: elements.sort.value,
       precio: elements.precio.value,
+      rentabilidad: elements.rentabilidad.value,
     };
     if (elements.mobileSort && elements.mobileSort.value !== filters.sort) {
       elements.mobileSort.value = filters.sort;
@@ -310,7 +328,6 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
         return (
           searchMatch &&
-          matchesQuickFilter(game, activeQuickFilter) &&
           (!filters.estado ||
             (isCompletedStatus(filters.estado)
               ? isCompletedStatus(game.estado)
@@ -319,6 +336,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
           textMatch(game.plataforma, filters.plataforma) &&
           matchesTagFilter(game, filters.tag) &&
           (filters.precio ? getPriceFilterBucket(game) === filters.precio : true) &&
+          (filters.rentabilidad ? game.rentabilidad === filters.rentabilidad : true) &&
           matchesModeFilter(game, filters.modo)
         );
       })
@@ -339,15 +357,6 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
     // Pills de filtros activos
     const activeFilterEntries = Object.entries(filters).filter(([key, value]) => key !== 'sort' && value);
-    if (activeQuickFilter && QUICK_ONLY_FILTERS.has(activeQuickFilter)) {
-      const quickFilterLabels: Record<string, string> = {
-        terminado: 'destacado=Terminado', jugando: 'destacado=Jugando',
-        pendiente: 'destacado=Pendiente', free: 'destacado=Free to play',
-        amortized: 'destacado=Amortizado',
-        early: 'destacado=Early Access',
-      };
-      activeFilterEntries.push(['quick', quickFilterLabels[activeQuickFilter] ?? activeQuickFilter]);
-    }
     const hasCustomSort = filters.sort !== DEFAULT_SORT;
     elements.reset.hidden = activeFilterEntries.length === 0 && !hasCustomSort;
     const mobileFilterCount = activeFilterEntries.filter(([key]) => key !== 'search').length;
@@ -372,9 +381,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
         button.dataset.filterRemove = key;
 
         let label: string;
-        if (key === 'quick') {
-          label = String(value).replace('destacado=', '');
-        } else if (key === 'estado') {
+        if (key === 'estado') {
           label = String(value);
           const dot = document.createElement('span');
           dot.className = 'active-pill-dot';
@@ -385,6 +392,13 @@ export function initCatalog(allGames: CatalogGame[]): void {
           label = `Etiqueta: ${getGameTagLabel(value)}`;
         } else if (key === 'modo') {
           label = `Modo: ${getGameModeLabel(value)}`;
+        } else if (key === 'rentabilidad') {
+          const profitabilityLabels: Record<string, string> = {
+            amortized: 'Amortizados',
+            unamortized: 'No amortizados',
+            incomplete: 'Datos incompletos',
+          };
+          label = `Rentabilidad: ${profitabilityLabels[String(value)] ?? value}`;
         } else {
           label = `${key}: ${value}`;
         }
@@ -424,19 +438,9 @@ export function initCatalog(allGames: CatalogGame[]): void {
     // Mobile extra filters toggle
     if (elements.mobileExtraFilters && elements.mobileFilterToggle) {
       elements.mobileExtraFilters.classList.toggle('is-open', mobileExtraFiltersOpen);
-      if (mobileExtraFiltersOpen) {
-        elements.mobileExtraFilters.setAttribute('role', 'dialog');
-        elements.mobileExtraFilters.setAttribute('aria-modal', 'true');
-        elements.mobileExtraFilters.setAttribute('aria-labelledby', 'catalog-filter-sheet-title');
-      } else {
-        elements.mobileExtraFilters.removeAttribute('role');
-        elements.mobileExtraFilters.removeAttribute('aria-modal');
-        elements.mobileExtraFilters.removeAttribute('aria-labelledby');
-      }
       elements.mobileFilterToggle.classList.toggle('is-active', mobileExtraFiltersOpen);
       elements.mobileFilterToggle.setAttribute('aria-expanded', mobileExtraFiltersOpen ? 'true' : 'false');
-      elements.mobileFilterBackdrop?.classList.toggle('is-open', mobileExtraFiltersOpen);
-      if (elements.mobileFilterBackdrop) elements.mobileFilterBackdrop.hidden = !mobileExtraFiltersOpen;
+      syncFilterViewportState();
     }
 
     // Renderizar cards
@@ -567,6 +571,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
       else if (filter === 'tag') active = normalizeGameTag(elements.tag.value) === normalizeGameTag(value);
       else if (filter === 'modo') active = elements.modo.value === value;
       else if (filter === 'precio') active = elements.precio.value === value;
+      else if (filter === 'rentabilidad') active = elements.rentabilidad.value === value;
       item.classList.toggle('is-active', active);
     });
 
@@ -575,7 +580,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
   // ─── Event listeners ───────────────────────────────────────────────────────
 
-  [elements.search, elements.estado, elements.launcher, elements.plataforma, elements.tag, elements.modo, elements.sort, elements.precio]
+  [elements.search, elements.estado, elements.launcher, elements.plataforma, elements.tag, elements.modo, elements.sort, elements.precio, elements.rentabilidad]
     .forEach((el) => { el.addEventListener('input', render); el.addEventListener('change', render); });
 
   elements.mobileSort?.addEventListener('change', () => {
@@ -593,9 +598,8 @@ export function initCatalog(allGames: CatalogGame[]): void {
     elements.sort.value = DEFAULT_SORT;
     if (elements.mobileSort) elements.mobileSort.value = DEFAULT_SORT;
     elements.precio.value = '';
-    activeQuickFilter = '';
+    elements.rentabilidad.value = '';
     mobileExtraFiltersOpen = false;
-    document.body.style.overflow = '';
     render();
   };
 
@@ -613,7 +617,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     if (key === 'tag') elements.tag.value = '';
     if (key === 'modo') elements.modo.value = '';
     if (key === 'precio') elements.precio.value = '';
-    if (key === 'quick') activeQuickFilter = '';
+    if (key === 'rentabilidad') elements.rentabilidad.value = '';
     render();
   });
 
@@ -624,7 +628,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
         elements.estado.value = '';
         elements.precio.value = '';
         elements.tag.value = '';
-        activeQuickFilter = '';
+        elements.rentabilidad.value = '';
       } else if (STATUS_QUICK_FILTERS.has(nextValue)) {
         const isActive = nextValue === 'terminado'
           ? isCompletedStatus(elements.estado.value)
@@ -635,12 +639,12 @@ export function initCatalog(allGames: CatalogGame[]): void {
             : normalizeStatus(option.value) === nextValue,
         );
         elements.estado.value = isActive ? '' : (matchingOption?.value ?? '');
-        activeQuickFilter = '';
       } else if (TAG_QUICK_FILTERS[nextValue]) {
         const tag = TAG_QUICK_FILTERS[nextValue];
         elements.tag.value = normalizeGameTag(elements.tag.value) === tag ? '' : tag;
-      } else if (QUICK_ONLY_FILTERS.has(nextValue)) {
-        activeQuickFilter = activeQuickFilter === nextValue ? '' : nextValue;
+      } else if (PROFITABILITY_QUICK_FILTERS[nextValue]) {
+        const rentabilidad = PROFITABILITY_QUICK_FILTERS[nextValue];
+        elements.rentabilidad.value = elements.rentabilidad.value === rentabilidad ? '' : rentabilidad;
       }
       render();
     });
@@ -648,9 +652,8 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
   elements.mobileFilterToggle?.addEventListener('click', () => {
     mobileExtraFiltersOpen = !mobileExtraFiltersOpen;
-    document.body.style.overflow = mobileExtraFiltersOpen ? 'hidden' : '';
     render();
-    if (mobileExtraFiltersOpen) elements.mobileFilterClose?.focus();
+    if (mobileExtraFiltersOpen && usesMobileFilterSheet()) elements.mobileFilterClose?.focus();
   });
 
   elements.mobileFilterBackdrop?.addEventListener('click', closeMobileFilters);
@@ -661,9 +664,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     if (event.key === 'Escape' && mobileExtraFiltersOpen) closeMobileFilters();
   });
 
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 820 && mobileExtraFiltersOpen) closeMobileFilters();
-  });
+  window.addEventListener('resize', syncFilterViewportState);
 
   elements.viewButtons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -706,12 +707,13 @@ export function initCatalog(allGames: CatalogGame[]): void {
         elements.sort.value = value;
         if (elements.mobileSort) elements.mobileSort.value = value;
       }
-      else if (filter === 'estado') { elements.estado.value = value; activeQuickFilter = ''; }
+      else if (filter === 'estado') elements.estado.value = value;
       else if (filter === 'launcher') elements.launcher.value = value;
       else if (filter === 'plataforma') elements.plataforma.value = value;
       else if (filter === 'tag') elements.tag.value = value;
       else if (filter === 'modo') elements.modo.value = value;
       else if (filter === 'precio') elements.precio.value = value;
+      else if (filter === 'rentabilidad') elements.rentabilidad.value = value;
       closeMobileDrawer();
       render();
     });

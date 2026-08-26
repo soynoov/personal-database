@@ -155,6 +155,22 @@ const estadoColor = (estado: string): string => {
       </button>
     </div>
 
+    <div class='mobile-drawer-section mobile-drawer-section-compact'>
+      <span class='mobile-drawer-section-label'>Rentabilidad</span>
+      <button class='mobile-drawer-item' data-drawer-filter='rentabilidad' data-value='' type='button'>
+        <span>Todas</span>
+      </button>
+      <button class='mobile-drawer-item' data-drawer-filter='rentabilidad' data-value='amortized' type='button'>
+        <span>Amortizados</span>
+      </button>
+      <button class='mobile-drawer-item' data-drawer-filter='rentabilidad' data-value='unamortized' type='button'>
+        <span>No amortizados</span>
+      </button>
+      <button class='mobile-drawer-item' data-drawer-filter='rentabilidad' data-value='incomplete' type='button'>
+        <span>Datos incompletos</span>
+      </button>
+    </div>
+
     <div class='mobile-drawer-section'>
       <span class='mobile-drawer-section-label'>Ordenar</span>
       <button class='mobile-drawer-item' data-drawer-filter='sort' data-value='titulo-asc' type='button'>
