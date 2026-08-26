@@ -1,24 +1,22 @@
 ---
 /**
  * GameDetailNav.astro — Barra de navegación sticky entre secciones.
- * Muestra links a Overview, Horas, Dinero, Estadísticas y opcionalmente DLCs.
+ * Muestra links a Horas, Dinero, Datos y las secciones opcionales.
  * Datos: hasDlcs computado en [slug].astro.
  */
 import '../../styles/game-detail/nav.css';
 
 interface Props {
   hasDlcs: boolean;
-  hasOverviewDetails: boolean;
   isCompetitive: boolean;
 }
 
-const { hasDlcs, hasOverviewDetails, isCompetitive } = Astro.props;
+const { hasDlcs, isCompetitive } = Astro.props;
 ---
 
 <div class="game-sections-nav-shell" data-section-nav-shell>
   <nav class="game-sections-nav" aria-label="Secciones del juego">
-    <a class="is-active" aria-current="location" data-section-link href={hasOverviewDetails ? "#overview" : "#game-header"}>Resumen</a>
-    <a data-section-link href="#hours">Horas</a>
+    <a class="is-active" aria-current="location" data-section-link href="#hours">Horas</a>
     <a data-section-link href="#finance">Dinero</a>
     {isCompetitive && <a data-section-link href="#competitive">Rango</a>}
     <a data-section-link href="#technical">Datos</a>

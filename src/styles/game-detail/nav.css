@@ -12,7 +12,7 @@
   .game-sections-nav-shell {
     --nav-surface: rgba(13, 14, 22, 0.9);
     --nav-copy-offset: calc(
-      0.575rem + clamp(1.15rem, 3vw, 2.5rem) + 120px + clamp(1.25rem, 2.5vw, 2.3rem)
+      clamp(2.25rem, 3vw, 2.5rem) + 136px + clamp(2rem, 3.2vw, 2.6rem)
     );
     position: sticky;
     top: 0.55rem;
@@ -71,11 +71,11 @@
     align-items: center;
     gap: clamp(1.35rem, 2.2vw, 2.15rem);
     width: 100%;
-    padding: 0.85rem 1.25rem 0.72rem var(--nav-copy-offset);
+    padding: 0.85rem 1.25rem 0.72rem calc(var(--nav-copy-offset) + 1.25rem);
     overflow-x: auto;
     border: 0;
     background: transparent;
-    scroll-padding-inline: var(--nav-copy-offset) 2rem;
+    scroll-padding-inline: calc(var(--nav-copy-offset) + 1.25rem) 2rem;
     scrollbar-width: none;
   }
 

@@ -19,7 +19,7 @@ import {
   isAcquiredDlc,
 } from '../../lib/game-finance';
 import { normalizeStatus } from '../../lib/game-status';
-import { formatGameModes, getGameModes } from '../../lib/game-modes';
+import { formatGameModes, getGameModeLabel, getGameModes } from '../../lib/game-modes';
 import { getGameGenres } from '../../lib/game-genres';
 import { isCommunityCriterionApplicable } from '../../lib/game-reviews';
 import { getGameTagLabel, hasGameTag, normalizeGameTag } from '../../lib/game-tags';
@@ -90,6 +90,15 @@ const rawTags = Array.isArray(game.tags) ? game.tags : [];
 const tagBadges = rawTags
   .filter((tag) => normalizeGameTag(tag) !== 'cooperativo-privado')
   .map((tag) => ({ value: normalizeGameTag(tag), label: getGameTagLabel(tag) }));
+const heroBadges = [...tagBadges];
+const addHeroBadge = (value: string, label: string) => {
+  if (!heroBadges.some((badge) => badge.value === value)) heroBadges.push({ value, label });
+};
+if (genresList.some((genre) => normalizeStatus(genre) === 'indie')) addHeroBadge('indie', 'Indie');
+if (genresList.some((genre) => normalizeStatus(genre) === 'acceso anticipado')) {
+  addHeroBadge('early-access', 'Early Access');
+}
+gameModes.forEach((mode) => addHeroBadge(`mode-${mode}`, getGameModeLabel(mode)));
 const tagsLabel = tagBadges.length > 0 ? tagBadges.map((tag) => tag.label).join(', ') : 'Sin etiquetas';
 const isCompetitive = hasGameTag(game.tags, 'competitivo') || Boolean(game.rango_actual || game.rango_maximo);
 const includeCommunity = isCommunityCriterionApplicable(game);
@@ -261,12 +270,9 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
       statusBadge={{ class: statusClass, label: formatValue(game.estado) }}
       launcherBadge={{ class: launcherClass, label: formatValue(game.launcher, 'Sin launcher'), icon: gamepadIcon }}
       platformBadge={{ class: platformClass, label: formatValue(game.plataforma) }}
-      tagBadges={tagBadges}
-      genres={genres}
-      tagsLabel={tagsLabel}
-      modesLabel={modesLabel}
+      tagBadges={heroBadges}
     />
-    <GameDetailNav hasDlcs={dlcTotal > 0} hasOverviewDetails={false} isCompetitive={isCompetitive} />
+    <GameDetailNav hasDlcs={dlcTotal > 0} isCompetitive={isCompetitive} />
 
     <section class="hero-analysis-grid" aria-label="Análisis de juego">
       <GameDetailHours
