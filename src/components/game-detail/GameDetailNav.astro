@@ -5,9 +5,6 @@
  * Datos: hasDlcs computado en [slug].astro.
  */
 import '../../styles/game-detail/nav.css';
-import TablerIcon from '../TablerIcon.astro';
-import chevronLeftIcon from '@tabler/icons/outline/chevron-left.svg?url';
-import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg?url';
 
 interface Props {
   hasDlcs: boolean;
@@ -19,9 +16,6 @@ const { hasDlcs, hasOverviewDetails, isCompetitive } = Astro.props;
 ---
 
 <div class="game-sections-nav-shell" data-section-nav-shell>
-  <span class="game-sections-nav-cue game-sections-nav-cue-left" aria-hidden="true">
-    <TablerIcon src={chevronLeftIcon} />
-  </span>
   <nav class="game-sections-nav" aria-label="Secciones del juego">
     <a class="is-active" aria-current="location" data-section-link href={hasOverviewDetails ? "#overview" : "#game-header"}>Resumen</a>
     <a data-section-link href="#hours">Horas</a>
@@ -31,9 +25,6 @@ const { hasDlcs, hasOverviewDetails, isCompetitive } = Astro.props;
     {hasDlcs && <a data-section-link href="#dlcs">DLCs</a>}
     <a data-section-link href="#metacritica">Metacrítica</a>
   </nav>
-  <span class="game-sections-nav-cue game-sections-nav-cue-right" aria-hidden="true">
-    <TablerIcon src={chevronRightIcon} />
-  </span>
 </div>
 
 <script>

@@ -97,7 +97,7 @@
 
   /* Portada: una sola capa de vidrio sobre la imagen horizontal. */
   .game-page-rich .game-hero-cinematic {
-    min-height: 268px;
+    min-height: 236px;
     background: rgba(8, 9, 14, 0.34);
   }
 
@@ -117,10 +117,10 @@
 
   .game-page-rich .game-overview-card.game-overview-card-cinematic {
     width: calc(100% - 1.15rem);
-    min-height: 244px;
+    min-height: 212px;
     margin: 0.575rem;
     padding: clamp(1.1rem, 2.3vw, 1.9rem) clamp(1.15rem, 3vw, 2.5rem);
-    grid-template-columns: 136px minmax(0, 1fr);
+    grid-template-columns: 120px minmax(0, 1fr);
     gap: clamp(1.25rem, 2.5vw, 2.3rem);
     border: 1px solid rgba(244, 237, 250, 0.14);
     border-radius: 18px;
@@ -131,8 +131,8 @@
   }
 
   .game-page-rich .game-overview-card.game-overview-card-cinematic .game-overview-media {
-    width: 136px;
-    max-width: 136px;
+    width: 120px;
+    max-width: 120px;
     border-color: rgba(244, 237, 250, 0.22);
     box-shadow: 0 18px 44px rgba(0, 0, 0, 0.42);
   }
@@ -273,6 +273,16 @@
     overflow: hidden;
     border-top: 1px solid var(--ledger-line-soft);
     border-bottom: 1px solid var(--ledger-line-soft);
+  }
+
+  .game-page-rich .finance-incomplete-state {
+    min-height: 104px;
+    border: 0;
+    border-top: 1px solid rgba(219, 175, 107, 0.19);
+    border-bottom: 1px solid rgba(219, 175, 107, 0.19);
+    border-radius: 0;
+    background: linear-gradient(90deg, rgba(145, 94, 36, 0.1), transparent 72%);
+    box-shadow: none;
   }
 
   .game-page-rich .finance-priority-grid:has(.finance-progress-card .value-progress) {
@@ -528,12 +538,13 @@
   }
 
   .game-page-rich .data-group-card .detail-item-empty {
-    opacity: 0.38;
-    filter: saturate(0.15);
+    opacity: 0.52;
+    filter: none;
   }
 
   .game-page-rich .data-group-card .detail-item-empty dd {
-    filter: blur(1.2px);
+    color: rgba(219, 209, 226, 0.56);
+    filter: none;
   }
 
   /* Metacrítica: estado vacío compacto; con datos mantiene scores, criterios y mención. */
@@ -690,6 +701,10 @@
     .game-page-rich .game-overview-card.game-overview-card-cinematic .game-overview-media {
       width: 82px;
       max-width: 82px;
+    }
+
+    .game-page-rich .finance-incomplete-state {
+      min-height: 0;
     }
 
     .game-page-rich .game-hero-facts {

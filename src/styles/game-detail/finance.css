@@ -160,16 +160,66 @@
     color: rgba(230, 226, 232, 0.52);
   }
 
-  .finance-incomplete-list {
+  .finance-incomplete-state {
     display: grid;
-    gap: 0.3rem;
-    margin: 0;
-    padding: 0.8rem 1rem 0.8rem 2rem;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.9rem;
+    min-height: 108px;
+    padding: 1rem 1.05rem;
     border: 1px solid rgba(219, 175, 107, 0.2);
-    border-radius: var(--radius-3);
-    background: rgba(111, 76, 28, 0.1);
-    color: #e7cfaa;
-    font-size: 0.78rem;
+    border-radius: var(--radius-2);
+    background:
+      radial-gradient(circle at 8% 0, rgba(196, 148, 79, 0.1), transparent 14rem),
+      rgba(111, 76, 28, 0.06);
+  }
+
+  .finance-incomplete-copy {
+    display: grid;
+    min-width: 0;
+    gap: 0.22rem;
+  }
+
+  .finance-incomplete-copy > span {
+    color: rgba(225, 204, 174, 0.68);
+    font-size: 0.67rem;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .finance-incomplete-copy > strong {
+    color: #f3dfbf;
+    font-size: clamp(1rem, 1.2vw, 1.25rem);
+    line-height: 1.2;
+  }
+
+  .finance-incomplete-copy > small {
+    color: rgba(229, 212, 187, 0.66);
+    font-size: 0.74rem;
+    line-height: 1.35;
+  }
+
+  .finance-incomplete-action {
+    min-height: 42px;
+    padding: 0.62rem 0.95rem;
+    border: 1px solid rgba(231, 194, 139, 0.3);
+    border-radius: var(--radius-pill);
+    background: rgba(196, 148, 79, 0.12);
+    color: #f0d4aa;
+    cursor: pointer;
+    font: 720 0.78rem/1 var(--font-body);
+    white-space: nowrap;
+  }
+
+  .finance-incomplete-action:hover {
+    border-color: rgba(237, 204, 154, 0.48);
+    background: rgba(196, 148, 79, 0.18);
+  }
+
+  .finance-incomplete-action:focus-visible {
+    outline: 2px solid rgba(230, 188, 126, 0.78);
+    outline-offset: 3px;
   }
 
   .finance-kpi-grid {
@@ -410,6 +460,17 @@
   }
 
   @media (max-width: 560px) {
+    .finance-incomplete-state {
+      grid-template-columns: auto minmax(0, 1fr);
+      min-height: 0;
+      padding: 0.85rem;
+    }
+
+    .finance-incomplete-action {
+      grid-column: 1 / -1;
+      width: 100%;
+    }
+
     .finance-goal-card {
       grid-template-columns: auto minmax(0, 1fr);
       min-height: 0;

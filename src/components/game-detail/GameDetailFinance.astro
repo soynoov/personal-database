@@ -96,6 +96,9 @@ const showBaseMarket = !metrics.isFreeToPlay && (
 );
 const showDlcMarket = hasDlcs;
 const showMarket = showBaseMarket || showDlcMarket;
+const incompleteHeadline = metrics.incompleteReasons[0]?.replace(/\.$/, '') ?? 'Completa los datos de compra';
+const incompleteDetail = metrics.incompleteReasons.slice(1).join(' ');
+const incompleteActionLabel = metrics.baseSpend === null ? 'Registrar precio' : 'Completar gasto';
 ---
 
 <article class="analysis-panel analysis-panel-money" id="finance">
@@ -104,52 +107,58 @@ const showMarket = showBaseMarket || showDlcMarket;
       <span class="section-eyebrow">Rentabilidad</span>
       <h2>Dinero</h2>
     </div>
-    <button class="game-edit-trigger game-edit-trigger-sm" id="money-edit-trigger" type="button" aria-label="Editar gasto registrado">
+    <button class="game-edit-trigger game-edit-trigger-sm" id="money-edit-trigger" type="button" aria-label="Editar gasto registrado" aria-controls="money-edit-dialog" data-money-edit-trigger>
       <TablerIcon src={editIcon} />
     </button>
   </div>
 
-  <div class="finance-priority-grid">
-    <article class:list={["finance-progress-card", isAmortized && "is-complete", metrics.economicProgressPercent === null && "is-null"]}>
-      <div class="finance-progress-head">
-        <span>Rentabilidad</span>
-        <small>{economicProgressLabel}</small>
-      </div>
-      <strong class="finance-progress-multiple">{economicMultipleLabel}</strong>
-      <span class="finance-progress-status">{economicState}</span>
-      {metrics.economicProgressPercent !== null && metrics.recordedSpend > 0 && (
-        <div class="value-progress" role="progressbar" aria-label="Progreso de la meta económica" aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(progress)}>
-          <span style={`--value-progress:${progress}%`}></span>
+  {metrics.dataComplete ? (
+    <div class="finance-priority-grid">
+      <article class:list={["finance-progress-card", isAmortized && "is-complete"]}>
+        <div class="finance-progress-head">
+          <span>Rentabilidad</span>
+          <small>{economicProgressLabel}</small>
         </div>
-      )}
-    </article>
+        <strong class="finance-progress-multiple">{economicMultipleLabel}</strong>
+        <span class="finance-progress-status">{economicState}</span>
+        {metrics.economicProgressPercent !== null && metrics.recordedSpend > 0 && (
+          <div class="value-progress" role="progressbar" aria-label="Progreso de la meta económica" aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(progress)}>
+            <span style={`--value-progress:${progress}%`}></span>
+          </div>
+        )}
+      </article>
 
-    <article class:list={["finance-goal-card", isAmortized && "is-complete", !metrics.dataComplete && "is-incomplete"]}>
-      <div class="finance-goal-primary">
-        <div class="finance-goal-icon"><TablerIcon src={targetIcon} /></div>
-        <div class="finance-goal-copy">
-          <span>Meta económica</span>
-          <strong>{metrics.economicTargetHours === null ? '—' : formatHoursDuration(metrics.economicTargetHours)}</strong>
-          <small>{economicState}</small>
+      <article class:list={["finance-goal-card", isAmortized && "is-complete"]}>
+        <div class="finance-goal-primary">
+          <div class="finance-goal-icon"><TablerIcon src={targetIcon} /></div>
+          <div class="finance-goal-copy">
+            <span>Meta económica</span>
+            <strong>{formatHoursDuration(metrics.economicTargetHours)}</strong>
+            <small>{economicState}</small>
+          </div>
         </div>
+        <div class="finance-goal-cost">
+          <span>Gasto registrado</span>
+          <strong>{formatEuro(metrics.recordedSpend)}</strong>
+        </div>
+      </article>
+    </div>
+  ) : (
+    <section class="finance-incomplete-state" aria-labelledby="finance-incomplete-title">
+      <div class="finance-goal-icon"><TablerIcon src={targetIcon} /></div>
+      <div class="finance-incomplete-copy">
+        <span>Rentabilidad pendiente</span>
+        <strong id="finance-incomplete-title">{incompleteHeadline}</strong>
+        {incompleteDetail && <small>{incompleteDetail}</small>}
       </div>
-      <div class="finance-goal-cost">
-        <span>Gasto registrado</span>
-        <strong>{metrics.dataComplete ? formatEuro(metrics.recordedSpend) : 'Incompleto'}</strong>
-      </div>
-    </article>
-  </div>
-
-  {!metrics.dataComplete && (
-    <ul class="finance-incomplete-list" aria-label="Datos financieros pendientes">
-      {metrics.incompleteReasons.map((reason) => <li>{reason}</li>)}
-    </ul>
+      <button class="finance-incomplete-action" type="button" aria-controls="money-edit-dialog" data-money-edit-trigger>{incompleteActionLabel}</button>
+    </section>
   )}
 
   <div class="finance-kpi-grid">
-    <article class:list={[metrics.costPerRealHour === null && "is-null"]}><span>Coste/h real</span><strong>{metrics.costPerRealHour === null ? '—' : `${formatEuro(metrics.costPerRealHour)}/h`}</strong></article>
-    <article class:list={[metrics.adjustedCostPerHour === null && "is-null"]}><span>Coste/h ponderada</span><strong>{metrics.adjustedCostPerHour === null ? '—' : `${formatEuro(metrics.adjustedCostPerHour)}/h`}</strong></article>
-    <article class:list={[metrics.weightedHours === null && "is-null"]}><span>Horas ponderadas</span><strong>{formatHoursDuration(metrics.weightedHours)}</strong></article>
+    {metrics.costPerRealHour !== null && <article><span>Coste/h real</span><strong>{formatEuro(metrics.costPerRealHour)}/h</strong></article>}
+    {metrics.adjustedCostPerHour !== null && <article><span>Coste/h ponderada</span><strong>{formatEuro(metrics.adjustedCostPerHour)}/h</strong></article>}
+    {metrics.weightedHours !== null && <article><span>Horas ponderadas</span><strong>{formatHoursDuration(metrics.weightedHours)}</strong></article>}
     <article class:list={[!metrics.scoreComplete && "is-null"]}>
       <span>Bonus My Score</span>
       <strong>{metrics.scoreBonusPercent > 0 ? `+${metrics.scoreBonusPercent.toLocaleString('es-ES')}%` : 'Sin bonus'}</strong>
@@ -252,12 +261,12 @@ const showMarket = showBaseMarket || showDlcMarket;
 <script>
   import { editorFetch } from '../../scripts/editor-auth';
   import { finishGameEdit } from '../../scripts/game-edit-feedback';
-  const trigger = document.getElementById('money-edit-trigger');
+  const triggers = document.querySelectorAll<HTMLButtonElement>('[data-money-edit-trigger]');
   const dialog = document.getElementById('money-edit-dialog');
   const form = document.getElementById('money-edit-form');
   const errorBox = document.getElementById('money-edit-error');
   const submit = document.getElementById('money-edit-submit');
-  if (trigger instanceof HTMLButtonElement && dialog instanceof HTMLDialogElement && form instanceof HTMLFormElement && errorBox instanceof HTMLElement && submit instanceof HTMLButtonElement) {
+  if (triggers.length > 0 && dialog instanceof HTMLDialogElement && form instanceof HTMLFormElement && errorBox instanceof HTMLElement && submit instanceof HTMLButtonElement) {
     const close = () => dialog.close();
     const free = document.getElementById('money-edit-free-to-play');
     const syncBaseFields = () => {
@@ -265,7 +274,7 @@ const showMarket = showBaseMarket || showDlcMarket;
       document.querySelectorAll<HTMLElement>('.money-base-fields').forEach((field) => { field.hidden = hidden; });
     };
     free?.addEventListener('change', syncBaseFields);
-    trigger.addEventListener('click', () => { errorBox.hidden = true; dialog.showModal(); });
+    triggers.forEach((trigger) => trigger.addEventListener('click', () => { errorBox.hidden = true; dialog.showModal(); }));
     document.getElementById('money-edit-close')?.addEventListener('click', close);
     document.getElementById('money-edit-cancel')?.addEventListener('click', close);
     dialog.addEventListener('click', (event) => { if (event.target === dialog) close(); });

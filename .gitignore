@@ -6,6 +6,7 @@ design-qa.md
 .codex-remote-attachments/
 tmp-playwright/
 test-results/
+.codex-qa/
 *.log
 .env
 .env.*

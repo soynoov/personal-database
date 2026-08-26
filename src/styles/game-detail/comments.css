@@ -47,8 +47,16 @@
 }
 
 .detail-comments-empty .detail-comments-text {
-  color: rgba(244, 236, 236, 0.55);
-  filter: blur(1.5px);
+  min-height: 0;
+  padding-block: 0.72rem;
+  border-color: rgba(255, 255, 255, 0.045);
+  background: rgba(8, 9, 14, 0.2);
+  color: rgba(218, 209, 226, 0.5);
+  filter: none;
+}
+
+.detail-comments-vault.detail-comments-empty {
+  opacity: 1;
 }
 
 } /* end @layer global */
