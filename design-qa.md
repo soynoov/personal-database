@@ -1,12 +1,13 @@
 # Design QA — Hero de ficha técnica
 
-- Source visual truth: `C:\Users\heroy\AppData\Local\Temp\codex-clipboard-b6dcbe97-a039-4e38-b387-243e3e46f87c.png`
+- Source visual truth: `C:\Users\heroy\AppData\Local\Temp\codex-clipboard-e1c61ff6-200a-419a-b616-dc2fd72f6448.png`
 - Implementation screenshot: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\hero-after-final.png`
 - Normalized implementation crop: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\hero-implementation-crop.png`
 - Side-by-side comparison: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\hero-comparison.png`
 - Viewport: 1206 × 600 CSS px; desktop, dark theme, top of Burgie's Cozy Kitchen detail page.
 - Density normalization: browser capture at devicePixelRatio 1. Source is 1199 × 255 px. The 1206 × 255 implementation crop was downsampled to 1199 × 255 px for direct comparison.
 - Responsive evidence: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\hero-mobile.png` at 390 × 844 CSS px.
+- Long-title evidence: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\hero-long-title.png` at 1206 × 600 CSS px.
 - Primary interaction tested: clicking “Datos” updates the URL to `#technical`, scrolls the section into view, and changes the active tab to “Datos”.
 - Console errors checked: none in the final browser run.
 
@@ -31,7 +32,8 @@ Focused region comparison was not needed because the supplied source is itself a
 1. Baseline: P1 — nested glass card and three-column facts row made the hero too tall and dense; P1 — obsolete “Resumen” tab remained.
 2. First implementation: removed the facts row and obsolete tab, then matched title/poster alignment. P2 — hero still had excess vertical height and the cover did not overlap the navigation seam correctly.
 3. Final implementation: fixed the 180 px frame, 168 px poster, 7 px seam overlap, background treatment, badge set, and navigation offset. Post-fix evidence is `hero-comparison.png`; no actionable P0/P1/P2 differences remain.
-4. User follow-up: P2 — the frosted left-to-right fade and the reference's diagonal navigation seam were still missing. Added a masked 13 px backdrop blur that fades across the hero and a measured polygonal cut from x=195 to x=221 over 32 px. The final comparison confirms both details without horizontal overflow or mobile clipping.
+4. User follow-up: P2 — the frosted left-to-right fade and the reference's diagonal navigation seam were still missing. Added a masked backdrop blur and a measured 26 × 32 px diagonal transition.
+5. Final refinement: P2 — the first frosted treatment was too dark and the diagonal was implemented as an empty cutout, producing an unnatural void. Reduced the blur from 13 px to 4.5 px, lowered overlay opacity, shortened the fade to 74%, and replaced the cutout with a filled hero-colored wedge over the navigation surface. Verified “Farming Simulator 22” at desktop and mobile widths with no text or viewport overflow.
 
 ## Findings
 
