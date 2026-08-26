@@ -1,14 +1,28 @@
 <script>
   import {
     Chart,
+    Filler,
     Tooltip,
     CategoryScale,
     LinearScale,
+    LineController,
+    LineElement,
+    PointElement,
     BarController,
     BarElement,
   } from 'chart.js';
 
-  Chart.register(Tooltip, CategoryScale, LinearScale, BarController, BarElement);
+  Chart.register(
+    Filler,
+    Tooltip,
+    CategoryScale,
+    LinearScale,
+    LineController,
+    LineElement,
+    PointElement,
+    BarController,
+    BarElement,
+  );
 
   const charts = new Map<string, Chart>();
   const numberFormatter = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 2 });
@@ -29,6 +43,18 @@
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     if (!result) return `rgba(150, 145, 160, ${alpha})`;
     return `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${alpha})`;
+  };
+
+  const buildGradient = (
+    ctx: CanvasRenderingContext2D,
+    area: { top: number; bottom: number },
+    topColor: string,
+    bottomColor: string,
+  ) => {
+    const gradient = ctx.createLinearGradient(0, area.top, 0, area.bottom);
+    gradient.addColorStop(0, topColor);
+    gradient.addColorStop(1, bottomColor);
+    return gradient;
   };
 
   const wrapLabel = (label: string) => {
@@ -73,9 +99,34 @@
     const values = points.map((point: { value: number }) => point.value);
     const colors = points.map((point: { color: string }) => point.color);
     const metric = String(payload.metric ?? 'hours');
+    const referenceLine = payload.referenceLine && typeof payload.referenceLine === 'object'
+      ? payload.referenceLine as { value?: unknown; color?: unknown }
+      : null;
+    const referenceValue = referenceLine === null ? null : Number(referenceLine.value);
+    const referenceColor = referenceLine === null ? '#a98bd0' : String(referenceLine.color ?? '#a98bd0');
+    const referenceLinePlugin = {
+      id: `reference-line-${canvasId}`,
+      afterDatasetsDraw(chartInstance: Chart) {
+        if (referenceValue === null || !Number.isFinite(referenceValue)) return;
+        const { ctx, chartArea, scales } = chartInstance;
+        const y = scales.y?.getPixelForValue(referenceValue);
+        if (!chartArea || y === undefined) return;
+
+        ctx.save();
+        ctx.strokeStyle = referenceColor;
+        ctx.lineWidth = 2;
+        ctx.globalAlpha = 0.9;
+        ctx.beginPath();
+        ctx.moveTo(chartArea.left, y);
+        ctx.lineTo(chartArea.right, y);
+        ctx.stroke();
+        ctx.restore();
+      },
+    };
 
     const chart = new Chart(canvas, {
       type: 'bar',
+      plugins: referenceValue === null ? [] : [referenceLinePlugin],
       data: {
         labels: points.map((point: { label: string }) => wrapLabel(point.label)),
         datasets: [{
@@ -153,6 +204,106 @@
     charts.set(canvasId, chart);
   };
 
+  const renderMarketLineChart = (
+    canvasId: string,
+    palette: { stroke: string; fillTop: string; fillBottom: string; fillFallback: string },
+  ) => {
+    const chartData = readChartPayload(canvasId);
+    if (!chartData) return;
+
+    const { canvas, payload } = chartData;
+    if (payload?.type !== 'market-comparison') return;
+    const points = Array.isArray(payload.points)
+      ? payload.points
+        .map((point: Record<string, unknown>) => ({
+          label: String(point.label ?? ''),
+          value: Number(point.value),
+        }))
+        .filter((point: { label: string; value: number }) => point.label && Number.isFinite(point.value))
+      : [];
+    if (points.length < 2) return;
+
+    charts.get(canvasId)?.destroy();
+    const metric = String(payload.metric ?? 'currency');
+    const chart = new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: points.map((point: { label: string }) => wrapLabel(point.label)),
+        datasets: [{
+          label: String(payload.seriesLabel ?? ''),
+          data: points.map((point: { value: number }) => point.value),
+          fill: true,
+          tension: 0.34,
+          borderWidth: 2,
+          borderColor: palette.stroke,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          pointBackgroundColor: palette.stroke,
+          pointBorderColor: 'rgba(12, 12, 18, 0.84)',
+          pointBorderWidth: 2,
+          backgroundColor(context) {
+            const { ctx, chartArea } = context.chart;
+            if (!chartArea) return palette.fillFallback;
+            return buildGradient(ctx, chartArea, palette.fillTop, palette.fillBottom);
+          },
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 420, easing: 'easeOutQuart' },
+        interaction: { intersect: false, mode: 'index' },
+        layout: { padding: { top: 8 } },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            displayColors: false,
+            backgroundColor: 'rgba(12, 12, 18, 0.96)',
+            borderColor: 'rgba(204, 181, 235, 0.18)',
+            borderWidth: 1,
+            padding: 11,
+            cornerRadius: 9,
+            titleColor: '#f7f1ee',
+            bodyColor: '#d8cfdf',
+            callbacks: {
+              title(items) {
+                return items.length ? points[items[0].dataIndex]?.label ?? '' : '';
+              },
+              label(context) {
+                return formatMetricValue(metric, Number(context.parsed.y));
+              },
+            },
+          },
+        },
+        scales: {
+          x: {
+            border: { display: false },
+            grid: { display: false },
+            ticks: {
+              color: 'rgba(224, 216, 231, 0.67)',
+              font: { size: 11, weight: 600 },
+              maxRotation: 0,
+              minRotation: 0,
+            },
+          },
+          y: {
+            border: { display: false },
+            grid: { color: 'rgba(181, 169, 194, 0.11)', drawTicks: false },
+            ticks: {
+              color: 'rgba(218, 210, 225, 0.5)',
+              padding: 10,
+              maxTicksLimit: 5,
+              font: { size: 10 },
+              callback: (value) => formatAxisValue(metric, Number(value)),
+            },
+          },
+        },
+      },
+    });
+
+    charts.set(canvasId, chart);
+  };
+
   const renderHoursChart = () => {
     const chartData = readChartPayload('hours-detail-chart');
     if (!chartData || chartData.payload?.type !== 'hours-vs-hltb') return;
@@ -170,13 +321,29 @@
       points,
       seriesLabel: 'Horas',
       metric: 'hours',
+      referenceLine: payload.myHours === null || payload.myHours === undefined
+        ? null
+        : {
+            value: Number(payload.myHours),
+            color: String(payload.myHoursColor ?? '#a98bd0'),
+          },
     });
   };
 
   const renderAllCharts = () => {
     renderHoursChart();
-    renderComparisonBars('money-detail-chart', 'market-comparison');
-    renderComparisonBars('dlc-finance-chart', 'market-comparison');
+    renderMarketLineChart('money-detail-chart', {
+      stroke: '#b792e5',
+      fillTop: 'rgba(183, 146, 229, 0.25)',
+      fillBottom: 'rgba(183, 146, 229, 0.02)',
+      fillFallback: 'rgba(183, 146, 229, 0.14)',
+    });
+    renderMarketLineChart('dlc-finance-chart', {
+      stroke: '#a895c4',
+      fillTop: 'rgba(168, 149, 196, 0.22)',
+      fillBottom: 'rgba(168, 149, 196, 0.02)',
+      fillFallback: 'rgba(168, 149, 196, 0.12)',
+    });
   };
 
   renderAllCharts();
