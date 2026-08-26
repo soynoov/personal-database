@@ -9,9 +9,6 @@ import editIcon from '@tabler/icons/outline/edit.svg?url';
 
 interface EditValues {
   estado: string | null;
-  dificultad: string | null;
-  logros_actual: number | null;
-  logros_total: number | null;
   fecha_inicio: string | null;
   fecha_fin: string | null;
 }
@@ -27,16 +24,16 @@ const estadoOptions = editValues.estado && !KNOWN_ESTADOS.some((estado) => norma
 
 <div class="game-page-topbar">
   <a class="back-link" href="/"><TablerIcon src={arrowLeftIcon} /><span>Biblioteca</span></a>
-  <button class="game-edit-trigger" id="game-edit-trigger" type="button" aria-label="Editar resumen">
+  <button class="game-edit-trigger" id="game-edit-trigger" type="button" aria-label="Editar estado">
     <TablerIcon src={editIcon} />
-    <span class="game-edit-trigger-label">Editar resumen</span>
+    <span class="game-edit-trigger-label">Editar estado</span>
   </button>
 </div>
 
 <dialog class="edit-dialog" id="game-edit-dialog">
   <div class="edit-dialog-body">
     <div class="edit-dialog-head">
-      <h2>Editar resumen</h2>
+      <h2>Editar estado</h2>
       <button class="edit-dialog-close" id="game-edit-close" type="button" aria-label="Cerrar">×</button>
     </div>
     <p class="edit-dialog-error" id="game-edit-error" hidden></p>
@@ -53,20 +50,6 @@ const estadoOptions = editValues.estado && !KNOWN_ESTADOS.some((estado) => norma
       <FormCheckbox class="date-proposal" id="end-date-proposal" inputId="end-date-proposal-input" hidden checked>
         Registrar hoy como fecha de fin
       </FormCheckbox>
-      <div class="edit-field">
-        <label for="edit-dificultad">Dificultad</label>
-        <input id="edit-dificultad" name="dificultad" type="text" placeholder="Fácil, normal, difícil…" value={editValues.dificultad ?? ''} />
-      </div>
-      <div class="edit-field-row">
-        <div class="edit-field">
-          <label for="edit-logros-actual">Logros conseguidos</label>
-          <input id="edit-logros-actual" name="logros_actual" type="number" step="1" min="0" value={editValues.logros_actual ?? ''} />
-        </div>
-        <div class="edit-field">
-          <label for="edit-logros-total">Logros totales</label>
-          <input id="edit-logros-total" name="logros_total" type="number" step="1" min="0" value={editValues.logros_total ?? ''} />
-        </div>
-      </div>
       <div class="edit-dialog-actions">
         <button class="edit-dialog-cancel" id="game-edit-cancel" type="button">Cancelar</button>
         <button class="edit-dialog-submit" id="game-edit-submit" type="submit">Guardar cambios</button>
@@ -109,9 +92,6 @@ const estadoOptions = editValues.estado && !KNOWN_ESTADOS.some((estado) => norma
       const endChoice = document.getElementById('end-date-proposal-input');
       const payload: Record<string, unknown> = {
         estado: data.get('estado'),
-        dificultad: data.get('dificultad'),
-        logros_actual: data.get('logros_actual'),
-        logros_total: data.get('logros_total'),
       };
       if (!form.dataset.startDate && startProposal instanceof HTMLElement && !startProposal.hidden && startChoice instanceof HTMLInputElement && startChoice.checked) payload.fecha_inicio = getMadridToday();
       if (!form.dataset.endDate && endProposal instanceof HTMLElement && !endProposal.hidden && endChoice instanceof HTMLInputElement && endChoice.checked) payload.fecha_fin = getMadridToday();
@@ -123,7 +103,7 @@ const estadoOptions = editValues.estado && !KNOWN_ESTADOS.some((estado) => norma
         });
         const result = await response.json().catch(() => ({}));
         if (!response.ok || !result.ok) throw new Error(result.error || `HTTP ${response.status}`);
-        finishGameEdit('game-header', 'Resumen actualizado');
+        finishGameEdit('game-header', 'Estado actualizado');
       } catch (error) {
         errorBox.textContent = error instanceof Error ? error.message : 'No se pudo guardar.';
         errorBox.hidden = false;

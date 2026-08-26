@@ -7,7 +7,6 @@ import GameDetailNav from '../../components/game-detail/GameDetailNav.astro';
 import GameDetailHours from '../../components/game-detail/GameDetailHours.astro';
 import GameDetailFinance from '../../components/game-detail/GameDetailFinance.astro';
 import GameDetailCompetitive from '../../components/game-detail/GameDetailCompetitive.astro';
-import GameDetailSummary from '../../components/game-detail/GameDetailSummary.astro';
 import GameDetailStats from '../../components/game-detail/GameDetailStats.astro';
 import GameDetailDLCs from '../../components/game-detail/GameDetailDLCs.astro';
 import GameDetailComments from '../../components/game-detail/GameDetailComments.astro';
@@ -193,23 +192,6 @@ const hoursChartPayload = {
   myHoursColor,
 };
 
-const summaryCards = [
-  { label: 'Estado', value: formatValue(game.estado), note: 'Actual', className: statusClass },
-  { label: 'Dificultad', value: formatValue(game.dificultad), note: 'Partida registrada' },
-  {
-    label: 'Logros', value: achievements,
-    note: achievementProgress === null ? 'Sin registrar' : `${achievementProgress.toFixed(0)}% completado`,
-    className: achievementProgress === null ? '' : 'detail-item-achievements', progress: achievementProgress,
-  },
-  {
-    label: 'Cromos Steam', value: steamCards,
-    note: steamCardsProgress === null ? 'Sin datos' : `${steamCardsProgress.toFixed(0)}% completado`,
-    className: steamCardsProgress === null ? '' : 'detail-item-achievements', progress: steamCardsProgress,
-  },
-  { label: 'DLCs', value: dlcTotal > 0 ? String(dlcTotal) : '-', note: dlcTotal > 0 ? 'Registrados' : 'Sin DLCs' },
-];
-const hasOverviewDetails = true; // Estado y Logros forman siempre el resumen mínimo.
-
 const start = game.fecha_inicio ? new Date(`${game.fecha_inicio}T00:00:00`) : null;
 const end = game.fecha_fin ? new Date(`${game.fecha_fin}T00:00:00`) : null;
 const elapsedDays = start && end && end >= start ? Math.round((end.getTime() - start.getTime()) / 86_400_000) : null;
@@ -217,6 +199,7 @@ const updatedDate = game.actualizado_en ? new Date(game.actualizado_en) : null;
 const metadataGroups = [
   {
     title: 'Catalogación',
+    className: 'data-group-catalog',
     items: [
       { label: 'Géneros', value: genres },
       { label: 'Etiquetas', value: tagsLabel === 'Sin etiquetas' ? '-' : tagsLabel },
@@ -224,7 +207,25 @@ const metadataGroups = [
     ],
   },
   {
+    title: 'Progreso',
+    className: 'data-group-progress',
+    items: [
+      { label: 'Dificultad', value: formatValue(game.dificultad), note: game.dificultad ? 'Partida registrada' : 'Sin registrar' },
+      {
+        label: 'Logros', value: achievements,
+        note: achievementProgress === null ? 'Sin registrar' : `${achievementProgress.toFixed(0)}% completado`,
+        className: achievementProgress === null ? '' : 'detail-item-achievements', progress: achievementProgress,
+      },
+      {
+        label: 'Cromos Steam', value: steamCards,
+        note: steamCardsProgress === null ? 'Sin datos' : `${steamCardsProgress.toFixed(0)}% completado`,
+        className: steamCardsProgress === null ? '' : 'detail-item-achievements', progress: steamCardsProgress,
+      },
+    ],
+  },
+  {
     title: 'Ficha técnica',
+    className: 'data-group-technical',
     items: [
       { label: 'Launcher', value: formatValue(game.launcher, 'Sin launcher') },
       { label: 'Plataforma', value: formatValue(game.plataforma) },
@@ -242,14 +243,12 @@ const purchaseStores = (game.tiendas_compra ?? []).map((store) => String(store).
 ---
 
 <BaseLayout title={`${game.titulo} | Personal Database`}>
-  <main class="shell game-page game-page-rich">
+  <main class="shell game-page game-page-rich" style={heroCoverStyle}>
+    <div class="game-page-backdrop" aria-hidden="true"></div>
     <GameDetailTopbar
       slug={slug}
       editValues={{
         estado: game.estado,
-        dificultad: game.dificultad ?? null,
-        logros_actual: game.logros?.actual ?? null,
-        logros_total: game.logros?.total ?? null,
         fecha_inicio: game.fecha_inicio,
         fecha_fin: game.fecha_fin,
       }}
@@ -266,8 +265,7 @@ const purchaseStores = (game.tiendas_compra ?? []).map((store) => String(store).
       tagsLabel={tagsLabel}
       modesLabel={modesLabel}
     />
-    <GameDetailNav hasDlcs={dlcTotal > 0} hasOverviewDetails={hasOverviewDetails} isCompetitive={isCompetitive} />
-    {hasOverviewDetails && <GameDetailSummary summaryCards={summaryCards} />}
+    <GameDetailNav hasDlcs={dlcTotal > 0} hasOverviewDetails={false} isCompetitive={isCompetitive} />
 
     <section class="hero-analysis-grid" aria-label="Análisis de juego">
       <GameDetailHours
@@ -313,6 +311,9 @@ const purchaseStores = (game.tiendas_compra ?? []).map((store) => String(store).
         lanzamiento: game.lanzamiento ?? null,
         steam_appid: game.steam_appid ?? null,
         hltb_match: game.hltb_match ?? null,
+        dificultad: game.dificultad ?? null,
+        logros_actual: game.logros?.actual ?? null,
+        logros_total: game.logros?.total ?? null,
       }}
     />
     {dlcTotal > 0 && (

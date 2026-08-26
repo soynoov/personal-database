@@ -1,0 +1,324 @@
+@import '../theme.css';
+
+/* Capa final de profundidad para la ficha. La imagen horizontal del juego
+   funciona como fondo material; los paneles dejan pasar color suficiente
+   para que el desenfoque sea perceptible sin recurrir a halos de neón. */
+@layer global {
+  .game-page-rich {
+    --detail-glass: rgba(17, 18, 28, 0.68);
+    --detail-glass-deep: rgba(8, 9, 15, 0.52);
+    --detail-glass-line: rgba(232, 223, 246, 0.13);
+    position: relative;
+    isolation: isolate;
+  }
+
+  .game-page-rich::before,
+  .game-page-rich::after {
+    display: none;
+  }
+
+  .game-page-rich > :not(.game-page-backdrop) {
+    z-index: 1;
+  }
+
+  .game-page-backdrop {
+    position: fixed;
+    inset: -8vh -6vw;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(7, 8, 13, 0.26), rgba(7, 8, 13, 0.76) 58%, rgba(7, 8, 13, 0.94)),
+      var(--hero-cover) center 16% / cover no-repeat;
+    filter: blur(30px) saturate(0.86) contrast(1.03);
+    opacity: 0.44;
+    transform: scale(1.06);
+  }
+
+  .game-page-backdrop::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 12% 14%, rgba(120, 96, 151, 0.1), transparent 30rem),
+      linear-gradient(180deg, rgba(8, 9, 15, 0.1), rgba(8, 9, 15, 0.5));
+  }
+
+  .game-page-rich .game-hero-cinematic {
+    border-color: rgba(238, 229, 250, 0.2);
+    background: rgba(8, 9, 15, 0.36);
+    box-shadow:
+      0 26px 70px rgba(0, 0, 0, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  }
+
+  .game-page-rich .game-hero-cinematic::before {
+    opacity: 1;
+    filter: saturate(0.98) contrast(1.04);
+    background:
+      linear-gradient(90deg, rgba(7, 8, 14, 0.76) 0%, rgba(7, 8, 14, 0.54) 38%, rgba(7, 8, 14, 0.12) 76%, rgba(7, 8, 14, 0.3) 100%),
+      var(--hero-cover);
+    background-position: center 32%;
+    background-size: cover;
+  }
+
+  .game-page-rich .game-hero-cinematic::after {
+    background: linear-gradient(180deg, rgba(7, 8, 14, 0.02), rgba(7, 8, 14, 0.32));
+  }
+
+  .game-page-rich .game-overview-card.game-overview-card-cinematic {
+    border-color: rgba(244, 237, 252, 0.2);
+    background:
+      linear-gradient(125deg, rgba(25, 24, 36, 0.58), rgba(11, 12, 20, 0.28) 68%, rgba(20, 20, 29, 0.16));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 18px 48px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(17px) saturate(1.16);
+    -webkit-backdrop-filter: blur(17px) saturate(1.16);
+  }
+
+  .game-page-rich .game-overview-card.game-overview-card-cinematic .game-overview-media {
+    border-color: rgba(247, 241, 253, 0.3);
+    box-shadow:
+      0 22px 56px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .game-page-rich .game-hero-facts > div {
+    border-color: rgba(241, 233, 252, 0.15);
+    background: rgba(9, 10, 17, 0.34);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.055);
+    backdrop-filter: blur(12px) saturate(1.1);
+    -webkit-backdrop-filter: blur(12px) saturate(1.1);
+  }
+
+  .game-page-rich .analysis-panel,
+  .game-page-rich #technical,
+  .game-page-rich #dlcs,
+  .game-page-rich .game-metacritic,
+  .game-page-rich .detail-comments-vault {
+    border-color: var(--detail-glass-line);
+    background:
+      linear-gradient(145deg, rgba(30, 29, 43, 0.6), rgba(11, 12, 20, 0.52));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.055),
+      0 20px 54px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(24px) saturate(1.14);
+    -webkit-backdrop-filter: blur(24px) saturate(1.14);
+  }
+
+  .game-page-rich .chart-visual-card,
+  .game-page-rich .chart-metric-card,
+  .game-page-rich .game-page-section-inline,
+  .game-page-rich .finance-goal-card,
+  .game-page-rich .finance-progress-card,
+  .game-page-rich .finance-kpi-grid article,
+  .game-page-rich .finance-breakdown,
+  .game-page-rich .finance-breakdown dl > div,
+  .game-page-rich .data-group-card,
+  .game-page-rich .data-group-card .detail-item,
+  .game-page-rich .metacritic-score-card,
+  .game-page-rich .metacritic-breakdown,
+  .game-page-rich .metacritic-criterion {
+    border-color: rgba(232, 222, 246, 0.11);
+    background:
+      linear-gradient(145deg, rgba(25, 24, 36, 0.52), rgba(7, 8, 14, 0.38));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
+    backdrop-filter: blur(15px) saturate(1.1);
+    -webkit-backdrop-filter: blur(15px) saturate(1.1);
+  }
+
+  .game-page-rich .finance-priority-grid {
+    grid-template-columns: minmax(0, 1.35fr) minmax(290px, 0.65fr);
+    gap: 0.68rem;
+  }
+
+  .game-page-rich .finance-goal-card {
+    position: relative;
+    grid-template-columns: auto minmax(0, 1fr) minmax(170px, 0.44fr);
+    overflow: hidden;
+  }
+
+  .game-page-rich .finance-goal-cost {
+    min-width: 170px;
+    align-self: stretch;
+    padding: 0.8rem 0.9rem;
+    border: 1px solid rgba(232, 222, 246, 0.1);
+    border-radius: 12px;
+    background: rgba(7, 8, 13, 0.32);
+  }
+
+  .game-page-rich .finance-progress-card {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+
+  .game-page-rich .finance-progress-head,
+  .game-page-rich .finance-progress-status,
+  .game-page-rich .finance-progress-card .value-progress {
+    grid-column: 1 / -1;
+  }
+
+  .game-page-rich .finance-progress-multiple {
+    grid-column: 1 / -1;
+  }
+
+  .game-page-rich .game-data-groups {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 0.68rem;
+  }
+
+  .game-page-rich .data-group-catalog {
+    grid-column: span 5;
+  }
+
+  .game-page-rich .data-group-progress {
+    grid-column: span 7;
+  }
+
+  .game-page-rich .data-group-technical {
+    grid-column: 1 / -1;
+  }
+
+  .game-page-rich .data-group-card .data-group-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.58rem;
+  }
+
+  .game-page-rich .data-group-card .data-group-grid > .detail-item {
+    grid-column: auto;
+  }
+
+  .game-page-rich .data-group-catalog .detail-item:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .game-page-rich .data-group-progress .data-group-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .game-page-rich .data-group-technical .data-group-grid[data-count='6'] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .game-page-rich .data-group-technical .data-group-grid[data-count='7'] {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .game-page-rich .data-group-technical .data-group-grid[data-count='7'] .detail-item:last-child {
+    grid-column: span 2;
+  }
+
+  .game-page-rich .data-group-card {
+    min-height: 0;
+    padding: 0.82rem;
+  }
+
+  .game-page-rich .data-group-catalog {
+    background:
+      linear-gradient(145deg, rgba(31, 28, 44, 0.58), rgba(8, 9, 15, 0.4));
+  }
+
+  .game-page-rich .data-group-progress {
+    background:
+      linear-gradient(145deg, rgba(29, 27, 42, 0.58), rgba(8, 9, 15, 0.4));
+  }
+
+  .game-page-rich .data-group-technical {
+    background:
+      linear-gradient(145deg, rgba(25, 25, 36, 0.56), rgba(8, 9, 15, 0.4));
+  }
+
+  .game-page-rich .data-group-card .detail-item {
+    min-height: 88px;
+    padding: 0.72rem;
+  }
+
+  .game-page-rich .data-group-progress .detail-item {
+    min-height: 112px;
+  }
+
+  .game-page-rich .data-group-card .detail-item-empty {
+    border-color: rgba(197, 196, 204, 0.07);
+    background: rgba(7, 8, 12, 0.28);
+    filter: saturate(0.15);
+    opacity: 0.5;
+  }
+
+  @media (max-width: 960px) {
+    .game-page-rich .finance-priority-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .game-page-rich .game-data-groups {
+      grid-template-columns: 1fr;
+    }
+
+    .game-page-rich .data-group-catalog,
+    .game-page-rich .data-group-progress,
+    .game-page-rich .data-group-technical {
+      grid-column: 1;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .game-page-rich .game-page-backdrop {
+      opacity: 0.28;
+      filter: blur(32px) saturate(0.72);
+    }
+
+    .game-page-rich .game-hero-cinematic::before {
+      background:
+        linear-gradient(90deg, rgba(7, 8, 14, 0.78), rgba(7, 8, 14, 0.46)),
+        var(--hero-cover);
+      background-position: center;
+      background-size: cover;
+    }
+
+    .game-page-rich .game-overview-card.game-overview-card-cinematic {
+      background: linear-gradient(125deg, rgba(24, 23, 35, 0.56), rgba(9, 10, 17, 0.3));
+      backdrop-filter: blur(13px) saturate(1.08);
+      -webkit-backdrop-filter: blur(13px) saturate(1.08);
+    }
+
+    .game-page-rich .finance-goal-card {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .game-page-rich .finance-goal-cost {
+      grid-column: 1 / -1;
+      min-width: 0;
+      border-left: 1px solid rgba(232, 222, 246, 0.1);
+    }
+
+    .game-page-rich .data-group-card .detail-item,
+    .game-page-rich .data-group-progress .detail-item {
+      min-height: 82px;
+    }
+
+    .game-page-rich .data-group-progress .data-group-grid,
+    .game-page-rich .data-group-technical .data-group-grid[data-count='6'],
+    .game-page-rich .data-group-technical .data-group-grid[data-count='7'] {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .game-page-rich .data-group-progress .detail-item:first-child,
+    .game-page-rich .data-group-technical .data-group-grid[data-count='7'] .detail-item:last-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 430px) {
+    .game-page-rich .data-group-card .data-group-grid,
+    .game-page-rich .data-group-progress .data-group-grid,
+    .game-page-rich .data-group-technical .data-group-grid[data-count='6'],
+    .game-page-rich .data-group-technical .data-group-grid[data-count='7'] {
+      grid-template-columns: 1fr;
+    }
+
+    .game-page-rich .data-group-progress .detail-item:first-child,
+    .game-page-rich .data-group-technical .data-group-grid[data-count='7'] .detail-item:last-child {
+      grid-column: auto;
+    }
+  }
+}

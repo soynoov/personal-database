@@ -5,13 +5,17 @@ import { GAME_MODES } from '../../lib/game-modes';
 import { PUBLIC_GAME_TAGS, normalizeGameTag } from '../../lib/game-tags';
 import FormCheckbox from '../FormCheckbox.astro';
 import TablerIcon from '../TablerIcon.astro';
+import categoryIcon from '@tabler/icons/outline/category-2.svg?url';
 import editIcon from '@tabler/icons/outline/edit.svg?url';
+import settingsIcon from '@tabler/icons/outline/settings.svg?url';
+import trophyIcon from '@tabler/icons/outline/trophy.svg?url';
 
 interface Props {
   slug: string;
   metadataGroups: Array<{
     title: string;
-    items: Array<{ label: string; value: string; className?: string; note?: string }>;
+    className?: string;
+    items: Array<{ label: string; value: string; className?: string; note?: string; progress?: number | null }>;
   }>;
   editValues: {
     generos: string[];
@@ -23,10 +27,18 @@ interface Props {
     lanzamiento: number | null;
     steam_appid: number | null;
     hltb_match: string | null;
+    dificultad: string | null;
+    logros_actual: number | null;
+    logros_total: number | null;
   };
 }
 const { slug, metadataGroups, editValues } = Astro.props;
 const normalizedTags = editValues.tags.map(normalizeGameTag);
+const groupIcons: Record<string, string> = {
+  'Catalogación': categoryIcon,
+  Progreso: trophyIcon,
+  'Ficha técnica': settingsIcon,
+};
 ---
 
 <section class="game-page-section" id="technical">
@@ -36,12 +48,24 @@ const normalizedTags = editValues.tags.map(normalizeGameTag);
   </div>
   <div class="game-data-groups">
     {metadataGroups.map((group) => (
-      <article class="data-group-card">
-        <div class="data-group-head"><h3>{group.title}</h3></div>
-        <dl class="detail-grid detail-grid-2">
-          {group.items.map(({ label, value, className = '', note = '' }) => (
-            <div title={note || undefined} class:list={["detail-item", "compact-detail-card", className, value === '-' && "detail-item-empty"]}>
-              <dt>{label}</dt><dd>{value}</dd>
+      <article class:list={["data-group-card", group.className]}>
+        <div class="data-group-head">
+          <span class="data-group-icon"><TablerIcon src={groupIcons[group.title] ?? settingsIcon} /></span>
+          <h3>{group.title}</h3>
+        </div>
+        <dl class="detail-grid data-group-grid" data-count={group.items.length}>
+          {group.items.map(({ label, value, className = '', note = '', progress = null }) => (
+            <div title={note || undefined} class:list={["detail-item", "compact-detail-card", className, value === '-' && "detail-item-empty", progress !== null && "detail-item-progress"]}>
+              <dt>{label}</dt>
+              <dd>{value}</dd>
+              {note && <dd class="detail-item-note">{note}</dd>}
+              {progress !== null && (
+                <dd class="data-progress-slot">
+                  <span class="data-progress-track" role="progressbar" aria-label={`Progreso de ${label}`} aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(progress)}>
+                    <span style={`--data-progress:${progress}%`}></span>
+                  </span>
+                </dd>
+              )}
             </div>
           ))}
         </dl>
@@ -84,6 +108,23 @@ const normalizedTags = editValues.tags.map(normalizeGameTag);
             ))}
           </div>
         </fieldset>
+      </fieldset>
+      <fieldset class="data-edit-fieldset">
+        <legend>Progreso</legend>
+        <div class="edit-field">
+          <label for="data-edit-difficulty">Dificultad</label>
+          <input id="data-edit-difficulty" name="dificultad" type="text" placeholder="Fácil, normal, difícil…" value={editValues.dificultad ?? ''} />
+        </div>
+        <div class="edit-field-row">
+          <div class="edit-field">
+            <label for="data-edit-achievements-current">Logros conseguidos</label>
+            <input id="data-edit-achievements-current" name="logros_actual" type="number" step="1" min="0" value={editValues.logros_actual ?? ''} />
+          </div>
+          <div class="edit-field">
+            <label for="data-edit-achievements-total">Logros totales</label>
+            <input id="data-edit-achievements-total" name="logros_total" type="number" step="1" min="0" value={editValues.logros_total ?? ''} />
+          </div>
+        </div>
       </fieldset>
       <fieldset class="data-edit-fieldset">
         <legend>Ficha técnica</legend>
@@ -158,6 +199,9 @@ const normalizedTags = editValues.tags.map(normalizeGameTag);
             lanzamiento: data.get('lanzamiento'),
             steam_appid: data.get('steam_appid'),
             hltb_match: data.get('hltb_match'),
+            dificultad: data.get('dificultad'),
+            logros_actual: data.get('logros_actual'),
+            logros_total: data.get('logros_total'),
           }),
         });
         const result = await response.json().catch(() => ({}));
