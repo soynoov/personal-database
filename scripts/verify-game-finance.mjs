@@ -102,6 +102,18 @@ try {
   assert.equal(editedGenres.ok, true);
   assert.deepEqual(editedGenres.game.generos, ['Acción']);
 
+  const optionalHonoraryComment = applyManualGamePatch(game(), {
+    critica: {
+      ...fullCritique,
+      criterios: { ...fullCritique.criterios, originalidad: 0 },
+      mencion_honorifica: { nivel: 2, comentario: null },
+    },
+  });
+  assert.equal(optionalHonoraryComment.ok, true);
+  assert.equal(optionalHonoraryComment.game.critica.criterios.originalidad, 0);
+  assert.equal(optionalHonoraryComment.game.critica.mencion_honorifica.nivel, 2);
+  assert.equal(optionalHonoraryComment.game.critica.mencion_honorifica.comentario, null);
+
   console.log('game-finance: cálculos y edición manual verificados');
 } finally {
   await server.close();

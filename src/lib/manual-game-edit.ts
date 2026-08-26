@@ -132,10 +132,6 @@ export function applyManualGamePatch(
 
   if (body.critica !== undefined) {
     updated.critica = toGameCritique(body.critica);
-    const honorary = updated.critica.mencion_honorifica;
-    if ((honorary?.nivel ?? 0) > 0 && !honorary?.comentario) {
-      return { ok: false, status: 400, error: 'Explica el motivo de la mención honorífica.' };
-    }
     updated.nota = calculatePersonalScore(
       updated.critica,
       isCommunityCriterionApplicable(updated),

@@ -34,11 +34,12 @@ const completedCriteria = criterionScores.filter((criterion) => criterion.value 
 const honoraryLevel = critique?.mencion_honorifica?.nivel ?? 0;
 const honoraryComment = critique?.mencion_honorifica?.comentario ?? '';
 const honoraryOptions = [
-  { level: 0, label: 'Ninguna', bonus: 'Sin bonus' },
-  { level: 1, label: 'Pequeña', bonus: '+0,1' },
-  { level: 2, label: 'Destacada', bonus: '+0,2' },
-  { level: 3, label: 'Excepcional', bonus: '+0,3' },
+  { level: 0, label: 'No especialmente', bonus: 'Sin bonus' },
+  { level: 1, label: 'Me gustó', bonus: '+0,1' },
+  { level: 2, label: 'Lo disfruté mucho', bonus: '+0,2' },
+  { level: 3, label: 'Me encantó', bonus: '+0,3' },
 ];
+const honoraryLabel = honoraryOptions.find((option) => option.level === honoraryLevel)?.label ?? '';
 
 const toNullableScore = (value: unknown) => {
   if (value === null || value === undefined || value === '') return null;
@@ -143,12 +144,12 @@ const formatDecimal = (value: number | null) =>
     </div>
 
     {honoraryLevel > 0 && (
-      <article class="metacritic-honorary has-value">
+      <article class:list={["metacritic-honorary", "has-value", honoraryComment && "has-comment"]}>
         <div class="metacritic-honorary-level">
           <span class="section-eyebrow">Mención honorífica</span>
           <div>
-            <strong>{honoraryLevel}</strong>
-            <small>/3</small>
+            <strong>{honoraryLabel}</strong>
+            <small>{honoraryLevel}/3</small>
           </div>
         </div>
         <div class="metacritic-honorary-bonus">
@@ -156,10 +157,12 @@ const formatDecimal = (value: number | null) =>
           <strong>+{formatDecimal(honoraryLevel * 0.1)}</strong>
           <small>My score</small>
         </div>
-        <div class="metacritic-honorary-reason">
-          <span>Motivo</span>
-          <p>{honoraryComment || 'Sin comentario'}</p>
-        </div>
+        {honoraryComment && (
+          <div class="metacritic-honorary-reason">
+            <span>Apunte</span>
+            <p>{honoraryComment}</p>
+          </div>
+        )}
       </article>
     )}
 
@@ -235,7 +238,21 @@ const formatDecimal = (value: number | null) =>
         </div>
 
         <div class="metacritic-edit-criteria">
-          {criterionScores.map((criterion) => (
+          {criterionScores.map((criterion) => criterion.key === 'originalidad' ? (
+            <label class="metacritic-rating-field is-binary" for="edit-originalidad">
+              <span>
+                Originalidad
+                <small>Aporta algo propio</small>
+              </span>
+              <input
+                class="metacritic-originality-check"
+                id="edit-originalidad"
+                type="checkbox"
+                checked={criterion.value === 1}
+                aria-label="El juego aporta una idea, enfoque o combinación propia"
+              />
+            </label>
+          ) : (
             <label class:list={["metacritic-rating-field", criterion.key === 'comunidad' && 'is-community']} for={`edit-${criterion.key}`}>
               <span>
                 {criterion.label}
@@ -248,9 +265,7 @@ const formatDecimal = (value: number | null) =>
                   (_, index) => index + criterion.min,
                 ).map((score) => (
                   <option value={score} selected={criterion.value === score}>
-                    {criterion.key === 'originalidad'
-                      ? `${score === 1 ? 'Sí' : 'No'} · ${score}/${criterion.max}`
-                      : `${score} / ${criterion.max}`}
+                    {score} / {criterion.max}
                   </option>
                 ))}
               </select>
@@ -274,7 +289,7 @@ const formatDecimal = (value: number | null) =>
 
         <div class="metacritic-honorary-fields">
           <fieldset class="metacritic-honorary-levels">
-            <legend>Nivel de mención</legend>
+            <legend>¿Cuánto lo disfrutaste?</legend>
             <div class="metacritic-honorary-choice-grid">
               {honoraryOptions.map((option) => (
                 <label class="metacritic-honorary-choice">
@@ -298,12 +313,11 @@ const formatDecimal = (value: number | null) =>
             for="edit-honorary-comment"
             hidden={honoraryLevel === 0}
           >
-            <span>Motivo <small>Obligatorio</small></span>
+            <span>Apunte <small>Opcional</small></span>
             <textarea
               id="edit-honorary-comment"
               name="honorary_comment"
-              placeholder="¿Por qué merece esta mención?"
-              required={honoraryLevel > 0}
+              placeholder="Solo si quieres recordar algo concreto"
               disabled={honoraryLevel === 0}
             >{honoraryComment}</textarea>
           </label>
@@ -335,6 +349,7 @@ const formatDecimal = (value: number | null) =>
   const honoraryCommentField = document.getElementById('edit-honorary-comment-field');
   const honoraryCommentInput = document.getElementById('edit-honorary-comment');
   const honoraryBonus = document.getElementById('edit-honorary-bonus');
+  const originalityInput = document.getElementById('edit-originalidad');
 
   if (
     trigger instanceof HTMLButtonElement &&
@@ -356,7 +371,7 @@ const formatDecimal = (value: number | null) =>
       honoraryCommentField?.toggleAttribute('hidden', !hasHonoraryMention);
       if (honoraryCommentInput instanceof HTMLTextAreaElement) {
         honoraryCommentInput.disabled = !hasHonoraryMention;
-        honoraryCommentInput.required = hasHonoraryMention;
+        honoraryCommentInput.required = false;
       }
       if (honoraryBonus instanceof HTMLElement) {
         honoraryBonus.textContent = `+0,${level}`;
@@ -396,7 +411,7 @@ const formatDecimal = (value: number | null) =>
             musica: data.get('musica'),
             graficos_arte: data.get('graficos_arte'),
             entretenimiento: data.get('entretenimiento'),
-            originalidad: data.get('originalidad'),
+            originalidad: originalityInput instanceof HTMLInputElement && originalityInput.checked ? 1 : 0,
             comunidad: data.get('comunidad'),
           },
           mencion_honorifica: {
