@@ -11,6 +11,7 @@ try {
     formatHoursDuration,
     getGameValueMetrics,
     getScoreMultiplier,
+    isGameAmortized,
   } = await server.ssrLoadModule('/src/lib/game-finance.ts');
   const { applyManualGamePatch } = await server.ssrLoadModule('/src/lib/manual-game-edit.ts');
   const { getGameGenres } = await server.ssrLoadModule('/src/lib/game-genres.ts');
@@ -59,6 +60,10 @@ try {
   const zeroHours = getGameValueMetrics(game({ horas: 0 }));
   assert.equal(zeroHours.economicProgressPercent, 0);
   assert.equal(zeroHours.costPerRealHour, null);
+  assert.equal(isGameAmortized(game({ precio_pagado: 10, horas: 10 })), true);
+  assert.equal(isGameAmortized(game({ precio_pagado: 10, horas: 9.9 })), false);
+  assert.equal(isGameAmortized(game({ precio_pagado: 0, horas: null })), true);
+  assert.equal(isGameAmortized(game({ precio_pagado: null, horas: 100 })), false);
 
   const baldursGate = getGameValueMetrics(game({ precio_pagado: 60, horas: 58.5, hltb_breakdown: { main: 72.9 } }));
   assert.equal(formatHoursDuration(baldursGate.economicRemainingHours), '1 h 30 min');

@@ -193,6 +193,13 @@ export function getGameValueMetrics(game: LocalGame): GameValueMetrics {
   };
 }
 
+export function isGameAmortized(game: LocalGame): boolean {
+  const metrics = getGameValueMetrics(game);
+  if (!metrics.dataComplete) return false;
+  if (metrics.recordedSpend === 0) return true;
+  return metrics.economicRemainingHours !== null && metrics.economicRemainingHours <= 0;
+}
+
 export function formatHoursDuration(value: number | null, fallback = '—') {
   if (value === null || !Number.isFinite(value)) return fallback;
   const totalMinutes = Math.max(0, Math.round(value * 60));

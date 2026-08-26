@@ -178,7 +178,7 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
     </div>
   </div>
 
-  <div class='legend legend-app' aria-label='Filtros destacados'>
+  <div class='legend legend-app' role='group' aria-label='Filtros destacados'>
     <button class='legend-chip legend-chip-all' type='button' data-quick-filter=''>
       <span class='legend-dot'></span>Todos
     </button>
@@ -194,11 +194,11 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
     <button class='legend-chip legend-chip-free' type='button' data-quick-filter='free'>
       <span class='legend-dot'></span>Free to play
     </button>
-    <button class='legend-chip legend-chip-profit' type='button' data-quick-filter='profit'>
-      <span class='legend-dot'></span>Buena compra
+    <button class='legend-chip legend-chip-amortized' type='button' data-quick-filter='amortized'>
+      <span class='legend-dot'></span>Amortizado
     </button>
-    <button class='legend-chip legend-chip-loss' type='button' data-quick-filter='loss'>
-      <span class='legend-dot'></span>Mala compra
+    <button class='legend-chip legend-chip-recurring' type='button' data-quick-filter='recurrente'>
+      <span class='legend-dot'></span>Recurrentes
     </button>
     <button class='legend-chip legend-chip-early' type='button' data-quick-filter='early'>
       <span class='legend-dot'></span>Early Access

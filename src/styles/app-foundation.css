@@ -559,19 +559,19 @@
     0 0 0 1px rgba(90, 208, 255, 0.14),
     0 8px 20px rgba(90, 208, 255, 0.18);
 }
-.legend-chip-profit.is-active {
+.legend-chip-amortized.is-active {
   border-color: rgba(72, 184, 109, 0.7);
   background: rgba(72, 184, 109, 0.18);
   box-shadow:
     0 0 0 1px rgba(72, 184, 109, 0.14),
     0 8px 20px rgba(72, 184, 109, 0.18);
 }
-.legend-chip-loss.is-active {
-  border-color: rgba(214, 80, 80, 0.7);
-  background: rgba(214, 80, 80, 0.18);
+.legend-chip-recurring.is-active {
+  border-color: var(--status-recurring-line);
+  background: var(--status-recurring-bg);
   box-shadow:
-    0 0 0 1px rgba(214, 80, 80, 0.14),
-    0 8px 20px rgba(214, 80, 80, 0.18);
+    0 0 0 1px rgba(139, 92, 246, 0.14),
+    0 8px 20px rgba(139, 92, 246, 0.18);
 }
 .legend-chip-early.is-active {
   border-color: rgba(255, 170, 64, 0.7);

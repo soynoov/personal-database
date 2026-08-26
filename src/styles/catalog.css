@@ -289,16 +289,16 @@
   color: var(--tag-free-fg);
 }
 
-.legend-chip-profit {
+.legend-chip-amortized {
   border-color: var(--price-profit-line);
   background: var(--price-profit-bg);
   color: var(--price-profit-fg);
 }
 
-.legend-chip-loss {
-  border-color: var(--price-loss-line);
-  background: var(--price-loss-bg);
-  color: var(--price-loss-fg);
+.legend-chip-recurring {
+  border-color: var(--status-recurring-line);
+  background: var(--status-recurring-bg);
+  color: var(--status-recurring-fg);
 }
 
 .legend-chip-early {

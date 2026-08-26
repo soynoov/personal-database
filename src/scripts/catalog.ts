@@ -144,12 +144,6 @@ const matchesTagFilter = (game: CatalogGame, filter: string): boolean => {
   return normalizeGameTag(filter) === 'early-access' && hasEarlyAccess(game);
 };
 
-const getReferencePrice = (game: CatalogGame): number | null => {
-  if (game.precio_actual != null && game.precio_actual !== '') return Number(game.precio_actual);
-  if (game.precio_salida != null && game.precio_salida !== '') return Number(game.precio_salida);
-  return null;
-};
-
 const getPriceFilterBucket = (game: CatalogGame): string => {
   if (hasFreeToPlayTag(game)) return 'free';
   if (game.precio_pagado == null || game.precio_pagado === '') return 'unknown';
@@ -158,32 +152,6 @@ const getPriceFilterBucket = (game: CatalogGame): string => {
   if (paid <= 10) return 'cheap';
   if (paid <= 30) return 'mid';
   return 'high';
-};
-
-const getPaidPriceVisual = (game: CatalogGame): { className: string; note: string } => {
-  if (hasFreeToPlayTag(game)) return { className: 'detail-item-price-free', note: 'Entrada sin coste' };
-  if (game.precio_pagado == null || game.precio_pagado === '') return { className: '', note: '' };
-
-  const paid = Number(game.precio_pagado);
-  const reference = getReferencePrice(game);
-  if (Number.isNaN(paid) || reference === null || Number.isNaN(reference) || reference <= 0)
-    return { className: 'detail-item-price-neutral', note: '' };
-
-  const delta = Number((reference - paid).toFixed(2));
-  const ratio = delta / reference;
-  const percent = Math.abs(ratio) * 100;
-  const sourceLabel = game.precio_actual != null && game.precio_actual !== '' ? 'actual' : 'de salida';
-
-  if (Math.abs(ratio) < 0.12)
-    return { className: 'detail-item-price-neutral', note: `${delta >= 0 ? '+' : '-'}${percent.toFixed(1)}% frente al precio ${sourceLabel}` };
-  if (delta > 0) {
-    if (ratio >= 0.5)
-      return { className: 'detail-item-price-profit-strong', note: `+${percent.toFixed(1)}% y ${delta.toFixed(2)} EUR por debajo del precio ${sourceLabel}` };
-    return { className: 'detail-item-price-profit', note: `+${percent.toFixed(1)}% y ${delta.toFixed(2)} EUR por debajo del precio ${sourceLabel}` };
-  }
-  if (ratio <= -0.5)
-    return { className: 'detail-item-price-loss-strong', note: `-${percent.toFixed(1)}% y ${Math.abs(delta).toFixed(2)} EUR por encima del precio ${sourceLabel}` };
-  return { className: 'detail-item-price-loss', note: `-${percent.toFixed(1)}% y ${Math.abs(delta).toFixed(2)} EUR por encima del precio ${sourceLabel}` };
 };
 
 const formatViewPrice = (game: CatalogGame): string => {
@@ -196,20 +164,17 @@ const formatViewPrice = (game: CatalogGame): string => {
 
 // ─── Filtros rápidos ──────────────────────────────────────────────────────────
 
-const STATUS_QUICK_FILTERS = new Set(['terminado', 'jugando', 'pendiente', 'wishlist']);
+const STATUS_QUICK_FILTERS = new Set(['terminado', 'jugando', 'pendiente', 'wishlist', 'recurrente']);
 const TAG_QUICK_FILTERS: Record<string, string> = {
   free: 'free-to-play',
   early: 'early-access',
 };
-const QUICK_ONLY_FILTERS = new Set(['profit', 'loss']);
+const QUICK_ONLY_FILTERS = new Set(['amortized']);
 const DEFAULT_SORT = 'horas-desc';
 
 const matchesQuickFilter = (game: CatalogGame, quickFilter: string): boolean => {
   if (!quickFilter) return true;
-  if (quickFilter === 'profit' || quickFilter === 'loss') {
-    const visual = getPaidPriceVisual(game);
-    return quickFilter === 'profit' ? visual.className.includes('profit') : visual.className.includes('loss');
-  }
+  if (quickFilter === 'amortized') return game.amortizado;
   if (quickFilter === 'terminado') return isCompletedStatus(game.estado);
   return normalizeStatus(game.estado) === quickFilter;
 };
@@ -378,7 +343,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
       const quickFilterLabels: Record<string, string> = {
         terminado: 'destacado=Terminado', jugando: 'destacado=Jugando',
         pendiente: 'destacado=Pendiente', free: 'destacado=Free to play',
-        profit: 'destacado=Buena compra', loss: 'destacado=Mala compra',
+        amortized: 'destacado=Amortizado',
         early: 'destacado=Early Access',
       };
       activeFilterEntries.push(['quick', quickFilterLabels[activeQuickFilter] ?? activeQuickFilter]);

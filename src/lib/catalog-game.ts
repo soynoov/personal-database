@@ -4,6 +4,7 @@ import { isCompletedStatus, normalizeStatus } from "./game-status";
 import { getGameTagLabel, hasGameTag, normalizeGameTag } from "./game-tags";
 import { gameHasMode } from "./game-modes";
 import { getGameGenres } from "./game-genres";
+import { isGameAmortized } from "./game-finance";
 
 export type CatalogGame = Pick<
   LocalGame,
@@ -24,11 +25,13 @@ export type CatalogGame = Pick<
   | "cover_url"
 > & {
   slug: string;
+  amortizado: boolean;
 };
 
 export function toCatalogGame(game: LocalGame): CatalogGame {
   return {
     slug: slugifyGameTitle(game.titulo),
+    amortizado: isGameAmortized(game),
     titulo: game.titulo,
     estado: game.estado,
     launcher: game.launcher,
