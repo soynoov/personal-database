@@ -80,16 +80,7 @@
   }
 
   .game-page-rich .game-sections-nav-shell .game-sections-nav::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    width: 221px;
-    height: 32px;
-    background: rgba(8, 9, 14, 0.96);
-    clip-path: polygon(0 0, 100% 0, 195px 100%, 0 100%);
-    pointer-events: none;
+    content: none;
   }
 
   .game-page-rich .game-sections-nav-shell .game-sections-nav::-webkit-scrollbar {
