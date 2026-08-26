@@ -10,6 +10,7 @@ try {
   const {
     formatHoursDuration,
     getGameProfitabilityStatus,
+    getPurchasePriceComparison,
     getGameValueMetrics,
     getScoreMultiplier,
     isGameAmortized,
@@ -41,6 +42,17 @@ try {
   assert.equal(getScoreMultiplier(7.5), 1);
   assert.equal(getScoreMultiplier(8), 1.02);
   assert.equal(getScoreMultiplier(10), 1.1);
+
+  assert.deepEqual(getPurchasePriceComparison(4.89, 6.99), {
+    direction: 'discount', amountPerUnit: 2.1, percent: 30,
+  });
+  assert.deepEqual(getPurchasePriceComparison(6.99, 6.99), {
+    direction: 'same', amountPerUnit: 0, percent: 0,
+  });
+  assert.deepEqual(getPurchasePriceComparison(7.99, 6.99), {
+    direction: 'premium', amountPerUnit: 1, percent: 14.3,
+  });
+  assert.equal(getPurchasePriceComparison(null, 6.99), null);
 
   const incompleteReview = getGameValueMetrics(game({ horas: 20, critica: { criterios: { ...fullCritique.criterios, originalidad: null } } }));
   assert.equal(incompleteReview.scoreComplete, false);

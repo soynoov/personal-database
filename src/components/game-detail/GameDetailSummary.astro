@@ -16,7 +16,9 @@ interface Props {
 }
 
 const { summaryCards } = Astro.props;
-const visibleCards = summaryCards.filter(({ label, value }) => label === "Estado" || value !== "-");
+const visibleCards = summaryCards.filter(
+  ({ label, value }) => label === "Estado" || label === "Logros" || value !== "-",
+);
 ---
 
 <section class="game-page-section game-summary-section" id="overview">

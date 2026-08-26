@@ -50,6 +50,28 @@ export function getScoreMultiplier(score: number | null) {
   return round(1 + Math.max(0, Math.min(1, (score - 7.5) / 2.5)) * 0.1, 4);
 }
 
+export type PurchasePriceComparison = {
+  direction: 'discount' | 'same' | 'premium';
+  amountPerUnit: number;
+  percent: number;
+};
+
+export function getPurchasePriceComparison(
+  paidValue: unknown,
+  referenceValue: unknown,
+): PurchasePriceComparison | null {
+  const paid = finiteNonNegative(paidValue);
+  const reference = finiteNonNegative(referenceValue);
+  if (paid === null || reference === null || reference <= 0) return null;
+
+  const signedDifference = round(reference - paid);
+  return {
+    direction: signedDifference > 0 ? 'discount' : signedDifference < 0 ? 'premium' : 'same',
+    amountPerUnit: Math.abs(signedDifference),
+    percent: round((Math.abs(signedDifference) / reference) * 100, 1),
+  };
+}
+
 export type GameValueMetrics = {
   purchasedUnits: number;
   isFreeToPlay: boolean;

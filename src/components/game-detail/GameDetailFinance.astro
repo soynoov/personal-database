@@ -31,7 +31,7 @@ interface Props {
   dlcChartPayload: object | null;
   dlcChartPoints: Array<{ label: string; value: number }>;
   hasDlcs: boolean;
-  marketCards: Array<{ label: string; value: string }>;
+  marketCards: Array<{ label: string; value: string; note?: string; className?: string }>;
   editValues: MoneyEditValues;
 }
 
@@ -77,9 +77,11 @@ const showDlcBreakdown = hasDlcs || metrics.acquiredDlcCount > 0;
 const showMicroBreakdown = metrics.isFreeToPlay || metrics.microtransactionSpend > 0 || editValues.gasto_microtransacciones !== null;
 const breakdownSourceCount = [showBaseBreakdown, showDlcBreakdown, showMicroBreakdown].filter(Boolean).length;
 const showTotalBreakdown = breakdownSourceCount > 1;
-const visibleMarketCards = metrics.isFreeToPlay
-  ? marketCards.filter((card) => card.label === 'DLC pendientes')
-  : marketCards;
+const visibleMarketCards = marketCards.filter((card) => {
+  if (card.label === 'DLC pendientes' && !hasDlcs) return false;
+  if (metrics.isFreeToPlay) return card.label === 'DLC pendientes';
+  return true;
+});
 const showBaseMarket = !metrics.isFreeToPlay && (
   moneyChartPoints.length > 0 || visibleMarketCards.some((card) => card.value !== '—')
 );
@@ -175,7 +177,7 @@ const showMarket = showBaseMarket || showDlcMarket;
           ) : <div class="chart-empty">Sin referencias suficientes</div>}
         </div>}
         {showBaseMarket && <dl class="finance-market-values">
-          {visibleMarketCards.map((card) => <div class:list={[card.value === '—' && "is-null"]}><dt>{card.label}</dt><dd>{card.value}</dd></div>)}
+          {visibleMarketCards.map((card) => <div class:list={[card.value === '—' && "is-null", card.className]}><dt>{card.label}</dt><dd>{card.value}</dd>{card.note && <dd class="finance-market-note">{card.note}</dd>}</div>)}
         </dl>}
         {showDlcMarket && (
           <div class="chart-visual-card chart-visual-card-dlc">

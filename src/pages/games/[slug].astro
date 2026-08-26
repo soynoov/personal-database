@@ -15,6 +15,7 @@ import GameDetailMetacritic from '../../components/game-detail/GameDetailMetacri
 import { buildGameCoverUrl, buildGameHeroUrl } from '../../lib/game-cover-url';
 import {
   formatEuro,
+  getPurchasePriceComparison,
   getGameValueMetrics,
   isAcquiredDlc,
 } from '../../lib/game-finance';
@@ -132,6 +133,23 @@ const launchPrice = game.precio_salida === null || game.precio_salida === undefi
 const historicLow = game.precio_minimo_historico === null || game.precio_minimo_historico === undefined
   ? null
   : Number(game.precio_minimo_historico);
+const purchasePriceComparison = getPurchasePriceComparison(paidUnitPrice, launchPrice);
+const priceComparisonCard = purchasePriceComparison
+  ? {
+      label: 'Rebaja conseguida',
+      value: purchasePriceComparison.direction === 'discount'
+        ? `${purchasePriceComparison.percent.toLocaleString('es-ES', { maximumFractionDigits: 1 })}% más barato`
+        : purchasePriceComparison.direction === 'premium'
+          ? `${purchasePriceComparison.percent.toLocaleString('es-ES', { maximumFractionDigits: 1 })}% por encima`
+          : 'Sin rebaja',
+      note: purchasePriceComparison.direction === 'discount'
+        ? `vs. precio de salida · ${formatCurrency(purchasePriceComparison.amountPerUnit)} por copia`
+        : purchasePriceComparison.direction === 'premium'
+          ? `vs. precio de salida · ${formatCurrency(purchasePriceComparison.amountPerUnit)} extra por copia`
+          : 'Mismo precio de salida',
+      className: purchasePriceComparison.direction === 'discount' ? 'is-saving' : '',
+    }
+  : null;
 const moneyChartPoints = [
   { label: 'Salida', value: launchPrice, color: '#7f758d' },
   { label: 'Compra', value: paidUnitPrice, color: '#b792e5' },
@@ -141,6 +159,7 @@ const moneyChartPoints = [
 const moneyChartPayload = { type: 'market-comparison', points: moneyChartPoints, seriesLabel: 'Precio', metric: 'currency' };
 const pendingDlcMarketValue = sumKnown(pendingDlcs, 'precio_actual');
 const marketCards = [
+  ...(priceComparisonCard ? [priceComparisonCard] : []),
   { label: 'Pagado / copia', value: formatCurrency(paidUnitPrice, '—') },
   { label: 'Precio actual', value: formatCurrency(currentPrice, '—') },
   { label: 'Precio de salida', value: formatCurrency(launchPrice, '—') },
@@ -178,7 +197,7 @@ const summaryCards = [
   { label: 'Estado', value: formatValue(game.estado), note: 'Actual', className: statusClass },
   {
     label: 'Logros', value: achievements,
-    note: achievementProgress === null ? 'Sin datos' : `${achievementProgress.toFixed(0)}% completado`,
+    note: achievementProgress === null ? 'Sin registrar' : `${achievementProgress.toFixed(0)}% completado`,
     className: achievementProgress === null ? '' : 'detail-item-achievements', progress: achievementProgress,
   },
   {
@@ -188,7 +207,7 @@ const summaryCards = [
   },
   { label: 'DLCs', value: dlcTotal > 0 ? String(dlcTotal) : '-', note: dlcTotal > 0 ? 'Registrados' : 'Sin DLCs' },
 ];
-const hasOverviewDetails = summaryCards.some((card) => card.label !== 'Estado' && card.value !== '-');
+const hasOverviewDetails = true; // Estado y Logros forman siempre el resumen mínimo.
 
 const start = game.fecha_inicio ? new Date(`${game.fecha_inicio}T00:00:00`) : null;
 const end = game.fecha_fin ? new Date(`${game.fecha_fin}T00:00:00`) : null;
