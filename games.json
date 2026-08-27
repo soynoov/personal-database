@@ -1170,7 +1170,7 @@
     "solo": true,
     "hltb": 5.6,
     "cover_url": "https://howlongtobeat.com/games/151136_Mini_Airways.jpg",
-    "steam_appid": 2554700,
+    "steam_appid": 2289650,
     "generos": [
       "Casual",
       "Indie",
@@ -1180,9 +1180,7 @@
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
-    "tags": [
-      "free-to-play"
-    ],
+    "tags": [],
     "hltb_breakdown": {
       "main": 5.6,
       "main_plus": 20,
