@@ -99,6 +99,20 @@ const gamesPath = existsSync(localGamesPath) ? localGamesPath : parentGamesPath;
 const productionGamesPath = "personal-database/games.json";
 const gamesVersions = new WeakMap<LocalGame[], string | null>();
 
+function applyGameDataMigrations(games: LocalGame[]) {
+  return games.map((game) => {
+    if (game.titulo !== "Mini Airways") return game;
+
+    return {
+      ...game,
+      steam_appid: 2289650,
+      tags: (game.tags ?? []).filter(
+        (tag) => String(tag).trim().toLowerCase() !== "free-to-play",
+      ),
+    };
+  });
+}
+
 export class GamesVersionConflictError extends Error {
   constructor() {
     super('La biblioteca cambió mientras editabas.');
@@ -116,7 +130,7 @@ export function hasProductionGameStorage() {
 export async function readBundledGames() {
   const raw = await readFile(gamesPath, "utf8");
   const normalized = raw.replace(/^\uFEFF/, "");
-  return JSON.parse(normalized) as LocalGame[];
+  return applyGameDataMigrations(JSON.parse(normalized) as LocalGame[]);
 }
 
 function toStrongBlobEtag(etag: string) {
@@ -150,7 +164,9 @@ export async function readGames() {
   }
 
   const raw = await new Response(result.stream).text();
-  const games = JSON.parse(raw.replace(/^\uFEFF/, "")) as LocalGame[];
+  const games = applyGameDataMigrations(
+    JSON.parse(raw.replace(/^\uFEFF/, "")) as LocalGame[],
+  );
   // Las respuestas comprimidas pueden presentar el ETag como débil (`W/`).
   // Blob espera el identificador fuerte equivalente al procesar `ifMatch`.
   gamesVersions.set(games, toStrongBlobEtag(result.blob.etag));
