@@ -1,9 +1,10 @@
 # Design QA — Organización de la home
 
 - Source visual truth: `C:\Users\heroy\AppData\Local\Temp\codex-clipboard-62674017-9658-422e-9855-14c617ba79dc.png`
-- Implementation screenshot: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\home-final-1440.png`
-- Responsive evidence: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\home-final-390.png`
-- Side-by-side comparison: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\home-reference-vs-final.png`
+- Implementation screenshot: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\home-nav-final-1440.png`
+- Responsive evidence: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\home-nav-final-390.png`
+- Side-by-side comparison: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\home-reference-vs-nav-final.png`
+- Focused navigation evidence: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\home-nav-focus.png`
 - Viewports: 1440 × 1000 CSS px desktop and 390 × 844 CSS px mobile; devicePixelRatio 1.
 - Source dimensions: 589 × 547 px. The source is a scaled desktop wireframe rather than a literal 589 px responsive viewport, so the final desktop capture was proportionally reduced to 589 px wide and top-aligned for structural comparison.
 - State: dark theme, catalog cards active, no filters selected.
@@ -16,7 +17,7 @@ The implementation follows the four regions in the sketch: a full-width catalog 
 
 ## Focused comparison evidence
 
-The side-by-side image makes the key alignment visible at one glance: both headers span the navigation and content columns; both navigation rails align with the top of Filters; and both Catalog headings begin directly above the first cover row. A separate focused crop was unnecessary because the source is itself a low-fidelity organizational sketch and does not define detailed component styling.
+The side-by-side image makes the key alignment visible at one glance: both headers span the navigation and content columns; both navigation rails align with the top of Filters; and both Catalog headings begin directly above the first cover row. The focused crop verifies the requested navigation revision: a 250 px rail, 60 px rows, 36 px icon containers, 21 px Tabler glyphs, and a higher-contrast active state.
 
 ## Required fidelity surfaces
 
@@ -30,7 +31,9 @@ The side-by-side image makes the key alignment visible at one glance: both heade
 
 1. Baseline: P1 — the hero occupied only the content column while the sidebar stretched beside it, contradicting the sketch's full-width summary and below-header navigation. P2 — Filters and Catalog had no visible section titles.
 2. First implementation: moved the summary across both columns, compacted and reordered the navigation, and added section headings. P2 — the catalog still rendered three columns at desktop because the cards cascade overrode the home layout.
-3. Final implementation: placed the desktop grid override in the cards layer, producing four equal columns; verified 1440 px desktop and 390 px mobile, search, view switching, and browser console.
+3. Layout implementation: placed the desktop grid override in the cards layer, producing four equal columns; verified 1440 px desktop and 390 px mobile, search, view switching, and browser console.
+4. User follow-up: P2 — the compact 164 px navigation rail and small unframed icons lacked the scale and legibility of the previous navigation.
+5. Final implementation: restored the rail to 250 px, increased row height and label size, and gave every icon a larger high-contrast container with distinct hover and active states; reverified desktop, mobile, and browser console.
 
 ## Findings
 
