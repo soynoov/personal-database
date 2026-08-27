@@ -173,6 +173,42 @@ const PROFITABILITY_QUICK_FILTERS: Record<string, CatalogGame['rentabilidad']> =
   amortized: 'amortized',
 };
 const DEFAULT_SORT = 'horas-desc';
+type SortDirection = 'asc' | 'desc';
+
+const compareText = (a: unknown, b: unknown, direction: SortDirection): number => {
+  const result = String(a ?? '').localeCompare(String(b ?? ''), 'es', {
+    numeric: true,
+    sensitivity: 'base',
+  });
+  return direction === 'asc' ? result : -result;
+};
+
+const compareNumbers = (a: unknown, b: unknown, direction: SortDirection): number => {
+  const left = Number(a);
+  const right = Number(b);
+  const leftMissing = a == null || a === '' || !Number.isFinite(left);
+  const rightMissing = b == null || b === '' || !Number.isFinite(right);
+  if (leftMissing && rightMissing) return 0;
+  if (leftMissing) return 1;
+  if (rightMissing) return -1;
+  return direction === 'asc' ? left - right : right - left;
+};
+
+const compareCatalogGames = (a: CatalogGame, b: CatalogGame, sort: string): number => {
+  const [key, rawDirection] = sort.split('-');
+  const direction: SortDirection = rawDirection === 'asc' ? 'asc' : 'desc';
+  if (key === 'estado') return compareText(normalizeStatus(a.estado), normalizeStatus(b.estado), direction);
+  if (key === 'launcher') return compareText(a.launcher, b.launcher, direction);
+  if (key === 'plataforma') return compareText(a.plataforma, b.plataforma, direction);
+  if (key === 'horas') return compareNumbers(a.horas, b.horas, direction);
+  if (key === 'precio') {
+    const leftPrice = hasFreeToPlayTag(a) ? 0 : a.precio_pagado;
+    const rightPrice = hasFreeToPlayTag(b) ? 0 : b.precio_pagado;
+    return compareNumbers(leftPrice, rightPrice, direction);
+  }
+  if (key === 'lanzamiento') return compareNumbers(a.lanzamiento, b.lanzamiento, direction);
+  return compareText(a.titulo, b.titulo, direction);
+};
 
 // ─── Constructores de DOM ─────────────────────────────────────────────────────
 
@@ -220,7 +256,25 @@ export function initCatalog(allGames: CatalogGame[]): void {
     activeFilterPills: el<HTMLElement>('#active-filter-pills'),
     quickFilters: Array.from(document.querySelectorAll<HTMLElement>('[data-quick-filter]')),
     viewButtons: Array.from(document.querySelectorAll<HTMLElement>('[data-view]')),
+    tableSortButtons: Array.from(document.querySelectorAll<HTMLButtonElement>('[data-table-sort]')),
   };
+
+  const modalIsolationTargets = Array.from(document.querySelectorAll<HTMLElement>([
+    '.home-catalog-hero',
+    '.desktop-sidebar',
+    '#cards-shell',
+    '#table-shell',
+    '.catalog-filters-top',
+    '.mobile-sort-bar',
+    '.mobile-tab-bar',
+    '#active-filter-pills',
+    '.panel-subtoolbar',
+    '.legend-app',
+    '.mobile-bottom-nav',
+    '.mobile-drawer',
+  ].join(',')));
+  const previousAriaHidden = new Map<HTMLElement, string | null>();
+  let modalIsolationActive = false;
 
   // Restaurar params de URL
   const params = new URLSearchParams(window.location.search);
@@ -260,9 +314,28 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
   const usesMobileFilterSheet = (): boolean => window.matchMedia('(max-width: 820px)').matches;
 
+  const setModalIsolation = (active: boolean): void => {
+    if (active === modalIsolationActive) return;
+    modalIsolationActive = active;
+    modalIsolationTargets.forEach((target) => {
+      if (active) {
+        previousAriaHidden.set(target, target.getAttribute('aria-hidden'));
+        target.inert = true;
+        target.setAttribute('aria-hidden', 'true');
+        return;
+      }
+      target.inert = false;
+      const previous = previousAriaHidden.get(target);
+      if (previous == null) target.removeAttribute('aria-hidden');
+      else target.setAttribute('aria-hidden', previous);
+    });
+    if (!active) previousAriaHidden.clear();
+  };
+
   const syncFilterViewportState = (): void => {
     const mobileSheetOpen = mobileExtraFiltersOpen && usesMobileFilterSheet();
     document.body.style.overflow = mobileSheetOpen ? 'hidden' : '';
+    setModalIsolation(mobileSheetOpen);
 
     if (mobileSheetOpen) {
       elements.mobileExtraFilters?.setAttribute('role', 'dialog');
@@ -340,11 +413,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
           matchesModeFilter(game, filters.modo)
         );
       })
-      .sort((a, b) => {
-        if (filters.sort === 'horas-desc') return Number(b.horas ?? -1) - Number(a.horas ?? -1);
-        if (filters.sort === 'lanzamiento-desc') return Number(b.lanzamiento ?? -1) - Number(a.lanzamiento ?? -1);
-        return String(a.titulo).localeCompare(String(b.titulo), 'es');
-      });
+      .sort((a, b) => compareCatalogGames(a, b, filters.sort));
 
     elements.results.forEach((result) => { result.textContent = String(filtered.length); });
     const mobileSubEl = document.querySelector('#mobile-topbar-sub');
@@ -359,6 +428,11 @@ export function initCatalog(allGames: CatalogGame[]): void {
     const activeFilterEntries = Object.entries(filters).filter(([key, value]) => key !== 'sort' && value);
     const hasCustomSort = filters.sort !== DEFAULT_SORT;
     elements.reset.hidden = activeFilterEntries.length === 0 && !hasCustomSort;
+    if (elements.mobileReset) {
+      const resetDisabled = activeFilterEntries.length === 0 && !hasCustomSort;
+      elements.mobileReset.disabled = resetDisabled;
+      elements.mobileReset.setAttribute('aria-disabled', resetDisabled ? 'true' : 'false');
+    }
     const mobileFilterCount = activeFilterEntries.filter(([key]) => key !== 'search').length;
     if (elements.mobileFilterCount) {
       elements.mobileFilterCount.textContent = String(mobileFilterCount);
@@ -423,6 +497,22 @@ export function initCatalog(allGames: CatalogGame[]): void {
       const chipActive = isQuickChipActive((chip as HTMLElement).dataset.quickFilter ?? '', filters);
       chip.classList.toggle('is-active', chipActive);
       chip.setAttribute('aria-pressed', chipActive ? 'true' : 'false');
+    });
+
+    const [activeSortKey, activeSortDirection] = filters.sort.split('-');
+    elements.tableSortButtons.forEach((button) => {
+      const active = button.dataset.tableSort === activeSortKey;
+      const label = button.querySelector('span')?.textContent?.trim() ?? 'columna';
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+      button.setAttribute(
+        'aria-label',
+        active
+          ? `Ordenado por ${label}, ${activeSortDirection === 'asc' ? 'ascendente' : 'descendente'}. Cambiar dirección`
+          : `Ordenar por ${label}`,
+      );
+      if (active) button.dataset.direction = activeSortDirection;
+      else delete button.dataset.direction;
     });
 
     // URL params
@@ -588,7 +678,23 @@ export function initCatalog(allGames: CatalogGame[]): void {
     render();
   });
 
+  elements.tableSortButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const sortKey = button.dataset.tableSort;
+      if (!sortKey) return;
+      const [currentKey, currentDirection] = elements.sort.value.split('-');
+      const defaultDirection = button.dataset.defaultDirection === 'asc' ? 'asc' : 'desc';
+      const nextDirection = currentKey === sortKey
+        ? (currentDirection === 'asc' ? 'desc' : 'asc')
+        : defaultDirection;
+      elements.sort.value = `${sortKey}-${nextDirection}`;
+      if (elements.mobileSort) elements.mobileSort.value = elements.sort.value;
+      render();
+    });
+  });
+
   const resetFilters = (): void => {
+    const restoreFilterToggle = mobileExtraFiltersOpen;
     elements.search.value = '';
     elements.estado.value = '';
     elements.launcher.value = '';
@@ -601,6 +707,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     elements.rentabilidad.value = '';
     mobileExtraFiltersOpen = false;
     render();
+    if (restoreFilterToggle) elements.mobileFilterToggle?.focus();
   };
 
   elements.reset.addEventListener('click', resetFilters);
@@ -653,7 +760,9 @@ export function initCatalog(allGames: CatalogGame[]): void {
   elements.mobileFilterToggle?.addEventListener('click', () => {
     mobileExtraFiltersOpen = !mobileExtraFiltersOpen;
     render();
-    if (mobileExtraFiltersOpen && usesMobileFilterSheet()) elements.mobileFilterClose?.focus();
+    if (mobileExtraFiltersOpen && usesMobileFilterSheet()) {
+      requestAnimationFrame(() => elements.mobileFilterClose?.focus());
+    }
   });
 
   elements.mobileFilterBackdrop?.addEventListener('click', closeMobileFilters);
@@ -661,10 +770,40 @@ export function initCatalog(allGames: CatalogGame[]): void {
   elements.mobileFilterApply?.addEventListener('click', closeMobileFilters);
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && mobileExtraFiltersOpen) closeMobileFilters();
+    if (!mobileExtraFiltersOpen || !usesMobileFilterSheet()) return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      closeMobileFilters();
+      return;
+    }
+    if (event.key !== 'Tab' || !elements.mobileExtraFilters) return;
+    const focusable = Array.from(elements.mobileExtraFilters.querySelectorAll<HTMLElement>(
+      'button:not([disabled]), input:not([disabled]), select:not([disabled]), [href], [tabindex]:not([tabindex="-1"])',
+    )).filter((item) => !item.hasAttribute('hidden') && item.getClientRects().length > 0);
+    if (focusable.length === 0) {
+      event.preventDefault();
+      elements.mobileExtraFilters.focus();
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   });
 
-  window.addEventListener('resize', syncFilterViewportState);
+  window.addEventListener('resize', () => {
+    if (mobileExtraFiltersOpen && !usesMobileFilterSheet()) {
+      mobileExtraFiltersOpen = false;
+      render();
+      return;
+    }
+    syncFilterViewportState();
+  });
 
   elements.viewButtons.forEach((button) => {
     button.addEventListener('click', () => {

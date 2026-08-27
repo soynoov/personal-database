@@ -217,13 +217,15 @@
 }
 
 .legend-chip {
+  --legend-accent: rgba(226, 219, 230, 0.68);
   display: inline-flex;
   align-items: center;
   min-height: 30px;
   padding: 0.34rem 0.72rem;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: transparent;
+  border: 1px solid rgba(197, 181, 253, 0.14);
+  background: rgba(255, 255, 255, 0.025);
+  color: rgba(229, 223, 235, 0.72);
   cursor: pointer;
   font-family: var(--font-body);
   font-size: 0.82rem;
@@ -231,24 +233,32 @@
     transform 140ms ease,
     box-shadow 180ms ease,
     border-color 180ms ease,
-    filter 180ms ease;
+    background 180ms ease,
+    color 180ms ease;
 }
 
 .legend-chip:hover,
 .legend-chip:focus-visible {
   transform: translateY(-1px);
-  filter: brightness(1.06);
+  border-color: rgba(197, 181, 253, 0.28);
+  background: rgba(255, 255, 255, 0.045);
+  color: #f4eef8;
 }
 
 .legend-chip.is-active {
+  border-color: rgba(167, 139, 250, 0.48);
+  background: rgba(124, 58, 237, 0.16);
+  color: #f7f2ff;
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.08),
-    0 10px 26px rgba(0, 0, 0, 0.28);
+    0 0 0 1px rgba(167, 139, 250, 0.08),
+    0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .legend-dot {
-  opacity: 0.42;
-  filter: saturate(0.72) brightness(0.84);
+  background: var(--legend-accent);
+  color: var(--legend-accent);
+  opacity: 0.7;
+  filter: saturate(0.82) brightness(0.92);
   transition:
     opacity 180ms ease,
     filter 180ms ease,
@@ -266,57 +276,39 @@
 }
 
 .legend-chip-completed {
-  border-color: var(--status-completed-line);
-  background: var(--status-completed-bg);
-  color: var(--status-completed-fg);
+  --legend-accent: var(--status-completed-fg);
 }
 
 .legend-chip-playing {
-  border-color: var(--status-playing-line);
-  background: var(--status-playing-bg);
-  color: var(--status-playing-fg);
+  --legend-accent: var(--status-playing-fg);
 }
 
 .legend-chip-pending {
-  border-color: var(--status-pending-line);
-  background: var(--status-pending-bg);
-  color: var(--status-pending-fg);
+  --legend-accent: var(--status-pending-fg);
 }
 
 .legend-chip-free {
-  border-color: var(--tag-free-line);
-  background: var(--tag-free-bg);
-  color: var(--tag-free-fg);
+  --legend-accent: var(--tag-free-fg);
 }
 
 .legend-chip-amortized {
-  border-color: var(--price-profit-line);
-  background: var(--price-profit-bg);
-  color: var(--price-profit-fg);
+  --legend-accent: var(--price-profit-fg);
 }
 
 .legend-chip-recurring {
-  border-color: var(--status-recurring-line);
-  background: var(--status-recurring-bg);
-  color: var(--status-recurring-fg);
+  --legend-accent: var(--status-recurring-fg);
 }
 
 .legend-chip-early {
-  border-color: var(--tag-early-line);
-  background: var(--tag-early-bg);
-  color: var(--tag-early-fg);
+  --legend-accent: var(--tag-early-fg);
 }
 
 .legend-chip-long {
-  border-color: var(--hltb-long-line);
-  background: var(--hltb-long-bg);
-  color: #e2cfff;
+  --legend-accent: #e2cfff;
 }
 
 .legend-chip-short {
-  border-color: var(--hltb-short-line);
-  background: var(--hltb-short-bg);
-  color: #ffcaca;
+  --legend-accent: #ffcaca;
 }
 
 .cards {

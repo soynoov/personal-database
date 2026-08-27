@@ -47,9 +47,9 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
       </div>
     </div>
 
-    <button class='catalog-filter-backdrop' id='catalog-filter-backdrop' type='button' aria-label='Cerrar filtros' hidden></button>
+    <button class='catalog-filter-backdrop' id='catalog-filter-backdrop' type='button' aria-hidden='true' tabindex='-1' hidden></button>
 
-    <div class='catalog-filters-selects' id='mobile-extra-filters'>
+    <div class='catalog-filters-selects' id='mobile-extra-filters' tabindex='-1'>
       <div class='catalog-filter-sheet-head'>
         <div>
           <span class='section-eyebrow'>Catálogo</span>
@@ -91,7 +91,18 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
         <label for='sort'>Orden</label>
         <select id='sort'>
           <option value='titulo-asc'>A-Z</option>
+          <option value='titulo-desc' hidden>Z-A</option>
+          <option value='estado-asc' hidden>Estado A-Z</option>
+          <option value='estado-desc' hidden>Estado Z-A</option>
+          <option value='launcher-asc' hidden>Launcher A-Z</option>
+          <option value='launcher-desc' hidden>Launcher Z-A</option>
+          <option value='plataforma-asc' hidden>Plataforma A-Z</option>
+          <option value='plataforma-desc' hidden>Plataforma Z-A</option>
+          <option value='horas-asc' hidden>Menos horas</option>
           <option value='horas-desc' selected>Horas</option>
+          <option value='precio-asc' hidden>Menor precio</option>
+          <option value='precio-desc' hidden>Mayor precio</option>
+          <option value='lanzamiento-asc' hidden>Más antiguo</option>
           <option value='lanzamiento-desc'>Reciente</option>
         </select>
       </div>
@@ -122,7 +133,7 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
         </select>
       </div>
       <div class='catalog-filter-sheet-actions'>
-        <button class='catalog-filter-reset-mobile' id='reset-filters-mobile' type='button'>Limpiar</button>
+        <button class='catalog-filter-reset-mobile' id='reset-filters-mobile' type='button' disabled>Limpiar</button>
         <button class='catalog-filter-apply' id='catalog-filter-apply' type='button'>
           Ver <strong data-results-count>{totalGames}</strong> juegos
         </button>
@@ -134,7 +145,18 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
     <label for='mobile-sort'>Ordenar:</label>
     <select id='mobile-sort' aria-label='Ordenar catálogo'>
       <option value='titulo-asc'>A-Z</option>
+      <option value='titulo-desc' hidden>Z-A</option>
+      <option value='estado-asc' hidden>Estado A-Z</option>
+      <option value='estado-desc' hidden>Estado Z-A</option>
+      <option value='launcher-asc' hidden>Launcher A-Z</option>
+      <option value='launcher-desc' hidden>Launcher Z-A</option>
+      <option value='plataforma-asc' hidden>Plataforma A-Z</option>
+      <option value='plataforma-desc' hidden>Plataforma Z-A</option>
+      <option value='horas-asc' hidden>Menos horas</option>
       <option value='horas-desc' selected>Horas jugadas</option>
+      <option value='precio-asc' hidden>Menor precio</option>
+      <option value='precio-desc' hidden>Mayor precio</option>
+      <option value='lanzamiento-asc' hidden>Más antiguo</option>
       <option value='lanzamiento-desc'>Más reciente</option>
     </select>
     <span class='mobile-results-count'><strong data-results-count>{totalGames}</strong> juegos</span>
@@ -159,7 +181,7 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
     <div class='muted'>
       <strong id='results-count' data-results-count>{totalGames}</strong> juegos
     </div>
-    <div class='view-toggle' role='group' aria-label='Modo de catalogo'>
+    <div class='view-toggle' role='group' aria-label='Modo de catálogo'>
       <button
         class:list={['view-toggle-button', initialView === 'cards' && 'is-active']}
         id='view-cards'

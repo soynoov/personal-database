@@ -319,6 +319,13 @@
       color: #d8d1df;
     }
 
+    .catalog-filter-reset-mobile:disabled {
+      cursor: not-allowed;
+      color: rgba(216, 209, 223, 0.38);
+      border-color: rgba(201, 168, 255, 0.08);
+      background: rgba(255, 255, 255, 0.015);
+    }
+
     .catalog-filter-apply {
       border: 1px solid rgba(181, 138, 245, 0.62);
       background: #7545c5;

@@ -8,6 +8,7 @@ import HomeCatalogHero from '../components/HomeCatalogHero.astro';
 import menuIcon from '@tabler/icons/outline/menu-2.svg?url';
 import gridIcon from '@tabler/icons/outline/layout-grid.svg?url';
 import listIcon from '@tabler/icons/outline/list.svg?url';
+import sortIcon from '@tabler/icons/outline/arrow-down.svg?url';
 import '../styles/home-layout.css';
 import { toCatalogGame } from '../lib/catalog-game';
 import { getStats, getUniqueValues, readGames } from '../lib/local-games';
@@ -47,6 +48,15 @@ const formatMoney = (value: number) =>
 const formatNumber = (value: number) =>
   new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1 }).format(value);
 const initialView = Astro.url.searchParams.get('view') === 'table' ? 'table' : 'cards';
+const tableColumns = [
+  { key: 'titulo', label: 'Juego', direction: 'asc' },
+  { key: 'estado', label: 'Estado', direction: 'asc' },
+  { key: 'launcher', label: 'Launcher', direction: 'asc' },
+  { key: 'plataforma', label: 'Plataforma', direction: 'asc' },
+  { key: 'horas', label: 'Horas', direction: 'desc' },
+  { key: 'precio', label: 'Pagado', direction: 'desc' },
+  { key: 'lanzamiento', label: 'Lanzamiento', direction: 'desc' },
+] as const;
 ---
 
 <BaseLayout title='Personal Database'>
@@ -102,7 +112,7 @@ const initialView = Astro.url.searchParams.get('view') === 'table' ? 'table' : '
               <div><div class='eyebrow'>Personal Database</div></div>
             </div>
           </div>
-          <div class='pc-hero-copy'><h1>Catalogo personal</h1></div>
+          <div class='pc-hero-copy'><h1>Catálogo personal</h1></div>
 
           <section class='stats stats-bento pc-stats-bento' aria-label='Resumen'>
             <article class='stat'>
@@ -186,14 +196,20 @@ const initialView = Astro.url.searchParams.get('view') === 'table' ? 'table' : '
       <!-- Vista tabla -->
       <section class='inventory-table-shell' id='table-shell' hidden={initialView !== 'table'}>
         <div class='inventory-table'>
-          <div class='inventory-table-head'>
-            <span>Juego</span>
-            <span>Estado</span>
-            <span>Launcher</span>
-            <span>Plataforma</span>
-            <span>Horas</span>
-            <span>Pagado</span>
-            <span>Lanzamiento</span>
+          <div class='inventory-table-head' aria-label='Ordenar tabla por columna'>
+            {tableColumns.map((column) => (
+              <button
+                class='inventory-sort-button'
+                type='button'
+                data-table-sort={column.key}
+                data-default-direction={column.direction}
+                aria-pressed='false'
+                aria-label={`Ordenar por ${column.label}`}
+              >
+                <span>{column.label}</span>
+                <img src={sortIcon} alt='' aria-hidden='true' />
+              </button>
+            ))}
           </div>
           <div class='inventory-table-body' id='table-body'></div>
         </div>

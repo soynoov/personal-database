@@ -439,7 +439,8 @@
       rgba(15, 22, 35, 0.98),
       rgba(10, 17, 29, 0.99)
     );
-    overflow: hidden;
+    overflow: visible;
+    isolation: isolate;
   }
 
   .inventory-table {
@@ -447,22 +448,22 @@
   }
 
   .inventory-table-head {
-    padding: 1rem 1.1rem;
-    font-size: 0.76rem;
+    padding: 0.7rem 1.1rem;
+    font-size: 0.72rem;
     letter-spacing: 0.08em;
     color: #aeb9c7;
     background: rgba(255, 255, 255, 0.018);
   }
 
   .inventory-row {
-    padding: 1rem 1.1rem;
+    padding: 0.58rem 1.1rem;
   }
 
   .inventory-row .badge {
-    min-height: 34px;
-    padding: 0.32rem 0.72rem;
-    border-radius: 10px;
-    font-size: 0.81rem;
+    min-height: 28px;
+    padding: 0.26rem 0.58rem;
+    border-radius: 9px;
+    font-size: 0.72rem;
   }
 
   .inventory-cell:nth-child(4) .badge {

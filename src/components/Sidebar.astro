@@ -26,7 +26,7 @@ const mobileNavigation = [
   { key: 'catalogo', href: '/', label: 'Juegos', icon: catalogIcon },
   { key: 'ruleta', href: '/ruleta/', label: 'Ruleta', icon: rouletteIcon },
   { key: 'estadisticas', href: '/estadisticas/', label: 'Estadísticas', icon: statisticsIcon },
-  { key: 'criticas', href: '/criticas/', label: 'Críticas', icon: reviewsIcon },
+  { key: 'criticas', href: '/criticas/', label: 'Metacrítica', icon: reviewsIcon },
 ] as const;
 
 const estadoColor = (estado: string): string => {
@@ -188,7 +188,7 @@ const estadoColor = (estado: string): string => {
 </nav>
 
 <!-- Desktop Sidebar -->
-<aside class:list={['desktop-sidebar', 'panel', compact && 'is-compact']} aria-label='Navegacion principal'>
+<aside class:list={['desktop-sidebar', 'panel', compact && 'is-compact']} aria-label='Navegación principal'>
   <div class='desktop-sidebar-brand'>
     <div class='desktop-sidebar-brandmark' aria-hidden='true'>
       <img src='/logo-mark.png' alt='' loading='eager' decoding='async' />
@@ -203,7 +203,7 @@ const estadoColor = (estado: string): string => {
       <span class='desktop-nav-icon' aria-hidden='true'>
         <TablerIcon src={catalogIcon} />
       </span>
-      <span>Catalogo</span>
+      <span>Catálogo</span>
     </a>
     <a class:list={['desktop-nav-item', active === 'ruleta' && 'is-active']} aria-current={active === 'ruleta' ? 'page' : undefined} href='/ruleta/'>
       <span class='desktop-nav-icon' aria-hidden='true'>
@@ -215,7 +215,7 @@ const estadoColor = (estado: string): string => {
       <span class='desktop-nav-icon' aria-hidden='true'>
         <TablerIcon src={statisticsIcon} />
       </span>
-      <span>Estadisticas</span>
+      <span>Estadísticas</span>
     </a>
     <a class:list={['desktop-nav-item', active === 'criticas' && 'is-active']} aria-current={active === 'criticas' ? 'page' : undefined} href='/criticas/'>
       <span class='desktop-nav-icon' aria-hidden='true'>

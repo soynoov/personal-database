@@ -48,3 +48,23 @@ No actionable P0/P1/P2 findings remain.
 - P3: the source is an organizational wireframe, so exact radii, colors, and typeface are intentionally inherited from the established application design system.
 
 final result: passed
+
+## Mejora posterior a la auditoría — 2026-08-28
+
+- Restricción aceptada: no modificar la estructura, el estilo ni el comportamiento de las tarjetas.
+- Evidencia de catálogo: `C:\Users\heroy\.codex\visualizations\2026\08\26\01a04033-fe22-71e2-846e-aafd7d1a0250\home-audit-2026-08-28\05-desktop-catalog-improved.png`.
+- Evidencia de tabla: `C:\Users\heroy\.codex\visualizations\2026\08\26\01a04033-fe22-71e2-846e-aafd7d1a0250\home-audit-2026-08-28\06-desktop-table-improved.png`.
+- Evidencia de cabecera sticky: `C:\Users\heroy\.codex\visualizations\2026\08\26\01a04033-fe22-71e2-846e-aafd7d1a0250\home-audit-2026-08-28\09-desktop-table-sticky.png`.
+- Evidencia móvil: `C:\Users\heroy\.codex\visualizations\2026\08\26\01a04033-fe22-71e2-846e-aafd7d1a0250\home-audit-2026-08-28\07-mobile-catalog-improved.png`.
+- Evidencia del diálogo: `C:\Users\heroy\.codex\visualizations\2026\08\26\01a04033-fe22-71e2-846e-aafd7d1a0250\home-audit-2026-08-28\08-mobile-filters-improved.png`.
+- La tabla usa filas de 82 px, miniaturas de 52 px, cabecera sticky y orden bidireccional en sus siete columnas.
+- El diálogo móvil aísla el fondo con `inert`, atrapa el foco, lo devuelve al disparador, elimina el cierre duplicado del árbol accesible y desactiva «Limpiar» sin filtros.
+- Los chips usan una base neutra, selección violeta y conservan el color semántico únicamente en el punto.
+- El título del hero se redujo aproximadamente un 10 %; las métricas ganaron contraste y tamaño.
+- El bloque interno de navegación lateral permanece sticky a 14 px del borde superior durante el scroll.
+- La última tarjeta puede desplazarse 112 px por encima de la barra inferior en un viewport de 390 × 844 px.
+- Ordenación verificada: `titulo-asc` comenzó por `2XKO` y `titulo-desc` por `Zenless Zone Zero`; ambos estados se conservaron en URL.
+- Axe 4.12.1: 0 violaciones WCAG A/AA, 21 reglas superadas y 1 comprobación manual de contraste por fondos degradados.
+- Build de Astro: correcto. Consola del navegador: sin errores.
+
+final result: passed
