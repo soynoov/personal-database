@@ -4,9 +4,11 @@ import Sidebar from '../components/Sidebar.astro';
 import CatalogFilters from '../components/CatalogFilters.astro';
 import CatalogGameCard from '../components/CatalogGameCard.astro';
 import GameCard from '../components/GameCard.astro';
+import HomeCatalogHero from '../components/HomeCatalogHero.astro';
 import menuIcon from '@tabler/icons/outline/menu-2.svg?url';
 import gridIcon from '@tabler/icons/outline/layout-grid.svg?url';
 import listIcon from '@tabler/icons/outline/list.svg?url';
+import '../styles/home-layout.css';
 import { toCatalogGame } from '../lib/catalog-game';
 import { getStats, getUniqueValues, readGames } from '../lib/local-games';
 import { getGameValueMetrics } from '../lib/game-finance';
@@ -36,18 +38,33 @@ const orderedDrawerEstados = [
 const activeGames = games.filter((g) => normalizeStatus(g.estado) === 'jugando').length;
 const completedGames = games.filter((g) => isCompletedStatus(g.estado)).length;
 const totalLibraryValue = games.reduce((sum, game) => sum + getGameValueMetrics(game).recordedSpend, 0);
+const totalAchievements = games.reduce((sum, game) => {
+  const achievements = Number(game.logros?.actual ?? 0);
+  return sum + (Number.isFinite(achievements) ? achievements : 0);
+}, 0);
 const formatMoney = (value: number) =>
   new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value);
+const formatNumber = (value: number) =>
+  new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1 }).format(value);
 const initialView = Astro.url.searchParams.get('view') === 'table' ? 'table' : 'cards';
 ---
 
 <BaseLayout title='Personal Database'>
-  <main class='shell shell-app shell-desktop-app'>
+  <main class='shell shell-app shell-desktop-app home-catalog'>
+
+    <HomeCatalogHero
+      totalGames={stats.total}
+      totalHours={formatNumber(stats.horas)}
+      totalSpend={formatMoney(totalLibraryValue)}
+      totalAchievements={totalAchievements}
+      initialView={initialView}
+    />
 
     <Sidebar
       orderedDrawerEstados={orderedDrawerEstados}
       plataformas={plataformas}
       launchers={launchers}
+      compact
     />
 
     <div class='desktop-main'>
@@ -159,6 +176,12 @@ const initialView = Astro.url.searchParams.get('view') === 'table' ? 'table' : '
 
       <!-- Grid de cards -->
       <section class='mock-catalog-results panel' id='cards-shell' hidden={initialView === 'table'}>
+        <div class='home-section-heading home-catalog-results-head'>
+          <div>
+            <span class='eyebrow'>Biblioteca</span>
+            <h2>Catálogo</h2>
+          </div>
+        </div>
         <section class='cards cards-bento mock-cards-grid' id='cards'>
           {initialCatalogGames.map((game, index) => (
             <CatalogGameCard game={game} eager={index < 6} />
@@ -168,6 +191,12 @@ const initialView = Astro.url.searchParams.get('view') === 'table' ? 'table' : '
 
       <!-- Vista tabla -->
       <section class='inventory-table-shell' id='table-shell' hidden={initialView !== 'table'}>
+        <div class='home-section-heading home-catalog-results-head'>
+          <div>
+            <span class='eyebrow'>Biblioteca</span>
+            <h2>Catálogo</h2>
+          </div>
+        </div>
         <div class='inventory-table'>
           <div class='inventory-table-head'>
             <span>Juego</span>

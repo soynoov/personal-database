@@ -1,0 +1,66 @@
+---
+import menuIcon from '@tabler/icons/outline/menu-2.svg?url';
+import gridIcon from '@tabler/icons/outline/layout-grid.svg?url';
+import listIcon from '@tabler/icons/outline/list.svg?url';
+import gamesIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
+import hoursIcon from '@tabler/icons/outline/clock.svg?url';
+import spendingIcon from '@tabler/icons/outline/wallet.svg?url';
+import achievementsIcon from '@tabler/icons/outline/trophy.svg?url';
+
+interface Props {
+  totalGames: number;
+  totalHours: string;
+  totalSpend: string;
+  totalAchievements: number;
+  initialView: 'cards' | 'table';
+}
+
+const { totalGames, totalHours, totalSpend, totalAchievements, initialView } = Astro.props;
+
+const metrics = [
+  { value: totalGames, label: 'Juegos', icon: gamesIcon, stat: 'total' },
+  { value: totalHours, label: 'Horas', icon: hoursIcon, stat: 'hours' },
+  { value: totalSpend, label: 'Gastado', icon: spendingIcon },
+  { value: totalAchievements, label: 'Logros', icon: achievementsIcon },
+];
+---
+
+<section class='home-catalog-hero panel' aria-labelledby='home-catalog-title'>
+  <div class='mobile-topbar'>
+    <button class='mobile-menu-button' id='mobile-drawer-open' type='button' aria-label='Abrir menú'>
+      <img src={menuIcon} alt='' aria-hidden='true' />
+    </button>
+    <div class='mobile-topbar-brand'>
+      <div>
+        <span class='mobile-topbar-name'>Catálogo</span>
+        <span class='mobile-topbar-sub' id='mobile-topbar-sub'>{totalGames} juegos</span>
+      </div>
+    </div>
+    <div class='mobile-topbar-actions'>
+      <button class:list={['mobile-topbar-btn', initialView === 'cards' && 'is-active']} type='button' data-view='cards' aria-pressed={initialView === 'cards' ? 'true' : 'false'} aria-label='Vista en cuadrícula'>
+        <img src={gridIcon} alt='' aria-hidden='true' />
+      </button>
+      <button class:list={['mobile-topbar-btn', initialView === 'table' && 'is-active']} type='button' data-view='table' aria-pressed={initialView === 'table' ? 'true' : 'false'} aria-label='Vista en lista'>
+        <img src={listIcon} alt='' aria-hidden='true' />
+      </button>
+    </div>
+  </div>
+
+  <div class='home-hero-desktop'>
+    <span class='eyebrow'>Personal Database</span>
+    <h1 id='home-catalog-title'>Catálogo personal</h1>
+    <dl class='home-hero-metrics' aria-label='Resumen del catálogo'>
+      {metrics.map((metric) => (
+        <div class='home-hero-metric'>
+          <dt>
+            <img src={metric.icon} alt='' aria-hidden='true' />
+            <span>{metric.label}</span>
+          </dt>
+          <dd data-stat-total={metric.stat === 'total' ? true : undefined} data-stat-hours={metric.stat === 'hours' ? true : undefined}>
+            {metric.value}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>

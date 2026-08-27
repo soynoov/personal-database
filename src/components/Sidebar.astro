@@ -17,9 +17,10 @@ interface Props {
   plataformas: string[];
   launchers: string[];
   active?: 'catalogo' | 'ruleta' | 'estadisticas' | 'criticas';
+  compact?: boolean;
 }
 
-const { orderedDrawerEstados, plataformas, launchers, active = 'catalogo' } = Astro.props;
+const { orderedDrawerEstados, plataformas, launchers, active = 'catalogo', compact = false } = Astro.props;
 
 const mobileNavigation = [
   { key: 'catalogo', href: '/', label: 'Juegos', icon: catalogIcon },
@@ -187,7 +188,7 @@ const estadoColor = (estado: string): string => {
 </nav>
 
 <!-- Desktop Sidebar -->
-<aside class='desktop-sidebar panel' aria-label='Navegacion principal'>
+<aside class:list={['desktop-sidebar', 'panel', compact && 'is-compact']} aria-label='Navegacion principal'>
   <div class='desktop-sidebar-brand'>
     <div class='desktop-sidebar-brandmark' aria-hidden='true'>
       <img src='/logo-mark.png' alt='' loading='eager' decoding='async' />
