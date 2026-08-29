@@ -7285,5 +7285,52 @@
       "Simulación"
     ],
     "steam_store_name": "Slime Rancher"
+  },
+  {
+    "titulo": "Palworld",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 0,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": 0,
+      "total": 75
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2026,
+    "modos": [
+      "solitario",
+      "cooperativo",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": null,
+    "steam_appid": 1623730,
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Indie",
+      "Rol"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": null,
+      "main_plus": null,
+      "completionist": null
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura",
+      "Indie",
+      "Rol"
+    ],
+    "steam_store_name": "Palworld"
   }
 ]
