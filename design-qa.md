@@ -1,70 +1,48 @@
-# Design QA — Organización de la home
+# Design QA — resultado de la ruleta
 
-- Source visual truth: `C:\Users\heroy\AppData\Local\Temp\codex-clipboard-62674017-9658-422e-9855-14c617ba79dc.png`
-- Implementation screenshot: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\home-navigation-tall-final-1440.png`
-- Responsive evidence: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\home-navigation-tall-final-390.png`
-- Side-by-side comparison: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\home-reference-vs-navigation-tall-final.png`
-- Focused navigation evidence: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\home-navigation-tall-focus.png`
-- Viewports: 1440 × 1000 CSS px desktop and 390 × 844 CSS px mobile; devicePixelRatio 1.
-- Source dimensions: 589 × 547 px. The source is a scaled desktop wireframe rather than a literal 589 px responsive viewport, so the final desktop capture was proportionally reduced to 589 px wide and top-aligned for structural comparison.
-- State: dark theme, catalog cards active, no filters selected.
-- Primary interactions tested: search for “Burgie” reduced the catalog to Burgie's Cozy Kitchen; cards/table switching preserved the filtered result.
-- Console errors checked: none in the final browser run.
-
-## Full-view comparison evidence
-
-The implementation follows the four regions in the sketch: a full-width catalog summary, a navigation rail beginning below it and extending through the full main-content row, a filters band at the top of the main column, and a catalog surface beneath. The handwritten “Filtros” and “Catálogo” labels are treated as wireframe annotations rather than rendered UI. The desktop catalog exposes four covers in the first row, while the mobile layout retains the existing two-column card interaction and bottom navigation.
-
-## Focused comparison evidence
-
-The side-by-side image makes the key alignment visible at one glance: both headers span the navigation and content columns, both navigation rails begin beside the filter area, and both catalog surfaces begin immediately below the filters. The focused crop verifies the requested navigation revision: a 250 px full-height rail, 60 px rows, 0.9 rem labels, 36 px icon containers, 21 px Tabler glyphs, and a higher-contrast active state.
-
-## Required fidelity surfaces
-
-- Fonts and typography: the existing product display and body families are retained. The sketch's handwritten labels were treated as annotations, not a requested font change; hierarchy and wrapping match their intended roles.
-- Spacing and layout rhythm: header, rail, filter band, catalog frame, four-column desktop grid, and two-column mobile grid are aligned without horizontal overflow.
-- Colors and visual tokens: the navigation rail now uses the same translucent near-black background and border treatment as the adjacent panels; violet is reserved for the active destination, while semantic filter colors remain intact.
-- Image quality and asset fidelity: existing real game covers and Tabler icons are used; no placeholder or generated imagery was introduced.
-- Copy and content: “Catálogo personal”, the four navigation destinations, filter controls, and live totals are present. The wireframe-only section labels are omitted. The header reports games, hours, recorded spend, and accumulated achievements.
-
-## Comparison history
-
-1. Baseline: P1 — the hero occupied only the content column while the sidebar stretched beside it, contradicting the sketch's full-width summary and below-header navigation. P2 — Filters and Catalog had no visible section titles.
-2. First implementation: moved the summary across both columns, compacted and reordered the navigation, and added section headings. P2 — the catalog still rendered three columns at desktop because the cards cascade overrode the home layout.
-3. Layout implementation: placed the desktop grid override in the cards layer, producing four equal columns; verified 1440 px desktop and 390 px mobile, search, view switching, and browser console.
-4. User follow-up: P2 — the compact 164 px navigation rail and small unframed icons lacked the scale and legibility of the previous navigation.
-5. Navigation revision: restored the rail to 250 px, increased row height and label size, and gave every icon a larger high-contrast container with distinct hover and active states.
-6. User clarification: P2 — the wireframe annotations “Filtros” and “Catálogo” had leaked into the interface; the navigation panel stopped after its links instead of occupying the full content height, and its labels were oversized.
-7. Layout and copy revision: removed the annotation headings from card, table, and filter surfaces; stretched the 250 px navigation rail through the full grid row; reduced its labels to 0.9 rem.
-8. User clarification: P2 — the full-height rail retained a violet-tinted background that did not match the adjacent panels.
-9. Final implementation: replaced the rail gradient with the same `rgba(13, 13, 19, 0.86)` background and border token used by the filter panel, retaining violet only for the active item; reverified desktop, mobile, and browser console.
+- Source visual truth: `C:\Users\heroy\.codex\generated_images\01a04d41-1a53-7900-807c-0b2698e6196e\exec-47828461-b3da-43f7-8613-094cbeafbafe.png`
+- Implementation screenshot: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\roulette-result-1361-viewport.png`
+- Mobile evidence: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\roulette-result-390-final.png`
+- Combined comparison: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\roulette-source-vs-implementation.png`
+- Viewport: 1361 × 1269 CSS px, device scale factor 1; secondary mobile check at 390 × 844 CSS px.
+- Pixels: source 1299 × 1211; implementation viewport 1361 × 1269. Both were normalized to 1299 × 1211 for the combined comparison.
+- State: result after a completed spin, dark theme, desktop and mobile.
 
 ## Findings
 
-No actionable P0/P1/P2 findings remain.
+No actionable P0, P1, or P2 issues remain.
+
+- Fonts and typography: the existing condensed display font and body font preserve the selected direction. Winner hierarchy, wrapping, line height, small kicker, metadata and button labels are legible at both tested breakpoints.
+- Spacing and layout rhythm: desktop uses the full result canvas, a wide hero, integrated metadata rail, three evenly grouped actions and the participant strip. Mobile stacks metadata and controls without horizontal overflow.
+- Colors and visual tokens: the near-black base, dark violet header, white display type and purple primary action match the selected direction and existing product tokens.
+- Image quality and asset fidelity: the implementation uses each selected game's real resolved hero and cover assets. Crops remain sharp and use `object-fit: cover`; no placeholder or code-drawn assets were introduced.
+- Copy and content: the final CTA is intentionally `Más información`, replacing the misleading `Jugar` label. The selected concept showed separate play and information actions, but the user clarified that the existing action already navigates to the technical game detail, so the duplicate action was removed.
+- Accessibility and interaction: the result region has useful heading structure; controls retain visible focus states and semantic link/button roles. `Más información` was tested against the selected winner route and opened `/games/star-wars-outlaws/`. `Volver a girar` restored the setup state.
+- Browser evidence: page content rendered, no Vite error overlay appeared, `window.__consoleErrors` returned `[]`, and neither the desktop nor mobile result had horizontal overflow.
+
+## Full-view comparison evidence
+
+The combined source/implementation image confirms the same editorial sequence: product header, result kicker, large outcome statement and winner, panoramic artwork, compact metadata rail, action row and participant covers. The implementation intentionally uses three actions instead of four following the user's clarification.
+
+## Focused-region evidence
+
+The action row and metadata rail were inspected in both desktop and mobile captures. A separate crop was unnecessary because all labels, icons, borders and text wrapping are readable at original resolution.
+
+## Comparison history
+
+1. P2: the first desktop implementation kept the persistent sidebar, reducing the result canvas and drifting from the selected full-width composition. Fix: hide the desktop sidebar only while `.roulette-page.is-result` is active and collapse the grid to one column. Post-fix evidence: `roulette-result-1361-viewport.png`.
+2. P2: the first CTA copy repeated the title (`Más información sobre {juego}`), causing a two-line button label. Fix: use the exact label `Más información`; the adjacent winner heading already supplies context. Post-fix evidence: desktop and mobile final captures.
 
 ## Follow-up polish
 
-- P3: the source is an organizational wireframe, so exact radii, colors, and typeface are intentionally inherited from the established application design system.
+- P3: the participant strip may show fewer covers than the generated concept because it reflects the real active roulette pool; this is correct product behavior.
 
-final result: passed
+## Implementation checklist
 
-## Mejora posterior a la auditoría — 2026-08-28
-
-- Restricción aceptada: no modificar la estructura, el estilo ni el comportamiento de las tarjetas.
-- Evidencia de catálogo: `C:\Users\heroy\.codex\visualizations\2026\08\26\01a04033-fe22-71e2-846e-aafd7d1a0250\home-audit-2026-08-28\05-desktop-catalog-improved.png`.
-- Evidencia de tabla: `C:\Users\heroy\.codex\visualizations\2026\08\26\01a04033-fe22-71e2-846e-aafd7d1a0250\home-audit-2026-08-28\06-desktop-table-improved.png`.
-- Evidencia de cabecera sticky: `C:\Users\heroy\.codex\visualizations\2026\08\26\01a04033-fe22-71e2-846e-aafd7d1a0250\home-audit-2026-08-28\09-desktop-table-sticky.png`.
-- Evidencia móvil: `C:\Users\heroy\.codex\visualizations\2026\08\26\01a04033-fe22-71e2-846e-aafd7d1a0250\home-audit-2026-08-28\07-mobile-catalog-improved.png`.
-- Evidencia del diálogo: `C:\Users\heroy\.codex\visualizations\2026\08\26\01a04033-fe22-71e2-846e-aafd7d1a0250\home-audit-2026-08-28\08-mobile-filters-improved.png`.
-- La tabla usa filas de 82 px, miniaturas de 52 px, cabecera sticky y orden bidireccional en sus siete columnas.
-- El diálogo móvil aísla el fondo con `inert`, atrapa el foco, lo devuelve al disparador, elimina el cierre duplicado del árbol accesible y desactiva «Limpiar» sin filtros.
-- Los chips usan una base neutra, selección violeta y conservan el color semántico únicamente en el punto.
-- El título del hero se redujo aproximadamente un 10 %; las métricas ganaron contraste y tamaño.
-- El bloque interno de navegación lateral permanece sticky a 14 px del borde superior durante el scroll.
-- La última tarjeta puede desplazarse 112 px por encima de la barra inferior en un viewport de 390 × 844 px.
-- Ordenación verificada: `titulo-asc` comenzó por `2XKO` y `titulo-desc` por `Zenless Zone Zero`; ambos estados se conservaron en URL.
-- Axe 4.12.1: 0 violaciones WCAG A/AA, 21 reglas superadas y 1 comprobación manual de contraste por fondos degradados.
-- Build de Astro: correcto. Consola del navegador: sin errores.
+- [x] Selected editorial layout implemented.
+- [x] Existing detail route retained.
+- [x] CTA renamed to `Más información` with an information icon.
+- [x] Desktop and mobile states checked.
+- [x] Primary navigation and return interaction verified.
 
 final result: passed

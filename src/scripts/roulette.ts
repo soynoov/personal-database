@@ -458,7 +458,6 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
     getElement<HTMLElement>('roulette-winner-hltb').textContent = formatHltb(winner.hltb);
     const winnerLink = getElement<HTMLAnchorElement>('roulette-winner-link');
     winnerLink.href = `/games/${winner.slug}/`;
-    getElement<HTMLElement>('roulette-winner-link-label').textContent = `Jugar a ${winner.titulo}`;
     populateParticipants(participants);
 
     resultWheel.dataset.drawToken = String(drawToken);

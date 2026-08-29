@@ -7,7 +7,7 @@ import circleMinusIcon from '@tabler/icons/outline/circle-minus.svg?url';
 import clockIcon from '@tabler/icons/outline/clock.svg?url';
 import diceIcon from '@tabler/icons/outline/dice-5.svg?url';
 import gamepadIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
-import playerPlayIcon from '@tabler/icons/outline/player-play.svg?url';
+import infoCircleIcon from '@tabler/icons/outline/info-circle.svg?url';
 import plusIcon from '@tabler/icons/outline/plus.svg?url';
 import refreshIcon from '@tabler/icons/outline/refresh.svg?url';
 import searchIcon from '@tabler/icons/outline/search.svg?url';
@@ -18,6 +18,7 @@ import { GAME_MODES } from '../../lib/game-modes';
 import { PUBLIC_GAME_TAGS } from '../../lib/game-tags';
 import { toRouletteGame } from '../../lib/roulette-game';
 import '../../styles/roulette.css';
+import '../../styles/roulette-result.css';
 
 const games = await readGames();
 const rouletteGames = games
@@ -189,6 +190,7 @@ const defaultSlugs = rouletteGames
         <div class='roulette-result-heading'>
           <span class='roulette-kicker'>Resultado</span>
           <h2 id='roulette-result-title'>La ruleta ha elegido</h2>
+          <h3 id='roulette-winner-title'></h3>
         </div>
 
         <div class='roulette-winner'>
@@ -196,7 +198,6 @@ const defaultSlugs = rouletteGames
             <img id='roulette-winner-cover' src='' alt='' />
           </div>
           <div class='roulette-winner-copy'>
-            <h3 id='roulette-winner-title'></h3>
             <span class='roulette-winner-status' id='roulette-winner-status'></span>
             <p id='roulette-winner-genres'></p>
             <dl class='roulette-winner-meta'>
@@ -214,8 +215,8 @@ const defaultSlugs = rouletteGames
 
         <div class='roulette-result-actions'>
           <a class='roulette-button roulette-button-primary' id='roulette-winner-link' href='/'>
-            <TablerIcon src={playerPlayIcon} />
-            <span id='roulette-winner-link-label'>Jugar</span>
+            <TablerIcon src={infoCircleIcon} />
+            <span id='roulette-winner-link-label'>Más información</span>
           </a>
           <button class='roulette-button roulette-button-ghost' id='roulette-again' type='button'>
             <TablerIcon src={refreshIcon} />
