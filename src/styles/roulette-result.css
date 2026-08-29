@@ -37,19 +37,27 @@
   }
 
   .roulette-result-heading h2 {
+    color: #ddd7e5;
     font-size: clamp(2.5rem, 4vw, 4.25rem);
     line-height: 0.95;
   }
 
   .roulette-result-heading h3 {
     max-width: 100%;
-    margin: 0.1rem 0 0;
-    color: var(--text);
+    margin: 0.42rem 0 0;
+    color: #fbf9ff;
     font-family: var(--font-display);
     font-size: clamp(4rem, 7.3vw, 7.9rem);
     font-weight: 400;
     line-height: 0.86;
+    letter-spacing: 0.012em;
+    paint-order: stroke fill;
     text-wrap: balance;
+    -webkit-text-stroke: 1.35px #a970f2;
+    text-shadow:
+      0 0 7px rgba(182, 119, 255, 0.72),
+      0 0 20px rgba(137, 72, 218, 0.42),
+      0 0 42px rgba(99, 49, 167, 0.2);
   }
 
   .roulette-winner {
@@ -212,9 +220,10 @@
     }
 
     .roulette-result-heading h3 {
-      margin-top: 0.3rem;
+      margin-top: 0.48rem;
       font-size: clamp(3.15rem, 14vw, 5rem);
       line-height: 0.9;
+      -webkit-text-stroke-width: 1px;
     }
 
     .roulette-winner {
