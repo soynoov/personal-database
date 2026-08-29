@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import TablerIcon from '../../components/TablerIcon.astro';
+import '../../styles/data-pending.css';
+import arrowRightIcon from '@tabler/icons/outline/arrow-right.svg?url';
+import checkIcon from '@tabler/icons/outline/check.svg?url';
+import databaseIcon from '@tabler/icons/outline/database-exclamation.svg?url';
+import searchIcon from '@tabler/icons/outline/search.svg?url';
+import { getDataCompleteness } from '../../lib/game-data-completeness';
+import { normalizeStatus } from '../../lib/game-status';
+import { getUniqueValues, readGames } from '../../lib/local-games';
+
+const games = await readGames();
+const report = getDataCompleteness(games);
+const launchers = getUniqueValues(games, 'launcher');
+const plataformas = getUniqueValues(games, 'plataforma');
+const estados = getUniqueValues(games, 'estado');
+const drawerEstadosOrdered = [
+  'Jugando', 'Terminado', 'Pendiente', 'Wishlist',
+  'Pausado', 'Abandonado', 'Retirado', 'Recurrente',
+];
+const estadosSet = new Set(estados.map(normalizeStatus));
+const knownEstadoValues = new Set(drawerEstadosOrdered.map(normalizeStatus));
+const orderedDrawerEstados = [
+  ...drawerEstadosOrdered.filter((estado) => estadosSet.has(normalizeStatus(estado)) || estado === 'Wishlist'),
+  ...estados.filter((estado) => !knownEstadoValues.has(normalizeStatus(estado))),
+];
+
+const categoryLabels = {
+  catalogacion: 'Catalogación',
+  actividad: 'Actividad',
+  compra: 'Compra',
+} as const;
+---
+
+<BaseLayout title='Datos pendientes — Personal Database'>
+  <main class='shell shell-app shell-desktop-app'>
+    <Sidebar
+      orderedDrawerEstados={orderedDrawerEstados}
+      plataformas={plataformas}
+      launchers={launchers}
+      active='datos'
+    />
+
+    <div class='desktop-main data-pending-page'>
+      <header class='data-pending-heading'>
+        <div>
+          <span class='eyebrow'>Calidad de tu biblioteca</span>
+          <h1>Datos pendientes</h1>
+          <p>Localiza fichas incompletas y abre directamente el editor que necesitas.</p>
+        </div>
+        <div class='data-completion-ring' style={`--completion:${report.completionPct * 3.6}deg`} aria-label={`${report.completionPct}% de datos completados`}>
+          <div><strong>{report.completionPct}%</strong><span>completo</span></div>
+        </div>
+      </header>
+
+      <section class='data-summary' aria-label='Resumen de datos pendientes'>
+        <article class='panel data-summary-card data-summary-primary'>
+          <span>Fichas por completar</span>
+          <strong>{report.incompleteGames}</strong>
+          <small>de {report.totalGames} juegos</small>
+        </article>
+        <article class='panel data-summary-card'>
+          <span>Campos pendientes</span>
+          <strong>{report.totalMissing}</strong>
+          <small>ordenados por prioridad</small>
+        </article>
+        <article class='panel data-summary-card data-summary-success'>
+          <span>Fichas completas</span>
+          <strong>{report.totalGames - report.incompleteGames}</strong>
+          <small>sin datos esenciales pendientes</small>
+        </article>
+      </section>
+
+      <section class='panel data-filter-bar' aria-label='Filtrar datos pendientes'>
+        <label class='data-search-field'>
+          <TablerIcon src={searchIcon} />
+          <input type='search' placeholder='Buscar un juego…' autocomplete='off' data-pending-search />
+        </label>
+        <label class='data-category-field'>
+          <span>Mostrar</span>
+          <select data-pending-category>
+            <option value=''>Todos los datos</option>
+            <option value='catalogacion'>Catalogación</option>
+            <option value='actividad'>Actividad</option>
+            <option value='compra'>Compra</option>
+          </select>
+        </label>
+        <strong data-pending-count>{report.incompleteGames} juegos</strong>
+      </section>
+
+      {report.games.length > 0 ? (
+        <section class='data-pending-list' data-pending-root>
+          {report.games.map((game) => {
+            const categories = [...new Set(game.missing.map((gap) => gap.category))];
+            const firstEditor = game.missing[0]?.editor ?? 'technical';
+            return (
+              <article
+                class='panel data-game-card'
+                data-pending-card
+                data-title={game.titulo}
+                data-categories={categories.join(' ')}
+              >
+                <a class='data-game-cover' href={`/games/${game.slug}/`} aria-label={`Ver ficha de ${game.titulo}`}>
+                  <img src={game.coverUrl} alt='' loading='lazy' decoding='async' />
+                </a>
+                <div class='data-game-content'>
+                  <div class='data-game-head'>
+                    <div>
+                      <span class='data-game-status'>{game.estado}</span>
+                      <h2><a href={`/games/${game.slug}/`}>{game.titulo}</a></h2>
+                    </div>
+                    <div class='data-game-score'>
+                      <strong>{game.completionPct}%</strong>
+                      <span>{game.completedFields}/{game.applicableFields} campos</span>
+                    </div>
+                  </div>
+                  <div class='data-progress' aria-hidden='true'><span style={`width:${game.completionPct}%`}></span></div>
+                  <div class='data-game-missing'>
+                    {game.missing.map((gap) => (
+                      <a
+                        class={`data-gap data-gap-${gap.category}`}
+                        href={`/games/${game.slug}/?edit=${gap.editor}#${gap.editor === 'technical' ? 'technical' : gap.editor}`}
+                        title={`Completar ${gap.label}`}
+                      >
+                        <span>{categoryLabels[gap.category]}</span>
+                        {gap.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <a class='data-game-action' href={`/games/${game.slug}/?edit=${firstEditor}#${firstEditor === 'technical' ? 'technical' : firstEditor}`}>
+                  Completar ficha
+                  <TablerIcon src={arrowRightIcon} />
+                </a>
+              </article>
+            );
+          })}
+          <div class='panel data-filter-empty'>No hay juegos que coincidan con estos filtros.</div>
+        </section>
+      ) : (
+        <section class='panel data-all-complete'>
+          <TablerIcon src={checkIcon} />
+          <h2>La biblioteca está completa</h2>
+          <p>No queda ningún dato esencial por rellenar.</p>
+        </section>
+      )}
+
+      <aside class='data-scope-note'>
+        <TablerIcon src={databaseIcon} />
+        <p><strong>Qué se revisa:</strong> catalogación básica y, según el estado del juego, horas, fechas y precio pagado. Las valoraciones y comentarios son opcionales.</p>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    import { initDataPendingFilters } from '../../scripts/data-pending';
+    initDataPendingFilters();
+  </script>
+</BaseLayout>

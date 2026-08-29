@@ -338,4 +338,8 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
     <GameDetailComments slug={slug} comentarios={formatValue(game.comentarios)} editValues={{ comentarios: game.comentarios ?? null }} />
   </main>
   <GameDetailChartsScript />
+  <script>
+    import { initGameDetailEditDeeplink } from '../../scripts/game-detail-edit-deeplink';
+    initGameDetailEditDeeplink();
+  </script>
 </BaseLayout>
