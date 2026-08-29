@@ -151,7 +151,7 @@
   }
 
   .game-page-rich .analysis-panel-hours .hours-period-summary {
-    grid-column: span 3;
+    grid-column: span 2;
   }
 
   .game-page-rich .analysis-panel-hours .hours-date-start,
@@ -186,8 +186,14 @@
     text-overflow: ellipsis;
   }
 
+  .game-page-rich .analysis-panel-hours :is(.hours-date-start, .hours-date-end) strong {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.025em;
+    white-space: nowrap;
+  }
+
   .game-page-rich .analysis-panel-hours .hours-progress-card {
-    grid-column: span 5;
+    grid-column: span 6;
     display: grid;
     min-height: 88px;
     align-content: center;

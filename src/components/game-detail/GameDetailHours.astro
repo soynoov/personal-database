@@ -85,7 +85,7 @@ const hltbState = !metrics.showHltbTarget
     <article class:list={["hours-info-card", "hours-period-summary", !hasPeriodData && "is-null"]}>
       <span class="hours-info-icon"><TablerIcon src={calendarIcon} /></span>
       <div>
-        <span>Periodo de juego</span>
+        <span>Periodo</span>
         <strong>{periodSummary}</strong>
       </div>
     </article>
@@ -94,7 +94,7 @@ const hltbState = !metrics.showHltbTarget
       <span class="hours-info-icon"><TablerIcon src={playerPlayIcon} /></span>
       <div>
         <span>Inicio</span>
-        <strong>{hasStartDate ? period.startLabel : 'Sin registrar'}</strong>
+        <strong>{hasStartDate ? <time datetime={editValues.fecha_inicio ?? undefined}>{period.startLabel}</time> : 'Sin registrar'}</strong>
       </div>
     </article>
 
@@ -103,7 +103,7 @@ const hltbState = !metrics.showHltbTarget
         <span class="hours-info-icon"><TablerIcon src={flagIcon} /></span>
         <div>
           <span>Fin</span>
-          <strong>{hasEndDate ? period.endLabel : 'Sin registrar'}</strong>
+          <strong>{hasEndDate ? <time datetime={editValues.fecha_fin ?? undefined}>{period.endLabel}</time> : 'Sin registrar'}</strong>
         </div>
       </article>
     )}
