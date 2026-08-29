@@ -6740,5 +6740,53 @@
       "metascore": 81,
       "userscore": 8.1
     }
+  },
+  {
+    "titulo": "Viewfinder",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 0,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": 0,
+      "total": 46
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2023,
+    "modos": [
+      "solitario"
+    ],
+    "solo": true,
+    "hltb": 4,
+    "cover_url": null,
+    "steam_appid": 1382070,
+    "generos": [
+      "Aventura",
+      "Indie"
+    ],
+    "precio_pagado": null,
+    "precio_actual": 24.99,
+    "precio_salida": 24.99,
+    "tags": [
+      "transmitir"
+    ],
+    "hltb_breakdown": {
+      "main": 4,
+      "main_plus": 5,
+      "completionist": 6
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Indie"
+    ],
+    "steam_store_name": "Viewfinder",
+    "steam_last_sync_at": "2026-08-29T18:51:02.769Z",
+    "critica": {
+      "metascore": 84,
+      "userscore": 7.8
+    }
   }
 ]
