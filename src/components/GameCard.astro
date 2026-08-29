@@ -1,6 +1,8 @@
 ---
 // Plantillas HTML para las cards del catálogo (renderizadas via JS en catalog.ts).
 // No recibe props — el contenido lo rellena catalog.ts en el cliente.
+import trophyIcon from '@tabler/icons/outline/trophy.svg?url';
+import TablerIcon from './TablerIcon.astro';
 ---
 
 <!-- Card template -->
@@ -8,6 +10,10 @@
   <a class='card mock-game-card' data-game-link href='#'>
     <div class='card-main'>
       <div class='card-cover' data-cover></div>
+      <span class='platinum-badge' data-platinum hidden aria-label='100% de logros completados'>
+        <TablerIcon src={trophyIcon} />
+        <span>100%</span>
+      </span>
       <div class='card-body'>
         <div class='card-head'>
           <div class='card-title-stack'>
@@ -36,7 +42,12 @@
     <div class='inventory-game'>
       <div class='inventory-cover' data-row-cover></div>
       <div class='inventory-copy'>
-        <strong data-row-title></strong>
+        <div class='inventory-title-line'>
+          <strong data-row-title></strong>
+          <span class='inventory-platinum' data-row-platinum hidden aria-label='100% de logros completados'>
+            <TablerIcon src={trophyIcon} />
+          </span>
+        </div>
         <span data-row-support></span>
       </div>
     </div>

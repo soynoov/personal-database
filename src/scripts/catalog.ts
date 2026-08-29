@@ -8,6 +8,7 @@
  */
 
 import { buildGameCoverUrl } from "../lib/game-cover-url";
+import { hasCompletedAllAchievements } from "../lib/game-achievements";
 import type { CatalogGame } from "../lib/catalog-game";
 import { isCompletedStatus, normalizeStatus } from "../lib/game-status";
 import { getGameTagLabel, hasGameTag, normalizeGameTag } from "../lib/game-tags";
@@ -604,6 +605,10 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
       // Eventos de la card
       const card = node.querySelector<HTMLAnchorElement>('[data-game-link]')!;
+      const hasPlatinum = hasCompletedAllAchievements(game);
+      card.classList.toggle('is-platinum', hasPlatinum);
+      const platinumBadge = node.querySelector<HTMLElement>('[data-platinum]');
+      if (platinumBadge) platinumBadge.hidden = !hasPlatinum;
       card.href = `/games/${game.slug}/`;
       card.addEventListener('click', (event) => {
         const usesRevealInteraction = window.matchMedia('(hover: none) and (min-width: 821px)').matches;
@@ -620,6 +625,10 @@ export function initCatalog(allGames: CatalogGame[]): void {
       // ── Fila de tabla ──
       const rowNode = elements.tableTemplate.content.cloneNode(true) as DocumentFragment;
       (rowNode.querySelector('[data-row-title]') as HTMLElement).textContent = formatValue(game.titulo);
+      const row = rowNode.querySelector<HTMLAnchorElement>('[data-row-link]')!;
+      row.classList.toggle('is-platinum', hasPlatinum);
+      const rowPlatinum = rowNode.querySelector<HTMLElement>('[data-row-platinum]');
+      if (rowPlatinum) rowPlatinum.hidden = !hasPlatinum;
       (rowNode.querySelector('[data-row-support]') as HTMLElement).textContent =
         Array.isArray(game.generos) && game.generos.length > 0 ? String(game.generos[0]) : 'Sin genero';
 
@@ -643,7 +652,6 @@ export function initCatalog(allGames: CatalogGame[]): void {
       (rowNode.querySelector('[data-row-precio]') as HTMLElement).textContent = formatViewPrice(game);
       (rowNode.querySelector('[data-row-lanzamiento]') as HTMLElement).textContent = formatValue(game.lanzamiento);
 
-      const row = rowNode.querySelector<HTMLAnchorElement>('[data-row-link]')!;
       row.href = `/games/${game.slug}/`;
 
       elements.tableBody.appendChild(rowNode);

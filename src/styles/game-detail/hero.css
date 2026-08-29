@@ -184,6 +184,20 @@
   letter-spacing: 1px;
 }
 
+.badge-achievement-platinum {
+  border-color: rgba(246, 207, 104, 0.52);
+  background: linear-gradient(135deg, rgba(112, 76, 18, 0.3), rgba(46, 35, 17, 0.68));
+  box-shadow:
+    0 0 18px rgba(213, 164, 55, 0.13),
+    inset 0 1px 0 rgba(255, 240, 185, 0.15);
+  color: #f5d77e;
+}
+
+.badge-achievement-platinum .tabler-icon {
+  width: 14px;
+  height: 14px;
+}
+
 /* ── Overview summary ───────────────────────────────────────────── */
 .game-overview-summary {
   margin: 0;

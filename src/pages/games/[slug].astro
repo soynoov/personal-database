@@ -12,6 +12,7 @@ import GameDetailDLCs from '../../components/game-detail/GameDetailDLCs.astro';
 import GameDetailComments from '../../components/game-detail/GameDetailComments.astro';
 import GameDetailMetacritic from '../../components/game-detail/GameDetailMetacritic.astro';
 import { buildGameCoverUrl, buildGameHeroUrl } from '../../lib/game-cover-url';
+import { hasCompletedAllAchievements } from '../../lib/game-achievements';
 import {
   formatEuro,
   getPurchasePriceComparison,
@@ -271,6 +272,7 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
       launcherBadge={{ class: launcherClass, label: formatValue(game.launcher, 'Sin launcher'), icon: gamepadIcon }}
       platformBadge={{ class: platformClass, label: formatValue(game.plataforma) }}
       tagBadges={heroBadges}
+      hasPlatinum={hasCompletedAllAchievements(game)}
     />
     <GameDetailNav hasDlcs={dlcTotal > 0} isCompetitive={isCompetitive} />
 

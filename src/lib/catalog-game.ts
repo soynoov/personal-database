@@ -26,6 +26,7 @@ export type CatalogGame = Pick<
   | "solo"
   | "steam_appid"
   | "cover_url"
+  | "logros"
 > & {
   slug: string;
   amortizado: boolean;
@@ -54,6 +55,7 @@ export function toCatalogGame(game: LocalGame): CatalogGame {
     solo: game.solo,
     steam_appid: game.steam_appid,
     cover_url: game.cover_url,
+    logros: game.logros,
   };
 }
 

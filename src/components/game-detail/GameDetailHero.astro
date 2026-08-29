@@ -6,6 +6,7 @@
  */
 import '../../styles/game-detail/hero.css';
 import TablerIcon from '../TablerIcon.astro';
+import trophyIcon from '@tabler/icons/outline/trophy.svg?url';
 
 interface Props {
   title: string;
@@ -15,6 +16,7 @@ interface Props {
   launcherBadge: { class: string; label: string; icon?: string };
   platformBadge: { class: string; label: string };
   tagBadges: Array<{ value: string; label: string }>;
+  hasPlatinum?: boolean;
 }
 
 const {
@@ -25,6 +27,7 @@ const {
   launcherBadge,
   platformBadge,
   tagBadges,
+  hasPlatinum = false,
 } = Astro.props;
 
 const tagBadgeClasses: Record<string, string> = {
@@ -58,6 +61,12 @@ const tagBadgeClasses: Record<string, string> = {
           <span>{launcherBadge.label}</span>
         </span>
         <span class={`badge ${platformBadge.class}`}>{platformBadge.label}</span>
+        {hasPlatinum && (
+          <span class='badge badge-achievement-platinum'>
+            <TablerIcon src={trophyIcon} />
+            <span>100% logros</span>
+          </span>
+        )}
         {tagBadges.map((tag) => (
           <span class:list={["badge", tagBadgeClasses[tag.value]]}>{tag.label}</span>
         ))}
