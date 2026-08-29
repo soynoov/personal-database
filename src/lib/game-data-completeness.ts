@@ -1,13 +1,11 @@
 import { buildGameCoverUrl } from './game-cover-url';
-import { getGameGenres } from './game-genres';
-import { getGameModes } from './game-modes';
 import { isCompletedStatus, normalizeStatus } from './game-status';
 import { hasGameTag } from './game-tags';
 import type { LocalGame } from './local-games';
 import { slugifyGameTitle } from './local-games';
 
-export type DataEditor = 'technical' | 'hours' | 'finance';
-export type DataGapCategory = 'catalogacion' | 'actividad' | 'compra';
+export type DataEditor = 'status' | 'technical' | 'hours' | 'finance' | 'review';
+export type DataGapCategory = 'copia' | 'actividad' | 'compra' | 'valoracion';
 
 export type GameDataGap = {
   key: string;
@@ -62,17 +60,15 @@ const hasNumber = (value: unknown) => value !== null && value !== undefined && N
 function getGaps(game: LocalGame) {
   const status = normalizeStatus(game.estado);
   const gaps: GameDataGap[] = [];
-  let applicableFields = 5;
+  let applicableFields = 3;
 
   const add = (key: string, label: string, category: DataGapCategory, editor: DataEditor) => {
     gaps.push({ key, label, category, editor });
   };
 
-  if (!hasText(game.launcher)) add('launcher', 'Launcher', 'catalogacion', 'technical');
-  if (!hasText(game.plataforma)) add('plataforma', 'Plataforma', 'catalogacion', 'technical');
-  if (getGameGenres(game.generos).length === 0) add('generos', 'Géneros', 'catalogacion', 'technical');
-  if (getGameModes(game).length === 0) add('modos', 'Modo de juego', 'catalogacion', 'technical');
-  if (!hasNumber(game.lanzamiento)) add('lanzamiento', 'Año de lanzamiento', 'catalogacion', 'technical');
+  if (!hasText(game.estado)) add('estado', 'Estado', 'copia', 'status');
+  if (!hasText(game.launcher)) add('launcher', 'Launcher', 'copia', 'technical');
+  if (!hasText(game.plataforma)) add('plataforma', 'Plataforma', 'copia', 'technical');
 
   if (PLAYED_STATUSES.has(status)) {
     applicableFields += 2;
@@ -88,6 +84,11 @@ function getGaps(game: LocalGame) {
   if (ACQUIRED_STATUSES.has(status) && !hasGameTag(game.tags, 'free-to-play')) {
     applicableFields += 1;
     if (!hasNumber(game.precio_pagado)) add('precio_pagado', 'Precio pagado', 'compra', 'finance');
+  }
+
+  if (isCompletedStatus(game.estado) || status === 'abandonado') {
+    applicableFields += 1;
+    if (!hasNumber(game.nota)) add('nota', 'Valoración personal', 'valoracion', 'review');
   }
 
   return { gaps, applicableFields };

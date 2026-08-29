@@ -28,9 +28,17 @@ const orderedDrawerEstados = [
 ];
 
 const categoryLabels = {
-  catalogacion: 'Catalogación',
+  copia: 'Mi copia',
   actividad: 'Actividad',
   compra: 'Compra',
+  valoracion: 'Valoración',
+} as const;
+const editorAnchors = {
+  status: 'game-header',
+  technical: 'technical',
+  hours: 'hours',
+  finance: 'finance',
+  review: 'metacritica',
 } as const;
 ---
 
@@ -82,9 +90,10 @@ const categoryLabels = {
           <span>Mostrar</span>
           <select data-pending-category>
             <option value=''>Todos los datos</option>
-            <option value='catalogacion'>Catalogación</option>
+            <option value='copia'>Mi copia</option>
             <option value='actividad'>Actividad</option>
             <option value='compra'>Compra</option>
+            <option value='valoracion'>Valoración</option>
           </select>
         </label>
         <strong data-pending-count>{report.incompleteGames} juegos</strong>
@@ -121,7 +130,7 @@ const categoryLabels = {
                     {game.missing.map((gap) => (
                       <a
                         class={`data-gap data-gap-${gap.category}`}
-                        href={`/games/${game.slug}/?edit=${gap.editor}#${gap.editor === 'technical' ? 'technical' : gap.editor}`}
+                        href={`/games/${game.slug}/?edit=${gap.editor}#${editorAnchors[gap.editor]}`}
                         title={`Completar ${gap.label}`}
                       >
                         <span>{categoryLabels[gap.category]}</span>
@@ -130,7 +139,7 @@ const categoryLabels = {
                     ))}
                   </div>
                 </div>
-                <a class='data-game-action' href={`/games/${game.slug}/?edit=${firstEditor}#${firstEditor === 'technical' ? 'technical' : firstEditor}`}>
+                <a class='data-game-action' href={`/games/${game.slug}/?edit=${firstEditor}#${editorAnchors[firstEditor]}`}>
                   Completar ficha
                   <TablerIcon src={arrowRightIcon} />
                 </a>
@@ -149,7 +158,7 @@ const categoryLabels = {
 
       <aside class='data-scope-note'>
         <TablerIcon src={databaseIcon} />
-        <p><strong>Qué se revisa:</strong> catalogación básica y, según el estado del juego, horas, fechas y precio pagado. Las valoraciones y comentarios son opcionales.</p>
+        <p><strong>Qué se revisa:</strong> estado y datos de tu copia; según el estado del juego, también horas, fechas, precio pagado y valoración personal. Dificultad, logros, cromos y comentarios son opcionales.</p>
       </aside>
     </div>
   </main>

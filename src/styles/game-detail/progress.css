@@ -1,135 +1,362 @@
 @import '../theme.css';
 
 @layer global {
-  .game-page-rich #technical .data-group-progress {
-    position: relative;
-    overflow: hidden;
-    border-color: rgba(184, 151, 232, 0.18);
-    background:
-      radial-gradient(circle at 78% -20%, rgba(136, 91, 204, 0.12), transparent 42%),
-      #101119;
+  .game-page-rich #technical {
+    gap: 0.9rem;
   }
 
-  .game-page-rich #technical .data-group-progress .data-group-head {
-    margin-bottom: 1rem;
+  .game-page-rich #technical .game-data-groups {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-auto-flow: dense;
+    gap: 0.75rem;
+  }
+
+  .game-page-rich #technical .data-group-card {
+    display: block;
+    min-height: 0;
+    padding: 0.95rem;
+    border: 1px solid rgba(207, 195, 225, 0.14);
+    border-radius: 15px;
+    background: #0e0f17;
+  }
+
+  .game-page-rich #technical .data-group-progress {
+    grid-column: 1 / -1;
+    overflow: hidden;
+    border-color: rgba(184, 151, 232, 0.2);
+    background: #101119;
+  }
+
+  .game-page-rich #technical .data-group-catalog {
+    grid-column: span 7;
+  }
+
+  .game-page-rich #technical .data-group-copy {
+    grid-column: span 5;
+  }
+
+  .game-page-rich #technical .data-group-head {
+    margin: 0 0 0.85rem;
+  }
+
+  .game-page-rich #technical .data-group-grid {
+    display: grid;
+    gap: 0.65rem;
+    min-height: 0;
+  }
+
+  .game-page-rich #technical .data-group-catalog .data-group-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .game-page-rich #technical .data-group-catalog .detail-item:first-child {
+    grid-column: auto;
+  }
+
+  .game-page-rich #technical .data-group-copy .data-group-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .game-page-rich #technical .data-group-copy {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .game-page-rich #technical .data-group-copy .data-group-grid {
+    grid-row: 2;
+    align-self: stretch;
+    height: auto;
+    min-height: 0;
+    grid-auto-rows: minmax(0, 1fr);
+  }
+
+  .game-page-rich #technical .data-group-copy .detail-item {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .game-page-rich #technical .data-group-card .detail-item {
+    display: grid;
+    min-width: 0;
+    min-height: 92px;
+    align-content: center;
+    padding: 0.8rem;
+    border: 1px solid rgba(207, 195, 225, 0.1);
+    border-radius: 12px;
+    background: #0b0c13;
   }
 
   .game-page-rich #technical .data-group-progress .data-group-grid {
-    gap: 0.72rem;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(104px, 1fr));
   }
 
   .game-page-rich #technical .data-group-progress .detail-item {
     position: relative;
-    align-content: end;
-    min-height: 132px;
-    padding: 0.95rem;
+    min-height: 104px;
     overflow: hidden;
-    border-color: rgba(215, 201, 231, 0.11);
-    background:
-      linear-gradient(145deg, rgba(17, 18, 27, 0.98), rgba(10, 11, 17, 0.98));
+    align-content: end;
+    padding: 1rem;
+    border-color: rgba(215, 201, 231, 0.12);
+    background: #0b0c13;
   }
 
-  .game-page-rich #technical .data-group-progress .detail-item::after {
-    content: '';
-    position: absolute;
-    top: -34px;
-    right: -30px;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: rgba(156, 116, 218, 0.07);
-    pointer-events: none;
+  .game-page-rich #technical .data-group-progress .progress-card-achievements {
+    grid-column: 1 / span 7;
+    grid-row: 1 / span 2;
+    min-height: 220px;
+    padding: clamp(1.05rem, 2vw, 1.45rem);
+    border-color: rgba(181, 139, 235, 0.22);
+    background: #12111b;
+  }
+
+  .game-page-rich #technical .data-group-progress .progress-card-difficulty {
+    grid-column: 8 / -1;
+    grid-row: 1;
+  }
+
+  .game-page-rich #technical .data-group-progress .progress-card-cards {
+    grid-column: 8 / -1;
+    grid-row: 2;
+  }
+
+  .game-page-rich #technical .data-group-progress .data-group-grid[data-count='2'] {
+    grid-template-rows: minmax(150px, 1fr);
+  }
+
+  .game-page-rich #technical .data-group-progress .data-group-grid[data-count='2'] .progress-card-achievements {
+    grid-column: 1 / span 8;
+    grid-row: 1;
+    min-height: 150px;
+  }
+
+  .game-page-rich #technical .data-group-progress .data-group-grid[data-count='2'] .progress-card-difficulty {
+    grid-column: 9 / -1;
+    grid-row: 1;
   }
 
   .game-page-rich #technical .progress-card-icon {
     position: absolute;
-    z-index: 1;
-    top: 0.8rem;
-    right: 0.8rem;
+    top: 0.85rem;
+    right: 0.85rem;
     display: grid;
     place-items: center;
-    width: 32px;
-    height: 32px;
-    border: 1px solid rgba(202, 177, 235, 0.17);
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(202, 177, 235, 0.18);
     border-radius: 10px;
-    background: rgba(128, 87, 188, 0.1);
+    background: #1c1928;
     color: #b996e7;
+    margin: 0;
   }
 
   .game-page-rich #technical .progress-card-icon .tabler-icon {
-    width: 17px;
-    height: 17px;
+    width: 18px;
+    height: 18px;
   }
 
   .game-page-rich #technical .data-group-progress .detail-item dt {
-    max-width: calc(100% - 38px);
-    color: rgba(217, 204, 229, 0.6);
-    font-size: 0.66rem;
+    max-width: calc(100% - 42px);
+    color: rgba(217, 204, 229, 0.62);
+    font-size: 0.68rem;
     font-weight: 760;
-    letter-spacing: 0.075em;
+    letter-spacing: 0.08em;
   }
 
   .game-page-rich #technical .data-group-progress .detail-item > dd:first-of-type {
-    margin-top: 0.32rem;
-    color: #f4edf8;
-    font-size: 1.25rem;
-    font-weight: 760;
+    margin-top: 0.34rem;
+    color: #f5eff8;
+    font-size: 1.3rem;
+    font-weight: 780;
     line-height: 1.05;
   }
 
-  .game-page-rich #technical .data-group-progress .detail-item-note {
-    margin-top: 0.35rem;
-    color: rgba(214, 202, 224, 0.52);
-    font-size: 0.7rem;
+  .game-page-rich #technical .progress-card-achievements > dd:first-of-type {
+    font-size: clamp(2rem, 4vw, 3.25rem);
   }
 
-  .game-page-rich #technical .data-group-progress .data-progress-track {
-    height: 6px;
-    margin-top: 0.7rem;
-    border-color: rgba(218, 196, 238, 0.12);
-    background: rgba(222, 210, 235, 0.09);
+  .game-page-rich #technical .data-group-progress .detail-item-note {
+    margin-top: 0.38rem;
+    color: rgba(214, 202, 224, 0.54);
+    font-size: 0.72rem;
+  }
+
+  .game-page-rich #technical .data-progress-track {
+    height: 7px;
+    margin-top: 0.85rem;
+    border: 1px solid rgba(218, 196, 238, 0.12);
+    background: #282532;
   }
 
   .game-page-rich #technical .progress-card-achievements .data-progress-track > span {
-    background: linear-gradient(90deg, #7c4fc0, #c493f0);
+    background: #b58bea;
   }
 
   .game-page-rich #technical .progress-card-cards .progress-card-icon {
     border-color: rgba(96, 165, 250, 0.2);
-    background: rgba(59, 130, 246, 0.1);
+    background: #111b2d;
     color: #83b8ef;
   }
 
-  .game-page-rich #technical .progress-card-cards::after {
-    background: rgba(52, 125, 201, 0.07);
-  }
-
   .game-page-rich #technical .progress-card-cards .data-progress-track > span {
-    background: linear-gradient(90deg, #3879bb, #72b8e8);
+    background: #62a7dd;
   }
 
   .game-page-rich #technical .data-group-progress .detail-item-complete {
-    border-color: rgba(224, 184, 79, 0.25);
-    background: linear-gradient(145deg, rgba(39, 31, 15, 0.68), rgba(13, 13, 16, 0.98));
+    border-color: rgba(224, 184, 79, 0.34);
+    background: linear-gradient(145deg, rgba(39, 31, 15, 0.82), rgba(13, 13, 16, 0.98));
+    box-shadow: inset 0 0 36px rgba(214, 161, 40, 0.06);
   }
 
   .game-page-rich #technical .detail-item-complete .progress-card-icon {
-    border-color: rgba(239, 200, 95, 0.32);
-    background: rgba(185, 130, 27, 0.13);
+    border-color: rgba(239, 200, 95, 0.36);
+    background: #2c2110;
     color: #e7c15f;
   }
 
   .game-page-rich #technical .detail-item-complete .data-progress-track > span {
-    background: linear-gradient(90deg, #b27a18, #efcf72);
+    background: #e8c663;
   }
 
-  .game-page-rich #technical .data-group-progress .detail-item-empty {
+  .game-page-rich #technical :is(.data-group-card .detail-item, .system-data-grid > div)[data-state='empty'] {
+    border-color: rgba(190, 188, 201, 0.07);
+    background: #0a0b11;
+    filter: saturate(0.18);
     opacity: 1;
-    filter: none;
   }
 
-  .game-page-rich #technical .data-group-progress .detail-item-empty .progress-card-icon {
-    opacity: 0.56;
+  .game-page-rich #technical [data-state='empty'] dt {
+    color: #a09aa8;
+  }
+
+  .game-page-rich #technical [data-state='empty'] dd {
+    color: #aaa4b0;
+  }
+
+  .game-page-rich #technical [data-state='empty'] .detail-item-note {
+    color: #918b99;
+  }
+
+  .game-page-rich #technical [data-state='empty'] .progress-card-icon {
+    border-color: rgba(190, 188, 201, 0.1);
+    background: #12131a;
+    color: #827e88;
+    opacity: 0.58;
+  }
+
+  .game-page-rich #technical .system-data-details {
+    overflow: clip;
+    border: 1px solid rgba(207, 195, 225, 0.12);
+    border-radius: 15px;
+    background: #0c0d14;
+  }
+
+  .game-page-rich #technical .system-data-details > summary {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-height: 62px;
+    padding: 0.75rem 0.9rem;
+    color: #e8e0ec;
+    cursor: pointer;
+    list-style-position: inside;
+  }
+
+  .game-page-rich #technical .system-data-details > summary:focus-visible {
+    outline: 2px solid rgba(201, 168, 255, 0.62);
+    outline-offset: -3px;
+  }
+
+  .game-page-rich #technical .system-data-details > summary > span:nth-child(2) {
+    display: grid;
+    gap: 0.12rem;
+  }
+
+  .game-page-rich #technical .system-data-details > summary strong {
+    font-size: 0.86rem;
+  }
+
+  .game-page-rich #technical .system-data-details > summary small {
+    color: #978fa2;
+    font-size: 0.68rem;
+  }
+
+  .game-page-rich #technical .system-data-summary-icon {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(201, 168, 255, 0.14);
+    border-radius: 10px;
+    background: #171520;
+    color: #ae91cf;
+  }
+
+  .game-page-rich #technical .system-data-body {
+    display: grid;
+    gap: 0.75rem;
+    padding: 0 0.9rem 0.9rem;
+    border-top: 1px solid rgba(207, 195, 225, 0.08);
+  }
+
+  .game-page-rich #technical .system-data-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem;
+    margin: 0.85rem 0 0;
+  }
+
+  .game-page-rich #technical .system-data-grid > div {
+    min-width: 0;
+    padding: 0.72rem;
+    border: 1px solid rgba(207, 195, 225, 0.09);
+    border-radius: 11px;
+    background: #090a10;
+  }
+
+  .game-page-rich #technical .system-data-grid dt {
+    color: rgba(209, 196, 222, 0.58);
+    font-size: 0.64rem;
+    font-weight: 730;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .game-page-rich #technical .system-data-grid dd {
+    margin: 0.3rem 0 0;
+    overflow-wrap: anywhere;
+    color: #e7e0e9;
+    font-size: 0.78rem;
+  }
+
+  .game-page-rich #technical .system-appid-edit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.42rem;
+    width: fit-content;
+    min-height: 36px;
+    padding: 0.48rem 0.72rem;
+    border: 1px solid rgba(201, 168, 255, 0.2);
+    border-radius: 10px;
+    background: #171520;
+    color: #dfd0ed;
+    font: inherit;
+    font-size: 0.72rem;
+    cursor: pointer;
+  }
+
+  .game-page-rich #technical .system-appid-edit:hover,
+  .game-page-rich #technical .system-appid-edit:focus-visible {
+    border-color: rgba(201, 168, 255, 0.5);
+    background: #211b2d;
+  }
+
+  .game-page-rich #technical .system-appid-edit .tabler-icon {
+    width: 15px;
+    height: 15px;
   }
 
   .steam-cards-edit-row {
@@ -137,9 +364,52 @@
     border-top: 1px solid rgba(207, 195, 225, 0.1);
   }
 
-  @media (max-width: 720px) {
-    .game-page-rich #technical .data-group-progress .detail-item {
-      min-height: 120px;
+  @media (max-width: 960px) {
+    .game-page-rich #technical :is(.data-group-catalog, .data-group-copy) {
+      grid-column: 1 / -1;
+    }
+
+    .game-page-rich #technical .system-data-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px) {
+    .game-page-rich #technical .data-group-progress .data-group-grid,
+    .game-page-rich #technical .data-group-progress .data-group-grid[data-count='2'] {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: auto;
+    }
+
+    .game-page-rich #technical .data-group-progress :is(.progress-card-achievements, .data-group-grid[data-count='2'] .progress-card-achievements) {
+      grid-column: 1 / -1;
+      grid-row: auto;
+      min-height: 168px;
+    }
+
+    .game-page-rich #technical .data-group-progress :is(.progress-card-difficulty, .progress-card-cards, .data-group-grid[data-count='2'] .progress-card-difficulty) {
+      grid-column: auto;
+      grid-row: auto;
+      min-height: 116px;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .game-page-rich #technical .data-group-progress .data-group-grid,
+    .game-page-rich #technical .data-group-progress .data-group-grid[data-count='2'],
+    .game-page-rich #technical .data-group-catalog .data-group-grid,
+    .game-page-rich #technical .data-group-copy .data-group-grid,
+    .game-page-rich #technical .system-data-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .game-page-rich #technical .data-group-progress :is(.progress-card-achievements, .progress-card-difficulty, .progress-card-cards) {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .game-page-rich #technical .system-appid-edit {
+      width: 100%;
     }
   }
 }

@@ -20,7 +20,7 @@ import {
   isAcquiredDlc,
 } from '../../lib/game-finance';
 import { normalizeStatus } from '../../lib/game-status';
-import { formatGameModes, getGameModeLabel, getGameModes } from '../../lib/game-modes';
+import { formatGameModes, getGameModes } from '../../lib/game-modes';
 import { getGameGenres } from '../../lib/game-genres';
 import { isCommunityCriterionApplicable } from '../../lib/game-reviews';
 import { getGameTagLabel, hasGameTag, normalizeGameTag } from '../../lib/game-tags';
@@ -83,6 +83,7 @@ const statusClass = statusClasses[normalizeStatus(game.estado)] ?? 'badge-status
 const isRecurring = normalizeStatus(game.estado) === 'recurrente';
 const launcherClass = launcherClasses[normalizeStatus(game.launcher)] ?? 'badge-launcher-default';
 const platformClass = normalizeStatus(game.plataforma) === 'pc' ? 'badge-platform-pc' : 'badge-platform-default';
+const isSteam = normalizeStatus(game.launcher) === 'steam';
 
 const gameModes = getGameModes(game);
 const modesLabel = formatGameModes(gameModes);
@@ -92,15 +93,14 @@ const rawTags = Array.isArray(game.tags) ? game.tags : [];
 const tagBadges = rawTags
   .filter((tag) => normalizeGameTag(tag) !== 'cooperativo-privado')
   .map((tag) => ({ value: normalizeGameTag(tag), label: getGameTagLabel(tag) }));
-const heroBadges = [...tagBadges];
+const featuredHeroTags = new Set(['free-to-play', 'competitivo', 'early-access']);
+const heroBadges = tagBadges.filter((tag) => featuredHeroTags.has(tag.value));
 const addHeroBadge = (value: string, label: string) => {
   if (!heroBadges.some((badge) => badge.value === value)) heroBadges.push({ value, label });
 };
-if (genresList.some((genre) => normalizeStatus(genre) === 'indie')) addHeroBadge('indie', 'Indie');
 if (genresList.some((genre) => normalizeStatus(genre) === 'acceso anticipado')) {
   addHeroBadge('early-access', 'Early Access');
 }
-gameModes.forEach((mode) => addHeroBadge(`mode-${mode}`, getGameModeLabel(mode)));
 const tagsLabel = tagBadges.length > 0 ? tagBadges.map((tag) => tag.label).join(', ') : 'Sin etiquetas';
 const isCompetitive = hasGameTag(game.tags, 'competitivo') || Boolean(game.rango_actual || game.rango_maximo);
 const includeCommunity = isCommunityCriterionApplicable(game);
@@ -209,46 +209,63 @@ const effectiveEndDate = isRecurring ? null : game.fecha_fin;
 const end = effectiveEndDate ? new Date(`${effectiveEndDate}T00:00:00`) : null;
 const elapsedDays = start && end && end >= start ? Math.round((end.getTime() - start.getTime()) / 86_400_000) : null;
 const updatedDate = game.actualizado_en ? new Date(game.actualizado_en) : null;
+const formatTimestamp = (value: string | null | undefined) => {
+  if (!value) return '-';
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? '-'
+    : new Intl.DateTimeFormat('es-ES', {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+        timeZone: 'Europe/Madrid',
+      }).format(date);
+};
 const metadataGroups = [
-  {
-    title: 'Catalogación',
-    className: 'data-group-catalog',
-    items: [
-      { label: 'Géneros', value: genres },
-      { label: 'Etiquetas', value: tagsLabel === 'Sin etiquetas' ? '-' : tagsLabel },
-      { label: 'Modos', value: modesLabel },
-    ],
-  },
   {
     title: 'Progreso',
     className: 'data-group-progress',
     items: [
-      { label: 'Dificultad', value: formatValue(game.dificultad), note: game.dificultad ? 'Nivel registrado' : 'Sin registrar', kind: 'difficulty' as const },
       {
         label: 'Logros', value: achievements,
         note: achievementProgress === null ? 'Sin registrar' : `${achievementProgress.toFixed(0)}% completado`,
-        className: achievementProgress === null ? '' : 'detail-item-achievements', progress: achievementProgress, kind: 'achievements' as const,
+        className: 'detail-item-achievements', progress: achievementProgress, kind: 'achievements' as const,
+        state: achievementProgress === null ? 'empty' as const : achievementProgress >= 100 ? 'complete' as const : 'default' as const,
       },
+      { label: 'Dificultad', value: formatValue(game.dificultad), note: game.dificultad ? 'Nivel registrado' : 'Sin registrar', kind: 'difficulty' as const, state: game.dificultad ? 'default' as const : 'empty' as const },
       {
         label: 'Cromos Steam', value: steamCards,
         note: steamCardsProgress === null ? 'Sin datos' : `${steamCardsProgress.toFixed(0)}% completado`,
-        className: steamCardsProgress === null ? '' : 'detail-item-steam-cards', progress: steamCardsProgress, kind: 'cards' as const,
+        className: 'detail-item-steam-cards', progress: steamCardsProgress, kind: 'cards' as const,
+        state: isSteam ? (steamCardsProgress === null ? 'empty' as const : steamCardsProgress >= 100 ? 'complete' as const : 'default' as const) : 'not-applicable' as const,
       },
     ],
   },
   {
-    title: 'Ficha técnica',
-    className: 'data-group-technical',
+    title: 'Catalogación',
+    className: 'data-group-catalog',
     items: [
-      { label: 'Launcher', value: formatValue(game.launcher, 'Sin launcher') },
-      { label: 'Plataforma', value: formatValue(game.plataforma) },
-      ...(game.tamano ? [{ label: 'Tamaño instalado', value: game.tamano }] : []),
-      { label: 'Lanzamiento', value: formatValue(game.lanzamiento) },
-      { label: 'Steam AppID', value: formatValue(game.steam_appid) },
-      { label: 'HLTB match', value: formatValue(game.hltb_match) },
-      { label: 'Última edición', value: updatedDate && !Number.isNaN(updatedDate.getTime()) ? new Intl.DateTimeFormat('es-ES', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Europe/Madrid' }).format(updatedDate) : '-' },
+      { label: 'Géneros', value: genres, state: genres === '-' ? 'empty' as const : 'default' as const },
+      { label: 'Etiquetas', value: tagsLabel === 'Sin etiquetas' ? '-' : tagsLabel, state: tagsLabel === 'Sin etiquetas' ? 'empty' as const : 'default' as const },
+      { label: 'Modos', value: modesLabel, state: modesLabel === 'Sin registrar' ? 'empty' as const : 'default' as const },
+      { label: 'Lanzamiento', value: formatValue(game.lanzamiento), state: game.lanzamiento ? 'default' as const : 'empty' as const },
     ],
   },
+  {
+    title: 'Mi copia',
+    className: 'data-group-copy',
+    items: [
+      { label: 'Launcher', value: formatValue(game.launcher, 'Sin launcher'), state: game.launcher ? 'default' as const : 'empty' as const },
+      { label: 'Plataforma', value: formatValue(game.plataforma), state: game.plataforma ? 'default' as const : 'empty' as const },
+    ],
+  },
+];
+const systemItems = [
+  { label: 'Steam AppID', value: formatValue(game.steam_appid), state: game.steam_appid ? 'default' as const : 'empty' as const },
+  { label: 'Nombre oficial Steam', value: formatValue(game.steam_store_name), state: game.steam_store_name ? 'default' as const : 'empty' as const },
+  { label: 'Fuente de portada', value: formatValue(game.cover_source), state: game.cover_source ? 'default' as const : 'empty' as const },
+  { label: 'Coincidencia HLTB', value: formatValue(game.hltb_match), state: game.hltb_match ? 'default' as const : 'empty' as const },
+  { label: 'Última sincronización Steam', value: formatTimestamp(game.steam_last_sync_at), state: game.steam_last_sync_at ? 'default' as const : 'empty' as const },
+  { label: 'Última edición manual', value: formatTimestamp(game.actualizado_en), state: updatedDate && !Number.isNaN(updatedDate.getTime()) ? 'default' as const : 'empty' as const },
 ];
 
 const legacyScore = game.nota !== null && game.nota !== undefined && Number.isFinite(Number(game.nota)) ? Number(game.nota) : null;
@@ -314,16 +331,12 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
     <GameDetailStats
       slug={slug}
       metadataGroups={metadataGroups}
+      systemItems={systemItems}
+      isSteam={isSteam}
       editValues={{
-        generos: genresList,
-        tags: rawTags,
-        modos: gameModes,
         launcher: game.launcher,
         plataforma: game.plataforma,
-        tamano: game.tamano ?? null,
-        lanzamiento: game.lanzamiento ?? null,
         steam_appid: game.steam_appid ?? null,
-        hltb_match: game.hltb_match ?? null,
         dificultad: game.dificultad ?? null,
         logros_actual: game.logros?.actual ?? null,
         logros_total: game.logros?.total ?? null,

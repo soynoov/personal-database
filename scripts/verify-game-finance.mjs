@@ -18,6 +18,7 @@ try {
   const { applyManualGamePatch } = await server.ssrLoadModule('/src/lib/manual-game-edit.ts');
   const { getGameGenres } = await server.ssrLoadModule('/src/lib/game-genres.ts');
   const { getPurchaseStoreOptions } = await server.ssrLoadModule('/src/lib/purchase-stores.ts');
+  const { getDataCompleteness } = await server.ssrLoadModule('/src/lib/game-data-completeness.ts');
 
   const game = (overrides = {}) => ({
     titulo: 'Prueba', estado: 'Pendiente', launcher: 'Steam', plataforma: 'PC',
@@ -119,6 +120,22 @@ try {
   assert.equal(technicalEdit.game.steam_appid, 123456);
   assert.equal(technicalEdit.game.hltb_match, 'Test Game');
 
+  const correctedSteamId = applyManualGamePatch(game({
+    steam_appid: 10,
+    steam_store_name: 'Nombre anterior',
+    steam_store_genres: ['Acción'],
+    steam_last_sync_at: '2026-08-20T12:00:00.000Z',
+  }), { steam_appid: 20 });
+  assert.equal(correctedSteamId.ok, true);
+  assert.equal(correctedSteamId.game.steam_appid, 20);
+  assert.equal(correctedSteamId.game.steam_store_name, null);
+  assert.equal(correctedSteamId.game.steam_store_genres, null);
+  assert.equal(correctedSteamId.game.steam_last_sync_at, null);
+
+  const invalidSteamId = applyManualGamePatch(game(), { steam_appid: 'abc' });
+  assert.equal(invalidSteamId.ok, false);
+  assert.equal(invalidSteamId.status, 400);
+
   const purchaseStoreEdit = applyManualGamePatch(game(), {
     tiendas_compra: ['Instang Gaming', 'Steam', 'Steam'],
   });
@@ -154,6 +171,31 @@ try {
   assert.equal(optionalHonoraryComment.game.critica.criterios.originalidad, 0);
   assert.equal(optionalHonoraryComment.game.critica.mencion_honorifica.nivel, 2);
   assert.equal(optionalHonoraryComment.game.critica.mencion_honorifica.comentario, null);
+
+  const personalReview = applyManualGamePatch(game({
+    critica: { metascore: 88, userscore: 8.4 },
+  }), {
+    critica_personal: {
+      criterios: fullCritique.criterios,
+      mencion_honorifica: { nivel: 1, comentario: 'Mi apunte' },
+    },
+  });
+  assert.equal(personalReview.ok, true);
+  assert.equal(personalReview.game.critica.metascore, 88);
+  assert.equal(personalReview.game.critica.userscore, 8.4);
+  assert.equal(personalReview.game.critica.criterios.jugabilidad, fullCritique.criterios.jugabilidad);
+  assert.equal(personalReview.game.critica.mencion_honorifica.comentario, 'Mi apunte');
+
+  const pendingReport = getDataCompleteness([
+    game({ estado: 'Terminado', horas: 12, fecha_inicio: '2026-01-01', fecha_fin: '2026-01-02', nota: null }),
+  ]);
+  assert.deepEqual(pendingReport.games[0].missing.map((gap) => gap.key), ['nota']);
+  assert.equal(pendingReport.games[0].missing[0].editor, 'review');
+
+  const metadataDoesNotBlock = getDataCompleteness([
+    game({ generos: null, modos: null, lanzamiento: null }),
+  ]);
+  assert.equal(metadataDoesNotBlock.incompleteGames, 0);
 
   const zeroScoreReview = applyManualGamePatch(game({ tags: ['competitivo'] }), {
     critica: {

@@ -1,7 +1,9 @@
 const EDIT_TRIGGERS: Record<string, string> = {
+  status: 'game-edit-trigger',
   technical: 'data-edit-trigger',
   hours: 'hours-edit-trigger',
   finance: 'money-edit-trigger',
+  review: 'metacritic-edit-trigger',
 };
 
 export function initGameDetailEditDeeplink() {

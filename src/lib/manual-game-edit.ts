@@ -103,7 +103,19 @@ export function applyManualGamePatch(
   if (body.dificultad !== undefined) updated.dificultad = toNullableString(body.dificultad);
   if (body.tamano !== undefined) updated.tamano = toNullableString(body.tamano);
   if (body.lanzamiento !== undefined) updated.lanzamiento = toNullablePositiveInteger(body.lanzamiento);
-  if (body.steam_appid !== undefined) updated.steam_appid = toNullablePositiveInteger(body.steam_appid);
+  if (body.steam_appid !== undefined) {
+    const rawSteamAppId = String(body.steam_appid ?? '').trim();
+    const nextSteamAppId = toNullablePositiveInteger(body.steam_appid);
+    if (rawSteamAppId && nextSteamAppId === null) {
+      return { ok: false, status: 400, error: 'Steam AppID debe ser un número entero positivo.' };
+    }
+    if (nextSteamAppId !== game.steam_appid) {
+      updated.steam_store_name = null;
+      updated.steam_store_genres = null;
+      updated.steam_last_sync_at = null;
+    }
+    updated.steam_appid = nextSteamAppId;
+  }
   if (body.hltb_match !== undefined) updated.hltb_match = toNullableString(body.hltb_match);
   if (body.fecha_inicio !== undefined) updated.fecha_inicio = toNullableString(body.fecha_inicio);
   if (body.fecha_fin !== undefined) updated.fecha_fin = toNullableString(body.fecha_fin);
@@ -156,6 +168,39 @@ export function applyManualGamePatch(
 
   if (body.critica !== undefined) {
     updated.critica = toGameCritique(body.critica);
+    updated.nota = calculatePersonalScore(
+      updated.critica,
+      isCommunityCriterionApplicable(updated),
+    );
+  }
+
+  if (body.critica_personal !== undefined) {
+    const source = typeof body.critica_personal === 'object' && body.critica_personal !== null
+      ? body.critica_personal as Record<string, unknown>
+      : {};
+    const criteria = typeof source.criterios === 'object' && source.criterios !== null
+      ? source.criterios as Record<string, unknown>
+      : {};
+    const honorary = typeof source.mencion_honorifica === 'object' && source.mencion_honorifica !== null
+      ? source.mencion_honorifica as Record<string, unknown>
+      : {};
+
+    updated.critica = {
+      ...(game.critica ?? {}),
+      criterios: {
+        jugabilidad: toBoundedNumber(criteria.jugabilidad, 0, 5),
+        historia: toBoundedNumber(criteria.historia, 0, 5),
+        musica: toBoundedNumber(criteria.musica, 0, 3),
+        graficos_arte: toBoundedNumber(criteria.graficos_arte, 0, 5),
+        entretenimiento: toBoundedNumber(criteria.entretenimiento, 0, 5),
+        originalidad: toBoundedNumber(criteria.originalidad, 0, 1),
+        comunidad: toBoundedNumber(criteria.comunidad, 0, 5),
+      },
+      mencion_honorifica: {
+        nivel: toBoundedNumber(honorary.nivel, 0, 3),
+        comentario: toNullableString(honorary.comentario),
+      },
+    };
     updated.nota = calculatePersonalScore(
       updated.critica,
       isCommunityCriterionApplicable(updated),

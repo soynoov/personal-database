@@ -1,48 +1,63 @@
-# Design QA — resultado de la ruleta
+**Comparison Target**
 
-- Source visual truth: `C:\Users\heroy\.codex\generated_images\01a04d41-1a53-7900-807c-0b2698e6196e\exec-47828461-b3da-43f7-8613-094cbeafbafe.png`
-- Implementation screenshot: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\roulette-result-1361-viewport.png`
-- Mobile evidence: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\roulette-result-390-final.png`
-- Combined comparison: `C:\Users\heroy\OneDrive\Escritorio\PROJECT\personal-database\artifacts\design-qa\roulette-source-vs-implementation.png`
-- Viewport: 1361 × 1269 CSS px, device scale factor 1; secondary mobile check at 390 × 844 CSS px.
-- Pixels: source 1299 × 1211; implementation viewport 1361 × 1269. Both were normalized to 1299 × 1211 for the combined comparison.
-- State: result after a completed spin, dark theme, desktop and mobile.
+- Source visual truth: `C:\Users\heroy\AppData\Local\Temp\codex-clipboard-8a4a91e2-72b8-4a0a-9972-ac7496522dc2.png`
+- Browser-rendered implementation: `artifacts/design-qa/game-detail-redesign-page-verified.png`
+- Focused implementation state: `artifacts/design-qa/game-detail-progress-complete-viewport.png`
+- Combined comparison evidence: `artifacts/design-qa/game-detail-progress-comparison.png`
+- Route: `http://127.0.0.1:4322/games/miside/#technical`
+- CSS viewport: `1440 x 1100`, device scale factor `1`.
+- Source pixels: `879 x 292`.
+- Full implementation pixels: `1440 x 3545`; focused viewport pixels: `1440 x 1100`.
+- Normalization: the focused implementation was cropped to the visible Progress region (`1370 x 300`) and both regions were scaled to `1370 px` wide on one comparison board. The differing heights are intentional because the approved redesign changes three equal cards into an asymmetric Bento.
+- State: dark theme, desktop, Steam game, 49/49 achievements. The completed state was simulated in the browser DOM from real MiSide markup without persisting data.
 
-## Findings
+**Findings**
 
-No actionable P0, P1, or P2 issues remain.
+- No actionable P0, P1, or P2 differences remain.
+- The implementation preserves the source palette, rounded container, trophy treatment, gold completion state, muted empty states, copy hierarchy, and icon language.
+- The larger achievements tile and stacked secondary tiles are an intentional product change from the source, matching the approved asymmetric Bento rather than design drift.
 
-- Fonts and typography: the existing condensed display font and body font preserve the selected direction. Winner hierarchy, wrapping, line height, small kicker, metadata and button labels are legible at both tested breakpoints.
-- Spacing and layout rhythm: desktop uses the full result canvas, a wide hero, integrated metadata rail, three evenly grouped actions and the participant strip. Mobile stacks metadata and controls without horizontal overflow.
-- Colors and visual tokens: the near-black base, dark violet header, white display type and purple primary action match the selected direction and existing product tokens.
-- Image quality and asset fidelity: the implementation uses each selected game's real resolved hero and cover assets. Crops remain sharp and use `object-fit: cover`; no placeholder or code-drawn assets were introduced.
-- Copy and content: the final CTA is intentionally `Más información`, replacing the misleading `Jugar` label. The selected concept showed separate play and information actions, but the user clarified that the existing action already navigates to the technical game detail, so the duplicate action was removed.
-- Accessibility and interaction: the result region has useful heading structure; controls retain visible focus states and semantic link/button roles. `Más información` was tested against the selected winner route and opened `/games/star-wars-outlaws/`. `Volver a girar` restored the setup state.
-- Browser evidence: page content rendered, no Vite error overlay appeared, `window.__consoleErrors` returned `[]`, and neither the desktop nor mobile result had horizontal overflow.
+**Required Fidelity Surfaces**
 
-## Full-view comparison evidence
+- Fonts and typography: the existing application display and UI families are preserved; labels, values, notes, weights, line heights, and truncation remain legible at desktop and mobile sizes.
+- Spacing and layout rhythm: the Progress group aligns to the surrounding Ficha grid; the 7/5 desktop split, tablet row break, mobile stack, radii, gaps, and internal padding are consistent.
+- Colors and visual tokens: the existing purple dark-theme tokens remain intact; empty states are darker and desaturated without reducing text contrast, while completion uses the established gold token.
+- Image quality and asset fidelity: this component contains no raster imagery. Existing Tabler-based icons remain sharp and consistent; no source asset was replaced by a placeholder or custom drawing.
+- Copy and content: `Progreso`, `Logros`, `Dificultad`, `Cromos Steam`, `Sin registrar`, `Sin datos`, and the percentage copy match the intended Spanish interface.
 
-The combined source/implementation image confirms the same editorial sequence: product header, result kicker, large outcome statement and winner, panoramic artwork, compact metadata rail, action row and participant covers. The implementation intentionally uses three actions instead of four following the user's clarification.
+**Full-view Comparison Evidence**
 
-## Focused-region evidence
+- `artifacts/design-qa/game-detail-redesign-page-verified.png` confirms the redesigned Ficha sits correctly between Dinero and Valoración, keeps the sticky navigation usable, and does not introduce horizontal overflow or broken neighboring sections.
 
-The action row and metadata rail were inspected in both desktop and mobile captures. A separate crop was unnecessary because all labels, icons, borders and text wrapping are readable at original resolution.
+**Focused Region Comparison Evidence**
 
-## Comparison history
+- `artifacts/design-qa/game-detail-progress-comparison.png` places the source and final 100% state in one image. The completed, empty, and structural states are readable at inspection scale, so no additional close-up was needed.
 
-1. P2: the first desktop implementation kept the persistent sidebar, reducing the result canvas and drifting from the selected full-width composition. Fix: hide the desktop sidebar only while `.roulette-page.is-result` is active and collapse the grid to one column. Post-fix evidence: `roulette-result-1361-viewport.png`.
-2. P2: the first CTA copy repeated the title (`Más información sobre {juego}`), causing a two-line button label. Fix: use the exact label `Más información`; the adjacent winner heading already supplies context. Post-fix evidence: desktop and mobile final captures.
+**Interaction and Accessibility Checks**
 
-## Follow-up polish
+- Personal-data dialog, Steam AppID dialog, personal-rating dialog, pending-data deep links, system-information disclosure, and Steam/non-Steam conditional cards were exercised in the browser.
+- Desktop (`1440 px`), tablet (`900 px`), and mobile (`390 px`) layouts were checked.
+- The final focused accessibility scan reports zero violations; keyboard focus remains visible and the achievements progress bar exposes its accessible value.
+- Browser console: no application errors observed; only normal Vite development messages.
 
-- P3: the participant strip may show fewer covers than the generated concept because it reflects the real active roulette pool; this is correct product behavior.
+**Comparison History**
 
-## Implementation checklist
+- Iteration 1: the first combined source/implementation comparison found no P0/P1/P2 visual mismatches. Before that final comparison, implementation QA had already corrected low contrast in empty cards and invalid definition-list icon placement; the post-fix evidence is `artifacts/design-qa/game-detail-progress-comparison.png`, and the post-fix accessibility scan reports zero violations.
 
-- [x] Selected editorial layout implemented.
-- [x] Existing detail route retained.
-- [x] CTA renamed to `Más información` with an information icon.
-- [x] Desktop and mobile states checked.
-- [x] Primary navigation and return interaction verified.
+**Open Questions**
+
+- None blocking. The wider achievements card is treated as approved intent from the implementation plan.
+
+**Implementation Checklist**
+
+- [x] Preserve source visual language.
+- [x] Apply asymmetric Bento hierarchy.
+- [x] Distinguish empty, normal, complete, and non-applicable states.
+- [x] Verify responsive layouts and browser interactions.
+- [x] Verify contrast, semantics, focus, and progress accessibility.
+
+**Follow-up Polish**
+
+- No P3 item is required for this handoff.
 
 final result: passed

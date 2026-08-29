@@ -1,9 +1,6 @@
 ---
 import '../../styles/game-detail/stats.css';
 import '../../styles/game-detail/edit.css';
-import { GAME_MODES } from '../../lib/game-modes';
-import { PUBLIC_GAME_TAGS, normalizeGameTag } from '../../lib/game-tags';
-import FormCheckbox from '../FormCheckbox.astro';
 import TablerIcon from '../TablerIcon.astro';
 import categoryIcon from '@tabler/icons/outline/category-2.svg?url';
 import editIcon from '@tabler/icons/outline/edit.svg?url';
@@ -11,26 +8,34 @@ import settingsIcon from '@tabler/icons/outline/settings.svg?url';
 import trophyIcon from '@tabler/icons/outline/trophy.svg?url';
 import cardsIcon from '@tabler/icons/outline/cards.svg?url';
 import difficultyIcon from '@tabler/icons/outline/barbell.svg?url';
+import copyIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
+import databaseIcon from '@tabler/icons/outline/database-cog.svg?url';
 
 type ProgressKind = 'difficulty' | 'achievements' | 'cards';
+type DetailState = 'default' | 'empty' | 'complete' | 'not-applicable';
+type DetailItem = {
+  label: string;
+  value: string;
+  className?: string;
+  note?: string;
+  progress?: number | null;
+  kind?: ProgressKind;
+  state?: DetailState;
+};
 
 interface Props {
   slug: string;
   metadataGroups: Array<{
     title: string;
     className?: string;
-    items: Array<{ label: string; value: string; className?: string; note?: string; progress?: number | null; kind?: ProgressKind }>;
+    items: DetailItem[];
   }>;
+  systemItems: DetailItem[];
+  isSteam: boolean;
   editValues: {
-    generos: string[];
-    tags: string[];
-    modos: string[];
     launcher: string | null;
     plataforma: string | null;
-    tamano: string | null;
-    lanzamiento: number | null;
     steam_appid: number | null;
-    hltb_match: string | null;
     dificultad: string | null;
     logros_actual: number | null;
     logros_total: number | null;
@@ -38,12 +43,12 @@ interface Props {
     steam_cromos_total: number | null;
   };
 }
-const { slug, metadataGroups, editValues } = Astro.props;
-const normalizedTags = editValues.tags.map(normalizeGameTag);
+
+const { slug, metadataGroups, systemItems, isSteam, editValues } = Astro.props;
 const groupIcons: Record<string, string> = {
-  'Catalogación': categoryIcon,
   Progreso: trophyIcon,
-  'Ficha técnica': settingsIcon,
+  'Catalogación': categoryIcon,
+  'Mi copia': copyIcon,
 };
 const progressIcons: Record<ProgressKind, string> = {
   difficulty: difficultyIcon,
@@ -54,75 +59,100 @@ const progressIcons: Record<ProgressKind, string> = {
 
 <section class="game-page-section" id="technical">
   <div class="section-title-row">
-    <div><span class="section-eyebrow">Ficha técnica</span><h2>Datos</h2></div>
-    <button class="game-edit-trigger game-edit-trigger-sm" id="data-edit-trigger" type="button" aria-label="Editar catalogación y ficha técnica"><TablerIcon src={editIcon} /></button>
+    <div><span class="section-eyebrow">Biblioteca personal</span><h2>Ficha</h2></div>
+    <button class="game-edit-trigger game-edit-trigger-sm" id="data-edit-trigger" type="button" aria-label="Editar mis datos del juego">
+      <TablerIcon src={editIcon} />
+    </button>
   </div>
+
   <div class="game-data-groups">
-    {metadataGroups.map((group) => (
-      <article class:list={["data-group-card", group.className]}>
-        <div class="data-group-head">
-          <span class="data-group-icon"><TablerIcon src={groupIcons[group.title] ?? settingsIcon} /></span>
-          <h3>{group.title}</h3>
-        </div>
-        <dl class="detail-grid data-group-grid" data-count={group.items.length}>
-          {group.items.map(({ label, value, className = '', note = '', progress = null, kind }) => (
-            <div title={note || undefined} class:list={["detail-item", "compact-detail-card", className, kind && `progress-card-${kind}`, value === '-' && "detail-item-empty", progress !== null && "detail-item-progress", progress !== null && progress >= 100 && "detail-item-complete"]}>
-              {kind && <span class='progress-card-icon'><TablerIcon src={progressIcons[kind]} /></span>}
-              <dt>{label}</dt>
-              <dd>{value}</dd>
-              {note && <dd class="detail-item-note">{note}</dd>}
-              {progress !== null && (
-                <dd class="data-progress-slot">
-                  <span class="data-progress-track" role="progressbar" aria-label={`Progreso de ${label}`} aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(progress)}>
-                    <span style={`--data-progress:${progress}%`}></span>
-                  </span>
-                </dd>
-              )}
-            </div>
-          ))}
-        </dl>
-      </article>
-    ))}
+    {metadataGroups.map((group) => {
+      const visibleItems = group.items.filter((item) => item.state !== 'not-applicable');
+      return (
+        <article class:list={["data-group-card", group.className]}>
+          <div class="data-group-head">
+            <span class="data-group-icon"><TablerIcon src={groupIcons[group.title] ?? settingsIcon} /></span>
+            <h3>{group.title}</h3>
+          </div>
+          <dl class="detail-grid data-group-grid" data-count={visibleItems.length}>
+            {visibleItems.map(({ label, value, className = '', note = '', progress = null, kind, state = 'default' }) => (
+              <div
+                title={note || undefined}
+                data-state={state}
+                class:list={[
+                  "detail-item",
+                  "compact-detail-card",
+                  className,
+                  kind && `progress-card-${kind}`,
+                  state === 'empty' && 'detail-item-empty',
+                  state === 'complete' && 'detail-item-complete',
+                  progress !== null && 'detail-item-progress',
+                ]}
+              >
+                <dt>{label}</dt>
+                {kind && <dd class="progress-card-icon" aria-hidden="true"><TablerIcon src={progressIcons[kind]} /></dd>}
+                <dd>{value}</dd>
+                {note && <dd class="detail-item-note">{note}</dd>}
+                {progress !== null && (
+                  <dd class="data-progress-slot">
+                    <span class="data-progress-track" role="progressbar" aria-label={`Progreso de ${label}`} aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(progress)}>
+                      <span style={`--data-progress:${progress}%`}></span>
+                    </span>
+                  </dd>
+                )}
+              </div>
+            ))}
+          </dl>
+        </article>
+      );
+    })}
   </div>
+
+  <details class="system-data-details">
+    <summary>
+      <span class="system-data-summary-icon"><TablerIcon src={databaseIcon} /></span>
+      <span><strong>Información del sistema</strong><small>Fuentes, enlaces y sincronización</small></span>
+    </summary>
+    <div class="system-data-body">
+      <dl class="system-data-grid">
+        {systemItems.map((item) => (
+          <div data-state={item.state ?? 'default'} class:list={[item.state === 'empty' && 'detail-item-empty']}>
+            <dt>{item.label}</dt>
+            <dd>{item.value}</dd>
+          </div>
+        ))}
+      </dl>
+      <button class="system-appid-edit" id="system-appid-edit-trigger" type="button">
+        <TablerIcon src={editIcon} />
+        Corregir Steam AppID
+      </button>
+    </div>
+  </details>
 </section>
 
 <dialog class="edit-dialog" id="data-edit-dialog">
   <div class="edit-dialog-body">
     <div class="edit-dialog-head">
-      <h2>Editar datos</h2>
+      <div><h2>Editar mis datos</h2><p class="edit-dialog-sub">Solo información sobre tu copia y tu progreso.</p></div>
       <button class="edit-dialog-close" id="data-edit-close" type="button" aria-label="Cerrar">×</button>
     </div>
     <p class="edit-dialog-error" id="data-edit-error" hidden></p>
     <form id="data-edit-form" data-slug={slug}>
       <fieldset class="data-edit-fieldset">
-        <legend>Catalogación</legend>
-        <div class="edit-field">
-          <label for="data-edit-genres">Géneros</label>
-          <input id="data-edit-genres" name="generos" type="text" value={editValues.generos.join(', ')} placeholder="Acción, Aventura…" />
+        <legend>Mi copia</legend>
+        <div class="edit-field-row">
+          <div class="edit-field">
+            <label for="data-edit-launcher">Launcher</label>
+            <input id="data-edit-launcher" name="launcher" type="text" value={editValues.launcher ?? ''} />
+          </div>
+          <div class="edit-field">
+            <label for="data-edit-platform">Plataforma</label>
+            <input id="data-edit-platform" name="plataforma" type="text" value={editValues.plataforma ?? ''} />
+          </div>
         </div>
-        <fieldset class="edit-field game-mode-fieldset">
-          <legend>Modos</legend>
-          <div class="game-mode-options">
-            {GAME_MODES.map((mode) => (
-              <FormCheckbox class="game-mode-option" name="modos" value={mode.value} checked={editValues.modos.includes(mode.value)}>
-                {mode.label}
-              </FormCheckbox>
-            ))}
-          </div>
-        </fieldset>
-        <fieldset class="edit-field game-mode-fieldset">
-          <legend>Etiquetas</legend>
-          <div class="game-mode-options">
-            {PUBLIC_GAME_TAGS.map((tag) => (
-              <FormCheckbox class="game-mode-option" name="tags" value={tag.value} checked={normalizedTags.includes(tag.value)}>
-                {tag.label}
-              </FormCheckbox>
-            ))}
-          </div>
-        </fieldset>
       </fieldset>
       <fieldset class="data-edit-fieldset">
-        <legend>Progreso</legend>
+        <legend>Progreso personal</legend>
         <div class="edit-field">
           <label for="data-edit-difficulty">Dificultad</label>
           <input id="data-edit-difficulty" name="dificultad" type="text" placeholder="Fácil, normal, difícil…" value={editValues.dificultad ?? ''} />
@@ -137,49 +167,18 @@ const progressIcons: Record<ProgressKind, string> = {
             <input id="data-edit-achievements-total" name="logros_total" type="number" step="1" min="0" value={editValues.logros_total ?? ''} />
           </div>
         </div>
-        <div class="edit-field-row steam-cards-edit-row">
-          <div class="edit-field">
-            <label for="data-edit-cards-current">Cromos obtenidos</label>
-            <input id="data-edit-cards-current" name="steam_cromos_actual" type="number" step="1" min="0" value={editValues.steam_cromos_actual ?? ''} />
+        {isSteam && (
+          <div class="edit-field-row steam-cards-edit-row">
+            <div class="edit-field">
+              <label for="data-edit-cards-current">Cromos obtenidos</label>
+              <input id="data-edit-cards-current" name="steam_cromos_actual" type="number" step="1" min="0" value={editValues.steam_cromos_actual ?? ''} />
+            </div>
+            <div class="edit-field">
+              <label for="data-edit-cards-total">Cromos totales</label>
+              <input id="data-edit-cards-total" name="steam_cromos_total" type="number" step="1" min="0" value={editValues.steam_cromos_total ?? ''} />
+            </div>
           </div>
-          <div class="edit-field">
-            <label for="data-edit-cards-total">Cromos totales</label>
-            <input id="data-edit-cards-total" name="steam_cromos_total" type="number" step="1" min="0" value={editValues.steam_cromos_total ?? ''} />
-          </div>
-        </div>
-      </fieldset>
-      <fieldset class="data-edit-fieldset">
-        <legend>Ficha técnica</legend>
-        <div class="edit-field-row">
-          <div class="edit-field">
-            <label for="data-edit-launcher">Launcher</label>
-            <input id="data-edit-launcher" name="launcher" type="text" value={editValues.launcher ?? ''} />
-          </div>
-          <div class="edit-field">
-            <label for="data-edit-platform">Plataforma</label>
-            <input id="data-edit-platform" name="plataforma" type="text" value={editValues.plataforma ?? ''} />
-          </div>
-        </div>
-        <div class="edit-field-row">
-          <div class="edit-field">
-            <label for="data-edit-size">Tamaño instalado</label>
-            <input id="data-edit-size" name="tamano" type="text" value={editValues.tamano ?? ''} placeholder="30.32 GB" />
-          </div>
-          <div class="edit-field">
-            <label for="data-edit-release">Año de lanzamiento</label>
-            <input id="data-edit-release" name="lanzamiento" type="number" step="1" min="1" value={editValues.lanzamiento ?? ''} />
-          </div>
-        </div>
-        <div class="edit-field-row">
-          <div class="edit-field">
-            <label for="data-edit-steam-appid">Steam AppID</label>
-            <input id="data-edit-steam-appid" name="steam_appid" type="number" step="1" min="1" value={editValues.steam_appid ?? ''} />
-          </div>
-          <div class="edit-field">
-            <label for="data-edit-hltb-match">Coincidencia HLTB</label>
-            <input id="data-edit-hltb-match" name="hltb_match" type="text" value={editValues.hltb_match ?? ''} />
-          </div>
-        </div>
+        )}
       </fieldset>
       <div class="edit-dialog-actions">
         <button class="edit-dialog-cancel" id="data-edit-cancel" type="button">Cancelar</button>
@@ -189,53 +188,109 @@ const progressIcons: Record<ProgressKind, string> = {
   </div>
 </dialog>
 
+<dialog class="edit-dialog" id="system-appid-dialog">
+  <div class="edit-dialog-body">
+    <div class="edit-dialog-head">
+      <div><h2>Corregir Steam AppID</h2><p class="edit-dialog-sub">Este identificador enlaza la ficha con los datos oficiales de Steam.</p></div>
+      <button class="edit-dialog-close" id="system-appid-close" type="button" aria-label="Cerrar">×</button>
+    </div>
+    <p class="edit-dialog-error" id="system-appid-error" hidden></p>
+    <form id="system-appid-form" data-slug={slug}>
+      <div class="edit-field">
+        <label for="system-appid-input">Steam AppID</label>
+        <input id="system-appid-input" name="steam_appid" type="number" step="1" min="1" inputmode="numeric" value={editValues.steam_appid ?? ''} />
+        <small class="edit-field-hint">Al cambiarlo, los metadatos derivados quedarán pendientes de sincronizar.</small>
+      </div>
+      <div class="edit-dialog-actions">
+        <button class="edit-dialog-cancel" id="system-appid-cancel" type="button">Cancelar</button>
+        <button class="edit-dialog-submit" id="system-appid-submit" type="submit">Guardar AppID</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
 <script>
   import { editorFetch } from '../../scripts/editor-auth';
   import { finishGameEdit } from '../../scripts/game-edit-feedback';
-  const trigger = document.getElementById('data-edit-trigger');
-  const dialog = document.getElementById('data-edit-dialog');
-  const form = document.getElementById('data-edit-form');
-  const errorBox = document.getElementById('data-edit-error');
-  const submit = document.getElementById('data-edit-submit');
-  if (trigger instanceof HTMLButtonElement && dialog instanceof HTMLDialogElement && form instanceof HTMLFormElement && errorBox instanceof HTMLElement && submit instanceof HTMLButtonElement) {
+
+  const wireDialog = (
+    triggerId: string,
+    dialogId: string,
+    closeId: string,
+    cancelId: string,
+  ) => {
+    const trigger = document.getElementById(triggerId);
+    const dialog = document.getElementById(dialogId);
+    if (!(trigger instanceof HTMLButtonElement) || !(dialog instanceof HTMLDialogElement)) return null;
     const close = () => dialog.close();
-    trigger.addEventListener('click', () => { errorBox.hidden = true; dialog.showModal(); });
-    document.getElementById('data-edit-close')?.addEventListener('click', close);
-    document.getElementById('data-edit-cancel')?.addEventListener('click', close);
+    trigger.addEventListener('click', () => dialog.showModal());
+    document.getElementById(closeId)?.addEventListener('click', close);
+    document.getElementById(cancelId)?.addEventListener('click', close);
     dialog.addEventListener('click', (event) => { if (event.target === dialog) close(); });
-    form.addEventListener('submit', async (event) => {
+    return dialog;
+  };
+
+  wireDialog('data-edit-trigger', 'data-edit-dialog', 'data-edit-close', 'data-edit-cancel');
+  const dataForm = document.getElementById('data-edit-form');
+  const dataError = document.getElementById('data-edit-error');
+  const dataSubmit = document.getElementById('data-edit-submit');
+  if (dataForm instanceof HTMLFormElement && dataError instanceof HTMLElement && dataSubmit instanceof HTMLButtonElement) {
+    dataForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      const data = new FormData(form);
-      submit.disabled = true;
-      submit.textContent = 'Guardando…';
+      const data = new FormData(dataForm);
+      const payload: Record<string, FormDataEntryValue | null> = {
+        launcher: data.get('launcher'),
+        plataforma: data.get('plataforma'),
+        dificultad: data.get('dificultad'),
+        logros_actual: data.get('logros_actual'),
+        logros_total: data.get('logros_total'),
+      };
+      if (dataForm.elements.namedItem('steam_cromos_actual')) {
+        payload.steam_cromos_actual = data.get('steam_cromos_actual');
+        payload.steam_cromos_total = data.get('steam_cromos_total');
+      }
+      dataSubmit.disabled = true;
+      dataSubmit.textContent = 'Guardando…';
+      dataError.hidden = true;
       try {
-        const response = await editorFetch(`/api/games/${form.dataset.slug ?? ''}/edit`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            generos: data.get('generos'),
-            modos: data.getAll('modos'),
-            tags: data.getAll('tags'),
-            launcher: data.get('launcher'),
-            plataforma: data.get('plataforma'),
-            tamano: data.get('tamano'),
-            lanzamiento: data.get('lanzamiento'),
-            steam_appid: data.get('steam_appid'),
-            hltb_match: data.get('hltb_match'),
-            dificultad: data.get('dificultad'),
-            logros_actual: data.get('logros_actual'),
-            logros_total: data.get('logros_total'),
-            steam_cromos_actual: data.get('steam_cromos_actual'),
-            steam_cromos_total: data.get('steam_cromos_total'),
-          }),
+        const response = await editorFetch(`/api/games/${dataForm.dataset.slug ?? ''}/edit`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
         });
         const result = await response.json().catch(() => ({}));
         if (!response.ok || !result.ok) throw new Error(result.error || `HTTP ${response.status}`);
-        finishGameEdit('technical', 'Datos actualizados');
+        finishGameEdit('technical', 'Ficha personal actualizada');
       } catch (error) {
-        errorBox.textContent = error instanceof Error ? error.message : 'No se pudo guardar.';
-        errorBox.hidden = false;
-        submit.disabled = false;
-        submit.textContent = 'Guardar cambios';
+        dataError.textContent = error instanceof Error ? error.message : 'No se pudo guardar.';
+        dataError.hidden = false;
+        dataSubmit.disabled = false;
+        dataSubmit.textContent = 'Guardar cambios';
+      }
+    });
+  }
+
+  wireDialog('system-appid-edit-trigger', 'system-appid-dialog', 'system-appid-close', 'system-appid-cancel');
+  const appIdForm = document.getElementById('system-appid-form');
+  const appIdError = document.getElementById('system-appid-error');
+  const appIdSubmit = document.getElementById('system-appid-submit');
+  if (appIdForm instanceof HTMLFormElement && appIdError instanceof HTMLElement && appIdSubmit instanceof HTMLButtonElement) {
+    appIdForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const data = new FormData(appIdForm);
+      appIdSubmit.disabled = true;
+      appIdSubmit.textContent = 'Guardando…';
+      appIdError.hidden = true;
+      try {
+        const response = await editorFetch(`/api/games/${appIdForm.dataset.slug ?? ''}/edit`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ steam_appid: data.get('steam_appid') }),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) throw new Error(result.error || `HTTP ${response.status}`);
+        finishGameEdit('technical', 'Steam AppID actualizado');
+      } catch (error) {
+        appIdError.textContent = error instanceof Error ? error.message : 'No se pudo guardar.';
+        appIdError.hidden = false;
+        appIdSubmit.disabled = false;
+        appIdSubmit.textContent = 'Guardar AppID';
       }
     });
   }

@@ -56,6 +56,10 @@ const hasMetacriticData = metascore !== null
   || hasCriterionData
   || honoraryLevel > 0
   || Boolean(honoraryComment);
+const hasPersonalReview = displayedPersonalScore !== null
+  || hasCriterionData
+  || honoraryLevel > 0
+  || Boolean(honoraryComment);
 const formatDecimal = (value: number | null) =>
   value === null
     ? '—'
@@ -69,16 +73,16 @@ const formatDecimal = (value: number | null) =>
   <header class="game-metacritic-head">
     <div>
       <span class="section-eyebrow">Crítica</span>
-      <h2>Metacrítica</h2>
+      <h2>Valoración</h2>
     </div>
     <button
       class="metacritic-edit-trigger"
       id="metacritic-edit-trigger"
       type="button"
-      aria-label={hasMetacriticData ? 'Editar puntuaciones de Metacrítica' : 'Añadir puntuaciones de Metacrítica'}
+      aria-label={hasPersonalReview ? 'Editar mi valoración' : 'Añadir mi valoración'}
     >
       <TablerIcon src={editIcon} />
-      <span>{hasMetacriticData ? 'Editar' : 'Añadir crítica'}</span>
+      <span>{hasPersonalReview ? 'Editar' : 'Añadir valoración'}</span>
     </button>
   </header>
 
@@ -199,8 +203,8 @@ const formatDecimal = (value: number | null) =>
   <div class="edit-dialog-body">
     <div class="edit-dialog-head">
       <div>
-        <h2>Editar Metacrítica</h2>
-        <p class="edit-dialog-sub">No se introduce una nota global: My score se calcula automáticamente.</p>
+        <h2>Editar mi valoración</h2>
+        <p class="edit-dialog-sub">Tu nota se calcula automáticamente a partir de tus criterios.</p>
       </div>
       <button class="edit-dialog-close" id="metacritic-edit-close" type="button" aria-label="Cerrar">×</button>
     </div>
@@ -208,45 +212,6 @@ const formatDecimal = (value: number | null) =>
     <p class="edit-dialog-error" id="metacritic-edit-error" hidden></p>
 
     <form id="metacritic-edit-form" data-slug={slug}>
-      <section class="metacritic-edit-group" aria-labelledby="metacritic-public-title">
-        <div class="metacritic-edit-group-head">
-          <div>
-            <span class="section-eyebrow">Referencias externas</span>
-            <h3 id="metacritic-public-title">Puntuación pública</h3>
-          </div>
-          <span>No altera My score</span>
-        </div>
-
-        <div class="metacritic-public-fields">
-          <label class="metacritic-public-field" for="edit-metascore">
-            <span>Metascore <small>/100</small></span>
-            <input
-              id="edit-metascore"
-              name="metascore"
-              type="number"
-              step="1"
-              min="0"
-              max="100"
-              placeholder="81"
-              value={critique?.metascore ?? ''}
-            />
-          </label>
-          <label class="metacritic-public-field" for="edit-userscore">
-            <span>User score <small>/10</small></span>
-            <input
-              id="edit-userscore"
-              name="userscore"
-              type="number"
-              step="0.1"
-              min="0"
-              max="10"
-              placeholder="8,2"
-              value={critique?.userscore ?? ''}
-            />
-          </label>
-        </div>
-      </section>
-
       <section class="metacritic-edit-group" aria-labelledby="metacritic-personal-title">
         <div class="metacritic-edit-group-head">
           <div>
@@ -344,7 +309,7 @@ const formatDecimal = (value: number | null) =>
 
       <div class="edit-dialog-actions">
         <button class="edit-dialog-cancel" id="metacritic-edit-cancel" type="button">Cancelar</button>
-        <button class="edit-dialog-submit" id="metacritic-edit-submit" type="submit">Guardar puntuaciones</button>
+        <button class="edit-dialog-submit" id="metacritic-edit-submit" type="submit">Guardar valoración</button>
       </div>
     </form>
   </div>
@@ -420,9 +385,7 @@ const formatDecimal = (value: number | null) =>
 
       const data = new FormData(form);
       const payload = {
-        critica: {
-          metascore: data.get('metascore'),
-          userscore: data.get('userscore'),
+        critica_personal: {
           criterios: {
             jugabilidad: data.get('jugabilidad'),
             historia: data.get('historia'),
@@ -453,11 +416,11 @@ const formatDecimal = (value: number | null) =>
         if (!response.ok || !result.ok) {
           throw new Error(result.error || `No se pudo guardar (HTTP ${response.status}).`);
         }
-        finishGameEdit('metacritica', 'Metacrítica actualizada');
+        finishGameEdit('metacritica', 'Valoración actualizada');
       } catch (error) {
         showError(error instanceof Error ? error.message : 'No se pudo guardar.');
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Guardar puntuaciones';
+        submitBtn.textContent = 'Guardar valoración';
       }
     });
   }
