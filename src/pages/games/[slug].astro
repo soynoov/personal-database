@@ -221,16 +221,16 @@ const metadataGroups = [
     title: 'Progreso',
     className: 'data-group-progress',
     items: [
-      { label: 'Dificultad', value: formatValue(game.dificultad), note: game.dificultad ? 'Partida registrada' : 'Sin registrar' },
+      { label: 'Dificultad', value: formatValue(game.dificultad), note: game.dificultad ? 'Nivel registrado' : 'Sin registrar', kind: 'difficulty' as const },
       {
         label: 'Logros', value: achievements,
         note: achievementProgress === null ? 'Sin registrar' : `${achievementProgress.toFixed(0)}% completado`,
-        className: achievementProgress === null ? '' : 'detail-item-achievements', progress: achievementProgress,
+        className: achievementProgress === null ? '' : 'detail-item-achievements', progress: achievementProgress, kind: 'achievements' as const,
       },
       {
         label: 'Cromos Steam', value: steamCards,
         note: steamCardsProgress === null ? 'Sin datos' : `${steamCardsProgress.toFixed(0)}% completado`,
-        className: steamCardsProgress === null ? '' : 'detail-item-achievements', progress: steamCardsProgress,
+        className: steamCardsProgress === null ? '' : 'detail-item-steam-cards', progress: steamCardsProgress, kind: 'cards' as const,
       },
     ],
   },
@@ -324,6 +324,8 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
         dificultad: game.dificultad ?? null,
         logros_actual: game.logros?.actual ?? null,
         logros_total: game.logros?.total ?? null,
+        steam_cromos_actual: game.steam_cromos?.actual ?? null,
+        steam_cromos_total: game.steam_cromos?.total ?? null,
       }}
     />
     {dlcTotal > 0 && (

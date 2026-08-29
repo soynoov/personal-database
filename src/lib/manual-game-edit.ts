@@ -139,6 +139,19 @@ export function applyManualGamePatch(
     updated.logros = actual === null && total === null ? null : { actual, total };
   }
 
+  if (body.steam_cromos_actual !== undefined || body.steam_cromos_total !== undefined) {
+    const actual = body.steam_cromos_actual !== undefined
+      ? toNullableNonNegativeInteger(body.steam_cromos_actual)
+      : game.steam_cromos?.actual ?? null;
+    const total = body.steam_cromos_total !== undefined
+      ? toNullableNonNegativeInteger(body.steam_cromos_total)
+      : game.steam_cromos?.total ?? null;
+    if (actual !== null && total !== null && actual > total) {
+      return { ok: false, status: 400, error: 'Los cromos obtenidos no pueden superar el total.' };
+    }
+    updated.steam_cromos = actual === null && total === null ? null : { actual, total };
+  }
+
   if (body.critica !== undefined) {
     updated.critica = toGameCritique(body.critica);
     updated.nota = calculatePersonalScore(
@@ -148,6 +161,10 @@ export function applyManualGamePatch(
   }
 
   let nextTags = body.tags !== undefined ? toStringArray(body.tags) : game.tags;
+  nextTags = (nextTags ?? []).filter((tag) => {
+    const normalized = String(tag).trim().toLowerCase();
+    return normalized !== 'transmitir' && normalized !== 'transmision' && normalized !== 'transmisión';
+  });
   if (body.free_to_play !== undefined) {
     nextTags = toggleTag(nextTags, 'free-to-play', body.free_to_play);
   }

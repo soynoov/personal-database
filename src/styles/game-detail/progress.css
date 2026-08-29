@@ -1,0 +1,145 @@
+@import '../theme.css';
+
+@layer global {
+  .game-page-rich #technical .data-group-progress {
+    position: relative;
+    overflow: hidden;
+    border-color: rgba(184, 151, 232, 0.18);
+    background:
+      radial-gradient(circle at 78% -20%, rgba(136, 91, 204, 0.12), transparent 42%),
+      #101119;
+  }
+
+  .game-page-rich #technical .data-group-progress .data-group-head {
+    margin-bottom: 1rem;
+  }
+
+  .game-page-rich #technical .data-group-progress .data-group-grid {
+    gap: 0.72rem;
+  }
+
+  .game-page-rich #technical .data-group-progress .detail-item {
+    position: relative;
+    align-content: end;
+    min-height: 132px;
+    padding: 0.95rem;
+    overflow: hidden;
+    border-color: rgba(215, 201, 231, 0.11);
+    background:
+      linear-gradient(145deg, rgba(17, 18, 27, 0.98), rgba(10, 11, 17, 0.98));
+  }
+
+  .game-page-rich #technical .data-group-progress .detail-item::after {
+    content: '';
+    position: absolute;
+    top: -34px;
+    right: -30px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(156, 116, 218, 0.07);
+    pointer-events: none;
+  }
+
+  .game-page-rich #technical .progress-card-icon {
+    position: absolute;
+    z-index: 1;
+    top: 0.8rem;
+    right: 0.8rem;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(202, 177, 235, 0.17);
+    border-radius: 10px;
+    background: rgba(128, 87, 188, 0.1);
+    color: #b996e7;
+  }
+
+  .game-page-rich #technical .progress-card-icon .tabler-icon {
+    width: 17px;
+    height: 17px;
+  }
+
+  .game-page-rich #technical .data-group-progress .detail-item dt {
+    max-width: calc(100% - 38px);
+    color: rgba(217, 204, 229, 0.6);
+    font-size: 0.66rem;
+    font-weight: 760;
+    letter-spacing: 0.075em;
+  }
+
+  .game-page-rich #technical .data-group-progress .detail-item > dd:first-of-type {
+    margin-top: 0.32rem;
+    color: #f4edf8;
+    font-size: 1.25rem;
+    font-weight: 760;
+    line-height: 1.05;
+  }
+
+  .game-page-rich #technical .data-group-progress .detail-item-note {
+    margin-top: 0.35rem;
+    color: rgba(214, 202, 224, 0.52);
+    font-size: 0.7rem;
+  }
+
+  .game-page-rich #technical .data-group-progress .data-progress-track {
+    height: 6px;
+    margin-top: 0.7rem;
+    border-color: rgba(218, 196, 238, 0.12);
+    background: rgba(222, 210, 235, 0.09);
+  }
+
+  .game-page-rich #technical .progress-card-achievements .data-progress-track > span {
+    background: linear-gradient(90deg, #7c4fc0, #c493f0);
+  }
+
+  .game-page-rich #technical .progress-card-cards .progress-card-icon {
+    border-color: rgba(96, 165, 250, 0.2);
+    background: rgba(59, 130, 246, 0.1);
+    color: #83b8ef;
+  }
+
+  .game-page-rich #technical .progress-card-cards::after {
+    background: rgba(52, 125, 201, 0.07);
+  }
+
+  .game-page-rich #technical .progress-card-cards .data-progress-track > span {
+    background: linear-gradient(90deg, #3879bb, #72b8e8);
+  }
+
+  .game-page-rich #technical .data-group-progress .detail-item-complete {
+    border-color: rgba(224, 184, 79, 0.25);
+    background: linear-gradient(145deg, rgba(39, 31, 15, 0.68), rgba(13, 13, 16, 0.98));
+  }
+
+  .game-page-rich #technical .detail-item-complete .progress-card-icon {
+    border-color: rgba(239, 200, 95, 0.32);
+    background: rgba(185, 130, 27, 0.13);
+    color: #e7c15f;
+  }
+
+  .game-page-rich #technical .detail-item-complete .data-progress-track > span {
+    background: linear-gradient(90deg, #b27a18, #efcf72);
+  }
+
+  .game-page-rich #technical .data-group-progress .detail-item-empty {
+    opacity: 1;
+    filter: none;
+  }
+
+  .game-page-rich #technical .data-group-progress .detail-item-empty .progress-card-icon {
+    opacity: 0.56;
+  }
+
+  .steam-cards-edit-row {
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(207, 195, 225, 0.1);
+  }
+
+  @media (max-width: 720px) {
+    .game-page-rich #technical .data-group-progress .detail-item {
+      min-height: 120px;
+    }
+  }
+}

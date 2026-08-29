@@ -4,7 +4,6 @@ export const PUBLIC_GAME_TAGS = [
   { value: "competitivo", label: "Competitivo" },
   { value: "early-access", label: "Early Access" },
   { value: "modpacks", label: "Modpacks" },
-  { value: "transmitir", label: "Transmitir" },
 ] as const;
 
 export type PublicGameTag = (typeof PUBLIC_GAME_TAGS)[number]["value"];

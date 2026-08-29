@@ -3,7 +3,8 @@ import path from "node:path";
 import { existsSync } from "node:fs";
 import { BlobPreconditionFailedError, get, put } from "@vercel/blob";
 import { isCompletedStatus, normalizeStatus } from "./game-status";
-import { gameHasMode } from "./game-modes";
+import { gameHasMode, normalizeGameModes } from "./game-modes";
+import { normalizeGameTag } from "./game-tags";
 
 export type GameCritique = {
   metascore?: number | null;
@@ -101,12 +102,30 @@ const gamesVersions = new WeakMap<LocalGame[], string | null>();
 
 function applyGameDataMigrations(games: LocalGame[]) {
   return games.map((game) => {
-    if (game.titulo !== "Mini Airways") return game;
+    const rawTags = Array.isArray(game.tags) ? game.tags : [];
+    const hadLegacyStreamingTag = rawTags.some((tag) => {
+      const normalized = normalizeGameTag(tag);
+      return normalized === 'transmitir' || normalized === 'transmision';
+    });
+    const tags = hadLegacyStreamingTag
+      ? rawTags.filter((tag) => {
+          const normalized = normalizeGameTag(tag);
+          return normalized !== 'transmitir' && normalized !== 'transmision';
+        })
+      : game.tags;
+    const modos = hadLegacyStreamingTag
+      ? normalizeGameModes([...(game.modos ?? []), 'transmision'])
+      : game.modos;
+
+    if (game.titulo !== "Mini Airways") {
+      return hadLegacyStreamingTag ? { ...game, tags, modos } : game;
+    }
 
     return {
       ...game,
+      modos,
       steam_appid: 2289650,
-      tags: (game.tags ?? []).filter(
+      tags: (tags ?? []).filter(
         (tag) => String(tag).trim().toLowerCase() !== "free-to-play",
       ),
     };

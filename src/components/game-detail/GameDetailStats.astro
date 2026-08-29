@@ -9,13 +9,17 @@ import categoryIcon from '@tabler/icons/outline/category-2.svg?url';
 import editIcon from '@tabler/icons/outline/edit.svg?url';
 import settingsIcon from '@tabler/icons/outline/settings.svg?url';
 import trophyIcon from '@tabler/icons/outline/trophy.svg?url';
+import cardsIcon from '@tabler/icons/outline/cards.svg?url';
+import difficultyIcon from '@tabler/icons/outline/barbell.svg?url';
+
+type ProgressKind = 'difficulty' | 'achievements' | 'cards';
 
 interface Props {
   slug: string;
   metadataGroups: Array<{
     title: string;
     className?: string;
-    items: Array<{ label: string; value: string; className?: string; note?: string; progress?: number | null }>;
+    items: Array<{ label: string; value: string; className?: string; note?: string; progress?: number | null; kind?: ProgressKind }>;
   }>;
   editValues: {
     generos: string[];
@@ -30,6 +34,8 @@ interface Props {
     dificultad: string | null;
     logros_actual: number | null;
     logros_total: number | null;
+    steam_cromos_actual: number | null;
+    steam_cromos_total: number | null;
   };
 }
 const { slug, metadataGroups, editValues } = Astro.props;
@@ -38,6 +44,11 @@ const groupIcons: Record<string, string> = {
   'Catalogación': categoryIcon,
   Progreso: trophyIcon,
   'Ficha técnica': settingsIcon,
+};
+const progressIcons: Record<ProgressKind, string> = {
+  difficulty: difficultyIcon,
+  achievements: trophyIcon,
+  cards: cardsIcon,
 };
 ---
 
@@ -54,8 +65,9 @@ const groupIcons: Record<string, string> = {
           <h3>{group.title}</h3>
         </div>
         <dl class="detail-grid data-group-grid" data-count={group.items.length}>
-          {group.items.map(({ label, value, className = '', note = '', progress = null }) => (
-            <div title={note || undefined} class:list={["detail-item", "compact-detail-card", className, value === '-' && "detail-item-empty", progress !== null && "detail-item-progress"]}>
+          {group.items.map(({ label, value, className = '', note = '', progress = null, kind }) => (
+            <div title={note || undefined} class:list={["detail-item", "compact-detail-card", className, kind && `progress-card-${kind}`, value === '-' && "detail-item-empty", progress !== null && "detail-item-progress", progress !== null && progress >= 100 && "detail-item-complete"]}>
+              {kind && <span class='progress-card-icon'><TablerIcon src={progressIcons[kind]} /></span>}
               <dt>{label}</dt>
               <dd>{value}</dd>
               {note && <dd class="detail-item-note">{note}</dd>}
@@ -123,6 +135,16 @@ const groupIcons: Record<string, string> = {
           <div class="edit-field">
             <label for="data-edit-achievements-total">Logros totales</label>
             <input id="data-edit-achievements-total" name="logros_total" type="number" step="1" min="0" value={editValues.logros_total ?? ''} />
+          </div>
+        </div>
+        <div class="edit-field-row steam-cards-edit-row">
+          <div class="edit-field">
+            <label for="data-edit-cards-current">Cromos obtenidos</label>
+            <input id="data-edit-cards-current" name="steam_cromos_actual" type="number" step="1" min="0" value={editValues.steam_cromos_actual ?? ''} />
+          </div>
+          <div class="edit-field">
+            <label for="data-edit-cards-total">Cromos totales</label>
+            <input id="data-edit-cards-total" name="steam_cromos_total" type="number" step="1" min="0" value={editValues.steam_cromos_total ?? ''} />
           </div>
         </div>
       </fieldset>
@@ -202,6 +224,8 @@ const groupIcons: Record<string, string> = {
             dificultad: data.get('dificultad'),
             logros_actual: data.get('logros_actual'),
             logros_total: data.get('logros_total'),
+            steam_cromos_actual: data.get('steam_cromos_actual'),
+            steam_cromos_total: data.get('steam_cromos_total'),
           }),
         });
         const result = await response.json().catch(() => ({}));
