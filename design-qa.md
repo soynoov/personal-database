@@ -1,52 +1,51 @@
 **Comparison Target**
 
-- Source visual truth: `C:\Users\heroy\AppData\Local\Temp\codex-clipboard-61e0fc26-4f20-41fe-bd78-7f98b7969af7.png`
-- Desktop implementation: `artifacts/design-qa/hours-money-compact-first.png`
-- Mobile Hours implementation: `artifacts/design-qa/hours-money-compact-mobile-first.png`
-- Mobile Money implementation: `artifacts/design-qa/money-compact-mobile-first.png`
-- Combined comparison evidence: `artifacts/design-qa/hours-money-density-comparison.png`
-- Route: `http://127.0.0.1:4322/games/marvel-rivals/#hours`
-- CSS viewport: `1440 x 1100`, device scale factor `1`; mobile viewport: `390 x 844`.
-- Source pixels: `1486 x 936`; desktop implementation pixels: `1440 x 1100`.
-- Normalization: the source was cropped to the two supplied sections and scaled to `1416 px` wide. The implementation was cropped to the rendered Hours and Money sections at the same width, then both were placed in one vertical comparison board.
-- State: dark theme, recurring Steam game with complete finance data. Current local values differ from the screenshot because `games.json` changed independently; the comparison judges layout and density rather than numeric equality.
+- Source visual truth: `C:\Users\heroy\AppData\Local\Temp\codex-clipboard-ca8d667b-d0cd-4d0b-95e7-dc313ed214d5.png`
+- Desktop implementation: `artifacts/design-qa/hours-dates-balanced-full-1440.png`
+- Mobile implementation: `artifacts/design-qa/hours-dates-balanced-390.png`
+- Route: `http://127.0.0.1:4322/games/a-plague-tale-innocence/#hours`
+- Desktop viewport: `1440 x 900`, device scale factor `1`; mobile viewport: `390 x 844`, device scale factor `1`.
+- Source pixels: `1418 x 667`; desktop full-page capture: `1440 x 3428`; mobile focused capture: `378 x 1390`.
+- State: dark theme, finished game with complete start/end dates and HLTB progress.
+- Requested delta: balance Periodo, Inicio and Fin and display compact dates such as `25 MAY 2026`.
 
 **Findings**
 
 - No actionable P0, P1, or P2 differences remain.
-- Hours now follows the same asymmetric Bento logic as Detalles: the real-hours card is dominant while period and start use two compact rows instead of stretched columns.
-- Money preserves the economic target and profitability hierarchy while reducing the height of the priority cards, five secondary metrics, and recorded-spend breakdown.
-- Empty and unavailable values retain their muted treatment without forcing larger cards.
+- Periodo, Inicio and Fin now share the same width on desktop; Progreso HLTB uses the freed space.
+- Both dates remain on one line and retain their complete day, month and year.
+- The mobile stack keeps the three values readable without truncation or horizontal overflow.
 
 **Required Fidelity Surfaces**
 
-- Fonts and typography: the existing display and UI families, weights, line heights, label casing, and value hierarchy are preserved. Large values still anchor each section without clipping.
-- Spacing and layout rhythm: desktop card minimum heights and padding were reduced; secondary Hours cards now stack beside the primary card. Mobile uses compact single-column Hours and Money cards with a two-column metric grid.
-- Colors and visual tokens: purple labels, dark surfaces, green amortized state, muted null states, borders, radii, and progress colors remain unchanged.
-- Image quality and asset fidelity: these sections contain no raster assets. Existing Tabler clock, calendar, play, target, coins, and edit icons remain unchanged and sharp.
-- Copy and content: all labels and values remain present; no financial or play-period information was removed to achieve the tighter layout.
+- Fonts and typography: the existing family, weights and hierarchy are preserved; dates add tabular numerals and slight tracking.
+- Spacing and layout rhythm: the second row changes from `3 / 2 / 2 / 5` to `2 / 2 / 2 / 6` columns.
+- Colors and visual tokens: unchanged.
+- Image quality and asset fidelity: no raster assets were added; existing Tabler icons remain unchanged.
+- Copy and content: `Periodo de juego` is shortened to `Periodo`; dates use deterministic Spanish `DD MMM YYYY` labels.
 
 **Full-view Comparison Evidence**
 
-- `artifacts/design-qa/hours-money-density-comparison.png` places the original and revised sections in one normalized image. It shows the reduced section height and the removal of empty vertical space while preserving the established visual language.
+- The source and implementation were opened together. The implementation preserves the surrounding Hours composition while correcting only the requested row.
+- `artifacts/design-qa/hours-dates-balanced-full-1440.png` confirms the balanced desktop Bento in its full page context.
 
 **Focused Region Comparison Evidence**
 
-- `artifacts/design-qa/hours-money-compact-mobile-first.png` verifies the compact Hours stack at `390 px`.
-- `artifacts/design-qa/money-compact-mobile-first.png` verifies the financial goal, profitability, metric grid, and recorded-spend flow on mobile.
+- The source row wraps `25 de mayo de 2026` and `11 de julio de 2026` across two lines while Periodo reserves visibly more space.
+- The revised row shows `25 MAY 2026` and `11 JUL 2026` on one line in equal-width cards.
+- `artifacts/design-qa/hours-dates-balanced-390.png` confirms the compact labels remain legible on mobile.
 
 **Interaction and Accessibility Checks**
 
-- Sticky section navigation and both edit controls remain visible and reachable.
-- Desktop and mobile layouts were checked after a forced reload.
-- The final WCAG A/AA scan reports zero violations. Existing pseudo-element backgrounds leave contrast checks indeterminate, but they are not reported violations.
-- Browser console: no application errors observed.
+- Browser console: no application errors; only Vite development connection messages.
+- WCAG A/AA scan for `#hours`: zero violations. One contrast check was indeterminate because the inspected eyebrow was overlapped during analysis; it was not reported as a violation.
+- The dates use semantic `time` elements with ISO `datetime` values.
 
 **Comparison History**
 
-- Iteration 1: the reference exposed a P2 density issue because Hours secondary cards stretched to the primary-card height and Money reserved excessive minimum heights across three rows.
-- Fixes: introduced a desktop two-row Hours Bento, reduced responsive card minimum heights, tightened Money priority-card padding, reduced metric-card height, and compacted the recorded-spend breakdown.
-- Post-fix evidence: `artifacts/design-qa/hours-money-density-comparison.png`, `artifacts/design-qa/hours-money-compact-mobile-first.png`, and `artifacts/design-qa/money-compact-mobile-first.png` show the corrected density with no clipping or overflow.
+- Iteration 1: the source exposed P2 imbalance and date wrapping in the second Hours row.
+- Fixes: compact date formatter, equal card spans, expanded progress card, shorter Periodo label and no-wrap tabular date styling.
+- Post-fix evidence: desktop and mobile captures show no clipping, truncation or remaining P0/P1/P2 finding.
 
 **Open Questions**
 
@@ -54,12 +53,11 @@
 
 **Implementation Checklist**
 
-- [x] Compact the Hours desktop Bento.
-- [x] Compact Hours on tablet and mobile.
-- [x] Reduce Money priority-card height and padding.
-- [x] Reduce secondary financial metric height.
-- [x] Compact the recorded-spend breakdown.
-- [x] Verify desktop, mobile, console, and accessibility states.
+- [x] Compact Spanish date labels.
+- [x] Equalize Periodo, Inicio and Fin widths.
+- [x] Preserve responsive stacking.
+- [x] Verify build and financial tests.
+- [x] Verify desktop, mobile, console and accessibility states.
 
 **Follow-up Polish**
 
