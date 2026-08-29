@@ -195,6 +195,19 @@
     padding: 0.95rem 1.05rem;
   }
 
+  .game-page-rich .hours-priority-grid[data-recurring='true'] .hours-date-start {
+    grid-column: span 4;
+  }
+
+  .game-page-rich .hours-priority-grid[data-hltb='false'][data-recurring='true'] .hours-period-summary,
+  .game-page-rich .hours-priority-grid[data-hltb='false'][data-recurring='true'] .hours-date-start {
+    grid-column: span 3;
+  }
+
+  .hours-period-fieldset.is-open-ended .edit-field-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .game-page-rich .analysis-panel-hours .hours-progress-head,
   .game-page-rich .analysis-panel-hours .hours-progress-foot {
     display: flex;
@@ -400,6 +413,13 @@
     .game-page-rich .analysis-panel-hours .hours-period-summary,
     .game-page-rich .hours-priority-grid[data-hltb='false'] .hours-period-summary,
     .game-page-rich .analysis-panel-hours .hours-progress-card {
+      grid-column: span 2;
+    }
+
+    .game-page-rich .hours-priority-grid[data-recurring='true'] .hours-period-summary,
+    .game-page-rich .hours-priority-grid[data-recurring='true'] .hours-date-start,
+    .game-page-rich .hours-priority-grid[data-hltb='false'][data-recurring='true'] .hours-period-summary,
+    .game-page-rich .hours-priority-grid[data-hltb='false'][data-recurring='true'] .hours-date-start {
       grid-column: span 2;
     }
 

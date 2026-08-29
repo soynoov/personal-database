@@ -20,17 +20,20 @@ interface Props {
   hltbBreakdown: { main: number | null; mainPlus: number | null; completionist: number | null };
   period: { startLabel: string; endLabel: string; elapsedDays: number | null };
   editValues: { horas: number | null; fecha_inicio: string | null; fecha_fin: string | null };
+  isRecurring?: boolean;
 }
 
-const { slug, metrics, hoursChartPayload, hoursChartPoints, hltbBreakdown, period, editValues } = Astro.props;
+const { slug, metrics, hoursChartPayload, hoursChartPoints, hltbBreakdown, period, editValues, isRecurring = false } = Astro.props;
 const progress = Math.max(0, Math.min(100, metrics.hltbProgressPercent ?? 0));
 const chartValueCount = hoursChartPoints.length + (metrics.realHours === null ? 0 : 1);
 const hasStartDate = Boolean(editValues.fecha_inicio);
-const hasEndDate = Boolean(editValues.fecha_fin);
+const hasEndDate = !isRecurring && Boolean(editValues.fecha_fin);
 const hasPeriodData = hasStartDate || hasEndDate;
 const hasHltbTarget = metrics.showHltbTarget && metrics.hltbTargetHours !== null;
 const showHltbCard = metrics.showHltbTarget;
-const periodSummary = period.elapsedDays !== null
+const periodSummary = isRecurring
+  ? 'Recurrente'
+  : period.elapsedDays !== null
   ? `${period.elapsedDays} ${period.elapsedDays === 1 ? 'día' : 'días'}`
   : hasStartDate && !hasEndDate
     ? 'En curso'
@@ -59,7 +62,7 @@ const hltbState = !metrics.showHltbTarget
     </button>
   </div>
 
-  <div class="hours-priority-grid" data-hltb={showHltbCard ? 'true' : 'false'}>
+  <div class="hours-priority-grid" data-hltb={showHltbCard ? 'true' : 'false'} data-recurring={isRecurring ? 'true' : 'false'}>
     <article class="value-kpi value-kpi-primary">
       <span class="value-kpi-icon"><TablerIcon src={clockIcon} /></span>
       <div class="value-kpi-copy">
@@ -95,13 +98,15 @@ const hltbState = !metrics.showHltbTarget
       </div>
     </article>
 
-    <article class:list={["hours-info-card", "hours-date-end", !hasEndDate && "is-null"]}>
-      <span class="hours-info-icon"><TablerIcon src={flagIcon} /></span>
-      <div>
-        <span>Fin</span>
-        <strong>{hasEndDate ? period.endLabel : 'Sin registrar'}</strong>
-      </div>
-    </article>
+    {!isRecurring && (
+      <article class:list={["hours-info-card", "hours-date-end", !hasEndDate && "is-null"]}>
+        <span class="hours-info-icon"><TablerIcon src={flagIcon} /></span>
+        <div>
+          <span>Fin</span>
+          <strong>{hasEndDate ? period.endLabel : 'Sin registrar'}</strong>
+        </div>
+      </article>
+    )}
 
     {hasHltbTarget && (
       <article class="hours-progress-card">
@@ -153,22 +158,24 @@ const hltbState = !metrics.showHltbTarget
       <button class="edit-dialog-close" id="hours-edit-close" type="button" aria-label="Cerrar">×</button>
     </div>
     <p class="edit-dialog-error" id="hours-edit-error" hidden></p>
-    <form id="hours-edit-form" data-slug={slug}>
+    <form id="hours-edit-form" data-slug={slug} data-recurring={isRecurring ? 'true' : 'false'}>
       <div class="edit-field">
         <label for="hours-edit-value">Horas jugadas</label>
         <input id="hours-edit-value" name="horas" type="number" step="0.01" min="0" value={editValues.horas ?? ''} />
       </div>
-      <fieldset class="hours-period-fieldset">
+      <fieldset class:list={["hours-period-fieldset", isRecurring && "is-open-ended"]}>
         <legend>Periodo de juego</legend>
         <div class="edit-field-row">
           <div class="edit-field">
             <label for="hours-edit-start">Inicio</label>
             <input id="hours-edit-start" name="fecha_inicio" type="date" value={editValues.fecha_inicio ?? ''} />
           </div>
-          <div class="edit-field">
-            <label for="hours-edit-end">Fin</label>
-            <input id="hours-edit-end" name="fecha_fin" type="date" value={editValues.fecha_fin ?? ''} />
-          </div>
+          {!isRecurring && (
+            <div class="edit-field">
+              <label for="hours-edit-end">Fin</label>
+              <input id="hours-edit-end" name="fecha_fin" type="date" value={editValues.fecha_fin ?? ''} />
+            </div>
+          )}
         </div>
       </fieldset>
       <div class="edit-dialog-actions">
@@ -206,7 +213,7 @@ const hltbState = !metrics.showHltbTarget
           body: JSON.stringify({
             horas: data.get('horas'),
             fecha_inicio: data.get('fecha_inicio'),
-            fecha_fin: data.get('fecha_fin'),
+            ...(form.dataset.recurring === 'true' ? {} : { fecha_fin: data.get('fecha_fin') }),
           }),
         });
         const result = await response.json().catch(() => ({}));

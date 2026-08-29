@@ -80,6 +80,7 @@ const launcherClasses: Record<string, string> = {
   'itch.io': 'badge-launcher-itch',
 };
 const statusClass = statusClasses[normalizeStatus(game.estado)] ?? 'badge-status-default';
+const isRecurring = normalizeStatus(game.estado) === 'recurrente';
 const launcherClass = launcherClasses[normalizeStatus(game.launcher)] ?? 'badge-launcher-default';
 const platformClass = normalizeStatus(game.plataforma) === 'pc' ? 'badge-platform-pc' : 'badge-platform-default';
 
@@ -204,7 +205,8 @@ const hoursChartPayload = {
 };
 
 const start = game.fecha_inicio ? new Date(`${game.fecha_inicio}T00:00:00`) : null;
-const end = game.fecha_fin ? new Date(`${game.fecha_fin}T00:00:00`) : null;
+const effectiveEndDate = isRecurring ? null : game.fecha_fin;
+const end = effectiveEndDate ? new Date(`${effectiveEndDate}T00:00:00`) : null;
 const elapsedDays = start && end && end >= start ? Math.round((end.getTime() - start.getTime()) / 86_400_000) : null;
 const updatedDate = game.actualizado_en ? new Date(game.actualizado_en) : null;
 const metadataGroups = [
@@ -283,8 +285,9 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
         hoursChartPayload={hoursChartPayload}
         hoursChartPoints={hltbBars}
         hltbBreakdown={hltbBreakdown}
-        period={{ startLabel: formatDate(game.fecha_inicio), endLabel: formatDate(game.fecha_fin), elapsedDays }}
-        editValues={{ horas: valueMetrics.realHours, fecha_inicio: game.fecha_inicio, fecha_fin: game.fecha_fin }}
+        period={{ startLabel: formatDate(game.fecha_inicio), endLabel: formatDate(effectiveEndDate), elapsedDays }}
+        editValues={{ horas: valueMetrics.realHours, fecha_inicio: game.fecha_inicio, fecha_fin: effectiveEndDate }}
+        isRecurring={isRecurring}
       />
       <GameDetailFinance
         slug={slug}

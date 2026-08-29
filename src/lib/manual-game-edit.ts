@@ -3,6 +3,7 @@ import { calculatePersonalScore, isCommunityCriterionApplicable } from './game-r
 import { getGameGenres } from './game-genres';
 import type { GameCritique, LocalGame } from './local-games';
 import { normalizePurchaseStores } from './purchase-stores';
+import { normalizeStatus } from './game-status';
 
 type PatchError = { ok: false; status: number; error: string };
 type PatchSuccess = { ok: true; game: LocalGame };
@@ -106,6 +107,7 @@ export function applyManualGamePatch(
   if (body.hltb_match !== undefined) updated.hltb_match = toNullableString(body.hltb_match);
   if (body.fecha_inicio !== undefined) updated.fecha_inicio = toNullableString(body.fecha_inicio);
   if (body.fecha_fin !== undefined) updated.fecha_fin = toNullableString(body.fecha_fin);
+  if (normalizeStatus(updated.estado) === 'recurrente') updated.fecha_fin = null;
   if (body.solo !== undefined) updated.solo = toNullableBoolean(body.solo);
   if (body.modos !== undefined) {
     updated.modos = normalizeGameModes(body.modos);
