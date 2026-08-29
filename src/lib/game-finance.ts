@@ -89,6 +89,7 @@ export type GameValueMetrics = {
   scoreBonusPercent: number;
   weightedHours: number | null;
   economicTargetHours: number | null;
+  economicTargetRealHours: number | null;
   economicProgressPercent: number | null;
   economicRemainingHours: number | null;
   economicMultiple: number | null;
@@ -133,6 +134,9 @@ export function getGameValueMetrics(game: LocalGame): GameValueMetrics {
   const scoreBonusPercent = round((scoreMultiplier - 1) * 100, 1);
   const weightedHours = realHours === null ? null : round(realHours * scoreMultiplier, 2);
   const economicTargetHours = dataComplete ? recordedSpend : null;
+  const economicTargetRealHours = dataComplete && recordedSpend > 0
+    ? round(recordedSpend / scoreMultiplier, 2)
+    : null;
 
   let economicProgressPercent: number | null = null;
   let economicRemainingHours: number | null = null;
@@ -201,6 +205,7 @@ export function getGameValueMetrics(game: LocalGame): GameValueMetrics {
     scoreBonusPercent,
     weightedHours,
     economicTargetHours,
+    economicTargetRealHours,
     economicProgressPercent,
     economicRemainingHours,
     economicMultiple,

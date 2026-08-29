@@ -95,6 +95,7 @@ try {
   }));
   assert.equal(marvel.scoreMultiplier, 1.1);
   assert.equal(marvel.weightedHours, 880.66);
+  assert.equal(marvel.economicTargetRealHours, 122.2);
   assert.equal(marvel.showHltbTarget, false);
   assert.equal(marvel.economicMultiple, 6.55);
 

@@ -193,10 +193,16 @@ const hltbBreakdown = {
 const hltbBars = valueMetrics.showHltbTarget
   ? [
       { label: 'Historia', value: hltbBreakdown.main, color: '#81798c' },
-      { label: 'Historia + extras', value: hltbBreakdown.mainPlus, color: '#9985b3' },
+      { label: 'Historia+', value: hltbBreakdown.mainPlus, color: '#9985b3' },
       { label: '100%', value: hltbBreakdown.completionist, color: '#746b80' },
     ].filter((bar): bar is { label: string; value: number; color: string } => bar.value !== null && Number.isFinite(bar.value))
   : [];
+const hoursBenchmarkBars = [
+  ...hltbBars,
+  ...(valueMetrics.economicTargetRealHours === null
+    ? []
+    : [{ label: 'Amortización', value: valueMetrics.economicTargetRealHours, color: '#c7a45a' }]),
+];
 const myHoursColor = valueMetrics.realHours === null
   ? '#718096'
   : hltbBreakdown.main !== null && valueMetrics.realHours < hltbBreakdown.main
@@ -205,9 +211,9 @@ const myHoursColor = valueMetrics.realHours === null
       ? '#8ea779'
       : '#b18d6a';
 const hoursChartPayload = {
-  type: 'hours-vs-hltb',
+  type: 'hours-vs-benchmarks',
   myHours: valueMetrics.realHours,
-  hltbBars,
+  benchmarkBars: hoursBenchmarkBars,
   myHoursColor,
 };
 
@@ -307,7 +313,7 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
         slug={slug}
         metrics={valueMetrics}
         hoursChartPayload={hoursChartPayload}
-        hoursChartPoints={hltbBars}
+        hoursChartPoints={hoursBenchmarkBars}
         hltbBreakdown={hltbBreakdown}
         period={{ startLabel: formatCompactDate(game.fecha_inicio), endLabel: formatCompactDate(effectiveEndDate), elapsedDays }}
         editValues={{ horas: valueMetrics.realHours, fecha_inicio: game.fecha_inicio, fecha_fin: effectiveEndDate }}

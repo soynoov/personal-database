@@ -26,6 +26,12 @@ interface Props {
 const { slug, metrics, hoursChartPayload, hoursChartPoints, hltbBreakdown, period, editValues, isRecurring = false } = Astro.props;
 const progress = Math.max(0, Math.min(100, metrics.hltbProgressPercent ?? 0));
 const chartValueCount = hoursChartPoints.length + (metrics.realHours === null ? 0 : 1);
+const hasHltbBreakdown = [hltbBreakdown.main, hltbBreakdown.mainPlus, hltbBreakdown.completionist]
+  .some((value) => value !== null);
+const chartA11yLabel = [
+  ...hoursChartPoints.map((point) => `${point.label}: ${formatHoursDuration(point.value)}`),
+  ...(metrics.realHours === null ? [] : [`Mis horas: ${formatHoursDuration(metrics.realHours)}`]),
+].join('. ');
 const hasStartDate = Boolean(editValues.fecha_inicio);
 const hasEndDate = !isRecurring && Boolean(editValues.fecha_fin);
 const hasPeriodData = hasStartDate || hasEndDate;
@@ -125,28 +131,30 @@ const hltbState = !metrics.showHltbTarget
     )}
   </div>
 
-  {metrics.showHltbTarget && (hoursChartPoints.length > 0 || hltbBreakdown.mainPlus !== null || hltbBreakdown.completionist !== null) && (
-    <div class="hours-secondary-grid">
+  {hoursChartPoints.length > 0 && (
+    <div class:list={["hours-secondary-grid", !hasHltbBreakdown && "is-chart-only"]}>
       <section class="hours-chart-card" aria-labelledby="hours-chart-title">
         <div class="hours-chart-heading">
           <span class="hours-info-icon"><TablerIcon src={chartIcon} /></span>
           <div>
-            <span>Comparativa HLTB</span>
-            <h3 id="hours-chart-title">Tu tiempo vs. HLTB</h3>
+            <span>Comparativa de objetivos</span>
+            <h3 id="hours-chart-title">Tus horas frente a objetivos</h3>
           </div>
           <span class="chart-badge">{chartValueCount} valores</span>
         </div>
         {hoursChartPoints.length > 0 ? (
           <div class="chart-canvas-wrap chart-canvas-wrap-hours">
-            <canvas id="hours-detail-chart" data-chart={JSON.stringify(hoursChartPayload)}></canvas>
+            <canvas id="hours-detail-chart" data-chart={JSON.stringify(hoursChartPayload)} role="img" aria-label={chartA11yLabel}></canvas>
           </div>
         ) : <div class="chart-empty">Sin referencias suficientes</div>}
       </section>
-      <dl class="hours-breakdown-grid" aria-label="Desglose HLTB">
-        <div class:list={[hltbBreakdown.main === null && "is-null"]}><dt>Historia</dt><dd>{formatHoursDuration(hltbBreakdown.main)}</dd></div>
-        <div class:list={[hltbBreakdown.mainPlus === null && "is-null"]}><dt>Historia + extras</dt><dd>{formatHoursDuration(hltbBreakdown.mainPlus)}</dd></div>
-        <div class:list={[hltbBreakdown.completionist === null && "is-null"]}><dt>100%</dt><dd>{formatHoursDuration(hltbBreakdown.completionist)}</dd></div>
-      </dl>
+      {hasHltbBreakdown && (
+        <dl class="hours-breakdown-grid" aria-label="Desglose HLTB">
+          <div class:list={[hltbBreakdown.main === null && "is-null"]}><dt>Historia</dt><dd>{formatHoursDuration(hltbBreakdown.main)}</dd></div>
+          <div class:list={[hltbBreakdown.mainPlus === null && "is-null"]}><dt>Historia+</dt><dd>{formatHoursDuration(hltbBreakdown.mainPlus)}</dd></div>
+          <div class:list={[hltbBreakdown.completionist === null && "is-null"]}><dt>100%</dt><dd>{formatHoursDuration(hltbBreakdown.completionist)}</dd></div>
+        </dl>
+      )}
     </div>
   )}
 </article>

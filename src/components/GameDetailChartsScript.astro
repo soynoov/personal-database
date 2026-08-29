@@ -102,17 +102,23 @@
         color: String(point.color ?? '#9387a4'),
       }))
       .filter((point: { label: string; value: number; color: string }) => point.label && Number.isFinite(point.value));
-    if (points.length < 2) return;
+    if (points.length < 1) return;
 
     charts.get(canvasId)?.destroy();
     const values = points.map((point: { value: number }) => point.value);
     const colors = points.map((point: { color: string }) => point.color);
     const metric = String(payload.metric ?? 'hours');
     const referenceLine = payload.referenceLine && typeof payload.referenceLine === 'object'
-      ? payload.referenceLine as { value?: unknown; color?: unknown }
+      ? payload.referenceLine as { value?: unknown; color?: unknown; label?: unknown }
       : null;
     const referenceValue = referenceLine === null ? null : Number(referenceLine.value);
     const referenceColor = referenceLine === null ? '#a98bd0' : String(referenceLine.color ?? '#a98bd0');
+    const referenceLabel = referenceLine === null ? '' : String(referenceLine.label ?? '');
+    const maxChartValue = Math.max(
+      ...values,
+      referenceValue !== null && Number.isFinite(referenceValue) ? referenceValue : 0,
+      1,
+    );
     const referenceLinePlugin = {
       id: `reference-line-${canvasId}`,
       afterDatasetsDraw(chartInstance: Chart) {
@@ -129,6 +135,26 @@
         ctx.moveTo(chartArea.left, y);
         ctx.lineTo(chartArea.right, y);
         ctx.stroke();
+
+        if (referenceLabel) {
+          const text = `${referenceLabel} · ${formatMetricValue(metric, referenceValue)}`;
+          const fontFamily = getComputedStyle(canvas).fontFamily || 'sans-serif';
+          ctx.globalAlpha = 1;
+          ctx.font = `700 11px ${fontFamily}`;
+          const textWidth = ctx.measureText(text).width;
+          const labelWidth = textWidth + 16;
+          const labelHeight = 24;
+          const labelX = Math.max(chartArea.left, chartArea.right - labelWidth - 4);
+          const labelY = Math.max(chartArea.top + 4, y - labelHeight - 7);
+          ctx.fillStyle = 'rgba(12, 12, 18, 0.94)';
+          ctx.fillRect(labelX, labelY, labelWidth, labelHeight);
+          ctx.strokeStyle = referenceColor;
+          ctx.lineWidth = 1;
+          ctx.strokeRect(labelX, labelY, labelWidth, labelHeight);
+          ctx.fillStyle = '#f7f1ee';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(text, labelX + 8, labelY + (labelHeight / 2));
+        }
         ctx.restore();
       },
     };
@@ -151,7 +177,7 @@
           hoverBackgroundColor: colors.map((color: string) => hexToRgba(color, 0.4)),
           borderColor: colors,
           borderWidth: 1.2,
-          borderRadius: 8,
+          borderRadius: Number(payload.barRadius ?? 8),
           borderSkipped: false,
           barPercentage: 0.62,
           categoryPercentage: 0.78,
@@ -203,7 +229,7 @@
           },
           y: {
             beginAtZero: true,
-            suggestedMax: Math.max(...values, 1) * 1.12,
+            suggestedMax: maxChartValue * 1.16,
             border: { display: false },
             grid: {
               color: 'rgba(181, 169, 194, 0.11)',
@@ -327,26 +353,21 @@
 
   const renderHoursChart = () => {
     const chartData = readChartPayload('hours-detail-chart');
-    if (!chartData || chartData.payload?.type !== 'hours-vs-hltb') return;
+    if (!chartData || chartData.payload?.type !== 'hours-vs-benchmarks') return;
     const { payload } = chartData;
-    const points = Array.isArray(payload.hltbBars) ? [...payload.hltbBars] : [];
-    if (payload.myHours !== null && payload.myHours !== undefined) {
-      points.push({
-        label: 'Mis horas',
-        value: Number(payload.myHours),
-        color: String(payload.myHoursColor ?? '#a98bd0'),
-      });
-    }
+    const points = Array.isArray(payload.benchmarkBars) ? [...payload.benchmarkBars] : [];
     renderComparisonBars('hours-detail-chart', 'hours-comparison', {
       type: 'hours-comparison',
       points,
       seriesLabel: 'Horas',
       metric: 'hours',
+      barRadius: 0,
       referenceLine: payload.myHours === null || payload.myHours === undefined
         ? null
         : {
             value: Number(payload.myHours),
             color: String(payload.myHoursColor ?? '#a98bd0'),
+            label: 'Mis horas',
           },
     });
   };

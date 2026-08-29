@@ -313,6 +313,10 @@
     padding: 0;
   }
 
+  .game-page-rich .analysis-panel-hours .hours-secondary-grid.is-chart-only {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .game-page-rich .analysis-panel-hours .hours-chart-card {
     display: grid;
     min-height: 368px;
