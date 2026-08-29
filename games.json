@@ -987,10 +987,10 @@
   },
   {
     "titulo": "Satisfactory",
-    "estado": "Jugando",
-    "launcher": "Steam",
+    "estado": "Terminado",
+    "launcher": "Epic Games",
     "plataforma": "PC",
-    "horas": 82.2,
+    "horas": 342.4,
     "fecha_inicio": null,
     "fecha_fin": null,
     "logros": {
@@ -1753,10 +1753,10 @@
   },
   {
     "titulo": "Sid Meier's Civilization VI",
-    "estado": "Recurrente",
-    "launcher": "Steam",
+    "estado": "Terminado",
+    "launcher": "Epic Games",
     "plataforma": "PC",
-    "horas": null,
+    "horas": 72.67,
     "fecha_inicio": null,
     "fecha_fin": null,
     "logros": {
@@ -1764,7 +1764,7 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "Juego recurrente/puntual: de vez en cuando echo partidas.",
+    "comentarios": null,
     "lanzamiento": 2016,
     "solo": null,
     "hltb": 23.3,
@@ -2016,10 +2016,10 @@
   },
   {
     "titulo": "Surviving Mars",
-    "estado": "Pendiente",
-    "launcher": "Steam",
+    "estado": "Terminado",
+    "launcher": "Epic Games",
     "plataforma": "PC",
-    "horas": 22.2,
+    "horas": 9.12,
     "fecha_inicio": null,
     "fecha_fin": null,
     "logros": {
@@ -2032,7 +2032,7 @@
     "solo": true,
     "hltb": 22.2,
     "cover_url": "https://howlongtobeat.com/games/45951_Surviving_Mars.jpg",
-    "steam_appid": 3215050,
+    "steam_appid": 464920,
     "generos": [
       "Simuladores",
       "Estrategia"
@@ -2050,8 +2050,8 @@
       "Simuladores",
       "Estrategia"
     ],
-    "steam_store_name": "Surviving Mars: Relaunched",
-    "steam_last_sync_at": "2026-08-20T11:24:25.579Z",
+    "steam_store_name": "Surviving Mars",
+    "steam_last_sync_at": null,
     "critica": {
       "metascore": 76,
       "userscore": 7
@@ -5308,10 +5308,10 @@
   },
   {
     "titulo": "Genshin Impact",
-    "estado": "Recurrente",
-    "launcher": "HoYoPlay",
+    "estado": "Terminado",
+    "launcher": "Epic Games",
     "plataforma": "PC",
-    "horas": null,
+    "horas": 390.72,
     "fecha_inicio": null,
     "fecha_fin": null,
     "logros": {
@@ -5379,10 +5379,10 @@
   },
   {
     "titulo": "Honkai: Star Rail",
-    "estado": "Recurrente",
-    "launcher": "HoYoPlay",
+    "estado": "Terminado",
+    "launcher": "Epic Games",
     "plataforma": "PC",
-    "horas": null,
+    "horas": 70.35,
     "fecha_inicio": null,
     "fecha_fin": null,
     "logros": {
@@ -7025,5 +7025,265 @@
     "critica": {
       "metascore": 68
     }
+  },
+  {
+    "titulo": "Fall Guys",
+    "estado": "Terminado",
+    "launcher": "Epic Games",
+    "plataforma": "PC",
+    "horas": 10.4,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2020,
+    "modos": [
+      "multijugador"
+    ],
+    "solo": false,
+    "hltb": null,
+    "cover_url": null,
+    "steam_appid": 1097150,
+    "generos": [
+      "Acción",
+      "Casual",
+      "Deportes",
+      "Multijugador masivo"
+    ],
+    "precio_pagado": null,
+    "precio_actual": 0,
+    "precio_salida": null,
+    "tags": [
+      "free-to-play",
+      "competitivo"
+    ],
+    "hltb_breakdown": {
+      "main": null,
+      "main_plus": null,
+      "completionist": null
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Casual",
+      "Deportes",
+      "Free to Play",
+      "Multijugador masivo"
+    ],
+    "steam_store_name": "Fall Guys"
+  },
+  {
+    "titulo": "Car Mechanic Simulator 2018",
+    "estado": "Terminado",
+    "launcher": "Epic Games",
+    "plataforma": "PC",
+    "horas": 10.77,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2017,
+    "modos": [
+      "solitario"
+    ],
+    "solo": true,
+    "hltb": null,
+    "cover_url": null,
+    "steam_appid": 645630,
+    "generos": [
+      "Carreras",
+      "Simulación"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": null,
+      "main_plus": null,
+      "completionist": null
+    },
+    "steam_store_genres": [
+      "Carreras",
+      "Simulación"
+    ],
+    "steam_store_name": "Car Mechanic Simulator 2018"
+  },
+  {
+    "titulo": "Prison Architect",
+    "estado": "Terminado",
+    "launcher": "Epic Games",
+    "plataforma": "PC",
+    "horas": 0.35,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2015,
+    "modos": [
+      "solitario"
+    ],
+    "solo": true,
+    "hltb": null,
+    "cover_url": null,
+    "steam_appid": 233450,
+    "generos": [
+      "Indie",
+      "Simulación",
+      "Estrategia"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": null,
+      "main_plus": null,
+      "completionist": null
+    },
+    "steam_store_genres": [
+      "Indie",
+      "Simulación",
+      "Estrategia"
+    ],
+    "steam_store_name": "Prison Architect"
+  },
+  {
+    "titulo": "Jurassic World Evolution",
+    "estado": "Terminado",
+    "launcher": "Epic Games",
+    "plataforma": "PC",
+    "horas": 1.93,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2018,
+    "modos": [
+      "solitario"
+    ],
+    "solo": true,
+    "hltb": null,
+    "cover_url": null,
+    "steam_appid": 648350,
+    "generos": [
+      "Simulación",
+      "Estrategia"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": null,
+      "main_plus": null,
+      "completionist": null
+    },
+    "steam_store_genres": [
+      "Simulación",
+      "Estrategia"
+    ],
+    "steam_store_name": "Jurassic World Evolution"
+  },
+  {
+    "titulo": "Cities: Skylines",
+    "estado": "Terminado",
+    "launcher": "Epic Games",
+    "plataforma": "PC",
+    "horas": 0.08,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": "Epic Games muestra menos de 5 minutos de juego.",
+    "lanzamiento": 2015,
+    "modos": [
+      "solitario"
+    ],
+    "solo": true,
+    "hltb": null,
+    "cover_url": null,
+    "steam_appid": 255710,
+    "generos": [
+      "Simulación",
+      "Estrategia"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": null,
+      "main_plus": null,
+      "completionist": null
+    },
+    "steam_store_genres": [
+      "Simulación",
+      "Estrategia"
+    ],
+    "steam_store_name": "Cities: Skylines"
+  },
+  {
+    "titulo": "Slime Rancher",
+    "estado": "Terminado",
+    "launcher": "Epic Games",
+    "plataforma": "PC",
+    "horas": 16.95,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2017,
+    "modos": [
+      "solitario"
+    ],
+    "solo": true,
+    "hltb": null,
+    "cover_url": null,
+    "steam_appid": 433340,
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Indie",
+      "Simulación"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": null,
+      "main_plus": null,
+      "completionist": null
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura",
+      "Indie",
+      "Simulación"
+    ],
+    "steam_store_name": "Slime Rancher"
   }
 ]
