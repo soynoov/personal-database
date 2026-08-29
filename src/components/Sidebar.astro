@@ -28,7 +28,7 @@ const mobileNavigation = [
   { key: 'ruleta', href: '/ruleta/', label: 'Ruleta', icon: rouletteIcon },
   { key: 'estadisticas', href: '/estadisticas/', label: 'Estadísticas', icon: statisticsIcon },
   { key: 'criticas', href: '/criticas/', label: 'Metacrítica', icon: reviewsIcon },
-  { key: 'datos', href: '/datos-pendientes/', label: 'Completar', icon: dataPendingIcon },
+  { key: 'datos', href: '/datos-pendientes/', label: 'Pendientes', icon: dataPendingIcon },
 ] as const;
 
 const estadoColor = (estado: string): string => {
@@ -229,7 +229,7 @@ const estadoColor = (estado: string): string => {
       <span class='desktop-nav-icon' aria-hidden='true'>
         <TablerIcon src={dataPendingIcon} />
       </span>
-      <span>Completar datos</span>
+      <span>Pendientes</span>
     </a>
     <button class='desktop-nav-item' type='button' disabled>
       <span class='desktop-nav-icon' aria-hidden='true'>

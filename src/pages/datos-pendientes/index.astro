@@ -34,7 +34,7 @@ const categoryLabels = {
 } as const;
 ---
 
-<BaseLayout title='Completar datos — Personal Database'>
+<BaseLayout title='Pendientes — Personal Database'>
   <main class='shell shell-app shell-desktop-app'>
     <Sidebar
       orderedDrawerEstados={orderedDrawerEstados}
@@ -47,7 +47,7 @@ const categoryLabels = {
       <header class='data-pending-heading'>
         <div>
           <span class='eyebrow'>Calidad de tu biblioteca</span>
-          <h1>Completar datos</h1>
+          <h1>Pendientes</h1>
           <p>Localiza fichas incompletas y abre directamente el editor que necesitas.</p>
         </div>
         <div class='data-completion-ring' style={`--completion:${report.completionPct * 3.6}deg`} aria-label={`${report.completionPct}% de datos completados`}>
