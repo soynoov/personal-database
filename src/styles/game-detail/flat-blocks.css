@@ -85,7 +85,7 @@
 
   /* Dinero */
   .game-page-rich .analysis-panel-money {
-    gap: 0.8rem;
+    gap: 0.72rem;
   }
 
   .game-page-rich .finance-priority-grid {
@@ -105,7 +105,7 @@
   .game-page-rich .finance-goal-card,
   .game-page-rich .finance-incomplete-state {
     min-width: 0;
-    min-height: 168px;
+    min-height: 142px;
     border: 1px solid var(--flat-line);
     border-radius: 15px;
     background: var(--flat-card);
@@ -120,7 +120,7 @@
     display: grid;
     align-content: center;
     gap: 0.48rem;
-    padding: clamp(1rem, 1.6vw, 1.35rem);
+    padding: clamp(0.85rem, 1.35vw, 1.1rem);
     background: var(--flat-card);
   }
 
@@ -145,7 +145,7 @@
     grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
     gap: clamp(0.8rem, 1.3vw, 1.1rem);
-    padding: clamp(1rem, 1.8vw, 1.55rem);
+    padding: clamp(0.85rem, 1.45vw, 1.2rem);
     border: 0;
     background: transparent;
   }
@@ -156,7 +156,7 @@
     align-content: center;
     justify-content: start;
     gap: 0.3rem;
-    padding: clamp(1rem, 1.6vw, 1.3rem);
+    padding: clamp(0.85rem, 1.35vw, 1.05rem);
     border: 0;
     border-left: 1px solid var(--flat-line);
     border-radius: 0;
@@ -238,10 +238,10 @@
   .game-page-rich .finance-kpi-grid article {
     display: grid;
     min-width: 0;
-    min-height: 96px;
+    min-height: 78px;
     align-content: center;
     gap: 0.3rem;
-    padding: 0.82rem;
+    padding: 0.72rem 0.82rem;
     border: 1px solid var(--flat-line);
     border-radius: 13px;
     background: var(--flat-card);
@@ -257,7 +257,7 @@
 
   .game-page-rich .finance-breakdown {
     margin: 0;
-    padding: 0.95rem;
+    padding: 0.78rem;
     border: 1px solid var(--flat-line);
     border-radius: 15px;
     background: var(--flat-card);
@@ -267,7 +267,7 @@
   }
 
   .game-page-rich .finance-breakdown-head {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.55rem;
   }
 
   .game-page-rich .finance-breakdown dl {
@@ -279,8 +279,8 @@
   .game-page-rich .finance-breakdown dl > div,
   .game-page-rich .finance-breakdown dl > div:first-child,
   .game-page-rich .finance-breakdown dl > .finance-breakdown-featured {
-    min-height: 88px;
-    padding: 0.78rem;
+    min-height: 74px;
+    padding: 0.68rem 0.78rem;
     border: 1px solid rgba(207, 195, 225, 0.1);
     border-radius: 12px;
     background: #0b0c13;
@@ -290,7 +290,7 @@
   }
 
   .game-page-rich .finance-breakdown dl > .finance-breakdown-featured {
-    min-height: 100px;
+    min-height: 82px;
   }
 
   .game-page-rich .finance-breakdown-total {
@@ -571,13 +571,13 @@
     .game-page-rich .finance-progress-card {
       grid-column: 1 / -1;
       grid-row: 2;
-      min-height: 132px;
+      min-height: 112px;
     }
 
     .game-page-rich .finance-goal-card {
       grid-column: 1 / -1;
       grid-row: 1;
-      min-height: 150px;
+      min-height: 128px;
     }
 
     .game-page-rich .finance-goal-card {
@@ -585,7 +585,7 @@
     }
 
     .game-page-rich .finance-goal-cost {
-      min-height: 82px;
+      min-height: 70px;
       border-top: 1px solid var(--flat-line);
       border-left: 0;
     }
