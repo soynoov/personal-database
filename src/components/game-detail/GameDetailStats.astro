@@ -10,6 +10,7 @@ import cardsIcon from '@tabler/icons/outline/cards.svg?url';
 import difficultyIcon from '@tabler/icons/outline/barbell.svg?url';
 import copyIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
 import databaseIcon from '@tabler/icons/outline/database-cog.svg?url';
+import chevronDownIcon from '@tabler/icons/outline/chevron-down.svg?url';
 
 type ProgressKind = 'difficulty' | 'achievements' | 'cards';
 type DetailState = 'default' | 'empty' | 'complete' | 'not-applicable';
@@ -59,7 +60,7 @@ const progressIcons: Record<ProgressKind, string> = {
 
 <section class="game-page-section" id="technical">
   <div class="section-title-row">
-    <div><span class="section-eyebrow">Biblioteca personal</span><h2>Ficha</h2></div>
+    <div><span class="section-eyebrow">Biblioteca personal</span><h2>Detalles</h2></div>
     <button class="game-edit-trigger game-edit-trigger-sm" id="data-edit-trigger" type="button" aria-label="Editar mis datos del juego">
       <TablerIcon src={editIcon} />
     </button>
@@ -91,7 +92,7 @@ const progressIcons: Record<ProgressKind, string> = {
               >
                 <dt>{label}</dt>
                 {kind && <dd class="progress-card-icon" aria-hidden="true"><TablerIcon src={progressIcons[kind]} /></dd>}
-                <dd>{value}</dd>
+                <dd class="detail-item-value">{value}</dd>
                 {note && <dd class="detail-item-note">{note}</dd>}
                 {progress !== null && (
                   <dd class="data-progress-slot">
@@ -111,7 +112,8 @@ const progressIcons: Record<ProgressKind, string> = {
   <details class="system-data-details">
     <summary>
       <span class="system-data-summary-icon"><TablerIcon src={databaseIcon} /></span>
-      <span><strong>Información del sistema</strong><small>Fuentes, enlaces y sincronización</small></span>
+      <span><strong>Información técnica</strong><small>Fuentes, identificadores y sincronización</small></span>
+      <span class="system-data-summary-chevron" aria-hidden="true"><TablerIcon src={chevronDownIcon} /></span>
     </summary>
     <div class="system-data-body">
       <dl class="system-data-grid">
@@ -258,7 +260,7 @@ const progressIcons: Record<ProgressKind, string> = {
         });
         const result = await response.json().catch(() => ({}));
         if (!response.ok || !result.ok) throw new Error(result.error || `HTTP ${response.status}`);
-        finishGameEdit('technical', 'Ficha personal actualizada');
+        finishGameEdit('technical', 'Detalles personales actualizados');
       } catch (error) {
         dataError.textContent = error instanceof Error ? error.message : 'No se pudo guardar.';
         dataError.hidden = false;

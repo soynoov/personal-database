@@ -1,60 +1,66 @@
 **Comparison Target**
 
-- Source visual truth: `C:\Users\heroy\AppData\Local\Temp\codex-clipboard-8a4a91e2-72b8-4a0a-9972-ac7496522dc2.png`
-- Browser-rendered implementation: `artifacts/design-qa/game-detail-redesign-page-verified.png`
-- Focused implementation state: `artifacts/design-qa/game-detail-progress-complete-viewport.png`
-- Combined comparison evidence: `artifacts/design-qa/game-detail-progress-comparison.png`
-- Route: `http://127.0.0.1:4322/games/miside/#technical`
-- CSS viewport: `1440 x 1100`, device scale factor `1`.
-- Source pixels: `879 x 292`.
-- Full implementation pixels: `1440 x 3545`; focused viewport pixels: `1440 x 1100`.
-- Normalization: the focused implementation was cropped to the visible Progress region (`1370 x 300`) and both regions were scaled to `1370 px` wide on one comparison board. The differing heights are intentional because the approved redesign changes three equal cards into an asymmetric Bento.
-- State: dark theme, desktop, Steam game, 49/49 achievements. The completed state was simulated in the browser DOM from real MiSide markup without persisting data.
+- Source visual truth: `C:\Users\heroy\AppData\Local\Temp\codex-clipboard-28e452f6-5216-4745-8074-c4d572c7fb07.png`
+- Browser-rendered implementation: `artifacts/design-qa/game-detail-density-complete-final.png`
+- Open disclosure state: `artifacts/design-qa/game-detail-density-technical-open.png`
+- Mobile implementation: `artifacts/design-qa/game-detail-density-mobile-final.png`
+- Combined comparison evidence: `artifacts/design-qa/game-detail-density-comparison.png`
+- Route: `http://127.0.0.1:4322/games/marvel-rivals/#technical`
+- CSS viewport: `1440 x 1100`, device scale factor `1`; mobile viewport: `390 x 844`.
+- Source pixels: `1468 x 825`.
+- Desktop implementation pixels: `1440 x 1100`; focused crop: `1416 x 749`.
+- Normalization: the source was scaled proportionally to `1416 px` wide and the implementation was cropped to the Detalles section at the same width. Both were placed in one vertical comparison board.
+- State: dark theme, desktop, Steam game, 49/49 achievements. The completed state was simulated in the browser DOM without persisting data; the accessibility pass used a forced reload of the unmodified page.
 
 **Findings**
 
 - No actionable P0, P1, or P2 differences remain.
-- The implementation preserves the source palette, rounded container, trophy treatment, gold completion state, muted empty states, copy hierarchy, and icon language.
-- The larger achievements tile and stacked secondary tiles are an intentional product change from the source, matching the approved asymmetric Bento rather than design drift.
+- The implementation removes the excessive vertical space identified in the source: the achievements card is shorter, its content is centered, and Mi copia uses two compact rows instead of two tall columns.
+- The renamed `Detalles` heading and `Información técnica` disclosure are consistent in the section and sticky navigation.
+- The disclosure now has a bordered Tabler chevron that rotates when open, making the interaction explicit without adding visual noise.
 
 **Required Fidelity Surfaces**
 
-- Fonts and typography: the existing application display and UI families are preserved; labels, values, notes, weights, line heights, and truncation remain legible at desktop and mobile sizes.
-- Spacing and layout rhythm: the Progress group aligns to the surrounding Ficha grid; the 7/5 desktop split, tablet row break, mobile stack, radii, gaps, and internal padding are consistent.
-- Colors and visual tokens: the existing purple dark-theme tokens remain intact; empty states are darker and desaturated without reducing text contrast, while completion uses the established gold token.
-- Image quality and asset fidelity: this component contains no raster imagery. Existing Tabler-based icons remain sharp and consistent; no source asset was replaced by a placeholder or custom drawing.
-- Copy and content: `Progreso`, `Logros`, `Dificultad`, `Cromos Steam`, `Sin registrar`, `Sin datos`, and the percentage copy match the intended Spanish interface.
+- Fonts and typography: the existing product families, optical weights, line heights, labels, and value hierarchy are preserved. The enlarged 49/49 value uses the existing display treatment and remains legible on mobile.
+- Spacing and layout rhythm: desktop keeps the 7/5 Bento split while reducing card heights; Mi copia aligns with the two-row Catalogación rhythm. At `390 px`, progress cards stack with reduced minimum heights and no horizontal overflow.
+- Colors and visual tokens: the purple dark-theme tokens, muted empty states, gold completion state, borders, radii, and foreground contrast remain consistent with the source.
+- Image quality and asset fidelity: this UI contains no raster imagery. Trophy, database, edit, category, gamepad, cards, difficulty, and chevron icons all use the existing Tabler asset library.
+- Copy and content: `Detalles` replaces `Ficha`; `Información técnica` replaces `Información del sistema`; its supporting copy now reads `Fuentes, identificadores y sincronización`.
 
 **Full-view Comparison Evidence**
 
-- `artifacts/design-qa/game-detail-redesign-page-verified.png` confirms the redesigned Ficha sits correctly between Dinero and Valoración, keeps the sticky navigation usable, and does not introduce horizontal overflow or broken neighboring sections.
+- `artifacts/design-qa/game-detail-density-comparison.png` shows the original and compact implementation in the same normalized board. The revised section occupies less height while preserving every visible data point and the approved Bento hierarchy.
 
 **Focused Region Comparison Evidence**
 
-- `artifacts/design-qa/game-detail-progress-comparison.png` places the source and final 100% state in one image. The completed, empty, and structural states are readable at inspection scale, so no additional close-up was needed.
+- `artifacts/design-qa/game-detail-density-technical-open.png` verifies the expanded technical-information state and rotated chevron.
+- `artifacts/design-qa/game-detail-density-mobile-final.png` verifies the tighter mobile cards and readable completed state.
 
 **Interaction and Accessibility Checks**
 
-- Personal-data dialog, Steam AppID dialog, personal-rating dialog, pending-data deep links, system-information disclosure, and Steam/non-Steam conditional cards were exercised in the browser.
-- Desktop (`1440 px`), tablet (`900 px`), and mobile (`390 px`) layouts were checked.
-- The final focused accessibility scan reports zero violations; keyboard focus remains visible and the achievements progress bar exposes its accessible value.
-- Browser console: no application errors observed; only normal Vite development messages.
+- The technical-information disclosure was opened and closed in the browser; its native disclosure semantics expose the correct accessible name and expanded state.
+- Desktop and mobile layouts were checked, including sticky navigation and the completed/empty progress states.
+- The final WCAG A/AA scan after a forced reload reports zero violations. The remaining contrast entries are indeterminate checks caused by existing pseudo-element backgrounds, not reported violations.
+- Browser console: no application errors observed.
 
 **Comparison History**
 
-- Iteration 1: the first combined source/implementation comparison found no P0/P1/P2 visual mismatches. Before that final comparison, implementation QA had already corrected low contrast in empty cards and invalid definition-list icon placement; the post-fix evidence is `artifacts/design-qa/game-detail-progress-comparison.png`, and the post-fix accessibility scan reports zero violations.
+- Iteration 1: the source showed a P2 density issue in the tall achievements and Mi copia cards, plus a P2 affordance issue because the technical disclosure had no visible direction cue.
+- Fixes: reduced Progress and mobile minimum heights, centered achievements content, stacked Mi copia into compact rows, renamed the section and disclosure, and added a rotating Tabler chevron.
+- Post-fix evidence: `artifacts/design-qa/game-detail-density-comparison.png`, `artifacts/design-qa/game-detail-density-technical-open.png`, and `artifacts/design-qa/game-detail-density-mobile-final.png` show the corrected density and interaction affordance.
 
 **Open Questions**
 
-- None blocking. The wider achievements card is treated as approved intent from the implementation plan.
+- None blocking.
 
 **Implementation Checklist**
 
-- [x] Preserve source visual language.
-- [x] Apply asymmetric Bento hierarchy.
-- [x] Distinguish empty, normal, complete, and non-applicable states.
-- [x] Verify responsive layouts and browser interactions.
-- [x] Verify contrast, semantics, focus, and progress accessibility.
+- [x] Rename the section and navigation to Detalles.
+- [x] Reduce empty space in desktop and mobile cards.
+- [x] Preserve the asymmetric Bento and gold 100% state.
+- [x] Rename the disclosure to Información técnica.
+- [x] Add and animate a real disclosure chevron.
+- [x] Verify the closed, open, desktop, mobile, and accessible states.
 
 **Follow-up Polish**
 

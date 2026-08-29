@@ -55,7 +55,8 @@
   }
 
   .game-page-rich #technical .data-group-copy .data-group-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
   }
 
   .game-page-rich #technical .data-group-copy {
@@ -80,7 +81,7 @@
   .game-page-rich #technical .data-group-card .detail-item {
     display: grid;
     min-width: 0;
-    min-height: 92px;
+    min-height: 80px;
     align-content: center;
     padding: 0.8rem;
     border: 1px solid rgba(207, 195, 225, 0.1);
@@ -90,12 +91,12 @@
 
   .game-page-rich #technical .data-group-progress .data-group-grid {
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: repeat(2, minmax(104px, 1fr));
+    grid-template-rows: repeat(2, minmax(82px, 1fr));
   }
 
   .game-page-rich #technical .data-group-progress .detail-item {
     position: relative;
-    min-height: 104px;
+    min-height: 82px;
     overflow: hidden;
     align-content: end;
     padding: 1rem;
@@ -106,7 +107,8 @@
   .game-page-rich #technical .data-group-progress .progress-card-achievements {
     grid-column: 1 / span 7;
     grid-row: 1 / span 2;
-    min-height: 220px;
+    min-height: 174px;
+    align-content: center;
     padding: clamp(1.05rem, 2vw, 1.45rem);
     border-color: rgba(181, 139, 235, 0.22);
     background: #12111b;
@@ -165,7 +167,7 @@
     letter-spacing: 0.08em;
   }
 
-  .game-page-rich #technical .data-group-progress .detail-item > dd:first-of-type {
+  .game-page-rich #technical .data-group-progress .detail-item-value {
     margin-top: 0.34rem;
     color: #f5eff8;
     font-size: 1.3rem;
@@ -173,7 +175,7 @@
     line-height: 1.05;
   }
 
-  .game-page-rich #technical .progress-card-achievements > dd:first-of-type {
+  .game-page-rich #technical .progress-card-achievements .detail-item-value {
     font-size: clamp(2rem, 4vw, 3.25rem);
   }
 
@@ -257,11 +259,15 @@
     display: flex;
     align-items: center;
     gap: 0.7rem;
-    min-height: 62px;
+    min-height: 56px;
     padding: 0.75rem 0.9rem;
     color: #e8e0ec;
     cursor: pointer;
-    list-style-position: inside;
+    list-style: none;
+  }
+
+  .game-page-rich #technical .system-data-details > summary::-webkit-details-marker {
+    display: none;
   }
 
   .game-page-rich #technical .system-data-details > summary:focus-visible {
@@ -292,6 +298,34 @@
     border-radius: 10px;
     background: #171520;
     color: #ae91cf;
+  }
+
+  .game-page-rich #technical .system-data-summary-chevron {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    margin-left: auto;
+    border: 1px solid rgba(201, 168, 255, 0.14);
+    border-radius: 9px;
+    background: #15131d;
+    color: #a993bf;
+    transition: transform 180ms ease, border-color 180ms ease, color 180ms ease;
+  }
+
+  .game-page-rich #technical .system-data-summary-chevron .tabler-icon {
+    width: 17px;
+    height: 17px;
+  }
+
+  .game-page-rich #technical .system-data-details > summary:hover .system-data-summary-chevron,
+  .game-page-rich #technical .system-data-details > summary:focus-visible .system-data-summary-chevron {
+    border-color: rgba(201, 168, 255, 0.42);
+    color: #d2b4f0;
+  }
+
+  .game-page-rich #technical .system-data-details[open] .system-data-summary-chevron {
+    transform: rotate(180deg);
   }
 
   .game-page-rich #technical .system-data-body {
@@ -372,6 +406,11 @@
     .game-page-rich #technical .system-data-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .game-page-rich #technical .data-group-copy .data-group-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: auto;
+    }
   }
 
   @media (max-width: 760px) {
@@ -384,13 +423,13 @@
     .game-page-rich #technical .data-group-progress :is(.progress-card-achievements, .data-group-grid[data-count='2'] .progress-card-achievements) {
       grid-column: 1 / -1;
       grid-row: auto;
-      min-height: 168px;
+      min-height: 144px;
     }
 
     .game-page-rich #technical .data-group-progress :is(.progress-card-difficulty, .progress-card-cards, .data-group-grid[data-count='2'] .progress-card-difficulty) {
       grid-column: auto;
       grid-row: auto;
-      min-height: 116px;
+      min-height: 96px;
     }
   }
 
