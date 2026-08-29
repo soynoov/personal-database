@@ -27,8 +27,8 @@ const mobileNavigation = [
   { key: 'catalogo', href: '/', label: 'Juegos', icon: catalogIcon },
   { key: 'ruleta', href: '/ruleta/', label: 'Ruleta', icon: rouletteIcon },
   { key: 'estadisticas', href: '/estadisticas/', label: 'Estadísticas', icon: statisticsIcon },
-  { key: 'datos', href: '/datos-pendientes/', label: 'Datos', icon: dataPendingIcon },
   { key: 'criticas', href: '/criticas/', label: 'Metacrítica', icon: reviewsIcon },
+  { key: 'datos', href: '/datos-pendientes/', label: 'Completar', icon: dataPendingIcon },
 ] as const;
 
 const estadoColor = (estado: string): string => {
@@ -219,17 +219,17 @@ const estadoColor = (estado: string): string => {
       </span>
       <span>Estadísticas</span>
     </a>
-    <a class:list={['desktop-nav-item', active === 'datos' && 'is-active']} aria-current={active === 'datos' ? 'page' : undefined} href='/datos-pendientes/'>
-      <span class='desktop-nav-icon' aria-hidden='true'>
-        <TablerIcon src={dataPendingIcon} />
-      </span>
-      <span>Datos pendientes</span>
-    </a>
     <a class:list={['desktop-nav-item', active === 'criticas' && 'is-active']} aria-current={active === 'criticas' ? 'page' : undefined} href='/criticas/'>
       <span class='desktop-nav-icon' aria-hidden='true'>
         <TablerIcon src={reviewsIcon} />
       </span>
       <span>Metacrítica</span>
+    </a>
+    <a class:list={['desktop-nav-item', active === 'datos' && 'is-active']} aria-current={active === 'datos' ? 'page' : undefined} href='/datos-pendientes/'>
+      <span class='desktop-nav-icon' aria-hidden='true'>
+        <TablerIcon src={dataPendingIcon} />
+      </span>
+      <span>Completar datos</span>
     </a>
     <button class='desktop-nav-item' type='button' disabled>
       <span class='desktop-nav-icon' aria-hidden='true'>
