@@ -6788,5 +6788,54 @@
       "metascore": 84,
       "userscore": 7.8
     }
+  },
+  {
+    "titulo": "Tiny Tina's Wonderlands",
+    "estado": "Pendiente",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 0,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": 0,
+      "total": 47
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2022,
+    "modos": [
+      "solitario",
+      "cooperativo",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": 16,
+    "cover_url": null,
+    "steam_appid": 1286680,
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Rol"
+    ],
+    "precio_pagado": null,
+    "precio_actual": 11.99,
+    "precio_salida": 59.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 16,
+      "main_plus": 29,
+      "completionist": 52
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Tiny Tina's Wonderlands",
+    "steam_last_sync_at": "2026-08-29T18:55:39.971Z",
+    "critica": {
+      "metascore": 78,
+      "userscore": 5.9
+    }
   }
 ]
