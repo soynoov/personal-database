@@ -2314,10 +2314,10 @@
   },
   {
     "titulo": "The Witness",
-    "estado": "Pendiente",
-    "launcher": "Steam",
+    "estado": "Terminado",
+    "launcher": "Epic Games",
     "plataforma": "PC",
-    "horas": 0.2,
+    "horas": 20.45,
     "fecha_inicio": null,
     "fecha_fin": null,
     "logros": {
@@ -2327,7 +2327,10 @@
     "nota": null,
     "comentarios": null,
     "lanzamiento": 2016,
-    "solo": null,
+    "modos": [
+      "solitario"
+    ],
+    "solo": true,
     "hltb": 16.9,
     "cover_url": "https://howlongtobeat.com/games/250px-The_witness_poster.jpg",
     "steam_appid": 210970,
@@ -2336,7 +2339,7 @@
       "Indie"
     ],
     "precio_pagado": null,
-    "precio_actual": 7.39,
+    "precio_actual": 36.99,
     "precio_salida": 36.99,
     "tags": [],
     "hltb_breakdown": {
@@ -2349,7 +2352,7 @@
       "Indie"
     ],
     "steam_store_name": "The Witness",
-    "steam_last_sync_at": "2026-08-20T11:24:29.385Z",
+    "steam_last_sync_at": "2026-08-29T19:05:38.014Z",
     "critica": {
       "metascore": 87,
       "userscore": 7.3
@@ -6744,7 +6747,7 @@
   {
     "titulo": "Viewfinder",
     "estado": "Pendiente",
-    "launcher": "Steam",
+    "launcher": "Epic Games",
     "plataforma": "PC",
     "horas": 0,
     "fecha_inicio": null,
@@ -6792,7 +6795,7 @@
   {
     "titulo": "Tiny Tina's Wonderlands",
     "estado": "Pendiente",
-    "launcher": "Steam",
+    "launcher": "Epic Games",
     "plataforma": "PC",
     "horas": 0,
     "fecha_inicio": null,
@@ -6836,6 +6839,191 @@
     "critica": {
       "metascore": 78,
       "userscore": 5.9
+    }
+  },
+  {
+    "titulo": "Marvel's Midnight Suns",
+    "estado": "Terminado",
+    "launcher": "Epic Games",
+    "plataforma": "PC",
+    "horas": 49.62,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2022,
+    "modos": [
+      "solitario"
+    ],
+    "solo": true,
+    "hltb": 41,
+    "cover_url": null,
+    "steam_appid": 368260,
+    "generos": [
+      "Rol",
+      "Estrategia"
+    ],
+    "precio_pagado": null,
+    "precio_actual": 59.99,
+    "precio_salida": 59.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 41,
+      "main_plus": 66,
+      "completionist": 97
+    },
+    "steam_store_genres": [
+      "Rol",
+      "Estrategia"
+    ],
+    "steam_store_name": "Marvel's Midnight Suns",
+    "steam_last_sync_at": "2026-08-29T19:05:38.014Z",
+    "critica": {
+      "metascore": 83,
+      "userscore": 7.2
+    }
+  },
+  {
+    "titulo": "Marvel's Guardians of the Galaxy",
+    "estado": "Terminado",
+    "launcher": "Epic Games",
+    "plataforma": "PC",
+    "horas": 14.42,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2021,
+    "modos": [
+      "solitario"
+    ],
+    "solo": true,
+    "hltb": 18,
+    "cover_url": null,
+    "steam_appid": 1088850,
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
+    "precio_pagado": null,
+    "precio_actual": 8.99,
+    "precio_salida": 59.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 18,
+      "main_plus": 20,
+      "completionist": 26
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Marvel's Guardians of the Galaxy",
+    "steam_last_sync_at": "2026-08-29T19:05:38.014Z",
+    "critica": {
+      "metascore": 78,
+      "userscore": 8.4
+    }
+  },
+  {
+    "titulo": "Among the Sleep - Enhanced Edition",
+    "estado": "Terminado",
+    "launcher": "Epic Games",
+    "plataforma": "PC",
+    "horas": 3.07,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2014,
+    "modos": [
+      "solitario"
+    ],
+    "solo": true,
+    "hltb": 2,
+    "cover_url": null,
+    "steam_appid": 250620,
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Indie"
+    ],
+    "precio_pagado": null,
+    "precio_actual": 3.39,
+    "precio_salida": 16.99,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 2,
+      "main_plus": 3,
+      "completionist": 4
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Among the Sleep - Enhanced Edition",
+    "steam_last_sync_at": "2026-08-29T19:05:38.014Z",
+    "critica": {
+      "metascore": 66,
+      "userscore": 7.2
+    }
+  },
+  {
+    "titulo": "Little Inferno",
+    "estado": "Terminado",
+    "launcher": "Epic Games",
+    "plataforma": "PC",
+    "horas": 11.6,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2012,
+    "modos": [
+      "solitario"
+    ],
+    "solo": true,
+    "hltb": 3,
+    "cover_url": null,
+    "steam_appid": 221260,
+    "generos": [
+      "Aventura",
+      "Casual",
+      "Indie"
+    ],
+    "precio_pagado": null,
+    "precio_actual": 14.79,
+    "precio_salida": 14.79,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 3,
+      "main_plus": 4,
+      "completionist": 5
+    },
+    "steam_store_genres": [
+      "Aventura",
+      "Casual"
+    ],
+    "steam_store_name": "Little Inferno",
+    "steam_last_sync_at": "2026-08-29T19:05:38.014Z",
+    "critica": {
+      "metascore": 68
     }
   }
 ]
