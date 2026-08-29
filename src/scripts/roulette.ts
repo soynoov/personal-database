@@ -506,8 +506,11 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
     page?.classList.remove('is-result');
     result.hidden = true;
     setup.hidden = false;
-    feedback.textContent = lastWinner ? `${lastWinner.titulo} sigue participando.` : '';
+    feedback.textContent = lastWinner
+      ? `${lastWinner.titulo} sigue participando. Volvemos a girar…`
+      : 'Volvemos a girar…';
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (activeGames().length >= 2) window.setTimeout(spin, 240);
   });
   excludeButton.addEventListener('click', () => {
     if (!lastWinner) return;
