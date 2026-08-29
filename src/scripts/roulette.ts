@@ -6,14 +6,14 @@ import type { RouletteGame } from '../lib/roulette-game';
 import gamepadIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
 
 const WHEEL_COLORS = [
-  ['rgba(173, 92, 214, 0.78)', 'rgba(89, 57, 138, 0.9)'],
-  ['rgba(89, 136, 204, 0.76)', 'rgba(42, 68, 115, 0.9)'],
-  ['rgba(200, 91, 139, 0.72)', 'rgba(112, 50, 89, 0.9)'],
-  ['rgba(66, 168, 158, 0.7)', 'rgba(30, 96, 94, 0.9)'],
-  ['rgba(219, 158, 72, 0.72)', 'rgba(126, 77, 35, 0.9)'],
-  ['rgba(185, 80, 92, 0.72)', 'rgba(101, 42, 58, 0.9)'],
-  ['rgba(73, 155, 188, 0.72)', 'rgba(35, 82, 112, 0.9)'],
-  ['rgba(135, 105, 200, 0.74)', 'rgba(69, 53, 121, 0.9)'],
+  ['rgba(107, 62, 130, 0.97)', 'rgba(32, 20, 43, 0.99)'],
+  ['rgba(61, 87, 125, 0.97)', 'rgba(22, 29, 43, 0.99)'],
+  ['rgba(122, 59, 91, 0.97)', 'rgba(43, 20, 34, 0.99)'],
+  ['rgba(44, 107, 104, 0.97)', 'rgba(16, 39, 41, 0.99)'],
+  ['rgba(125, 87, 42, 0.97)', 'rgba(44, 31, 19, 0.99)'],
+  ['rgba(119, 54, 65, 0.97)', 'rgba(42, 20, 27, 0.99)'],
+  ['rgba(47, 101, 120, 0.97)', 'rgba(17, 36, 47, 0.99)'],
+  ['rgba(83, 65, 126, 0.97)', 'rgba(27, 22, 45, 0.99)'],
 ];
 
 const coverUrlCache = new Map<string, string>();
@@ -104,19 +104,30 @@ const paintWheel = (
     const middle = start + arc / 2;
     const [innerColor, outerColor] = WHEEL_COLORS[index % WHEEL_COLORS.length];
     const gradient = context.createRadialGradient(
-      center - Math.cos(middle) * radius * 0.16,
-      center - Math.sin(middle) * radius * 0.16,
+      center,
+      center,
       radius * 0.08,
-      center + Math.cos(middle) * radius * 0.45,
-      center + Math.sin(middle) * radius * 0.45,
-      radius * 1.05,
+      center + Math.cos(middle) * radius * 0.2,
+      center + Math.sin(middle) * radius * 0.2,
+      radius,
     );
-    gradient.addColorStop(0, 'rgba(255, 255, 255, 0.2)');
-    gradient.addColorStop(0.2, innerColor);
+    gradient.addColorStop(0, innerColor);
+    gradient.addColorStop(0.42, innerColor);
     gradient.addColorStop(1, outerColor);
     context.fillStyle = gradient;
     context.fillRect(0, 0, size, size);
-    context.fillStyle = 'rgba(255, 255, 255, 0.025)';
+
+    const sheen = context.createLinearGradient(
+      center + Math.cos(middle - Math.PI / 2) * radius,
+      center + Math.sin(middle - Math.PI / 2) * radius,
+      center + Math.cos(middle + Math.PI / 2) * radius,
+      center + Math.sin(middle + Math.PI / 2) * radius,
+    );
+    sheen.addColorStop(0, 'rgba(255, 255, 255, 0)');
+    sheen.addColorStop(0.42, 'rgba(255, 255, 255, 0.07)');
+    sheen.addColorStop(0.58, 'rgba(255, 255, 255, 0.015)');
+    sheen.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    context.fillStyle = sheen;
     context.fillRect(0, 0, size, size);
     context.restore();
 
