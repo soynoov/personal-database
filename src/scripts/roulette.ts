@@ -1,4 +1,4 @@
-import { buildGameCoverUrl } from '../lib/game-cover-url';
+import { buildGameCoverUrl, buildGameHeroUrl } from '../lib/game-cover-url';
 import { gameHasMode } from '../lib/game-modes';
 import { normalizeStatus } from '../lib/game-status';
 import { hasGameTag } from '../lib/game-tags';
@@ -6,17 +6,16 @@ import type { RouletteGame } from '../lib/roulette-game';
 import gamepadIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
 
 const WHEEL_COLORS = [
-  '#a63f45',
-  '#243f67',
-  '#563866',
-  '#17615d',
-  '#b98216',
-  '#8f343d',
-  '#2d5877',
-  '#664276',
+  ['rgba(173, 92, 214, 0.78)', 'rgba(89, 57, 138, 0.9)'],
+  ['rgba(89, 136, 204, 0.76)', 'rgba(42, 68, 115, 0.9)'],
+  ['rgba(200, 91, 139, 0.72)', 'rgba(112, 50, 89, 0.9)'],
+  ['rgba(66, 168, 158, 0.7)', 'rgba(30, 96, 94, 0.9)'],
+  ['rgba(219, 158, 72, 0.72)', 'rgba(126, 77, 35, 0.9)'],
+  ['rgba(185, 80, 92, 0.72)', 'rgba(101, 42, 58, 0.9)'],
+  ['rgba(73, 155, 188, 0.72)', 'rgba(35, 82, 112, 0.9)'],
+  ['rgba(135, 105, 200, 0.74)', 'rgba(69, 53, 121, 0.9)'],
 ];
 
-const imageCache = new Map<string, Promise<HTMLImageElement | null>>();
 const coverUrlCache = new Map<string, string>();
 const FILTER_STORAGE_KEY = 'personal-db:roulette-filters:v1';
 
@@ -41,25 +40,7 @@ const gameCoverUrl = (game: RouletteGame): string => {
   return url;
 };
 
-const gameHeroUrl = (game: RouletteGame): string =>
-  game.steam_appid
-    ? `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.steam_appid}/header.jpg`
-    : gameCoverUrl(game);
-
-const loadImage = (src: string): Promise<HTMLImageElement | null> => {
-  const cached = imageCache.get(src);
-  if (cached) return cached;
-
-  const promise = new Promise<HTMLImageElement | null>((resolve) => {
-    const image = new Image();
-    image.decoding = 'async';
-    image.onload = () => resolve(image);
-    image.onerror = () => resolve(null);
-    image.src = src;
-  });
-  imageCache.set(src, promise);
-  return promise;
-};
+const gameHeroUrl = (game: RouletteGame): string => buildGameHeroUrl(game);
 
 const fitCanvas = (canvas: HTMLCanvasElement): { context: CanvasRenderingContext2D; size: number } | null => {
   const context = canvas.getContext('2d');
@@ -76,28 +57,6 @@ const fitCanvas = (canvas: HTMLCanvasElement): { context: CanvasRenderingContext
   return { context, size: cssSize };
 };
 
-const drawImageCover = (
-  context: CanvasRenderingContext2D,
-  image: HTMLImageElement,
-  size: number,
-) => {
-  const sourceRatio = image.naturalWidth / image.naturalHeight;
-  const targetRatio = 1;
-  let sx = 0;
-  let sy = 0;
-  let sw = image.naturalWidth;
-  let sh = image.naturalHeight;
-
-  if (sourceRatio > targetRatio) {
-    sw = image.naturalHeight * targetRatio;
-    sx = (image.naturalWidth - sw) / 2;
-  } else {
-    sh = image.naturalWidth / targetRatio;
-    sy = (image.naturalHeight - sh) / 2;
-  }
-  context.drawImage(image, sx, sy, sw, sh, 0, 0, size, size);
-};
-
 const shortTitle = (title: string, maxLength: number): string => {
   if (title.length <= maxLength) return title;
   return `${title.slice(0, Math.max(3, maxLength - 1)).trim()}…`;
@@ -106,7 +65,6 @@ const shortTitle = (title: string, maxLength: number): string => {
 const paintWheel = (
   canvas: HTMLCanvasElement,
   games: RouletteGame[],
-  images: Array<HTMLImageElement | null> = [],
 ) => {
   const fitted = fitCanvas(canvas);
   if (!fitted) return;
@@ -133,8 +91,6 @@ const paintWheel = (
 
   const arc = (Math.PI * 2) / games.length;
   const startOffset = -Math.PI / 2 - arc / 2;
-  const useArtwork = games.length <= 12;
-
   games.forEach((game, index) => {
     const start = startOffset + index * arc;
     const end = start + arc;
@@ -145,15 +101,23 @@ const paintWheel = (
     context.closePath();
     context.clip();
 
-    const image = useArtwork ? images[index] : null;
-    if (image) {
-      drawImageCover(context, image, size);
-      context.fillStyle = 'rgba(5, 9, 16, 0.36)';
-      context.fillRect(0, 0, size, size);
-    } else {
-      context.fillStyle = WHEEL_COLORS[index % WHEEL_COLORS.length];
-      context.fillRect(0, 0, size, size);
-    }
+    const middle = start + arc / 2;
+    const [innerColor, outerColor] = WHEEL_COLORS[index % WHEEL_COLORS.length];
+    const gradient = context.createRadialGradient(
+      center - Math.cos(middle) * radius * 0.16,
+      center - Math.sin(middle) * radius * 0.16,
+      radius * 0.08,
+      center + Math.cos(middle) * radius * 0.45,
+      center + Math.sin(middle) * radius * 0.45,
+      radius * 1.05,
+    );
+    gradient.addColorStop(0, 'rgba(255, 255, 255, 0.2)');
+    gradient.addColorStop(0.2, innerColor);
+    gradient.addColorStop(1, outerColor);
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, size, size);
+    context.fillStyle = 'rgba(255, 255, 255, 0.025)';
+    context.fillRect(0, 0, size, size);
     context.restore();
 
     context.beginPath();
@@ -164,7 +128,6 @@ const paintWheel = (
     context.stroke();
 
     if (games.length <= 20) {
-      const middle = start + arc / 2;
       const labelRadius = radius * (games.length <= 8 ? 0.68 : 0.72);
       context.save();
       context.translate(center, center);
@@ -201,12 +164,9 @@ const paintWheel = (
   context.fillText(String(games.length), center, center);
 };
 
-const drawWheel = async (canvas: HTMLCanvasElement, games: RouletteGame[], token: number) => {
+const drawWheel = (canvas: HTMLCanvasElement, games: RouletteGame[], token: number) => {
+  canvas.dataset.drawToken = String(token);
   paintWheel(canvas, games);
-  if (games.length === 0 || games.length > 12) return;
-  const images = await Promise.all(games.map((game) => loadImage(gameCoverUrl(game))));
-  if (Number(canvas.dataset.drawToken) !== token) return;
-  paintWheel(canvas, games, images);
 };
 
 const secureRandomIndex = (length: number): number => {
@@ -324,7 +284,7 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
 
     const marker = document.createElement('span');
     marker.className = 'roulette-candidate-marker';
-    marker.style.setProperty('--candidate-color', WHEEL_COLORS[poolGames().indexOf(game) % WHEEL_COLORS.length]);
+    marker.style.setProperty('--candidate-color', WHEEL_COLORS[poolGames().indexOf(game) % WHEEL_COLORS.length][0]);
 
     const image = document.createElement('img');
     image.src = gameCoverUrl(game);
