@@ -283,10 +283,6 @@
     font-weight: 700;
   }
 
-  .metacritic-honorary-level > div > small:last-child {
-    margin-left: auto;
-  }
-
   .metacritic-honorary-icon {
     display: grid;
     flex: 0 0 auto;

@@ -337,7 +337,7 @@
 
   .game-page-rich #technical .system-data-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.6rem;
     margin: 0.85rem 0 0;
   }
@@ -348,10 +348,6 @@
     border: 1px solid rgba(207, 195, 225, 0.09);
     border-radius: 11px;
     background: #090a10;
-  }
-
-  .game-page-rich #technical .system-data-grid > .system-data-item-wide {
-    grid-column: span 2;
   }
 
   .game-page-rich #technical .system-data-item-head {
@@ -456,8 +452,5 @@
       grid-row: auto;
     }
 
-    .game-page-rich #technical .system-data-grid > .system-data-item-wide {
-      grid-column: 1;
-    }
   }
 }
