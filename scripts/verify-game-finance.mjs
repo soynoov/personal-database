@@ -49,6 +49,8 @@ try {
   assert.equal(getScoreMultiplier(7.5), 1);
   assert.equal(getScoreMultiplier(8), 1.02);
   assert.equal(getScoreMultiplier(10), 1.1);
+  assert.equal(formatHoursDuration(2725), '2.725 h');
+  assert.equal(formatHoursDuration(2725.5), '2.725 h 30 min');
 
   assert.deepEqual(getPurchasePriceComparison(4.89, 6.99), {
     direction: 'discount', amountPerUnit: 2.1, percent: 30,

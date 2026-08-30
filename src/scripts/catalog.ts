@@ -648,7 +648,9 @@ export function initCatalog(allGames: CatalogGame[]): void {
       rowPlatform.classList.add(platformClassName(game.plataforma));
 
       (rowNode.querySelector('[data-row-horas]') as HTMLElement).textContent =
-        game.horas == null ? '-' : `${game.horas} h`;
+        game.horas == null
+          ? '-'
+          : `${game.horas.toLocaleString('es-ES', { maximumFractionDigits: 2, useGrouping: 'always' })} h`;
       (rowNode.querySelector('[data-row-precio]') as HTMLElement).textContent = formatViewPrice(game);
       (rowNode.querySelector('[data-row-lanzamiento]') as HTMLElement).textContent = formatValue(game.lanzamiento);
 

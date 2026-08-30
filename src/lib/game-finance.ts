@@ -243,7 +243,11 @@ export function formatHoursDuration(value: number | null, fallback = '—') {
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
   if (hours === 0) return `${minutes} min`;
-  return minutes === 0 ? `${hours} h` : `${hours} h ${minutes} min`;
+  const formattedHours = new Intl.NumberFormat('es-ES', {
+    maximumFractionDigits: 0,
+    useGrouping: 'always',
+  }).format(hours);
+  return minutes === 0 ? `${formattedHours} h` : `${formattedHours} h ${minutes} min`;
 }
 
 export function formatEuro(value: number | null, fallback = '—') {
