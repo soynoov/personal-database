@@ -143,6 +143,39 @@
   margin-bottom: 0;
 }
 
+.data-edit-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.data-edit-choice {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.62rem 0.72rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-2);
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 680;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+
+.data-edit-choice:has(.form-checkbox-input:checked) {
+  border-color: rgba(201, 168, 255, 0.42);
+  background: rgba(124, 78, 188, 0.14);
+}
+
+.data-edit-fieldset-note {
+  margin: 0.7rem 0 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
 @media (max-width: 960px) {
   .game-data-groups {
     grid-template-columns: 1fr;
@@ -182,6 +215,10 @@
   .data-group-progress .detail-item:first-child,
   .data-group-technical .detail-item:last-child:nth-child(odd) {
     grid-column: auto;
+  }
+
+  .data-edit-choice-grid {
+    grid-template-columns: 1fr;
   }
 }
 

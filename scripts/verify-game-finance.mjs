@@ -56,9 +56,14 @@ try {
   });
   assert.equal(getPurchasePriceComparison(null, 6.99), null);
 
-  const incompleteReview = getGameValueMetrics(game({ horas: 20, critica: { criterios: { ...fullCritique.criterios, originalidad: null } } }));
-  assert.equal(incompleteReview.scoreComplete, false);
-  assert.equal(incompleteReview.scoreMultiplier, 1);
+  const legacyReviewWithoutOriginality = getGameValueMetrics(game({ horas: 20, critica: { criterios: { ...fullCritique.criterios, originalidad: null } } }));
+  assert.equal(legacyReviewWithoutOriginality.scoreComplete, true);
+  assert.equal(legacyReviewWithoutOriginality.scoreMultiplier, 1.1);
+
+  const legacyNumericScore = getGameValueMetrics(game({ horas: 20, nota: 9.3 }));
+  assert.equal(legacyNumericScore.personalScore, 9.3);
+  assert.equal(legacyNumericScore.scoreComplete, true);
+  assert.equal(legacyNumericScore.scoreBonusPercent, 7.2);
 
   const competitiveWithoutCommunity = getGameValueMetrics(game({ horas: 20, tags: ['competitivo'], critica: fullCritique }));
   assert.equal(competitiveWithoutCommunity.scoreComplete, false);
@@ -150,6 +155,18 @@ try {
   });
   assert.equal(invalidAchievements.ok, false);
   assert.equal(invalidAchievements.status, 400);
+
+  const catalogEdit = applyManualGamePatch(game({
+    generos: ['Acción'],
+    tags: ['transmitir'],
+  }), {
+    modos: ['solitario', 'transmision'],
+    tags: ['indie', 'early-access'],
+  });
+  assert.equal(catalogEdit.ok, true);
+  assert.deepEqual(catalogEdit.game.modos, ['solitario', 'transmision']);
+  assert.deepEqual(catalogEdit.game.tags, ['indie', 'early-access']);
+  assert.deepEqual(catalogEdit.game.generos, ['Acción']);
 
   assert.deepEqual(
     getGameGenres(['Acción', 'Free to Play', 'Acción']),

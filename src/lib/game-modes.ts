@@ -66,11 +66,17 @@ export function getGameModes(
 
   const inferred = new Set<GameMode>();
   const isPrivateCoop = hasGameTag(game.tags, "cooperativo-privado");
+  const normalizedTags = Array.isArray(game.tags)
+    ? game.tags.map(normalizeModeText)
+    : [];
   const normalizedGenres = Array.isArray(game.generos)
     ? game.generos.map(normalizeModeText)
     : [];
 
   if (game.solo === true) inferred.add("solitario");
+  if (normalizedTags.some((tag) => tag === "transmitir" || tag === "transmision")) {
+    inferred.add("transmision");
+  }
   if (isPrivateCoop) inferred.add("cooperativo");
   else if (game.solo === false) inferred.add("multijugador");
 

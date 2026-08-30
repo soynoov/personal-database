@@ -125,11 +125,14 @@ export function getGameValueMetrics(game: LocalGame): GameValueMetrics {
 
   const includeCommunity = isCommunityCriterionApplicable(game);
   const criterionScores = getReviewCriterionScores(game.critica, includeCommunity);
-  const scoreComplete = criterionScores.every((criterion) => criterion.value !== null);
-  const scoreCalculation = scoreComplete
-    ? getPersonalScoreCalculation(game.critica, includeCommunity)
+  const hasCriterionData = criterionScores.some((criterion) => criterion.value !== null);
+  const scoreCalculation = getPersonalScoreCalculation(game.critica, includeCommunity);
+  const parsedLegacyScore = finiteNonNegative(game.nota);
+  const legacyScore = parsedLegacyScore !== null && parsedLegacyScore <= 10
+    ? parsedLegacyScore
     : null;
-  const personalScore = scoreCalculation?.finalScore ?? null;
+  const personalScore = scoreCalculation?.finalScore ?? (!hasCriterionData ? legacyScore : null);
+  const scoreComplete = personalScore !== null;
   const scoreMultiplier = getScoreMultiplier(personalScore);
   const scoreBonusPercent = round((scoreMultiplier - 1) * 100, 1);
   const weightedHours = realHours === null ? null : round(realHours * scoreMultiplier, 2);

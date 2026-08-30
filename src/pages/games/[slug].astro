@@ -355,6 +355,8 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
         logros_total: game.logros?.total ?? null,
         steam_cromos_actual: game.steam_cromos?.actual ?? null,
         steam_cromos_total: game.steam_cromos?.total ?? null,
+        modos: gameModes,
+        tags: rawTags.map(normalizeGameTag),
       }}
     />
     {dlcTotal > 0 && (
