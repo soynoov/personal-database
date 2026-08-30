@@ -223,13 +223,23 @@ const end = effectiveEndDate ? new Date(`${effectiveEndDate}T00:00:00`) : null;
 const elapsedDays = start && end && end >= start ? Math.round((end.getTime() - start.getTime()) / 86_400_000) : null;
 const updatedDate = game.actualizado_en ? new Date(game.actualizado_en) : null;
 const formatTimestamp = (value: string | null | undefined) => {
-  if (!value) return '-';
+  if (!value) return 'No disponible';
   const date = new Date(value);
   return Number.isNaN(date.getTime())
-    ? '-'
+    ? 'No disponible'
     : new Intl.DateTimeFormat('es-ES', {
         dateStyle: 'medium',
         timeStyle: 'short',
+        timeZone: 'Europe/Madrid',
+      }).format(date);
+};
+const formatCreationDate = (value: string | null | undefined) => {
+  if (!value) return 'No disponible';
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? 'No disponible'
+    : new Intl.DateTimeFormat('es-ES', {
+        dateStyle: 'medium',
         timeZone: 'Europe/Madrid',
       }).format(date);
 };
@@ -273,12 +283,11 @@ const metadataGroups = [
   },
 ];
 const systemItems = [
-  { label: 'Steam AppID', value: formatValue(game.steam_appid), state: game.steam_appid ? 'default' as const : 'empty' as const },
+  { label: 'Steam AppID', value: formatValue(game.steam_appid), state: game.steam_appid ? 'default' as const : 'empty' as const, action: 'steam-appid' as const },
   { label: 'Nombre oficial Steam', value: formatValue(game.steam_store_name), state: game.steam_store_name ? 'default' as const : 'empty' as const },
-  { label: 'Fuente de portada', value: formatValue(game.cover_source), state: game.cover_source ? 'default' as const : 'empty' as const },
-  { label: 'Coincidencia HLTB', value: formatValue(game.hltb_match), state: game.hltb_match ? 'default' as const : 'empty' as const },
+  { label: 'Ficha creada', value: formatCreationDate(game.creado_en), state: game.creado_en ? 'default' as const : 'empty' as const },
   { label: 'Última sincronización Steam', value: formatTimestamp(game.steam_last_sync_at), state: game.steam_last_sync_at ? 'default' as const : 'empty' as const },
-  { label: 'Última edición manual', value: formatTimestamp(game.actualizado_en), state: updatedDate && !Number.isNaN(updatedDate.getTime()) ? 'default' as const : 'empty' as const },
+  { label: 'Última edición manual', value: formatTimestamp(game.actualizado_en), state: updatedDate && !Number.isNaN(updatedDate.getTime()) ? 'default' as const : 'empty' as const, className: 'system-data-item-wide' },
 ];
 
 const legacyScore = game.nota !== null && game.nota !== undefined && Number.isFinite(Number(game.nota)) ? Number(game.nota) : null;

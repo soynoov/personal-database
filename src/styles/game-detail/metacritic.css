@@ -212,57 +212,41 @@
     background: #b98cf2;
   }
 
-  .metacritic-criterion p,
-  .metacritic-formula {
+  .metacritic-criterion p {
     margin: 0.48rem 0 0;
     color: var(--muted);
     font-size: 0.7rem;
     line-height: 1.4;
   }
 
-  .metacritic-formula {
-    align-content: center;
-    align-items: center;
-    margin: 0;
-    padding: 0.65rem;
-    border: 1px solid rgba(201, 168, 255, 0.13);
-    border-radius: 12px;
-    background: rgba(7, 8, 14, 0.24);
-  }
-
   .metacritic-breakdown-footer {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(240px, 0.62fr) minmax(0, 1.38fr);
     gap: 0.65rem;
     margin-top: 0.65rem;
   }
 
-  .metacritic-breakdown-footer.has-honorary {
-    grid-template-columns: minmax(320px, 0.75fr) minmax(0, 1.25fr);
+  .metacritic-breakdown-footer:not(.has-honorary) {
+    grid-template-columns: 1fr;
   }
 
   .metacritic-breakdown-footer.has-comment {
-    grid-template-columns: minmax(0, 1.25fr) minmax(290px, 0.75fr);
+    grid-template-columns: minmax(320px, 0.82fr) minmax(0, 1.18fr);
   }
 
   .metacritic-honorary {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(112px, 0.45fr);
+    grid-template-columns: 1fr;
     align-items: stretch;
-    gap: 0.55rem;
+    gap: 0.45rem;
     margin: 0;
-    padding: 0.55rem;
+    padding: 0.65rem;
     border: 1px solid rgba(201, 168, 255, 0.16);
     border-radius: 12px;
     background: rgba(97, 52, 148, 0.08);
   }
 
-  .metacritic-honorary.has-comment {
-    grid-template-columns: minmax(180px, 0.8fr) minmax(112px, 0.45fr) minmax(0, 1.9fr);
-  }
-
   .metacritic-honorary-level,
-  .metacritic-honorary-bonus,
   .metacritic-honorary-reason {
     display: grid;
     min-width: 0;
@@ -276,26 +260,50 @@
 
   .metacritic-honorary-level > div {
     display: flex;
-    align-items: baseline;
-    gap: 0.18rem;
+    align-items: center;
+    gap: 0.58rem;
   }
 
-  .metacritic-honorary-level strong,
-  .metacritic-honorary-bonus strong {
+  .metacritic-honorary-level > div > span:nth-child(2) {
+    display: grid;
+    min-width: 0;
+    gap: 0.15rem;
+  }
+
+  .metacritic-honorary-level strong {
     color: var(--text);
-    font-size: 1.15rem;
-    line-height: 1;
+    font-size: 0.95rem;
+    line-height: 1.15;
   }
 
-  .metacritic-honorary-level small,
-  .metacritic-honorary-bonus small {
+  .metacritic-honorary-level small {
     color: var(--indigo);
     font-family: var(--font-body);
     font-size: 0.68rem;
     font-weight: 700;
   }
 
-  .metacritic-honorary-bonus > span,
+  .metacritic-honorary-level > div > small:last-child {
+    margin-left: auto;
+  }
+
+  .metacritic-honorary-icon {
+    display: grid;
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    border: 1px solid rgba(201, 168, 255, 0.2);
+    border-radius: 10px;
+    background: rgba(201, 168, 255, 0.08);
+    color: #c9a8ff;
+  }
+
+  .metacritic-honorary-icon .tabler-icon {
+    width: 16px;
+    height: 16px;
+  }
+
   .metacritic-honorary-reason > span {
     color: rgba(224, 211, 244, 0.58);
     font-size: 0.62rem;
@@ -310,6 +318,7 @@
     font-size: 0.76rem;
     line-height: 1.4;
   }
+
 
   .metacritic-edit-dialog {
     width: min(760px, calc(100% - 1.5rem));
@@ -710,13 +719,26 @@
       grid-template-columns: 1fr;
     }
 
-    .metacritic-honorary {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.45rem;
+    .metacritic-score-equation-head {
+      align-items: flex-start;
+      flex-direction: column;
     }
 
-    .metacritic-honorary-reason {
+    .metacritic-formula-details > div {
+      justify-content: flex-start;
+    }
+
+    .metacritic-score-equation-values,
+    .metacritic-score-equation-values.without-bonus {
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    }
+
+    .metacritic-score-equation-values:not(.without-bonus) .metacritic-score-term.is-result {
       grid-column: 1 / -1;
+    }
+
+    .metacritic-score-equation-values:not(.without-bonus) .metacritic-score-operator.is-equals {
+      display: none;
     }
   }
 }

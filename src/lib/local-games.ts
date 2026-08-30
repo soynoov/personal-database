@@ -5,6 +5,7 @@ import { BlobPreconditionFailedError, get, put } from "@vercel/blob";
 import { isCompletedStatus, normalizeStatus } from "./game-status";
 import { gameHasMode, normalizeGameModes } from "./game-modes";
 import { normalizeGameTag } from "./game-tags";
+import historicGameCreationDates from "../data/game-created-at.json";
 
 export type GameCritique = {
   metascore?: number | null;
@@ -26,6 +27,8 @@ export type GameCritique = {
 
 export type LocalGame = {
   titulo: string;
+  /** Primera fecha en la que la ficha quedó registrada en la web. */
+  creado_en?: string | null;
   /** Última edición manual realizada desde la web. */
   actualizado_en?: string | null;
   estado: string | null;
@@ -99,6 +102,7 @@ const parentGamesPath = path.resolve(process.cwd(), "..", "games.json");
 const gamesPath = existsSync(localGamesPath) ? localGamesPath : parentGamesPath;
 const productionGamesPath = "personal-database/games.json";
 const gamesVersions = new WeakMap<LocalGame[], string | null>();
+const historicCreationByTitle = historicGameCreationDates as Record<string, string>;
 
 function applyGameDataMigrations(games: LocalGame[]) {
   return games.map((game) => {
@@ -116,13 +120,18 @@ function applyGameDataMigrations(games: LocalGame[]) {
     const modos = hadLegacyStreamingTag
       ? normalizeGameModes([...(game.modos ?? []), 'transmision'])
       : game.modos;
+    const migratedGame = {
+      ...game,
+      creado_en: game.creado_en ?? historicCreationByTitle[game.titulo] ?? null,
+      ...(hadLegacyStreamingTag ? { tags, modos } : {}),
+    };
 
     if (game.titulo !== "Mini Airways") {
-      return hadLegacyStreamingTag ? { ...game, tags, modos } : game;
+      return migratedGame;
     }
 
     return {
-      ...game,
+      ...migratedGame,
       modos,
       steam_appid: 2289650,
       tags: (tags ?? []).filter(

@@ -25,6 +25,7 @@ type DetailItem = {
   progress?: number | null;
   kind?: ProgressKind;
   state?: DetailState;
+  action?: 'steam-appid';
 };
 
 interface Props {
@@ -123,16 +124,19 @@ const progressIcons: Record<ProgressKind, string> = {
     <div class="system-data-body">
       <dl class="system-data-grid">
         {systemItems.map((item) => (
-          <div data-state={item.state ?? 'default'} class:list={[item.state === 'empty' && 'detail-item-empty']}>
-            <dt>{item.label}</dt>
+          <div data-state={item.state ?? 'default'} class:list={[item.className, item.state === 'empty' && 'detail-item-empty']}>
+            <dt class="system-data-item-head">
+              <span>{item.label}</span>
+              {item.action === 'steam-appid' && (
+                <button class="system-appid-edit" id="system-appid-edit-trigger" type="button" aria-label="Corregir Steam AppID" title="Corregir Steam AppID">
+                  <TablerIcon src={editIcon} />
+                </button>
+              )}
+            </dt>
             <dd>{item.value}</dd>
           </div>
         ))}
       </dl>
-      <button class="system-appid-edit" id="system-appid-edit-trigger" type="button">
-        <TablerIcon src={editIcon} />
-        Corregir Steam AppID
-      </button>
     </div>
   </details>
 </section>

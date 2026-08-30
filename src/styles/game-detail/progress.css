@@ -350,6 +350,17 @@
     background: #090a10;
   }
 
+  .game-page-rich #technical .system-data-grid > .system-data-item-wide {
+    grid-column: span 2;
+  }
+
+  .game-page-rich #technical .system-data-item-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.55rem;
+  }
+
   .game-page-rich #technical .system-data-grid dt {
     color: rgba(209, 196, 222, 0.58);
     font-size: 0.64rem;
@@ -369,16 +380,14 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.42rem;
-    width: fit-content;
-    min-height: 36px;
-    padding: 0.48rem 0.72rem;
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    padding: 0;
     border: 1px solid rgba(201, 168, 255, 0.2);
     border-radius: 10px;
     background: #171520;
     color: #dfd0ed;
-    font: inherit;
-    font-size: 0.72rem;
     cursor: pointer;
   }
 
@@ -447,8 +456,8 @@
       grid-row: auto;
     }
 
-    .game-page-rich #technical .system-appid-edit {
-      width: 100%;
+    .game-page-rich #technical .system-data-grid > .system-data-item-wide {
+      grid-column: 1;
     }
   }
 }

@@ -1,4 +1,5 @@
 ---
+import '../../styles/game-detail/metacritic-equation.css';
 import '../../styles/game-detail/metacritic.css';
 import '../../styles/game-detail/edit.css';
 import type { GameCritique } from '../../lib/local-games';
@@ -155,20 +156,19 @@ const formatDecimal = (value: number | null) =>
       ))}
     </div>
 
+    {(scoreCalculation || honoraryLevel > 0 || honoraryComment) && (
     <div class:list={["metacritic-breakdown-footer", honoraryLevel > 0 && "has-honorary", honoraryComment && "has-comment"]}>
       {honoraryLevel > 0 && (
         <article class:list={["metacritic-honorary", "has-value", honoraryComment && "has-comment"]}>
           <div class="metacritic-honorary-level">
-            <span class="section-eyebrow">Mención honorífica</span>
             <div>
-              <strong>{honoraryLabel}</strong>
+              <span class="metacritic-honorary-icon"><TablerIcon src={starIcon} /></span>
+              <span>
+                <small>Mención honorífica</small>
+                <strong>{honoraryLabel}</strong>
+              </span>
               <small>{honoraryLevel}/3</small>
             </div>
-          </div>
-          <div class="metacritic-honorary-bonus">
-            <span>Bonus</span>
-            <strong>+{formatDecimal(honoraryLevel * 0.1)}</strong>
-            <small>My score</small>
           </div>
           {honoraryComment && (
             <div class="metacritic-honorary-reason">
@@ -179,14 +179,48 @@ const formatDecimal = (value: number | null) =>
         </article>
       )}
 
-      <div class="metacritic-formula">
-        <span><TablerIcon src={checksIcon} /> Todos los criterios</span>
-        <span><TablerIcon src={divideIcon} /> Puntos obtenidos / máximos</span>
-        {includeCommunity && <span><TablerIcon src={usersIcon} /> Comunidad ×0,5</span>}
-        {honoraryLevel > 0 && <span><TablerIcon src={starIcon} /> Mención +0,1 por nivel</span>}
-        <span><TablerIcon src={equalIcon} /> Máximo 10</span>
-      </div>
+      {scoreCalculation && (
+        <section
+          class="metacritic-score-equation"
+          aria-label={`Nota base ${formatDecimal(scoreCalculation.baseScore)}${scoreCalculation.honoraryBonus > 0 ? ` más mención ${formatDecimal(scoreCalculation.honoraryBonus)}` : ''}, resultado ${formatDecimal(scoreCalculation.finalScore)}`}
+        >
+          <div class="metacritic-score-equation-head">
+            <span class="metacritic-criteria-status">
+              <TablerIcon src={checksIcon} />
+              {completedCriteria === criterionScores.length ? 'Todos los criterios' : 'Criterios necesarios'}
+            </span>
+            <details class="metacritic-formula-details">
+              <summary>Cómo se calcula</summary>
+              <div>
+                <span><TablerIcon src={divideIcon} /> Puntos obtenidos / máximos</span>
+                {includeCommunity && <span><TablerIcon src={usersIcon} /> Comunidad ×0,5</span>}
+                {honoraryLevel > 0 && <span><TablerIcon src={starIcon} /> Mención +0,1 por nivel</span>}
+                <span><TablerIcon src={equalIcon} /> Máximo 10</span>
+              </div>
+            </details>
+          </div>
+          <div class:list={["metacritic-score-equation-values", scoreCalculation.honoraryBonus <= 0 && "without-bonus"]}>
+            <span class="metacritic-score-term">
+              <small>Base</small>
+              <strong>{formatDecimal(scoreCalculation.baseScore)}</strong>
+            </span>
+            {scoreCalculation.honoraryBonus > 0 && <>
+              <span class="metacritic-score-operator" aria-hidden="true">+</span>
+              <span class="metacritic-score-term">
+                <small>Mención</small>
+                <strong>{formatDecimal(scoreCalculation.honoraryBonus)}</strong>
+              </span>
+            </>}
+            <span class="metacritic-score-operator is-equals" aria-hidden="true">=</span>
+            <span class="metacritic-score-term is-result">
+              <small>My score</small>
+              <strong>{formatDecimal(scoreCalculation.finalScore)}</strong>
+            </span>
+          </div>
+        </section>
+      )}
     </div>
+    )}
   </div>
   </> : (
     <div class="metacritic-empty-state">

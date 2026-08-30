@@ -16,6 +16,7 @@ try {
     isGameAmortized,
   } = await server.ssrLoadModule('/src/lib/game-finance.ts');
   const { applyManualGamePatch } = await server.ssrLoadModule('/src/lib/manual-game-edit.ts');
+  const { readBundledGames } = await server.ssrLoadModule('/src/lib/local-games.ts');
   const { getGameGenres } = await server.ssrLoadModule('/src/lib/game-genres.ts');
   const { getPurchaseStoreOptions } = await server.ssrLoadModule('/src/lib/purchase-stores.ts');
   const { getDataCompleteness } = await server.ssrLoadModule('/src/lib/game-data-completeness.ts');
@@ -32,6 +33,10 @@ try {
     },
     mencion_honorifica: { nivel: 0, comentario: null },
   };
+
+  const bundledGames = await readBundledGames();
+  const historicHogwarts = bundledGames.find((item) => item.titulo === 'Hogwarts Legacy');
+  assert.match(historicHogwarts?.creado_en ?? '', /^2026-06-28T/);
 
   const goblin = getGameValueMetrics(game({ precio_pagado: 10.29, unidades_compradas: 2, horas: 12.2 }));
   assert.equal(goblin.recordedSpend, 20.58);

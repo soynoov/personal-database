@@ -57,7 +57,11 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  currentGames.push(structuredClone(bundledGame));
+  const createdGame = {
+    ...structuredClone(bundledGame),
+    creado_en: new Date().toISOString(),
+  };
+  currentGames.push(createdGame);
   currentGames.sort((left, right) => left.titulo.localeCompare(right.titulo, "es"));
 
   try {
@@ -73,6 +77,6 @@ export const POST: APIRoute = async ({ request }) => {
     ok: true,
     created: true,
     slug,
-    game: bundledGame,
+    game: createdGame,
   });
 };
