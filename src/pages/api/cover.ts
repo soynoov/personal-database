@@ -4,6 +4,8 @@ import {
 } from '../../lib/cover-resolver';
 
 const IMAGE_TIMEOUT_MS = 8000;
+const COVER_CACHE_CONTROL = 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400';
+const FALLBACK_CACHE_CONTROL = 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=3600';
 
 async function fetchImageWithTimeout(input: string) {
   const controller = new AbortController();
@@ -57,7 +59,7 @@ export async function GET({ url }: { url: URL }) {
           headers: {
             'Content-Type':
               imageResponse.headers.get('content-type') ?? 'image/jpeg',
-            'Cache-Control': 'no-store',
+            'Cache-Control': COVER_CACHE_CONTROL,
             'X-Cover-Source': result.source,
             'X-Cover-Url': result.url,
           },
@@ -78,7 +80,7 @@ export async function GET({ url }: { url: URL }) {
           headers: {
             'Content-Type':
               hltbResponse.headers.get('content-type') ?? 'image/jpeg',
-            'Cache-Control': 'no-store',
+            'Cache-Control': COVER_CACHE_CONTROL,
             'X-Cover-Source': 'HLTB',
             'X-Cover-Url': coverUrlParam,
           },
@@ -93,7 +95,7 @@ export async function GET({ url }: { url: URL }) {
     status: 200,
     headers: {
       'Content-Type': 'image/svg+xml; charset=utf-8',
-      'Cache-Control': 'no-store',
+      'Cache-Control': FALLBACK_CACHE_CONTROL,
       'X-Cover-Source': result.source,
     },
   });

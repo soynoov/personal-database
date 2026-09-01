@@ -1,14 +1,10 @@
 /* ================================================================
-   global.css — Hub de imports
+   global.css — Base compartida por todas las rutas
    ================================================================
-   No contiene reglas propias. Importa en orden correcto.
+   Los estilos de catálogo y ficha se cargan desde sus páginas.
    ================================================================ */
 
 @import './theme.css';
 @import './base.css';
-@import './catalog.css';
-@import './detail.css';
-@import './inventory.css';
-@import './game-page.css';
 @import './app.css';
 @import './sidebar.css';

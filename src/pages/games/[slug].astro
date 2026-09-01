@@ -27,6 +27,14 @@ import { getGameTagLabel, hasGameTag, normalizeGameTag } from '../../lib/game-ta
 import { findGameBySlug, readGames } from '../../lib/local-games';
 import { normalizePurchaseStores } from '../../lib/purchase-stores';
 import gamepadIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
+import '../../styles/detail.css';
+import '../../styles/game-page.css';
+import '../../styles/game-detail/experience.css';
+import '../../styles/game-detail/frosted-bento.css';
+import '../../styles/game-detail/ledger-layout.css';
+import '../../styles/game-detail/hero-reference.css';
+import '../../styles/game-detail/flat-blocks.css';
+import '../../styles/game-detail/progress.css';
 
 const game = findGameBySlug(await readGames(), Astro.params.slug ?? '');
 if (!game) return Astro.redirect('/');

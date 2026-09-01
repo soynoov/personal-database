@@ -1,17 +1,9 @@
 ---
 import "../styles/global.css";
 import "../styles/badges.css"; // Badges: estado, launcher, plataforma, tag
-import "../styles/cards.css"; // Diseño de tarjetas del catálogo (override de global.css)
 import "../styles/ux.css"; // Capa de interacción y responsive; no modifica las cards
-import "../styles/catalog-mobile.css";
 import "../styles/mobile-bottom-nav.css";
 import "../styles/editor-auth.css";
-import "../styles/game-detail/experience.css"; // Rediseño de las fichas; selectores aislados bajo .game-page-rich
-import "../styles/game-detail/frosted-bento.css"; // Profundidad de vidrio y encaje bento final de las fichas
-import "../styles/game-detail/ledger-layout.css"; // Jerarquía del mockup elegido, sin eliminar datos existentes
-import "../styles/game-detail/hero-reference.css"; // Composición final del hero de ficha técnica
-import "../styles/game-detail/flat-blocks.css"; // Lenguaje plano compartido por Dinero, Datos y Metacrítica
-import "../styles/game-detail/progress.css"; // Progreso: dificultad, logros y cromos con jerarquía propia
 import EditorAuthDialog from "../components/EditorAuthDialog.astro";
 
 type Props = {

@@ -19,8 +19,6 @@ function buildGameImageUrl(game: CoverLookupGame, variant: 'poster' | 'hero') {
   }
   if (game.cover_url) params.set('coverUrl', game.cover_url);
 
-  params.set('nocache', String(Date.now()));
-
   return `/api/cover?${params.toString()}`;
 }
 

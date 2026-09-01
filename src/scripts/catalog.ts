@@ -534,95 +534,84 @@ export function initCatalog(allGames: CatalogGame[]): void {
       syncFilterViewportState();
     }
 
-    // Renderizar cards
-    elements.cards.innerHTML = '';
-    elements.tableBody.innerHTML = '';
+    // Renderizar únicamente la vista activa. La otra se crea bajo demanda al
+    // cambiar de vista, evitando duplicar todo el catálogo en el DOM.
+    const activeContainer = activeView === 'table' ? elements.tableBody : elements.cards;
+    const inactiveContainer = activeView === 'table' ? elements.cards : elements.tableBody;
+    const fragment = document.createDocumentFragment();
+    inactiveContainer.replaceChildren();
 
     if (filtered.length === 0) {
       const empty = document.createElement('div');
       empty.className = 'empty';
       empty.textContent = 'No hay resultados con esos filtros.';
-      elements.cards.appendChild(empty);
-      elements.tableBody.appendChild(empty.cloneNode(true));
+      activeContainer.replaceChildren(empty);
       updateViewMode();
       return;
     }
 
     for (const game of filtered) {
-      // ── Card ──
-      const node = elements.template.content.cloneNode(true) as DocumentFragment;
-      node.querySelector('[data-title]')!.textContent = formatValue(game.titulo);
-
-      const kickerPlatform = formatValue(game.plataforma, '');
-      const kickerLauncher = formatValue(game.launcher, '');
-      const platformBadgesEl = node.querySelector('[data-platform-badges]')!;
-
-      if (kickerPlatform) {
-        const normalizedPlatform = normalizeStatus(game.plataforma);
-        const platBadge = document.createElement('span');
-        platBadge.className = `badge ${platformClassName(game.plataforma)}`;
-        const capPlatform = kickerPlatform.replace(/\b\w/g, (c) => c.toUpperCase());
-        if (PLATFORMS_WITH_ICON.has(normalizedPlatform)) {
-          platBadge.innerHTML = `${launcherInlineIcon(normalizedPlatform)}<span>${escapeHtml(capPlatform)}</span>`;
-        } else {
-          platBadge.textContent = capPlatform;
-        }
-        platformBadgesEl.appendChild(platBadge);
-      }
-
-      if (kickerLauncher) {
-        const launchBadge = document.createElement('span');
-        launchBadge.className = `badge ${launcherClassName(game.launcher)}`;
-        launchBadge.innerHTML = launcherBadgeContent(game.launcher);
-        platformBadgesEl.appendChild(launchBadge);
-      }
-
-      // Soporte (año + géneros)
-      const supportParts: string[] = [];
-      if (game.lanzamiento != null && game.lanzamiento !== '')
-        supportParts.push(`<span>${escapeHtml(String(game.lanzamiento))}</span>`);
-      if (Array.isArray(game.generos) && game.generos.length > 0)
-        supportParts.push(`<span>${escapeHtml(game.generos.slice(0, 2).join(', '))}</span>`);
-      node.querySelector('[data-support]')!.innerHTML =
-        supportParts.join('<span class="support-separator" aria-hidden="true"> | </span>') || 'Sin contexto';
-
-      // Cover
-      const cover = node.querySelector('[data-cover]')!;
-      cover.innerHTML = `<img src="${escapeHtml(getCoverUrl(game))}" alt="" aria-hidden="true" loading="lazy" />`;
-
-      // Estado y tags
-      const statusBadge = node.querySelector('[data-estado]') as HTMLElement;
-      statusBadge.textContent = formatValue(game.estado);
-      statusBadge.classList.add(statusClassName(game.estado));
-      if (hasFreeToPlayTag(game)) node.querySelector('.badges')!.appendChild(createBadge('Free to play', 'badge-tag-free'));
-      if (hasEarlyAccess(game)) node.querySelector('.badges')!.appendChild(createBadge('Early Access', 'badge-tag-early'));
-
-      // Horas
-      (node.querySelector('[data-horas]') as HTMLElement).textContent =
-        game.horas == null
-          ? '-'
-          : new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1, useGrouping: true }).format(Number(game.horas));
-
-      // Eventos de la card
-      const card = node.querySelector<HTMLAnchorElement>('[data-game-link]')!;
       const hasPlatinum = hasCompletedAllAchievements(game);
-      card.classList.toggle('is-platinum', hasPlatinum);
-      const platinumBadge = node.querySelector<HTMLElement>('[data-platinum]');
-      if (platinumBadge) platinumBadge.hidden = !hasPlatinum;
-      card.href = `/games/${game.slug}/`;
-      card.addEventListener('click', (event) => {
-        const usesRevealInteraction = window.matchMedia('(hover: none) and (min-width: 821px)').matches;
-        if (usesRevealInteraction && !card.classList.contains('is-open')) {
-          event.preventDefault();
-          document.querySelectorAll('.mock-game-card.is-open').forEach((c) => c.classList.remove('is-open'));
-          card.classList.add('is-open');
-          event.stopPropagation();
+
+      if (activeView === 'cards') {
+        const node = elements.template.content.cloneNode(true) as DocumentFragment;
+        node.querySelector('[data-title]')!.textContent = formatValue(game.titulo);
+
+        const kickerPlatform = formatValue(game.plataforma, '');
+        const kickerLauncher = formatValue(game.launcher, '');
+        const platformBadgesEl = node.querySelector('[data-platform-badges]')!;
+
+        if (kickerPlatform) {
+          const normalizedPlatform = normalizeStatus(game.plataforma);
+          const platBadge = document.createElement('span');
+          platBadge.className = `badge ${platformClassName(game.plataforma)}`;
+          const capPlatform = kickerPlatform.replace(/\b\w/g, (c) => c.toUpperCase());
+          if (PLATFORMS_WITH_ICON.has(normalizedPlatform)) {
+            platBadge.innerHTML = `${launcherInlineIcon(normalizedPlatform)}<span>${escapeHtml(capPlatform)}</span>`;
+          } else {
+            platBadge.textContent = capPlatform;
+          }
+          platformBadgesEl.appendChild(platBadge);
         }
-      });
 
-      elements.cards.appendChild(node);
+        if (kickerLauncher) {
+          const launchBadge = document.createElement('span');
+          launchBadge.className = `badge ${launcherClassName(game.launcher)}`;
+          launchBadge.innerHTML = launcherBadgeContent(game.launcher);
+          platformBadgesEl.appendChild(launchBadge);
+        }
 
-      // ── Fila de tabla ──
+        const supportParts: string[] = [];
+        if (game.lanzamiento != null && game.lanzamiento !== '')
+          supportParts.push(`<span>${escapeHtml(String(game.lanzamiento))}</span>`);
+        if (Array.isArray(game.generos) && game.generos.length > 0)
+          supportParts.push(`<span>${escapeHtml(game.generos.slice(0, 2).join(', '))}</span>`);
+        node.querySelector('[data-support]')!.innerHTML =
+          supportParts.join('<span class="support-separator" aria-hidden="true"> | </span>') || 'Sin contexto';
+
+        const cover = node.querySelector('[data-cover]')!;
+        cover.innerHTML = `<img src="${escapeHtml(getCoverUrl(game))}" alt="" aria-hidden="true" loading="lazy" decoding="async" />`;
+
+        const statusBadge = node.querySelector('[data-estado]') as HTMLElement;
+        statusBadge.textContent = formatValue(game.estado);
+        statusBadge.classList.add(statusClassName(game.estado));
+        if (hasFreeToPlayTag(game)) node.querySelector('.badges')!.appendChild(createBadge('Free to play', 'badge-tag-free'));
+        if (hasEarlyAccess(game)) node.querySelector('.badges')!.appendChild(createBadge('Early Access', 'badge-tag-early'));
+
+        (node.querySelector('[data-horas]') as HTMLElement).textContent =
+          game.horas == null
+            ? '-'
+            : new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1, useGrouping: true }).format(Number(game.horas));
+
+        const card = node.querySelector<HTMLAnchorElement>('[data-game-link]')!;
+        card.classList.toggle('is-platinum', hasPlatinum);
+        const platinumBadge = node.querySelector<HTMLElement>('[data-platinum]');
+        if (platinumBadge) platinumBadge.hidden = !hasPlatinum;
+        card.href = `/games/${game.slug}/`;
+        fragment.appendChild(node);
+        continue;
+      }
+
       const rowNode = elements.tableTemplate.content.cloneNode(true) as DocumentFragment;
       (rowNode.querySelector('[data-row-title]') as HTMLElement).textContent = formatValue(game.titulo);
       const row = rowNode.querySelector<HTMLAnchorElement>('[data-row-link]')!;
@@ -633,7 +622,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
         Array.isArray(game.generos) && game.generos.length > 0 ? String(game.generos[0]) : 'Sin genero';
 
       const rowCover = rowNode.querySelector('[data-row-cover]')!;
-      rowCover.innerHTML = `<img src="${escapeHtml(getCoverUrl(game))}" alt="" aria-hidden="true" loading="lazy" />`;
+      rowCover.innerHTML = `<img src="${escapeHtml(getCoverUrl(game))}" alt="" aria-hidden="true" loading="lazy" decoding="async" />`;
 
       const rowStatus = rowNode.querySelector('[data-row-estado]') as HTMLElement;
       rowStatus.textContent = formatValue(game.estado);
@@ -655,9 +644,10 @@ export function initCatalog(allGames: CatalogGame[]): void {
       (rowNode.querySelector('[data-row-lanzamiento]') as HTMLElement).textContent = formatValue(game.lanzamiento);
 
       row.href = `/games/${game.slug}/`;
-
-      elements.tableBody.appendChild(rowNode);
+      fragment.appendChild(rowNode);
     }
+
+    activeContainer.replaceChildren(fragment);
 
     // Sincronizar drawer
     document.querySelectorAll<HTMLElement>('[data-drawer-filter]').forEach((item) => {
@@ -680,8 +670,31 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
   // ─── Event listeners ───────────────────────────────────────────────────────
 
-  [elements.search, elements.estado, elements.launcher, elements.plataforma, elements.tag, elements.modo, elements.sort, elements.precio, elements.rentabilidad]
-    .forEach((el) => { el.addEventListener('input', render); el.addEventListener('change', render); });
+  let searchRenderTimer: number | undefined;
+  elements.search.addEventListener('input', () => {
+    window.clearTimeout(searchRenderTimer);
+    searchRenderTimer = window.setTimeout(render, 140);
+  });
+  elements.search.addEventListener('change', () => {
+    window.clearTimeout(searchRenderTimer);
+    render();
+  });
+
+  [elements.estado, elements.launcher, elements.plataforma, elements.tag, elements.modo, elements.sort, elements.precio, elements.rentabilidad]
+    .forEach((control) => control.addEventListener('change', render));
+
+  elements.cards.addEventListener('click', (event) => {
+    const target = event.target as Element | null;
+    const card = target?.closest<HTMLAnchorElement>('[data-game-link]');
+    if (!card) return;
+    const usesRevealInteraction = window.matchMedia('(hover: none) and (min-width: 821px)').matches;
+    if (usesRevealInteraction && !card.classList.contains('is-open')) {
+      event.preventDefault();
+      elements.cards.querySelectorAll('.mock-game-card.is-open').forEach((item) => item.classList.remove('is-open'));
+      card.classList.add('is-open');
+      event.stopPropagation();
+    }
+  });
 
   elements.mobileSort?.addEventListener('change', () => {
     elements.sort.value = elements.mobileSort?.value ?? DEFAULT_SORT;

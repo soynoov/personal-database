@@ -3,31 +3,9 @@
  *
  * Exporta resolveGameCover y buildCoverFallbackSvg para la API route cover.ts.
  *
- * Al arrancar el servidor lee games.json, obtiene todas las library_capsule URLs
- * de Steam en batches y puebla un cache en memoria. Se refresca cada 24 horas.
- *
- * Per-request: si el appId no está en cache (juego nuevo añadido sin reiniciar),
- * hace la llamada individual y lo cachea.
+ * Resuelve las library_capsule URLs bajo demanda y mantiene un cache en memoria
+ * durante la vida de la instancia del servidor.
  */
-
-import fs from 'node:fs/promises';
-import { existsSync } from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-// ─── Detección de ejecución directa (debe ir al principio) ───────────────────
-
-const isDirectRun = (() => {
-  try {
-    const metaUrl = (import.meta as { url?: string }).url;
-    if (!metaUrl || !process.argv[1]) return false;
-    const thisPath = fileURLToPath(metaUrl).replace(/\\/g, '/');
-    const argv1 = process.argv[1].replace(/\\/g, '/');
-    return thisPath === argv1;
-  } catch {
-    return false;
-  }
-})();
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -85,9 +63,6 @@ export function buildCoverFallbackSvg(title: string): string {
 const CDN_BASE = 'https://shared.akamai.steamstatic.com/store_item_assets/';
 const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
 const PER_REQUEST_TIMEOUT_MS = 7000;
-const WARMUP_TIMEOUT_MS = 30_000;
-const WARMUP_BATCH_SIZE = 50; // appIds por llamada (URL length safety)
-const WARMUP_BATCH_DELAY_MS = 300; // pausa entre batches para no saturar Steam
 
 type CacheEntry = {
   capsuleUrl: string | null;
@@ -180,60 +155,6 @@ async function fetchSteamLibraryHero(appId: number): Promise<string | null> {
   return (await fetchSteamAssetsCached(appId)).heroUrl;
 }
 
-// ─── Warmup: batch al inicio + cada 24h ──────────────────────────────────────
-
-function chunk<T>(array: T[], size: number): T[][] {
-  const result: T[][] = [];
-  for (let i = 0; i < array.length; i += size) result.push(array.slice(i, i + size));
-  return result;
-}
-
-async function readSteamAppIds(): Promise<number[]> {
-  const candidates = [
-    path.resolve(process.cwd(), 'games.json'),
-    path.resolve(process.cwd(), '..', 'games.json'),
-  ];
-  const gamesPath = candidates.find(existsSync);
-  if (!gamesPath) return [];
-
-  try {
-    const raw = await fs.readFile(gamesPath, 'utf8');
-    const games = JSON.parse(raw.replace(/^﻿/, '')) as Array<Record<string, unknown>>;
-    return games
-      .map((g) => g.steam_appid)
-      .filter((id): id is number => typeof id === 'number' && id > 0);
-  } catch {
-    return [];
-  }
-}
-
-async function runWarmup(): Promise<void> {
-  const appIds = await readSteamAppIds();
-  if (appIds.length === 0) return;
-
-  console.log(`[cover] warmup: ${appIds.length} juegos con Steam ID…`);
-  const now = Date.now();
-  let cached = 0;
-
-  for (const batch of chunk(appIds, WARMUP_BATCH_SIZE)) {
-    const items = await fetchIStoreBrowse(batch, WARMUP_TIMEOUT_MS);
-
-    for (const item of items) {
-      if (!item.appid) continue;
-      const entry: CacheEntry = { ...buildEntryFromAssets(item.assets), expiresAt: now + TWENTY_FOUR_HOURS_MS };
-      coverCache.set(item.appid, entry);
-      if (entry.capsuleUrl) cached++;
-    }
-
-    // Pausa entre batches para no saturar Steam
-    if (batch !== chunk(appIds, WARMUP_BATCH_SIZE).at(-1)) {
-      await new Promise((r) => setTimeout(r, WARMUP_BATCH_DELAY_MS));
-    }
-  }
-
-  console.log(`[cover] warmup completo: ${cached}/${appIds.length} portadas cacheadas`);
-}
-
 // ─── API pública ──────────────────────────────────────────────────────────────
 
 export async function resolveGameCover(
@@ -266,17 +187,4 @@ export async function resolveGameCover(
   // Si la URL falla (DLCs nuevos con hash en el path), cover.ts cae al coverUrlParam.
   const headerUrl = `${CDN_BASE}steam/apps/${game.steam_appid}/header.jpg`;
   return { url: headerUrl, source: 'Steam header' };
-}
-
-// ─── Scheduler (solo en modo servidor, no en script directo) ─────────────────
-
-if (!isDirectRun) {
-  // Warmup inmediato al arrancar (no bloquea el servidor)
-  runWarmup().catch((err: unknown) => console.warn('[cover] warmup error:', err));
-
-  // Refresh cada 24h
-  setInterval(
-    () => runWarmup().catch((err: unknown) => console.warn('[cover] warmup error:', err)),
-    TWENTY_FOUR_HOURS_MS,
-  ).unref(); // .unref() evita que el interval impida cerrar el proceso
 }
