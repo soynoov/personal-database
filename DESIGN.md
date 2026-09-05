@@ -1,6 +1,6 @@
-# NooVDB — Visual & Motion System
+# NooVDB — Visual System
 
-Estado: borrador de dirección visual 2.0
+Estado: borrador de dirección visual 2.1
 
 Última revisión: 2026-09-05
 
@@ -8,7 +8,7 @@ Nombre de marca: **NooVDB**
 
 Descriptor: **Personal Database**
 
-El documento se vuelve normativo cuando se selecciona uno de los mockups de catálogo. Hasta entonces fija la marca, los tokens y las reglas de composición, pero deja abierta la densidad final de la página.
+El documento se vuelve normativo cuando se aprueba el mockup de catálogo revisado. Hasta entonces fija la marca, los tokens y las reglas de composición sin autorizar cambios sobre la interfaz real.
 
 ## 0. Alcance
 
@@ -26,20 +26,20 @@ Se mantiene una operabilidad básica porque también mejora el uso personal: HTM
 
 ## 1. Decisión de marca
 
-NooVDB debe sentirse como un archivo digital diseñado por un estudio creativo: oscuro, editorial, táctil y en movimiento.
+NooVDB debe sentirse como la versión pulida por un estudio creativo de la interfaz que ya existe: oscura, editorial, táctil y muy contenida en movimiento.
 
 La fórmula de marca es:
 
-> Archivo nocturno + violeta eléctrico + vidrio escarchado + tipografía display expresiva + portadas protagonistas.
+> Estructura actual + archivo nocturno + violeta eléctrico dosificado + vidrio escarchado + tipografía display expresiva + portadas protagonistas.
 
 Las cards del catálogo son la pieza canónica. El resto de la interfaz debe parecer construido con la misma materia, pero no todo debe convertirse en una card.
 
 ### 1.1 Personalidad
 
 - **Nocturna:** lienzo casi negro con profundidad violeta, nunca gris administrativo.
-- **Eléctrica:** el violeta firma acciones, selección y movimiento.
-- **Editorial:** titulares grandes y expresivos, composición con tensión y espacio.
-- **Táctil:** vidrio, reflejos finos, grano y capas que reaccionan al puntero.
+- **Eléctrica:** el violeta firma acciones, selección y estados excepcionales.
+- **Editorial:** titulares expresivos dentro de la jerarquía y la maqueta actuales.
+- **Táctil:** vidrio, reflejos finos, grano y cards que reaccionan al puntero.
 - **Coleccionista:** las portadas y los datos personales dominan sobre el chrome.
 - **Precisa:** aunque la expresión sea fuerte, medidas, variantes y comportamiento están estandarizados.
 
@@ -63,7 +63,7 @@ Las referencias aportadas fijan estos rasgos:
 - tipografía display pesada, redondeada o condensada;
 - composición de estudio creativo: escala extrema, bloques limpios y asimetría controlada.
 
-No se copiará una referencia de forma literal. Se combinará su lenguaje con la estructura actual de NooVDB y con la card vertical de catálogo.
+No se copiará una referencia de forma literal. Del mockup 3 se conservan el acabado nocturno, la tensión tipográfica y la calidad de las cards; se descartan la navegación superior, el título vertical, la galería cinética y la card destacada. La estructura actual de NooVDB es la base y no se sustituye.
 
 ## 3. Principios
 
@@ -71,9 +71,9 @@ No se copiará una referencia de forma literal. Se combinará su lenguaje con la
 
 El chrome permanece oscuro y controlado. Las portadas pueden ser multicolor y deben conservar la mayor superficie visual de la card.
 
-### 3.2 Una escena, un gesto eléctrico
+### 3.2 Una escena, un acento eléctrico
 
-Cada pantalla tiene un único gesto dominante: un campo violeta, un titular, una selección o una transición. Magenta y amarillo no compiten simultáneamente por protagonismo.
+Cada pantalla tiene un único acento dominante: el estado activo, un reflejo especial o un resultado. La composición permanece quieta por defecto. Magenta y amarillo no compiten simultáneamente por protagonismo.
 
 ### 3.3 El vidrio aparece donde existe profundidad
 
@@ -83,13 +83,17 @@ El frosted glass se usa cuando una superficie flota sobre portadas, luz ambienta
 
 La coherencia se construye por composición. Los widgets grandes sólo ensamblan widgets menores y tokens compartidos; no inventan una paleta, radio o animación propios.
 
-### 3.5 Motion explica la interfaz
+### 3.5 Motion responde a la persona
 
-La animación muestra continuidad, selección, jerarquía o profundidad. Si una animación no explica nada, se elimina.
+La animación aparece como respuesta directa a hover, foco, selección, filtrado o una acción explícita. Si empieza sola, se repite o retrasa una consulta, se elimina.
 
 ### 3.6 Responsive recompone, no redecora
 
 Desktop, tablet y móvil comparten tipografía, materiales, color y comportamiento. Sólo cambian rejilla, orden, densidad y navegación.
+
+### 3.7 Maquillaje, no reestructuración
+
+Se conservan la cabecera de ancho completo, la sidebar con labels, el panel de búsqueda y filtros, el selector Cards/Tabla y el grid regular. El sistema puede mejorar proporción, ritmo, tipo, color, material y estados, pero no cambia la arquitectura de información sin una necesidad funcional demostrable.
 
 ## 4. Paleta
 
@@ -166,6 +170,13 @@ Todos los componentes consumen tokens. Ningún componente de página introduce c
   --ds-danger: #ff4d6d;
   --ds-special: var(--brand-magenta);
 
+  /* Foil reservado para hitos de colección */
+  --ds-foil-cyan: rgba(126, 249, 255, 0.42);
+  --ds-foil-violet: rgba(194, 0, 251, 0.48);
+  --ds-foil-magenta: rgba(255, 1, 143, 0.34);
+  --ds-foil-gold: rgba(255, 226, 133, 0.44);
+  --ds-foil-glint: rgba(255, 255, 255, 0.58);
+
   /* Shared ambient fields */
   --ds-ambient-main:
     radial-gradient(circle at 72% 12%, rgba(194, 0, 251, 0.20), transparent 38%),
@@ -185,7 +196,7 @@ Todos los componentes consumen tokens. Ningún componente de página introduce c
 ### 4.4 Reglas de color
 
 - `Neon Purple` es la acción principal y la selección habitual.
-- `Electric Purple` se reserva para foco, hover intenso, glow y momentos de motion.
+- `Electric Purple` se reserva para foco, selección, foil y halos localizados.
 - `True Violet` y `Deep Violet` construyen profundidad; no se usan como nuevos estados.
 - El botón primario es violeta sólido con texto `--ds-on-primary`; no lleva texto claro sobre un degradado variable.
 - Magenta identifica elementos especiales o de colección. Amarillo indica atención o acento editorial.
@@ -484,7 +495,7 @@ La card es el centro de gravedad de NooVDB.
 ### 9.1 Anatomía
 
 1. portada vertical, ratio aproximado 2:3;
-2. overlay frosted inferior que ocupa sólo lo necesario;
+2. overlay frosted inferior oculto en reposo y revelado sobre la portada;
 3. título del juego;
 4. launcher/plataforma como metadato neutral;
 5. estado compacto;
@@ -492,24 +503,41 @@ La card es el centro de gravedad de NooVDB.
 7. metadato secundario opcional;
 8. acción contextual discreta.
 
-### 9.2 Jerarquía
+### 9.2 Reposo y jerarquía
 
-- La imagen ocupa como mínimo dos tercios de la superficie visible inicial.
+- La portada ocupa toda la card en reposo; el contenido no le roba superficie hasta que se solicita.
+- Sólo persisten sobre la portada los marcadores excepcionales, como `100%`.
 - El título y la métrica principal dominan el overlay.
 - El estado es pequeño y no compite con la portada.
-- Nunca se añaden más de dos filas de metadatos en reposo.
+- Nunca se añaden más de dos filas de metadatos dentro del overlay.
 - La card completa puede ser un enlace; las acciones internas deben evitar zonas de click anidadas inválidas.
 
 ### 9.3 Estado de interacción
 
-- elevación máxima: `translateY(-8px)`;
-- zoom de portada: máximo 3.5%;
-- tilt por puntero: máximo 1.5 grados;
+- hover y `focus-visible` revelan el mismo contenido;
+- elevación máxima: `translateY(-4px)`;
+- zoom de portada: máximo 2%;
+- tilt continuo siguiendo el puntero: máximo 3 grados por eje;
 - borde o halo violeta localizado, no marco de neón completo;
-- el overlay gana ligeramente densidad y puede revelar una sola línea adicional;
-- la información esencial ya es visible antes de hover.
+- el overlay aparece en `180–220 ms`, sin rebote y sin desplazar otras cards;
+- al salir, tilt, imagen y overlay vuelven a reposo con una transición de hasta `240 ms`;
+- en touch, el primer tap revela el overlay y el segundo abre la ficha.
 
-### 9.4 Variantes permitidas
+### 9.4 Foil reactivo para `100%`
+
+El acabado foil es un premio de colección, no una decoración general.
+
+- sólo se activa en una card con `100%` de logros verificado;
+- no tiene shimmer, barrido ni loop automático;
+- reflejo, espectro iridiscente y grano fino siguen la posición normalizada del puntero dentro de la card;
+- el centro del reflejo y el tilt comparten la misma lectura de `pointerX` y `pointerY` para que parezcan una sola superficie;
+- la zona luminosa ocupa aproximadamente el 40–50% de la card y mantiene una opacidad baja para no lavar la portada;
+- el foil usa cyan, violeta, magenta y oro de los tokens, con un glint blanco muy localizado;
+- al salir del hover, el reflejo pierde opacidad y vuelve al centro en `220–280 ms`;
+- sin hover preciso se conserva únicamente el badge `100%` y un borde oro tenue;
+- sólo una card puede calcular y mostrar foil a la vez.
+
+### 9.5 Variantes permitidas
 
 - `standard`: card principal del grid;
 - `compact`: menos metadatos, misma proporción;
@@ -522,12 +550,13 @@ No existen variantes por página que cambien colores, radios o tipografía.
 
 ### 10.1 Catálogo
 
-- Sidebar o rail flotante frosted.
-- Titular editorial grande, sin encerrarlo necesariamente en una card.
-- `StatsStrip` como secuencia de micro-widgets.
-- `FilterDock` compacto y desplegable; los filtros avanzados no ocupan permanentemente media pantalla.
-- Grid de cards como masa visual principal.
-- Campo ambiental violeta detrás del contenido, nunca por encima de las portadas.
+- Cabecera de ancho completo en la primera fila, como en la interfaz actual.
+- Marca/eyebrow pequeña, titular Caacupé y métricas en una única secuencia horizontal.
+- Sidebar completa de aproximadamente 250 px en la segunda fila, con labels visibles.
+- Búsqueda, botón de filtros, contador, selector Cards/Tabla y filtros rápidos conservan su orden actual.
+- Grid estrictamente regular de cuatro columnas en desktop; no hay carrusel, abanico, deck ni card destacada.
+- Las cards son la masa visual principal y mantienen el contenido oculto hasta hover, foco o tap.
+- La profundidad violeta permanece dentro de superficies y reflejos localizados; no se añade un campo ambiental animado.
 
 ### 10.2 Ficha
 
@@ -552,44 +581,40 @@ No existen variantes por página que cambien colores, radios o tipografía.
 
 - Una sidebar desktop y una navegación móvil compartidas por todas las escenas.
 - Logo, orden, iconos, espaciado y estado activo no cambian por página.
-- El estado activo combina materia, forma y una línea de luz; no depende de rellenar todo el botón de violeta.
+- En desktop se mantienen icono y label; no se sustituye por navegación superior ni rail compacto.
+- El estado activo combina frosted sutil, una línea violeta fina y un icono ligeramente iluminado; no depende de rellenar todo el botón de violeta.
 
-## 11. Motion system con GSAP
+## 11. Microinteracción y GSAP
 
-GSAP será el motor para secuencias, stagger, profundidad y transiciones coordinadas. CSS permanece para cambios simples de color y borde.
+La interfaz permanece quieta por defecto. CSS resuelve color, borde, opacidad y la apertura simple del overlay. GSAP se reserva para valores continuos ligados al puntero y para una reorganización de resultados cuando realmente aporte continuidad.
 
 ### 11.1 Tokens de tiempo
 
 ```css
 :root {
   --ds-motion-instant: 100ms;
-  --ds-motion-fast: 160ms;
-  --ds-motion-base: 260ms;
-  --ds-motion-reveal: 520ms;
-  --ds-motion-scene: 820ms;
+  --ds-motion-fast: 140ms;
+  --ds-motion-base: 220ms;
+  --ds-motion-settle: 300ms;
 }
 ```
 
 Curvas GSAP aprobadas:
 
 - microinteracción: `power2.out`;
-- card y widget: `power3.out`;
-- reveal editorial: `expo.out`;
+- seguimiento de puntero: interpolación corta y sin rebote;
 - reorganización: `power2.inOut`;
-- rebote: `back.out(1.35)`, sólo en un resultado o confirmación.
+- rebote: no se usa en catálogo.
 
 ### 11.2 Presets
 
 | Preset | Uso | Movimiento |
 |---|---|---|
-| `scene-enter` | entrada de página | fade + y 20 px, 520–820 ms |
-| `title-reveal` | titular Caacupé | máscara vertical y tracking, 520 ms |
-| `widget-stagger` | grupos | y 14 px, stagger 35–55 ms |
-| `card-enter` | grid | escala 0.985 + y 18 px, stagger por filas |
-| `card-hover` | card activa | y, zoom, tilt y halo contenidos |
-| `frost-settle` | overlay | blur y opacidad hasta material estable |
-| `selection-pulse` | selección | un pulso de luz, sin loop |
-| `ambient-drift` | fondo | deriva lenta de 8–14 s, una capa por escena |
+| `card-reveal` | card activa | overlay, imagen y halo en 180–220 ms |
+| `card-tilt` | card activa | `rotateX`/`rotateY` continuos, máximo 3 grados |
+| `platinum-foil` | card `100%` activa | posición de reflejo y espectro ligada al puntero |
+| `filter-layout` | resultados que cambian | continuidad breve de posición, 220–300 ms |
+| `selection-feedback` | chip o vista activa | borde, materia y opacidad en 100–140 ms |
 
 ### 11.3 Contrato técnico futuro
 
@@ -597,17 +622,21 @@ Curvas GSAP aprobadas:
 - `src/scripts/motion/presets.ts` es la única fuente de duraciones, eases y distancias GSAP.
 - Cada inicializador usa `gsap.context()` con scope local y devuelve cleanup.
 - `gsap.matchMedia()` controla desktop, móvil, puntero y preferencia de movimiento.
-- Una navegación o desmontaje revierte contextos, ScrollTriggers y listeners.
-- `ScrollTrigger` se usa sólo cuando el scroll es parte real de la narración.
+- Tilt y foil usan setters interpolados, no una timeline nueva por cada `pointermove`.
+- La geometría de la card se calcula al entrar y se invalida al redimensionar; no se fuerza layout en cada frame.
+- Una navegación o desmontaje revierte contextos y listeners.
+- El catálogo no usa `ScrollTrigger`.
 - Las animaciones de hover deben poder interrumpirse y revertirse sin saltos.
 - Se priorizan `transform` y `opacity`; no se anima layout completo.
 
 ### 11.4 Límites
 
-- Una escena puede tener un solo loop ambiental.
+- No hay loops ambientales en catálogo.
 - No hay partículas constantes, cursor personalizado ni texto flotante por defecto.
+- No hay brillos automáticos: el foil sólo existe mientras responde al puntero.
+- Sólo reacciona la card bajo el puntero; nunca ondula el grid completo.
 - No usar `transition: all`.
-- No animar todas las cards al hacer cualquier cambio de filtro; sólo entradas, salidas y reordenación necesarias.
+- No reproducir una entrada escalonada de todas las cards al cargar o filtrar.
 - Si motion reduce claridad o hace lenta una acción repetida, se recorta antes de añadir más efectos.
 
 ## 12. Responsive y operabilidad personal
@@ -626,9 +655,9 @@ Reglas:
 - La sidebar se convierte en navegación móvil, no en una mini-sidebar comprimida.
 - Los filtros avanzados se convierten en drawer o sheet.
 - Las acciones frecuentes siguen visibles; las secundarias pueden entrar en menú.
-- Hover mejora, nunca desbloquea, información esencial.
+- En desktop, hover y foco revelan el panel de datos de la card; en touch lo hace el primer tap.
 - Se conserva foco visible y semántica nativa en enlaces, botones, inputs y progreso.
-- `prefers-reduced-motion` desactiva loops, tilt y grandes desplazamientos aunque no sea un objetivo formal de conformidad.
+- `prefers-reduced-motion` desactiva tilt y seguimiento del foil; el overlay conserva una transición corta y el estado `100%`, un borde estático.
 
 ## 13. Reglas de implementación
 
@@ -672,7 +701,7 @@ La futura ruta interna `/design-system` será privada y no formará parte de nav
 
 1. Crear `tokens.css` con aliases temporales.
 2. Autohospedar Caacupé y Geist Sans.
-3. Crear el registro de presets GSAP.
+3. Crear el registro de microinteracciones GSAP, empezando por tilt y foil.
 4. Añadir una comprobación que impida nuevos valores visuales crudos.
 
 ### Fase 2 — Del widget pequeño al grande
@@ -713,49 +742,57 @@ Una escena se considera migrada cuando:
 
 - parece inequívocamente parte de NooVDB sin depender del nombre o logo;
 - las portadas y datos siguen dominando al chrome;
+- conserva la cabecera, sidebar, filtros y grid regular de la interfaz actual;
 - usa la escalera de widgets y no crea componentes monolíticos;
 - no introduce valores visuales fuera de tokens;
 - no supera dos contenedores visibles anidados;
 - usa frost sólo cuando existe profundidad real;
-- las cards respetan anatomía, proporción y motion canónicos;
+- las cards respetan anatomía, proporción, reveal, tilt y foil canónicos;
 - mantiene estados aplicables de hover, focus, active, selected, loading, disabled, error y empty;
 - funciona en los viewports de revisión;
 - limpia correctamente timelines y listeners;
 - pasa build y comparación visual contra el mockup aprobado.
 
-## 17. Brief de mockup para cerrar la dirección
+## 17. Brief del mockup revisado
 
-El primer mockup representa el catálogo desktop a 1440 × 1024.
+El mockup representa el catálogo desktop a 1440 × 1024 y usa como plantilla espacial la captura actual. Es un facelift, no una propuesta de nueva arquitectura.
 
 Debe mostrar:
 
 - lienzo Night Ink con profundidad violeta;
-- navegación frosted flotante;
+- la misma cabecera de ancho completo, mejor jerarquizada;
 - marca `NOOVDB` con descriptor `PERSONAL DATABASE`;
-- título `CATÁLOGO` en display pesada estilo Caacupé;
-- estadísticas como micro-widgets;
-- filtros compactos;
-- grid de cards verticales como protagonista;
-- overlays frosted sobre las portadas;
+- título `CATÁLOGO PERSONAL` en Caacupé, expresivo pero con la altura actual;
+- las mismas estadísticas en fila;
+- sidebar completa y menú con el mismo orden actual;
+- búsqueda, filtros, contador, Cards/Tabla y chips en sus posiciones actuales;
+- grid regular de cuatro columnas de cards verticales;
+- varias cards en reposo mostrando sólo portada;
+- una card bajo hover con tilt ligero y overlay frosted desplegado;
+- esa card activa marcada `100%`, con foil iridiscente concentrado alrededor de la posición del puntero;
 - violeta eléctrico como acción y selección;
-- como máximo un golpe magenta o amarillo por composición;
-- indicios visuales de profundidad y motion sin convertir la captura en concept art.
+- magenta, cyan y oro sólo dentro del foil o de un detalle excepcional;
+- profundidad localizada, sin convertir la captura en concept art.
 
 Debe evitar:
 
 - navegador o marco de dispositivo;
 - landing page, hero comercial o copy promocional;
+- navegación superior, rail compacto o título vertical;
+- carrusel, cards inclinadas en reposo, deck o card destacada;
 - paneles corporativos;
 - cards dentro de cards;
 - glow alrededor de todos los elementos;
+- ambientación animada, partículas o brillos automáticos;
 - más controles de los necesarios para explorar la biblioteca;
 - sacrificar tamaño de portada para enseñar muchas funciones.
 
-La selección del mockup fijará tres decisiones todavía abiertas:
+Las decisiones estructurales quedan cerradas antes del mockup:
 
-1. grid estrictamente regular frente a composición editorial con una card destacada;
-2. sidebar completa frente a rail compacto;
-3. cantidad exacta de metadatos visibles en reposo.
+1. grid estrictamente regular;
+2. sidebar completa con labels;
+3. contenido de card oculto en reposo y revelado mediante hover, foco o tap;
+4. motion sutil y reactivo, nunca coreografiado por defecto.
 
 ## 18. Referencias técnicas
 
