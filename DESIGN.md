@@ -1,6 +1,6 @@
 # NooVDB — Visual System
 
-Estado: borrador de dirección visual 2.1
+Estado: borrador de dirección visual 2.2
 
 Última revisión: 2026-09-05
 
@@ -93,7 +93,18 @@ Desktop, tablet y móvil comparten tipografía, materiales, color y comportamien
 
 ### 3.7 Maquillaje, no reestructuración
 
-Se conservan la cabecera de ancho completo, la sidebar con labels, el panel de búsqueda y filtros, el selector Cards/Tabla y el grid regular. El sistema puede mejorar proporción, ritmo, tipo, color, material y estados, pero no cambia la arquitectura de información sin una necesidad funcional demostrable.
+Se conservan la sidebar con labels, el panel de búsqueda y filtros, el selector Cards/Tabla y el grid regular. La antigua cabecera promocional se separa en un app header global compacto y un encabezado propio de cada página. El sistema puede mejorar proporción, ritmo, tipo, color, material y estados, pero no cambia la arquitectura de información sin una necesidad funcional demostrable.
+
+### 3.8 Una información, un lugar
+
+Cada dato tiene una ubicación canónica dentro de la escena. No se repiten cifras, búsquedas, accesos o labels para llenar espacio.
+
+- el estado activo del Nav orienta; el `PageHeader` nombra la página: cumplen funciones diferentes;
+- el breadcrumb sólo aparece cuando existe profundidad real y se omite en páginas raíz;
+- el contador de resultados es la única aparición de la cantidad filtrada;
+- un acceso global no se repite también en el App Header y en el pie de la sidebar;
+- una búsqueda global se representa como comando compacto; la búsqueda de catálogo sigue siendo el campo que filtra el grid;
+- un badge `100%` no convive con otra expresión equivalente como `167/167` en el mismo estado de card.
 
 ## 4. Paleta
 
@@ -352,6 +363,11 @@ Un nivel sólo puede componer elementos de su mismo nivel o inferiores. Una `Sce
 ```text
 src/
   components/
+    shell/
+      AppShell.astro
+      AppHeader.astro
+      Sidebar.astro
+      PageHeader.astro
     ui/
       Badge.astro
       Button.astro
@@ -443,6 +459,34 @@ type BadgeTone =
 
 `GameStatusBadge` llama siempre a `normalizeStatus()` antes de comparar `estado`. Un valor desconocido usa tono neutral y conserva su texto; nunca inventa una categoría.
 
+Las pastillas forman un lenguaje semántico estable, no una decoración intercambiable:
+
+- `Todos` usa el tono de selección violeta;
+- los filtros de estado conservan su dot y token de estado: `Terminado`, `Jugando` y `Pendiente`;
+- los filtros de atributo mantienen identidad propia: `Free to play`, `Amortizado`, `Recurrentes` y `Early Access`;
+- launcher y plataforma son neutrales y nunca toman el color de un estado;
+- género pertenece a filtros avanzados y no sustituye a la fila de filtros rápidos;
+- el color se deriva de `value`; una página no pasa un hex ni elige un `tone` arbitrario;
+- hover cambia borde o materia; selected añade contraste y anillo interior sin convertir toda la fila en botones sólidos.
+
+```ts
+type CatalogQuickFilter =
+  | 'all'
+  | 'completed'
+  | 'playing'
+  | 'pending'
+  | 'free-to-play'
+  | 'amortized'
+  | 'recurring'
+  | 'early-access';
+
+type FilterChipProps = {
+  value: CatalogQuickFilter;
+  selected: boolean;
+  count?: number;
+};
+```
+
 ### 8.6 Fechas
 
 Una fecha civil y un instante no son el mismo dato:
@@ -510,6 +554,7 @@ La card es el centro de gravedad de NooVDB.
 - El título y la métrica principal dominan el overlay.
 - El estado es pequeño y no compite con la portada.
 - Nunca se añaden más de dos filas de metadatos dentro del overlay.
+- Un logro ya expresado por el badge `100%` no se repite como fracción de logros dentro del overlay.
 - La card completa puede ser un enlace; las acciones internas deben evitar zonas de click anidadas inválidas.
 
 ### 9.3 Estado de interacción
@@ -548,41 +593,62 @@ No existen variantes por página que cambien colores, radios o tipografía.
 
 ## 10. Patrones de escena
 
-### 10.1 Catálogo
+### 10.1 App shell compartido
 
-- Cabecera de ancho completo en la primera fila, como en la interfaz actual.
-- Marca/eyebrow pequeña, titular Caacupé y métricas en una única secuencia horizontal.
-- Sidebar completa de aproximadamente 250 px en la segunda fila, con labels visibles.
+`AppShell` es infraestructura común y conserva la misma geometría en catálogo, ruleta, estadísticas, metacrítica, pendientes y ficha.
+
+- sidebar desktop fija de `248 px`, a altura completa y desde la esquina superior izquierda;
+- marca `NOOVDB` y descriptor `PERSONAL DATABASE` sólo en la cabecera de la sidebar;
+- orden global: Catálogo, Ruleta, Estadísticas, Metacrítica y Pendientes;
+- GitHub aparece una sola vez, en el pie de la sidebar;
+- un único control de colapso; no se duplica en cabecera y pie;
+- estado activo con fondo violeta translúcido, indicador izquierdo de `3 px`, icono más luminoso y label visible;
+- App Header de `64–68 px`, sólo sobre la columna principal, plano y separado por una línea;
+- el App Header admite control de sidebar, breadcrumb condicional y comando global `Ctrl K`;
+- en una página raíz el breadcrumb se oculta; en una ruta profunda muestra sólo ancestros útiles;
+- el comando global es un trigger compacto, no un segundo campo de búsqueda;
+- títulos, métricas, tabs y acciones de dominio pertenecen al `PageHeader` o al contenido, nunca al App Header.
+
+Desktop no usa navegación superior ni rail de iconos. En móvil, el mismo inventario de destinos se recompone mediante navegación móvil; no se crea un menú distinto por página.
+
+### 10.2 Catálogo
+
+- `PageHeader` sin caja, dentro de la columna de contenido.
+- Titular `CATÁLOGO` en Caacupé y tres métricas: horas, gasto y logros.
+- La cantidad de juegos no aparece en las métricas; vive únicamente en el contador de resultados y cambia con los filtros.
 - Búsqueda, botón de filtros, contador, selector Cards/Tabla y filtros rápidos conservan su orden actual.
+- La fila rápida conserva `Todos`, `Terminado`, `Jugando`, `Pendiente`, `Free to play`, `Amortizado`, `Recurrentes` y `Early Access`, con sus dots semánticos.
 - Grid estrictamente regular de cuatro columnas en desktop; no hay carrusel, abanico, deck ni card destacada.
 - Las cards son la masa visual principal y mantienen el contenido oculto hasta hover, foco o tap.
 - La profundidad violeta permanece dentro de superficies y reflejos localizados; no se añade un campo ambiental animado.
 
-### 10.2 Ficha
+### 10.3 Ficha
 
 - Hero de portada y título como feature widget.
 - Datos divididos por ritmo y alineación antes que por cajas.
 - Finanzas, progreso y sesiones componen widgets menores.
 - Máximo un contenedor visible dentro de otro.
 
-### 10.3 Estadísticas
+### 10.4 Estadísticas
 
 - El gráfico es protagonista; las métricas lo apoyan.
 - No asignar un color decorativo distinto a cada número.
 - El violeta identifica selección o serie principal; los demás colores son funcionales.
 
-### 10.4 Ruleta
+### 10.5 Ruleta
 
 - La rueda es el gesto visual único.
 - Formulario y resultado se subordinan a ella.
 - El glow puede intensificarse durante el giro y disiparse al detenerse.
 
-### 10.5 Navegación
+### 10.6 Navegación
 
-- Una sidebar desktop y una navegación móvil compartidas por todas las escenas.
+- Una sidebar desktop, un App Header y una navegación móvil compartidos por todas las escenas.
 - Logo, orden, iconos, espaciado y estado activo no cambian por página.
 - En desktop se mantienen icono y label; no se sustituye por navegación superior ni rail compacto.
 - El estado activo combina frosted sutil, una línea violeta fina y un icono ligeramente iluminado; no depende de rellenar todo el botón de violeta.
+- El App Header mantiene altura y posiciones; sólo cambian el breadcrumb cuando sea necesario y los comandos globales disponibles.
+- El título de página nunca se usa como sustituto de la marca ni se incrusta en el App Header.
 
 ## 11. Microinteracción y GSAP
 
@@ -653,6 +719,7 @@ Reglas:
 - El grid usa `minmax()` y un ancho máximo de card; las cards no se estiran hasta deformarse.
 - El título display reduce escala o cambia de línea, pero conserva personalidad.
 - La sidebar se convierte en navegación móvil, no en una mini-sidebar comprimida.
+- El App Header móvil conserva el control de navegación y el comando global; el `PageHeader` sigue perteneciendo a cada escena.
 - Los filtros avanzados se convierten en drawer o sheet.
 - Las acciones frecuentes siguen visibles; las secundarias pueden entrar en menú.
 - En desktop, hover y foco revelan el panel de datos de la card; en touch lo hace el primer tap.
@@ -709,9 +776,10 @@ La futura ruta interna `/design-system` será privada y no formará parte de nav
 1. `Badge`, `StatusDot`, `IconButton` y `MiniMetric`.
 2. `Button`, `FilterChip`, `DateValue`, `DatePill` y `DateRange`.
 3. `WidgetFrame`, `Metric` y `ProgressBar`.
-4. `CatalogGameCard` y `GameStatusBadge`.
-5. `FilterDock`, `StatsStrip` y navegación compartida.
-6. Escena completa de catálogo.
+4. `AppShell`, `AppHeader`, `Sidebar` y `PageHeader`.
+5. `CatalogGameCard` y `GameStatusBadge`.
+6. `FilterDock`, `StatsStrip` y navegación compartida.
+7. Escena completa de catálogo.
 
 ### Fase 3 — Validar el sistema
 
@@ -742,7 +810,10 @@ Una escena se considera migrada cuando:
 
 - parece inequívocamente parte de NooVDB sin depender del nombre o logo;
 - las portadas y datos siguen dominando al chrome;
-- conserva la cabecera, sidebar, filtros y grid regular de la interfaz actual;
+- usa el mismo `AppShell` en todas las escenas y mantiene su geometría estable;
+- separa App Header global de `PageHeader` y no repite información simultáneamente visible;
+- conserva la sidebar, filtros y grid regular de la interfaz actual;
+- preserva labels, orden, dots y significado de los filtros rápidos;
 - usa la escalera de widgets y no crea componentes monolíticos;
 - no introduce valores visuales fuera de tokens;
 - no supera dos contenedores visibles anidados;
@@ -755,17 +826,18 @@ Una escena se considera migrada cuando:
 
 ## 17. Brief del mockup revisado
 
-El mockup representa el catálogo desktop a 1440 × 1024 y usa como plantilla espacial la captura actual. Es un facelift, no una propuesta de nueva arquitectura.
+El mockup representa el catálogo desktop a 1440 × 1024 y usa como plantilla espacial la captura actual. Es un facelift con app shell normal y reutilizable, no una escena editorial independiente.
 
 Debe mostrar:
 
 - lienzo Night Ink con profundidad violeta;
-- la misma cabecera de ancho completo, mejor jerarquizada;
-- marca `NOOVDB` con descriptor `PERSONAL DATABASE`;
-- título `CATÁLOGO PERSONAL` en Caacupé, expresivo pero con la altura actual;
-- las mismas estadísticas en fila;
+- sidebar fija de altura completa con marca `NOOVDB`, descriptor `PERSONAL DATABASE`, Nav, GitHub y un solo control de colapso;
+- App Header plano de `64–68 px`, sin título de página ni métricas y con un trigger compacto `Ctrl K`;
+- `PageHeader` de catálogo dentro del contenido, con título `CATÁLOGO` en Caacupé;
+- horas, gasto y logros como métricas; la cantidad de juegos no se repite aquí;
 - sidebar completa y menú con el mismo orden actual;
-- búsqueda, filtros, contador, Cards/Tabla y chips en sus posiciones actuales;
+- una sola búsqueda de catálogo, filtros, contador dinámico, Cards/Tabla y chips en sus posiciones actuales;
+- chips rápidos de estado y atributo con los labels y dots existentes, nunca reemplazados por géneros;
 - grid regular de cuatro columnas de cards verticales;
 - varias cards en reposo mostrando sólo portada;
 - una card bajo hover con tilt ligero y overlay frosted desplegado;
@@ -779,6 +851,10 @@ Debe evitar:
 - navegador o marco de dispositivo;
 - landing page, hero comercial o copy promocional;
 - navegación superior, rail compacto o título vertical;
+- breadcrumb redundante en páginas raíz;
+- dos búsquedas visibles con el mismo propósito;
+- repetir cantidad de juegos, acceso a GitHub, control de colapso o progreso `100%`;
+- cambiar las pastillas semánticas por una fila genérica de géneros;
 - carrusel, cards inclinadas en reposo, deck o card destacada;
 - paneles corporativos;
 - cards dentro de cards;
@@ -790,9 +866,11 @@ Debe evitar:
 Las decisiones estructurales quedan cerradas antes del mockup:
 
 1. grid estrictamente regular;
-2. sidebar completa con labels;
-3. contenido de card oculto en reposo y revelado mediante hover, foco o tap;
-4. motion sutil y reactivo, nunca coreografiado por defecto.
+2. app shell normal con sidebar completa y App Header compacto;
+3. `PageHeader` separado del Header global;
+4. contenido de card oculto en reposo y revelado mediante hover, foco o tap;
+5. pastillas semánticas conservadas como mecanismo canónico;
+6. motion sutil y reactivo, nunca coreografiado por defecto.
 
 ## 18. Referencias técnicas
 
