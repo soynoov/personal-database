@@ -1,0 +1,124 @@
+:root {
+  /* Edita sólo estas tres variables para cambiar la identidad cromática. */
+  --brand-dark: #262626;
+  --brand-light: #ffffff;
+  --brand-purple: #9b59b6;
+
+  /* Alias derivados para mantener una única fuente de verdad. */
+  --brand-night: color-mix(in srgb, var(--brand-dark) 44%, black);
+  --brand-plum: color-mix(in srgb, var(--brand-dark) 58%, black);
+  --brand-graphite: color-mix(in srgb, var(--brand-dark) 72%, black);
+  --brand-midnight: var(--brand-dark);
+  --brand-violet-depth: color-mix(in srgb, var(--brand-purple) 34%, var(--brand-dark));
+  --brand-violet-deep: color-mix(in srgb, var(--brand-purple) 72%, var(--brand-dark));
+  --brand-violet: var(--brand-purple);
+  --brand-electric: color-mix(in srgb, var(--brand-purple) 82%, var(--brand-light));
+  --brand-magenta: var(--brand-purple);
+  --brand-yellow: #ffcc00;
+  --brand-ice: var(--brand-light);
+
+  --ds-canvas: var(--brand-night);
+  --ds-canvas-depth: var(--brand-plum);
+  --ds-surface-solid: var(--brand-graphite);
+  --ds-surface-raised: var(--brand-dark);
+  --ds-glass-soft: color-mix(in srgb, var(--brand-dark) 38%, transparent);
+  --ds-glass-default: color-mix(in srgb, var(--brand-dark) 58%, transparent);
+  --ds-glass-dense: color-mix(in srgb, var(--brand-dark) 86%, transparent);
+  --ds-glass-overlay: color-mix(in srgb, var(--brand-night) 78%, transparent);
+  --ds-line-soft: color-mix(in srgb, var(--brand-light) 10%, transparent);
+  --ds-line-default: color-mix(in srgb, var(--brand-light) 16%, transparent);
+  --ds-line-lit: color-mix(in srgb, var(--brand-purple) 48%, transparent);
+  --ds-highlight-glass: color-mix(in srgb, var(--brand-light) 18%, transparent);
+  --ds-text-primary: var(--brand-ice);
+  --ds-text-secondary: color-mix(in srgb, var(--brand-light) 72%, transparent);
+  --ds-text-muted: color-mix(in srgb, var(--brand-light) 48%, transparent);
+  --ds-text-disabled: color-mix(in srgb, var(--brand-light) 28%, transparent);
+  --ds-action-primary: var(--brand-violet);
+  --ds-action-primary-hover: var(--brand-electric);
+  --ds-on-primary: var(--brand-night);
+  --ds-selection: color-mix(in srgb, var(--brand-purple) 22%, transparent);
+  --ds-focus: var(--brand-electric);
+  --ds-success: #76e096;
+  --ds-info: #78b7ff;
+  --ds-warning: var(--brand-yellow);
+  --ds-danger: #ff4d6d;
+  --ds-special: var(--brand-magenta);
+  --ds-foil-cyan: rgba(126, 249, 255, 0.42);
+  --ds-foil-violet: color-mix(in srgb, var(--brand-purple) 48%, transparent);
+  --ds-foil-magenta: color-mix(in srgb, var(--brand-purple) 34%, transparent);
+  --ds-foil-gold: rgba(255, 226, 133, 0.44);
+  --ds-foil-glint: rgba(255, 255, 255, 0.58);
+  --ds-ambient-main:
+    radial-gradient(circle at 76% 10%, color-mix(in srgb, var(--brand-purple) 5.5%, transparent), transparent 32%),
+    radial-gradient(circle at 14% 82%, color-mix(in srgb, var(--brand-purple) 4%, transparent), transparent 34%);
+  --ds-ambient-hot: radial-gradient(circle at 80% 18%, color-mix(in srgb, var(--brand-purple) 4.5%, transparent), transparent 28%);
+
+  /* Edita sólo estas tres variables para cambiar la tipografía por rol. */
+  --font-title: 'Unbounded Variable', 'Arial Black', sans-serif;
+  --font-numbers: 'Space Grotesk Variable', system-ui, sans-serif;
+  --font-text: 'Space Grotesk Variable', system-ui, sans-serif;
+
+  /* Alias de compatibilidad para los módulos existentes. */
+  --ds-font-display: var(--font-title);
+  --ds-font-ui: var(--font-text);
+  --ds-font-numeric: var(--font-numbers);
+  --ds-type-micro: 11px;
+  --ds-type-label: 12px;
+  --ds-type-ui: 14px;
+  --ds-type-body: 16px;
+  --ds-type-card: 20px;
+  --ds-type-section: 28px;
+  --ds-type-page: clamp(48px, 6vw, 88px);
+  --ds-leading-tight: 0.88;
+  --ds-leading-title: 1;
+  --ds-leading-ui: 1.25;
+  --ds-leading-body: 1.5;
+  --ds-track-tight: -0.035em;
+  --ds-track-ui: -0.01em;
+  --ds-track-label: 0.1em;
+
+  --ds-space-1: 4px;
+  --ds-space-2: 8px;
+  --ds-space-3: 12px;
+  --ds-space-4: 16px;
+  --ds-space-5: 20px;
+  --ds-space-6: 24px;
+  --ds-space-8: 32px;
+  --ds-space-10: 40px;
+  --ds-space-12: 48px;
+  --ds-space-16: 64px;
+  --ds-radius-control: 12px;
+  --ds-radius-widget: 18px;
+  --ds-radius-feature: 26px;
+  --ds-radius-hero: 36px;
+  --ds-radius-pill: 999px;
+  --ds-control-sm: 32px;
+  --ds-control-md: 40px;
+  --ds-control-touch: 44px;
+  --ds-blur-soft: 14px;
+  --ds-blur-default: 22px;
+  --ds-blur-overlay: 30px;
+  --ds-shadow-float: 0 24px 70px rgba(0, 0, 0, 0.38);
+  --ds-shadow-card: 0 18px 46px rgba(0, 0, 0, 0.3);
+  --ds-glow-violet: 0 0 42px color-mix(in srgb, var(--brand-purple) 22%, transparent);
+  --ds-motion-instant: 100ms;
+  --ds-motion-fast: 140ms;
+  --ds-motion-base: 220ms;
+  --ds-motion-settle: 300ms;
+
+  --font-display: var(--font-title);
+  --font-body: var(--font-text);
+  --font-badge: var(--font-text);
+  --bg: var(--ds-canvas);
+  --bg-deep: var(--ds-canvas);
+  --surface: var(--ds-glass-default);
+  --surface-strong: var(--ds-surface-raised);
+  --surface-soft: color-mix(in srgb, var(--brand-purple) 18%, transparent);
+  --surface-card: var(--ds-surface-solid);
+  --text: var(--ds-text-primary);
+  --muted: var(--ds-text-secondary);
+  --line: var(--ds-line-soft);
+  --line-strong: var(--ds-line-default);
+  --accent: var(--brand-violet);
+  --accent-strong: var(--brand-ice);
+}

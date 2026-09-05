@@ -1,0 +1,43 @@
+---
+import TablerIcon from '../TablerIcon.astro';
+
+interface MetricItem {
+  label: string;
+  value: string | number;
+  icon?: string;
+  stat?: 'hours';
+}
+
+interface Props {
+  title: string;
+  eyebrow?: string;
+  description?: string;
+  metrics?: MetricItem[];
+}
+
+const { title, eyebrow, description, metrics = [] } = Astro.props;
+---
+
+<section class='noovdb-page-header' aria-labelledby='noovdb-page-title'>
+  <div class='noovdb-page-heading'>
+    {eyebrow && <span class='noovdb-page-eyebrow'>{eyebrow}</span>}
+    <h1 id='noovdb-page-title'>{title}</h1>
+    {description && <p>{description}</p>}
+  </div>
+
+  {metrics.length > 0 && (
+    <dl class='noovdb-page-metrics' aria-label='Resumen'>
+      {metrics.map((metric) => (
+        <div class='noovdb-page-metric'>
+          <dt>
+            {metric.icon && <TablerIcon src={metric.icon} />}
+            <span>{metric.label}</span>
+          </dt>
+          <dd data-stat-hours={metric.stat === 'hours' ? true : undefined}>{metric.value}</dd>
+        </div>
+      ))}
+    </dl>
+  )}
+
+  <slot name='actions' />
+</section>

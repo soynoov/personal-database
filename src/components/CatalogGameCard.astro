@@ -1,7 +1,10 @@
 ---
 import type { CatalogGame } from '../lib/catalog-game';
 import { buildGameCoverUrl } from '../lib/game-cover-url';
+import { hasCompletedAllAchievements } from '../lib/game-achievements';
 import { normalizeStatus } from '../lib/game-status';
+import trophyIcon from '@tabler/icons/outline/trophy.svg?url';
+import TablerIcon from './TablerIcon.astro';
 
 interface Props {
   game: CatalogGame;
@@ -63,9 +66,15 @@ const isEarlyAccess = game.generos?.some((genre) => {
   return normalized === 'acceso anticipado' || normalized === 'early access';
 }) ?? false;
 const support = [game.lanzamiento, game.generos?.slice(0, 2).join(', ')].filter(Boolean);
+const isGoldenGameCard = hasCompletedAllAchievements(game);
 ---
 
-<a class='card mock-game-card' href={`/games/${game.slug}/`}>
+<a
+  class:list={['card', 'game-card', isGoldenGameCard && 'is-golden']}
+  data-game-card
+  data-game-card-variant={isGoldenGameCard ? 'golden' : 'standard'}
+  href={`/games/${game.slug}/`}
+>
   <div class='card-main'>
     <div class='card-cover'>
       <img
@@ -76,6 +85,12 @@ const support = [game.lanzamiento, game.generos?.slice(0, 2).join(', ')].filter(
         decoding='async'
       />
     </div>
+    {isGoldenGameCard && (
+      <span class='golden-badge' aria-label='100% de logros completados'>
+        <TablerIcon src={trophyIcon} />
+        <span>100%</span>
+      </span>
+    )}
     <div class='card-body'>
       <div class='card-head'>
         <div class='card-title-stack'>

@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Sidebar from '../../components/Sidebar.astro';
+import AppShell from '../../components/shell/AppShell.astro';
 import TablerIcon from '../../components/TablerIcon.astro';
 import chevronDownIcon from '@tabler/icons/outline/chevron-down.svg?url';
 import circleMinusIcon from '@tabler/icons/outline/circle-minus.svg?url';
@@ -48,16 +48,15 @@ const defaultSlugs = rouletteGames
   .map((game) => game.slug);
 ---
 
-<BaseLayout title='Ruleta — Personal Database'>
-  <main class='shell shell-app shell-desktop-app roulette-page'>
-    <Sidebar
-      orderedDrawerEstados={orderedDrawerEstados}
-      plataformas={plataformas}
-      launchers={launchers}
-      active='ruleta'
-    />
-
-    <div class='desktop-main roulette-main'>
+<BaseLayout title='NooVDB — Ruleta'>
+  <AppShell
+    orderedDrawerEstados={orderedDrawerEstados}
+    plataformas={plataformas}
+    launchers={launchers}
+    active='ruleta'
+    shellClass='roulette-page'
+    mainClass='roulette-main'
+  >
       <header class='roulette-header'>
         <span class='eyebrow'>Personal Database</span>
         <h1>Ruleta</h1>
@@ -237,15 +236,13 @@ const defaultSlugs = rouletteGames
           <div class='roulette-participant-strip' id='roulette-participant-strip'></div>
         </div>
       </section>
-    </div>
-
     <div
       id='__roulette-data'
       data-games={JSON.stringify(rouletteGames)}
       data-default-slugs={JSON.stringify(defaultSlugs)}
       hidden
     ></div>
-  </main>
+  </AppShell>
 
   <script>
     import { initRoulette } from '../../scripts/roulette';

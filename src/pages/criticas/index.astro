@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Sidebar from '../../components/Sidebar.astro';
+import AppShell from '../../components/shell/AppShell.astro';
 import TablerIcon from '../../components/TablerIcon.astro';
 import '../../styles/criterio.css';
 import arrowRightIcon from '@tabler/icons/outline/arrow-right.svg?url';
@@ -59,16 +59,14 @@ const formatRating = (rating: number) =>
   new Intl.NumberFormat('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(rating);
 ---
 
-<BaseLayout title='Metacrítica — Personal Database'>
-  <main class='shell shell-app shell-desktop-app'>
-    <Sidebar
-      orderedDrawerEstados={orderedDrawerEstados}
-      plataformas={plataformas}
-      launchers={launchers}
-      active='criticas'
-    />
-
-    <div class='desktop-main criterion-main'>
+<BaseLayout title='NooVDB — Metacrítica'>
+  <AppShell
+    orderedDrawerEstados={orderedDrawerEstados}
+    plataformas={plataformas}
+    launchers={launchers}
+    active='criticas'
+    mainClass='criterion-main'
+  >
       <section class='panel criterion-hero'>
         <div>
           <span class='eyebrow'>Tu propia escala</span>
@@ -247,6 +245,5 @@ const formatRating = (rating: number) =>
           </div>
         )}
       </section>
-    </div>
-  </main>
+  </AppShell>
 </BaseLayout>

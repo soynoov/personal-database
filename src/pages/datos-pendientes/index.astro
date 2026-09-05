@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Sidebar from '../../components/Sidebar.astro';
+import AppShell from '../../components/shell/AppShell.astro';
 import TablerIcon from '../../components/TablerIcon.astro';
 import '../../styles/data-pending.css';
 import arrowRightIcon from '@tabler/icons/outline/arrow-right.svg?url';
@@ -42,16 +42,14 @@ const editorAnchors = {
 } as const;
 ---
 
-<BaseLayout title='Pendientes — Personal Database'>
-  <main class='shell shell-app shell-desktop-app'>
-    <Sidebar
-      orderedDrawerEstados={orderedDrawerEstados}
-      plataformas={plataformas}
-      launchers={launchers}
-      active='datos'
-    />
-
-    <div class='desktop-main data-pending-page'>
+<BaseLayout title='NooVDB — Pendientes'>
+  <AppShell
+    orderedDrawerEstados={orderedDrawerEstados}
+    plataformas={plataformas}
+    launchers={launchers}
+    active='datos'
+    mainClass='data-pending-page'
+  >
       <header class='data-pending-heading'>
         <div>
           <span class='eyebrow'>Calidad de tu biblioteca</span>
@@ -160,8 +158,7 @@ const editorAnchors = {
         <TablerIcon src={databaseIcon} />
         <p><strong>Qué se revisa:</strong> estado y datos de tu copia; según el estado del juego, también horas, fechas, precio pagado y valoración personal. Dificultad, logros, cromos y comentarios son opcionales.</p>
       </aside>
-    </div>
-  </main>
+  </AppShell>
 
   <script>
     import { initDataPendingFilters } from '../../scripts/data-pending';

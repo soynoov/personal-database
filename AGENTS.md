@@ -35,7 +35,7 @@ Cuando un archivo se acerque al límite, identificar bloques independientes y ex
 
 ```
 src/
-  components/   ← UI puro (Sidebar.astro, CatalogFilters.astro, GameCard.astro…)
+  components/   ← UI puro (Sidebar.astro, CatalogFilters.astro, CatalogGameCard.astro…)
   layouts/      ← BaseLayout.astro
   lib/          ← Lógica de servidor (local-games.ts…)
   pages/        ← Solo orquestación, sin lógica pesada
@@ -46,7 +46,7 @@ src/
 ## CSS
 
 - `global.css` → variables, reset, componentes genéricos (badge, panel, stat…)
-- `cards.css` → todo lo relacionado con `.mock-game-card` y el grid del catálogo
+- `cards.css` → todo lo relacionado con `.game-card` y el grid del catálogo
 - **Sin `!important`** — usar especificidad y source-order en su lugar
 - Las reglas de cards **nunca** van en `global.css`
 

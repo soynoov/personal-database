@@ -9,10 +9,8 @@
    Así badges.css siempre gana sin necesitar !important.
    ================================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Anton+SC&family=Elms+Sans:wght@100..900&family=Stack+Sans+Text:wght@200..700&display=swap');
-
 /* ── Orden de capas ─────────────────────────────────────────── */
-@layer global, cards, badges;
+@layer global, cards, badges, noovdb;
 
 /* ── Variables del tema ─────────────────────────────────────── */
 :root {
@@ -21,9 +19,9 @@
      Elms Sans → cuerpo, UI, labels, párrafos
      Stack Sans Text → badges, chips, etiquetas compactas
   ─────────────────────────────────────────────────────────── */
-  --font-display: 'Anton SC', sans-serif;
-  --font-body:    'Elms Sans', sans-serif;
-  --font-badge:   'Stack Sans Text', sans-serif;
+  --font-display: var(--font-title);
+  --font-body:    var(--font-text);
+  --font-badge:   var(--font-text);
   --font-mono:    Consolas, 'SFMono-Regular', monospace;
 
   /* Tipografía heredada por todo el documento */

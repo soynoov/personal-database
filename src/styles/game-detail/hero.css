@@ -184,7 +184,7 @@
   letter-spacing: 1px;
 }
 
-.badge-achievement-platinum {
+.badge-achievement-complete {
   border-color: rgba(246, 207, 104, 0.52);
   background: linear-gradient(135deg, rgba(112, 76, 18, 0.3), rgba(46, 35, 17, 0.68));
   box-shadow:
@@ -193,7 +193,7 @@
   color: #f5d77e;
 }
 
-.badge-achievement-platinum .tabler-icon {
+.badge-achievement-complete .tabler-icon {
   width: 14px;
   height: 14px;
 }

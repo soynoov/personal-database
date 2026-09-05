@@ -64,13 +64,13 @@
   }
 
   /* Catálogo: búsqueda primero, filtros bajo demanda */
-  .mock-catalog-hero {
+  .catalog-hero {
     background:
       radial-gradient(circle at 82% 18%, rgba(168, 85, 247, 0.22), transparent 34%),
       linear-gradient(135deg, rgba(24, 18, 40, 0.98), rgba(11, 12, 20, 0.98));
   }
 
-  .mock-catalog-controls {
+  .catalog-controls {
     border-color: rgba(167, 139, 250, 0.14);
     background: rgba(13, 12, 23, 0.86);
     backdrop-filter: blur(18px);
@@ -94,7 +94,7 @@
   }
 
   .catalog-filter-toggle,
-  .mock-catalog-controls .button-clear {
+  .catalog-controls .button-clear {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -118,12 +118,12 @@
     color: #f3edff;
   }
 
-  .mock-catalog-controls .button-clear[hidden] {
+  .catalog-controls .button-clear[hidden] {
     display: none;
   }
 
   .catalog-filter-toggle i,
-  .mock-catalog-controls .button-clear i,
+  .catalog-controls .button-clear i,
   .view-toggle-button i {
     font-size: 1.1rem;
   }
@@ -141,11 +141,11 @@
   }
 
   @media (min-width: 1181px) {
-    .mock-catalog-controls .catalog-filters-selects {
+    .catalog-controls .catalog-filters-selects {
       grid-template-columns: repeat(12, minmax(0, 1fr));
     }
 
-    .mock-catalog-controls .catalog-filters-selects > .field {
+    .catalog-controls .catalog-filters-selects > .field {
       grid-column: span 3;
     }
   }
@@ -155,14 +155,14 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .mock-catalog-controls .field input,
-  .mock-catalog-controls .field select {
+  .catalog-controls .field input,
+  .catalog-controls .field select {
     border-color: rgba(167, 139, 250, 0.16);
     background-color: rgba(9, 9, 16, 0.72);
   }
 
-  .mock-catalog-controls .field input:focus,
-  .mock-catalog-controls .field select:focus {
+  .catalog-controls .field input:focus,
+  .catalog-controls .field select:focus {
     border-color: var(--ux-violet);
     box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.13);
   }
@@ -509,13 +509,13 @@
     }
 
     .catalog-filter-toggle,
-    .mock-catalog-controls .button-clear {
+    .catalog-controls .button-clear {
       min-width: 44px;
       min-height: 44px;
       padding: 0.65rem;
     }
 
-    .mock-catalog-controls .button-clear span {
+    .catalog-controls .button-clear span {
       display: none;
     }
 

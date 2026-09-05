@@ -1,0 +1,44 @@
+---
+import Sidebar from '../Sidebar.astro';
+import AppHeader, { type BreadcrumbItem } from './AppHeader.astro';
+
+type ActivePage = 'catalogo' | 'ruleta' | 'estadisticas' | 'datos' | 'criticas';
+
+interface Props {
+  orderedDrawerEstados?: string[];
+  plataformas?: string[];
+  launchers?: string[];
+  active?: ActivePage;
+  breadcrumbs?: BreadcrumbItem[];
+  shellClass?: string;
+  mainClass?: string;
+  style?: string;
+}
+
+const {
+  orderedDrawerEstados = [],
+  plataformas = [],
+  launchers = [],
+  active = 'catalogo',
+  breadcrumbs = [],
+  shellClass,
+  mainClass,
+  style,
+} = Astro.props;
+---
+
+<main class:list={['shell', 'shell-app', 'shell-desktop-app', 'noovdb-shell', shellClass]} style={style}>
+  <Sidebar
+    orderedDrawerEstados={orderedDrawerEstados}
+    plataformas={plataformas}
+    launchers={launchers}
+    active={active}
+  />
+
+  <div class:list={['desktop-main', 'noovdb-main', mainClass]}>
+    <AppHeader breadcrumbs={breadcrumbs} />
+    <slot />
+  </div>
+
+  <slot name='outside' />
+</main>

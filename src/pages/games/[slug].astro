@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import AppShell from '../../components/shell/AppShell.astro';
 import GameDetailChartsScript from '../../components/GameDetailChartsScript.astro';
 import GameDetailHero from '../../components/game-detail/GameDetailHero.astro';
 import GameDetailTopbar from '../../components/game-detail/GameDetailTopbar.astro';
@@ -24,7 +25,7 @@ import { formatGameModes, getGameModes } from '../../lib/game-modes';
 import { getGameGenres } from '../../lib/game-genres';
 import { isCommunityCriterionApplicable } from '../../lib/game-reviews';
 import { getGameTagLabel, hasGameTag, normalizeGameTag } from '../../lib/game-tags';
-import { findGameBySlug, readGames } from '../../lib/local-games';
+import { findGameBySlug, getUniqueValues, readGames } from '../../lib/local-games';
 import { normalizePurchaseStores } from '../../lib/purchase-stores';
 import gamepadIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
 import '../../styles/detail.css';
@@ -36,8 +37,23 @@ import '../../styles/game-detail/hero-reference.css';
 import '../../styles/game-detail/flat-blocks.css';
 import '../../styles/game-detail/progress.css';
 
-const game = findGameBySlug(await readGames(), Astro.params.slug ?? '');
+const allGames = await readGames();
+const game = findGameBySlug(allGames, Astro.params.slug ?? '');
 if (!game) return Astro.redirect('/');
+
+const estados = getUniqueValues(allGames, 'estado');
+const launchers = getUniqueValues(allGames, 'launcher');
+const plataformas = getUniqueValues(allGames, 'plataforma');
+const drawerEstadosOrdered = [
+  'Jugando', 'Terminado', 'Pendiente', 'Wishlist',
+  'Pausado', 'Abandonado', 'Retirado', 'Recurrente',
+];
+const estadosSet = new Set(estados.map(normalizeStatus));
+const knownEstadoValues = new Set(drawerEstadosOrdered.map(normalizeStatus));
+const orderedDrawerEstados = [
+  ...drawerEstadosOrdered.filter((estado) => estadosSet.has(normalizeStatus(estado)) || estado === 'Wishlist'),
+  ...estados.filter((estado) => !knownEstadoValues.has(normalizeStatus(estado))),
+];
 
 const valueMetrics = getGameValueMetrics(game);
 const slug = Astro.params.slug ?? '';
@@ -301,8 +317,20 @@ const legacyScore = game.nota !== null && game.nota !== undefined && Number.isFi
 const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
 ---
 
-<BaseLayout title={`${game.titulo} | Personal Database`}>
-  <main class="shell game-page game-page-rich" style={heroCoverStyle}>
+<BaseLayout title={`${game.titulo} | NooVDB`}>
+  <AppShell
+    orderedDrawerEstados={orderedDrawerEstados}
+    plataformas={plataformas}
+    launchers={launchers}
+    active='catalogo'
+    shellClass='game-detail-shell'
+    mainClass='game-page game-page-rich'
+    style={heroCoverStyle}
+    breadcrumbs={[
+      { label: 'Catálogo', href: '/' },
+      { label: game.titulo },
+    ]}
+  >
     <div class="game-page-backdrop" aria-hidden="true"></div>
     <GameDetailTopbar
       slug={slug}
@@ -320,7 +348,7 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
       launcherBadge={{ class: launcherClass, label: formatValue(game.launcher, 'Sin launcher'), icon: gamepadIcon }}
       platformBadge={{ class: platformClass, label: formatValue(game.plataforma) }}
       tagBadges={heroBadges}
-      hasPlatinum={hasCompletedAllAchievements(game)}
+      hasCompletedAchievements={hasCompletedAllAchievements(game)}
     />
     <GameDetailNav hasDlcs={dlcTotal > 0} isCompetitive={isCompetitive} />
 
@@ -387,7 +415,7 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
     )}
     <GameDetailMetacritic slug={slug} critique={game.critica ?? null} legacyScore={legacyScore} includeCommunity={includeCommunity} />
     <GameDetailComments slug={slug} comentarios={formatValue(game.comentarios)} editValues={{ comentarios: game.comentarios ?? null }} />
-  </main>
+  </AppShell>
   <GameDetailChartsScript />
   <script>
     import { initGameDetailEditDeeplink } from '../../scripts/game-detail-edit-deeplink';

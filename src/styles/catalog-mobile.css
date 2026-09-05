@@ -49,7 +49,7 @@
       gap: 0.65rem;
     }
 
-    .pc-hero-card.mock-catalog-hero,
+    .pc-hero-card.catalog-hero,
     .panel.panel-hero.pc-hero-card {
       margin: 0;
       padding: 0;
@@ -59,8 +59,8 @@
       box-shadow: none;
     }
 
-    .mock-catalog-hero::before,
-    .mock-catalog-hero::after {
+    .catalog-hero::before,
+    .catalog-hero::after {
       content: none;
     }
 
@@ -115,7 +115,7 @@
       gap: 0.42rem;
     }
 
-    .mock-catalog-controls {
+    .catalog-controls {
       margin: 0;
       padding: 0;
       border: 0;
@@ -139,7 +139,7 @@
       backdrop-filter: blur(16px);
     }
 
-    .mock-catalog-controls .field-search input {
+    .catalog-controls .field-search input {
       min-height: 52px;
       padding: 0.82rem 0.85rem 0.82rem 2.85rem;
       border: 0;
@@ -150,12 +150,12 @@
       box-shadow: none;
     }
 
-    .mock-catalog-controls .field-search input:focus {
+    .catalog-controls .field-search input:focus {
       border: 0;
       box-shadow: none;
     }
 
-    .mock-catalog-controls .field-search input::placeholder {
+    .catalog-controls .field-search input::placeholder {
       color: rgba(211, 207, 218, 0.42);
     }
 
@@ -195,7 +195,7 @@
       filter: invert(87%) sepia(5%) saturate(342%) hue-rotate(218deg) brightness(91%);
     }
 
-    .mock-catalog-controls .button-clear {
+    .catalog-controls .button-clear {
       display: none;
     }
 
@@ -212,7 +212,7 @@
       backdrop-filter: blur(3px);
     }
 
-    .mock-catalog-controls .catalog-filters-selects.is-open {
+    .catalog-controls .catalog-filters-selects.is-open {
       position: fixed;
       right: 0.5rem;
       bottom: calc(5.55rem + env(safe-area-inset-bottom));
@@ -278,7 +278,7 @@
       filter: invert(87%) sepia(5%) saturate(342%) hue-rotate(218deg) brightness(91%);
     }
 
-    .mock-catalog-controls .catalog-filters-selects .field label {
+    .catalog-controls .catalog-filters-selects .field label {
       display: block;
       margin-bottom: 0.32rem;
       color: #b7afc2;
@@ -287,15 +287,15 @@
       text-transform: uppercase;
     }
 
-    .mock-catalog-controls .catalog-filters-selects > .field {
+    .catalog-controls .catalog-filters-selects > .field {
       grid-column: auto;
     }
 
-    .mock-catalog-controls .catalog-filters-selects .cf-sort {
+    .catalog-controls .catalog-filters-selects .cf-sort {
       display: none;
     }
 
-    .mock-catalog-controls .catalog-filters-selects .cf-profitability {
+    .catalog-controls .catalog-filters-selects .cf-profitability {
       grid-column: 1 / -1;
     }
 

@@ -2,8 +2,9 @@
 
 @layer global {
   .game-page-rich .analysis-panel-hours {
+    --game-sheet-hours-section-gap: 0;
     display: grid;
-    gap: 0.8rem;
+    gap: var(--game-sheet-hours-section-gap);
     overflow: clip;
     border-color: rgba(203, 190, 222, 0.16);
     background: #12131c;
@@ -290,6 +291,11 @@
     .game-page-rich .hours-priority-grid[data-hltb='false'][data-recurring='true'] .hours-date-start {
       grid-column: 8 / -1;
     }
+
+    .game-page-rich .hours-priority-grid[data-hltb='false'][data-recurring='true'] .hours-period-summary {
+      grid-column: 8 / span 3;
+    }
+
   }
 
   .game-page-rich .analysis-panel-hours :is(.value-kpi, .hours-info-card, .hours-breakdown-grid > div).is-null {

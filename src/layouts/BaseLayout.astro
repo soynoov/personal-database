@@ -4,13 +4,16 @@ import "../styles/badges.css"; // Badges: estado, launcher, plataforma, tag
 import "../styles/ux.css"; // Capa de interacción y responsive; no modifica las cards
 import "../styles/mobile-bottom-nav.css";
 import "../styles/editor-auth.css";
+import "@fontsource-variable/unbounded/wght.css";
+import "@fontsource-variable/space-grotesk/wght.css";
+import "../styles/app-shell.css";
 import EditorAuthDialog from "../components/EditorAuthDialog.astro";
 
 type Props = {
   title?: string;
 };
 
-const { title = "EvaDB Games" } = Astro.props;
+const { title = "NooVDB" } = Astro.props;
 ---
 
 <!doctype html>

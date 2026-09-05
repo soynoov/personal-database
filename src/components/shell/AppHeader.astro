@@ -1,0 +1,92 @@
+---
+import menuIcon from '@tabler/icons/outline/menu-2.svg?url';
+import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg?url';
+import TablerIcon from '../TablerIcon.astro';
+
+export interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  breadcrumbs?: BreadcrumbItem[];
+}
+
+const { breadcrumbs = [] } = Astro.props;
+---
+
+<header class:list={['noovdb-app-header', { 'is-contextual': breadcrumbs.length > 0 }]}>
+  <div class='noovdb-app-header-start'>
+    <button
+      class='noovdb-mobile-menu'
+      id='mobile-drawer-open'
+      type='button'
+      aria-label='Abrir navegación'
+      aria-controls='mobile-drawer'
+      aria-expanded='false'
+    >
+      <TablerIcon src={menuIcon} />
+    </button>
+
+    {breadcrumbs.length > 0 && (
+      <nav class='noovdb-breadcrumbs' aria-label='Migas de pan'>
+        {breadcrumbs.map((item, index) => (
+          <>
+            {index > 0 && <TablerIcon src={chevronRightIcon} />}
+            {item.href
+              ? <a href={item.href}>{item.label}</a>
+              : <span aria-current='page'>{item.label}</span>}
+          </>
+        ))}
+      </nav>
+    )}
+  </div>
+
+</header>
+
+<script>
+  const initNoovdbShell = () => {
+    if (document.documentElement.dataset.noovdbShellReady === 'true') return;
+    document.documentElement.dataset.noovdbShellReady = 'true';
+
+    const drawer = document.getElementById('mobile-drawer');
+    const overlay = document.getElementById('mobile-drawer-overlay');
+    const openButton = document.getElementById('mobile-drawer-open');
+    const closeButton = document.getElementById('mobile-drawer-close');
+
+    const setDrawerOpen = (open: boolean) => {
+      drawer?.classList.toggle('is-open', open);
+      overlay?.classList.toggle('is-visible', open);
+      drawer?.setAttribute('aria-hidden', String(!open));
+      overlay?.setAttribute('aria-hidden', String(!open));
+      openButton?.setAttribute('aria-expanded', String(open));
+      document.body.classList.toggle('is-drawer-open', open);
+    };
+
+    openButton?.addEventListener('click', () => setDrawerOpen(true));
+    closeButton?.addEventListener('click', () => setDrawerOpen(false));
+    overlay?.addEventListener('click', () => setDrawerOpen(false));
+    drawer?.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => setDrawerOpen(false));
+    });
+
+    const collapseButton = document.querySelector<HTMLButtonElement>('[data-sidebar-collapse]');
+    const collapsed = localStorage.getItem('noovdb-sidebar-collapsed') === 'true';
+    document.body.classList.toggle('is-sidebar-collapsed', collapsed);
+    collapseButton?.setAttribute('aria-expanded', String(!collapsed));
+
+    collapseButton?.addEventListener('click', () => {
+      const nextCollapsed = !document.body.classList.contains('is-sidebar-collapsed');
+      document.body.classList.toggle('is-sidebar-collapsed', nextCollapsed);
+      localStorage.setItem('noovdb-sidebar-collapsed', String(nextCollapsed));
+      collapseButton.setAttribute('aria-expanded', String(!nextCollapsed));
+      collapseButton.setAttribute('aria-label', nextCollapsed ? 'Expandir sidebar' : 'Contraer sidebar');
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') setDrawerOpen(false);
+    });
+  };
+
+  initNoovdbShell();
+</script>

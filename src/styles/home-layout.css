@@ -86,12 +86,12 @@
     font-weight: 720;
   }
 
-  .home-catalog .mock-catalog-controls {
+  .home-catalog .catalog-controls {
     display: grid;
     gap: 0.85rem;
   }
 
-  .home-catalog .mock-cards-grid {
+  .home-catalog .game-card-grid {
     padding-top: 0.8rem;
   }
 
@@ -221,7 +221,7 @@
       background: rgba(13, 13, 19, 0.86);
     }
 
-    .home-catalog .mock-catalog-results,
+    .home-catalog .catalog-results,
     .home-catalog .inventory-table-shell {
       border-radius: 18px;
     }
@@ -250,7 +250,7 @@
 
 @layer cards {
   @media (min-width: 1181px) {
-    .home-catalog .mock-cards-grid {
+    .home-catalog .game-card-grid {
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }

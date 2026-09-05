@@ -5,7 +5,6 @@ import rouletteIcon from '@tabler/icons/outline/dice-5.svg?url';
 import statisticsIcon from '@tabler/icons/outline/chart-histogram.svg?url';
 import dataPendingIcon from '@tabler/icons/outline/database-exclamation.svg?url';
 import reviewsIcon from '@tabler/icons/outline/message-star.svg?url';
-import settingsIcon from '@tabler/icons/outline/settings.svg?url';
 import githubIcon from '@tabler/icons/outline/brand-github.svg?url';
 import closeIcon from '@tabler/icons/outline/x.svg?url';
 import collapseIcon from '@tabler/icons/outline/chevrons-left.svg?url';
@@ -24,7 +23,7 @@ interface Props {
 const { orderedDrawerEstados, plataformas, launchers, active = 'catalogo', compact = false } = Astro.props;
 
 const mobileNavigation = [
-  { key: 'catalogo', href: '/', label: 'Juegos', icon: catalogIcon },
+  { key: 'catalogo', href: '/', label: 'Catálogo', icon: catalogIcon },
   { key: 'ruleta', href: '/ruleta/', label: 'Ruleta', icon: rouletteIcon },
   { key: 'estadisticas', href: '/estadisticas/', label: 'Estadísticas', icon: statisticsIcon },
   { key: 'criticas', href: '/criticas/', label: 'Metacrítica', icon: reviewsIcon },
@@ -60,8 +59,8 @@ const estadoColor = (estado: string): string => {
         <img src='/logo-mark.png' alt='' loading='eager' decoding='async' />
       </div>
       <div class='mobile-brand-copy'>
-        <span>Personal</span>
-        <span>Database</span>
+        <span>NooVDB</span>
+        <span>Personal Database</span>
       </div>
     </div>
     <button class='mobile-drawer-close' id='mobile-drawer-close' type='button' aria-label='Cerrar menú'>
@@ -70,6 +69,20 @@ const estadoColor = (estado: string): string => {
   </div>
 
   <div class='mobile-drawer-body'>
+    <div class='mobile-drawer-nav'>
+      {mobileNavigation.map((item) => (
+        <a
+          class:list={['mobile-drawer-nav-item', active === item.key && 'is-active']}
+          aria-current={active === item.key ? 'page' : undefined}
+          href={item.href}
+        >
+          <TablerIcon src={item.icon} />
+          <span>{item.label}</span>
+        </a>
+      ))}
+    </div>
+
+    <div class:list={['mobile-drawer-filters', active !== 'catalogo' && 'is-hidden']}>
     <div class='mobile-drawer-section'>
       <span class='mobile-drawer-section-label'>Estado</span>
       <button class='mobile-drawer-item' data-drawer-filter='estado' data-value='' type='button'>
@@ -186,6 +199,7 @@ const estadoColor = (estado: string): string => {
         <span>Más reciente</span>
       </button>
     </div>
+    </div>
   </div>
 </nav>
 
@@ -195,8 +209,9 @@ const estadoColor = (estado: string): string => {
     <div class='desktop-sidebar-brandmark' aria-hidden='true'>
       <img src='/logo-mark.png' alt='' loading='eager' decoding='async' />
     </div>
-    <div>
-      <div class='desktop-sidebar-title'>Personal Database</div>
+    <div class='desktop-sidebar-copy'>
+      <div class='desktop-sidebar-title'>NooVDB</div>
+      <div class='desktop-sidebar-subtitle'>Personal Database</div>
     </div>
   </div>
 
@@ -205,38 +220,32 @@ const estadoColor = (estado: string): string => {
       <span class='desktop-nav-icon' aria-hidden='true'>
         <TablerIcon src={catalogIcon} />
       </span>
-      <span>Catálogo</span>
+      <span class='desktop-nav-label'>Catálogo</span>
     </a>
     <a class:list={['desktop-nav-item', active === 'ruleta' && 'is-active']} aria-current={active === 'ruleta' ? 'page' : undefined} href='/ruleta/'>
       <span class='desktop-nav-icon' aria-hidden='true'>
         <TablerIcon src={rouletteIcon} />
       </span>
-      <span>Ruleta</span>
+      <span class='desktop-nav-label'>Ruleta</span>
     </a>
     <a class:list={['desktop-nav-item', active === 'estadisticas' && 'is-active']} aria-current={active === 'estadisticas' ? 'page' : undefined} href='/estadisticas/'>
       <span class='desktop-nav-icon' aria-hidden='true'>
         <TablerIcon src={statisticsIcon} />
       </span>
-      <span>Estadísticas</span>
+      <span class='desktop-nav-label'>Estadísticas</span>
     </a>
     <a class:list={['desktop-nav-item', active === 'criticas' && 'is-active']} aria-current={active === 'criticas' ? 'page' : undefined} href='/criticas/'>
       <span class='desktop-nav-icon' aria-hidden='true'>
         <TablerIcon src={reviewsIcon} />
       </span>
-      <span>Metacrítica</span>
+      <span class='desktop-nav-label'>Metacrítica</span>
     </a>
     <a class:list={['desktop-nav-item', active === 'datos' && 'is-active']} aria-current={active === 'datos' ? 'page' : undefined} href='/datos-pendientes/'>
       <span class='desktop-nav-icon' aria-hidden='true'>
         <TablerIcon src={dataPendingIcon} />
       </span>
-      <span>Pendientes</span>
+      <span class='desktop-nav-label'>Pendientes</span>
     </a>
-    <button class='desktop-nav-item' type='button' disabled>
-      <span class='desktop-nav-icon' aria-hidden='true'>
-        <TablerIcon src={settingsIcon} />
-      </span>
-      <span>Ajustes</span>
-    </button>
   </nav>
 
   <a
@@ -249,22 +258,7 @@ const estadoColor = (estado: string): string => {
     <span>GitHub</span>
   </a>
 
-  <button class='desktop-sidebar-collapse' type='button' aria-label='Contraer sidebar' disabled>
+  <button class='desktop-sidebar-collapse' type='button' aria-label='Contraer sidebar' aria-expanded='true' data-sidebar-collapse>
     <TablerIcon src={collapseIcon} />
   </button>
 </aside>
-
-<!-- Mobile Bottom Nav -->
-<nav class='mobile-bottom-nav panel' aria-label='Navegación principal'>
-  {mobileNavigation.map((item) => (
-    <a
-      class:list={['mobile-bottom-nav-item', active === item.key && 'is-active']}
-      aria-current={active === item.key ? 'page' : undefined}
-      href={item.href}
-      style={`--mobile-nav-icon: url("${item.icon}")`}
-    >
-      <span class='mobile-bottom-nav-icon' aria-hidden='true'></span>
-      <span>{item.label}</span>
-    </a>
-  ))}
-</nav>

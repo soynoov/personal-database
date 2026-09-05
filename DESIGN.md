@@ -1,6 +1,6 @@
 # NooVDB — Visual System
 
-Estado: borrador de dirección visual 2.2
+Estado: borrador de dirección visual 2.4
 
 Última revisión: 2026-09-05
 
@@ -30,14 +30,14 @@ NooVDB debe sentirse como la versión pulida por un estudio creativo de la inter
 
 La fórmula de marca es:
 
-> Estructura actual + archivo nocturno + violeta eléctrico dosificado + vidrio escarchado + tipografía display expresiva + portadas protagonistas.
+> Estructura actual + carbón casi negro + Purple dosificado + vidrio escarchado + tipografía display expresiva + portadas protagonistas.
 
 Las cards del catálogo son la pieza canónica. El resto de la interfaz debe parecer construido con la misma materia, pero no todo debe convertirse en una card.
 
 ### 1.1 Personalidad
 
-- **Nocturna:** lienzo casi negro con profundidad violeta, nunca gris administrativo.
-- **Eléctrica:** el violeta firma acciones, selección y estados excepcionales.
+- **Nocturna:** lienzo carbón casi negro; el violeta aporta profundidad sólo en áreas pequeñas, nunca tiñe toda la pantalla.
+- **Tonal:** `Purple` firma acciones, selección y estados excepcionales sin volver violeta el fondo.
 - **Editorial:** titulares expresivos dentro de la jerarquía y la maqueta actuales.
 - **Táctil:** vidrio, reflejos finos, grano y cards que reaccionan al puntero.
 - **Coleccionista:** las portadas y los datos personales dominan sobre el chrome.
@@ -56,10 +56,10 @@ Las cards del catálogo son la pieza canónica. El resto de la interfaz debe par
 
 Las referencias aportadas fijan estos rasgos:
 
-- fondos `Midnight Blue`, `Deep Graphite` y `Night`;
-- violetas `True Violet`, `Neon Purple` y `Electric Purple`;
-- blanco frío como contraste principal;
-- magenta y amarillo como golpes gráficos breves;
+- `Dark #262626` como origen del lienzo y de las superficies;
+- `Light #FFFFFF` como contraste principal;
+- `Purple #9B59B6` como único color de marca;
+- colores adicionales únicamente para estados semánticos y el foil excepcional;
 - tipografía display pesada, redondeada o condensada;
 - composición de estudio creativo: escala extrema, bloques limpios y asimetría controlada.
 
@@ -71,9 +71,11 @@ No se copiará una referencia de forma literal. Del mockup 3 se conservan el aca
 
 El chrome permanece oscuro y controlado. Las portadas pueden ser multicolor y deben conservar la mayor superficie visual de la card.
 
+El fondo global debe leerse negro antes que morado. Los halos violetas son iluminación secundaria de baja opacidad, no una segunda capa cromática dominante.
+
 ### 3.2 Una escena, un acento eléctrico
 
-Cada pantalla tiene un único acento dominante: el estado activo, un reflejo especial o un resultado. La composición permanece quieta por defecto. Magenta y amarillo no compiten simultáneamente por protagonismo.
+Cada pantalla tiene un único acento dominante: `Purple`, el estado activo, un reflejo especial o un resultado. La composición permanece quieta por defecto. Los colores funcionales no compiten por protagonismo.
 
 ### 3.3 El vidrio aparece donde existe profundidad
 
@@ -103,7 +105,7 @@ Cada dato tiene una ubicación canónica dentro de la escena. No se repiten cifr
 - el breadcrumb sólo aparece cuando existe profundidad real y se omite en páginas raíz;
 - el contador de resultados es la única aparición de la cantidad filtrada;
 - un acceso global no se repite también en el App Header y en el pie de la sidebar;
-- una búsqueda global se representa como comando compacto; la búsqueda de catálogo sigue siendo el campo que filtra el grid;
+- no existe una segunda búsqueda en el App Header: el campo del panel de filtros es el único buscador visible;
 - un badge `100%` no convive con otra expresión equivalente como `167/167` en el mismo estado de card.
 
 ## 4. Paleta
@@ -112,17 +114,11 @@ Cada dato tiene una ubicación canónica dentro de la escena. No se repiten cifr
 
 | Nombre | Valor | Papel |
 |---|---:|---|
-| Night Ink | `#0a0712` | lienzo operativo |
-| Deep Plum | `#11012e` | profundidad violeta |
-| Deep Graphite | `#171717` | superficie sólida |
-| Midnight Blue | `#1e1e2f` | materia del vidrio |
-| Deep Violet | `#2a0c62` | campo de profundidad |
-| True Violet | `#5521f1` | extremo oscuro del violeta |
-| Neon Purple | `#8a2be2` | acción y selección |
-| Electric Purple | `#c200fb` | energía y glow |
-| Hot Magenta | `#ff018f` | señal especial |
-| Signal Yellow | `#ffcc00` | alerta o golpe editorial |
-| Ice White | `#f4f6fc` | texto principal |
+| Dark | `#262626` | color primario, superficies y origen de los negros derivados |
+| Light | `#ffffff` | texto y contraste |
+| Purple | `#9b59b6` | acción, selección y tonalidades de marca |
+
+El lienzo casi negro se deriva de `Dark` mezclándolo con negro; no constituye un cuarto color de marca. Los colores de estados, avisos y foil son señales funcionales de superficie mínima, no parte del chrome.
 
 ### 4.2 Tokens operativos
 
@@ -130,48 +126,53 @@ Todos los componentes consumen tokens. Ningún componente de página introduce c
 
 ```css
 :root {
-  /* Brand source */
-  --brand-night: #0a0712;
-  --brand-plum: #11012e;
-  --brand-graphite: #171717;
-  --brand-midnight: #1e1e2f;
-  --brand-violet-depth: #2a0c62;
-  --brand-violet-deep: #5521f1;
-  --brand-violet: #8a2be2;
-  --brand-electric: #c200fb;
-  --brand-magenta: #ff018f;
+  /* Única fuente de verdad editable */
+  --brand-dark: #262626;
+  --brand-light: #ffffff;
+  --brand-purple: #9b59b6;
+
+  /* Alias derivados */
+  --brand-night: color-mix(in srgb, var(--brand-dark) 44%, black);
+  --brand-plum: color-mix(in srgb, var(--brand-dark) 58%, black);
+  --brand-graphite: color-mix(in srgb, var(--brand-dark) 72%, black);
+  --brand-midnight: var(--brand-dark);
+  --brand-violet-depth: color-mix(in srgb, var(--brand-purple) 34%, var(--brand-dark));
+  --brand-violet-deep: color-mix(in srgb, var(--brand-purple) 72%, var(--brand-dark));
+  --brand-violet: var(--brand-purple);
+  --brand-electric: color-mix(in srgb, var(--brand-purple) 82%, var(--brand-light));
+  --brand-magenta: var(--brand-purple);
   --brand-yellow: #ffcc00;
-  --brand-ice: #f4f6fc;
+  --brand-ice: var(--brand-light);
 
   /* Canvas and solid surfaces */
   --ds-canvas: var(--brand-night);
   --ds-canvas-depth: var(--brand-plum);
   --ds-surface-solid: var(--brand-graphite);
-  --ds-surface-raised: #211d2b;
+  --ds-surface-raised: var(--brand-dark);
 
   /* Frosted surfaces */
-  --ds-glass-soft: rgba(30, 30, 47, 0.42);
-  --ds-glass-default: rgba(30, 30, 47, 0.64);
-  --ds-glass-dense: rgba(23, 23, 23, 0.82);
-  --ds-glass-overlay: rgba(10, 7, 18, 0.72);
+  --ds-glass-soft: color-mix(in srgb, var(--brand-dark) 38%, transparent);
+  --ds-glass-default: color-mix(in srgb, var(--brand-dark) 58%, transparent);
+  --ds-glass-dense: color-mix(in srgb, var(--brand-dark) 86%, transparent);
+  --ds-glass-overlay: color-mix(in srgb, var(--brand-night) 78%, transparent);
 
   /* Lines and highlights */
-  --ds-line-soft: rgba(244, 246, 252, 0.10);
-  --ds-line-default: rgba(244, 246, 252, 0.16);
-  --ds-line-lit: rgba(194, 0, 251, 0.48);
-  --ds-highlight-glass: rgba(244, 246, 252, 0.18);
+  --ds-line-soft: color-mix(in srgb, var(--brand-light) 10%, transparent);
+  --ds-line-default: color-mix(in srgb, var(--brand-light) 16%, transparent);
+  --ds-line-lit: color-mix(in srgb, var(--brand-purple) 48%, transparent);
+  --ds-highlight-glass: color-mix(in srgb, var(--brand-light) 18%, transparent);
 
   /* Text */
   --ds-text-primary: var(--brand-ice);
-  --ds-text-secondary: rgba(244, 246, 252, 0.72);
-  --ds-text-muted: rgba(244, 246, 252, 0.48);
-  --ds-text-disabled: rgba(244, 246, 252, 0.28);
+  --ds-text-secondary: color-mix(in srgb, var(--brand-light) 72%, transparent);
+  --ds-text-muted: color-mix(in srgb, var(--brand-light) 48%, transparent);
+  --ds-text-disabled: color-mix(in srgb, var(--brand-light) 28%, transparent);
 
   /* Brand interaction */
   --ds-action-primary: var(--brand-violet);
   --ds-action-primary-hover: var(--brand-electric);
   --ds-on-primary: var(--brand-night);
-  --ds-selection: rgba(138, 43, 226, 0.22);
+  --ds-selection: color-mix(in srgb, var(--brand-purple) 22%, transparent);
   --ds-focus: var(--brand-electric);
 
   /* Semantic signals: small-area use only */
@@ -183,17 +184,17 @@ Todos los componentes consumen tokens. Ningún componente de página introduce c
 
   /* Foil reservado para hitos de colección */
   --ds-foil-cyan: rgba(126, 249, 255, 0.42);
-  --ds-foil-violet: rgba(194, 0, 251, 0.48);
-  --ds-foil-magenta: rgba(255, 1, 143, 0.34);
+  --ds-foil-violet: color-mix(in srgb, var(--brand-purple) 48%, transparent);
+  --ds-foil-magenta: color-mix(in srgb, var(--brand-purple) 34%, transparent);
   --ds-foil-gold: rgba(255, 226, 133, 0.44);
   --ds-foil-glint: rgba(255, 255, 255, 0.58);
 
   /* Shared ambient fields */
   --ds-ambient-main:
-    radial-gradient(circle at 72% 12%, rgba(194, 0, 251, 0.20), transparent 38%),
-    radial-gradient(circle at 14% 84%, rgba(85, 33, 241, 0.14), transparent 42%);
+    radial-gradient(circle at 76% 10%, color-mix(in srgb, var(--brand-purple) 5.5%, transparent), transparent 32%),
+    radial-gradient(circle at 14% 82%, color-mix(in srgb, var(--brand-purple) 4%, transparent), transparent 34%);
   --ds-ambient-hot:
-    radial-gradient(circle at 80% 18%, rgba(255, 1, 143, 0.10), transparent 34%);
+    radial-gradient(circle at 80% 18%, color-mix(in srgb, var(--brand-purple) 4.5%, transparent), transparent 28%);
 }
 ```
 
@@ -201,17 +202,16 @@ Todos los componentes consumen tokens. Ningún componente de página introduce c
 
 - 70–80%: lienzo y superficies nocturnas.
 - 15–25%: portadas, texto y datos.
-- 3–6%: violeta de interacción.
-- menos del 2%: magenta, amarillo o estados semánticos.
+- 3–6%: `Purple` para interacción y tonalidades.
+- menos del 2%: amarillo, foil o estados semánticos.
 
 ### 4.4 Reglas de color
 
-- `Neon Purple` es la acción principal y la selección habitual.
-- `Electric Purple` se reserva para foco, selección, foil y halos localizados.
-- `True Violet` y `Deep Violet` construyen profundidad; no se usan como nuevos estados.
+- `Dark` es la materia dominante y genera canvas, superficies y vidrio mediante mezclas con negro o transparencia.
+- `Light` es el único origen de texto y líneas neutrales.
+- `Purple` es la única fuente cromática de marca: acción, selección, foco, profundidad y halo se derivan de ella.
 - El botón primario es violeta sólido con texto `--ds-on-primary`; no lleva texto claro sobre un degradado variable.
-- Magenta identifica elementos especiales o de colección. Amarillo indica atención o acento editorial.
-- Magenta y amarillo no aparecen juntos como dos acciones equivalentes.
+- Los tonos iridiscentes del foil y los colores de estado son excepciones funcionales; nunca se convierten en chrome.
 - Los colores semánticos ocupan dots, badges, tramos de gráfico o mensajes; no tiñen paneles completos.
 - Launcher y plataforma son metadatos neutrales.
 
@@ -219,16 +219,17 @@ Todos los componentes consumen tokens. Ningún componente de página introduce c
 
 ### 5.1 Decisión
 
-La display principal será **Caacupé** —nombre de familia CSS: `Caacupe`—. Su trazo pesado, condensado y con raíz de rotulación encaja mejor con el catálogo que Modak y deja más espacio a las portadas.
+Los títulos usan **Unbounded**. Su construcción geométrica mantiene el carácter de estudio creativo sin introducir el gesto ilustrativo de Caacupé o Modak.
 
-**Modak no forma parte del sistema activo.** Puede explorarse en el futuro para un sello de una sola palabra, pero mezclar ambas display debilitaría la estandarización.
+Los números y el resto de la interfaz usan **Space Grotesk**, pero se mantienen como dos roles independientes. Aunque hoy compartan familia, `--font-numbers` podrá cambiarse sin afectar controles, labels o párrafos.
 
-La interfaz y los datos usan **Geist Sans**. Ambas fuentes activas se servirán localmente en formato `woff2` cuando empiece la implementación. Caacupé y Modak están disponibles bajo SIL Open Font License; la licencia correspondiente debe conservarse junto a cada fuente instalada.
+Sólo existen tres variables maestras de tipografía. Las fuentes se sirven localmente mediante Fontsource.
 
 ```css
 :root {
-  --ds-font-display: "Caacupe", "Arial Narrow", sans-serif;
-  --ds-font-ui: "Geist Sans", "Inter", system-ui, sans-serif;
+  --font-title: "Unbounded Variable", "Arial Black", sans-serif;
+  --font-numbers: "Space Grotesk Variable", system-ui, sans-serif;
+  --font-text: "Space Grotesk Variable", system-ui, sans-serif;
 
   --ds-type-micro: 11px;
   --ds-type-label: 12px;
@@ -252,21 +253,22 @@ La interfaz y los datos usan **Geist Sans**. Ambas fuentes activas se servirán 
 
 | Rol | Fuente | Tamaño | Peso | Uso |
 |---|---|---:|---:|---|
-| Marquee | Caacupé | `--ds-type-marquee` | único peso | palabra o cifra expresiva |
-| Page title | Caacupé | `--ds-type-page` | único peso | título principal |
-| Section title | Geist Sans | 28px | 700 | bloque de contenido |
-| Card title | Geist Sans | 20px | 700 | nombre de juego |
-| Body | Geist Sans | 16px | 400 | texto general |
-| UI | Geist Sans | 14px | 600 | controles |
-| Label | Geist Sans | 12px | 650 | badge y etiqueta |
-| Micro | Geist Sans | 11px | 500 | metadato secundario breve |
+| Marquee | Unbounded | `--ds-type-marquee` | 600 | palabra expresiva |
+| Page title | Unbounded | `--ds-type-page` | 400 | título principal |
+| Section title | Unbounded | 28px | 600 | bloque de contenido |
+| Card title | Space Grotesk | 20px | 700 | nombre de juego |
+| Number | Space Grotesk | según contexto | 700 | métricas y datos tabulares |
+| Body | Space Grotesk | 16px | 400 | texto general |
+| UI | Space Grotesk | 14px | 600 | controles |
+| Label | Space Grotesk | 12px | 650 | badge y etiqueta |
+| Micro | Space Grotesk | 11px | 500 | metadato secundario breve |
 
 Reglas:
 
-- Caacupé se usa en fragmentos breves: máximo dos líneas y nunca en párrafos, formularios o badges.
+- Unbounded se usa en fragmentos breves: máximo dos líneas y nunca en párrafos, formularios, números o badges.
 - Un título display puede ser enorme; no se compensa llenando alrededor de cajas pequeñas.
 - Las mayúsculas se reservan para display, eyebrow y etiquetas breves.
-- Números y métricas usan Geist Sans con cifras tabulares.
+- Números y métricas usan `--font-numbers` con cifras tabulares.
 - No se añaden tamaños, pesos, line-height o tracking fuera de los tokens.
 
 ## 6. Escala espacial y geometría
@@ -401,6 +403,22 @@ src/
 ```
 
 No es una orden para crear archivos en esta fase. Es el contrato para la implementación posterior.
+
+### 8.2.1 Nomenclatura de producto y código
+
+| Concepto | Contrato |
+|---|---|
+| **NooVDB** | Nombre único de la aplicación y del paquete (`noovdb`). `Personal Database` funciona sólo como descriptor. |
+| **Game Card** | Tarjeta accionable del catálogo. `CatalogGameCard.astro` la renderiza en servidor; `CatalogClientTemplates.astro` contiene la plantilla usada al filtrar en cliente. Ambas usan `.game-card` y exponen `[data-game-card]`. |
+| **Game Card Golden** | Variante de Game Card para un juego con todos los logros. Usa `data-game-card-variant="golden"` y `.is-golden`; no es un segundo componente. |
+| **Game Sheet / Ficha técnica** | Página individual en `src/pages/games/[slug].astro`. “Ficha técnica” es la denominación visible en español; los módulos internos conservan el prefijo `GameDetail*`. |
+
+Los nombres de variables indican su alcance:
+
+- `--brand-*` y `--font-*` son las seis entradas maestras de identidad;
+- `--ds-*` son tokens derivados compartidos y no se reasignan por página;
+- `--game-card-*` y `--game-sheet-*` son variables locales de interacción o geometría;
+- las variables TypeScript describen el dato real (`hasCompletedAchievements`) y sólo la capa de presentación decide si activa la variante Golden.
 
 ### 8.3 `WidgetFrame.astro`
 
@@ -603,10 +621,10 @@ No existen variantes por página que cambien colores, radios o tipografía.
 - GitHub aparece una sola vez, en el pie de la sidebar;
 - un único control de colapso; no se duplica en cabecera y pie;
 - estado activo con fondo violeta translúcido, indicador izquierdo de `3 px`, icono más luminoso y label visible;
-- App Header de `64–68 px`, sólo sobre la columna principal, plano y separado por una línea;
-- el App Header admite control de sidebar, breadcrumb condicional y comando global `Ctrl K`;
-- en una página raíz el breadcrumb se oculta; en una ruta profunda muestra sólo ancestros útiles;
-- el comando global es un trigger compacto, no un segundo campo de búsqueda;
+- App Header de `60–68 px`, sólo sobre la columna principal, plano y separado por una línea;
+- el App Header contiene el control de navegación móvil y breadcrumb condicional; no contiene buscador ni acciones duplicadas;
+- en desktop se oculta por completo en páginas raíz sin contexto; en una ruta profunda muestra sólo ancestros útiles;
+- en tablet y móvil permanece visible para alojar el control del drawer compartido;
 - títulos, métricas, tabs y acciones de dominio pertenecen al `PageHeader` o al contenido, nunca al App Header.
 
 Desktop no usa navegación superior ni rail de iconos. En móvil, el mismo inventario de destinos se recompone mediante navegación móvil; no se crea un menú distinto por página.
@@ -614,7 +632,7 @@ Desktop no usa navegación superior ni rail de iconos. En móvil, el mismo inven
 ### 10.2 Catálogo
 
 - `PageHeader` sin caja, dentro de la columna de contenido.
-- Titular `CATÁLOGO` en Caacupé y tres métricas: horas, gasto y logros.
+- Titular `CATÁLOGO` en Unbounded y tres métricas: horas, gasto y logros.
 - La cantidad de juegos no aparece en las métricas; vive únicamente en el contador de resultados y cambia con los filtros.
 - Búsqueda, botón de filtros, contador, selector Cards/Tabla y filtros rápidos conservan su orden actual.
 - La fila rápida conserva `Todos`, `Terminado`, `Jugando`, `Pendiente`, `Free to play`, `Amortizado`, `Recurrentes` y `Early Access`, con sus dots semánticos.
@@ -647,7 +665,7 @@ Desktop no usa navegación superior ni rail de iconos. En móvil, el mismo inven
 - Logo, orden, iconos, espaciado y estado activo no cambian por página.
 - En desktop se mantienen icono y label; no se sustituye por navegación superior ni rail compacto.
 - El estado activo combina frosted sutil, una línea violeta fina y un icono ligeramente iluminado; no depende de rellenar todo el botón de violeta.
-- El App Header mantiene altura y posiciones; sólo cambian el breadcrumb cuando sea necesario y los comandos globales disponibles.
+- El App Header mantiene altura y posiciones; sólo cambia el breadcrumb cuando existe profundidad real.
 - El título de página nunca se usa como sustituto de la marca ni se incrusta en el App Header.
 
 ## 11. Microinteracción y GSAP
@@ -678,7 +696,7 @@ Curvas GSAP aprobadas:
 |---|---|---|
 | `card-reveal` | card activa | overlay, imagen y halo en 180–220 ms |
 | `card-tilt` | card activa | `rotateX`/`rotateY` continuos, máximo 3 grados |
-| `platinum-foil` | card `100%` activa | posición de reflejo y espectro ligada al puntero |
+| `golden-foil` | Game Card Golden activa | posición de reflejo y espectro ligada al puntero |
 | `filter-layout` | resultados que cambian | continuidad breve de posición, 220–300 ms |
 | `selection-feedback` | chip o vista activa | borde, materia y opacidad en 100–140 ms |
 
@@ -719,7 +737,7 @@ Reglas:
 - El grid usa `minmax()` y un ancho máximo de card; las cards no se estiran hasta deformarse.
 - El título display reduce escala o cambia de línea, pero conserva personalidad.
 - La sidebar se convierte en navegación móvil, no en una mini-sidebar comprimida.
-- El App Header móvil conserva el control de navegación y el comando global; el `PageHeader` sigue perteneciendo a cada escena.
+- El App Header móvil conserva el control de navegación; el `PageHeader` sigue perteneciendo a cada escena.
 - Los filtros avanzados se convierten en drawer o sheet.
 - Las acciones frecuentes siguen visibles; las secundarias pueden entrar en menú.
 - En desktop, hover y foco revelan el panel de datos de la card; en touch lo hace el primer tap.
@@ -767,7 +785,7 @@ La futura ruta interna `/design-system` será privada y no formará parte de nav
 ### Fase 1 — Fundamentos
 
 1. Crear `tokens.css` con aliases temporales.
-2. Autohospedar Caacupé y Geist Sans.
+2. Servir Unbounded y Space Grotesk localmente mediante Fontsource.
 3. Crear el registro de microinteracciones GSAP, empezando por tilt y foil.
 4. Añadir una comprobación que impida nuevos valores visuales crudos.
 
@@ -830,10 +848,10 @@ El mockup representa el catálogo desktop a 1440 × 1024 y usa como plantilla es
 
 Debe mostrar:
 
-- lienzo Night Ink con profundidad violeta;
+- lienzo Carbon Black claramente casi negro, con profundidad violeta apenas perceptible y localizada;
 - sidebar fija de altura completa con marca `NOOVDB`, descriptor `PERSONAL DATABASE`, Nav, GitHub y un solo control de colapso;
-- App Header plano de `64–68 px`, sin título de página ni métricas y con un trigger compacto `Ctrl K`;
-- `PageHeader` de catálogo dentro del contenido, con título `CATÁLOGO` en Caacupé;
+- App Header contextual de `60–68 px`, sin título, métricas ni búsqueda duplicada; oculto en la raíz desktop y visible para navegación móvil;
+- `PageHeader` de catálogo dentro del contenido, con título `CATÁLOGO` en Unbounded;
 - horas, gasto y logros como métricas; la cantidad de juegos no se repite aquí;
 - sidebar completa y menú con el mismo orden actual;
 - una sola búsqueda de catálogo, filtros, contador dinámico, Cards/Tabla y chips en sus posiciones actuales;
@@ -842,8 +860,8 @@ Debe mostrar:
 - varias cards en reposo mostrando sólo portada;
 - una card bajo hover con tilt ligero y overlay frosted desplegado;
 - esa card activa marcada `100%`, con foil iridiscente concentrado alrededor de la posición del puntero;
-- violeta eléctrico como acción y selección;
-- magenta, cyan y oro sólo dentro del foil o de un detalle excepcional;
+- `Purple #9B59B6` como acción, selección y tonalidad de marca;
+- cyan y oro sólo dentro del foil o de un detalle excepcional;
 - profundidad localizada, sin convertir la captura en concept art.
 
 Debe evitar:
@@ -874,6 +892,5 @@ Las decisiones estructurales quedan cerradas antes del mockup:
 
 ## 18. Referencias técnicas
 
-- [Proyecto oficial de Caacupé](https://github.com/googlefonts/caacupe): origen, alcance latino y licencia OFL.
-- [Proyecto oficial de Modak](https://github.com/EkType/Modak): alternativa display evaluada y licencia OFL.
+- Paquetes locales `@fontsource-variable/unbounded` y `@fontsource-variable/space-grotesk` instalados en el proyecto.
 - [Documentación oficial de `gsap.matchMedia()`](https://gsap.com/docs/v3/GSAP/gsap.matchMedia%28%29/): condiciones responsive y cleanup de animaciones.

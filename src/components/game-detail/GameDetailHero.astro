@@ -16,7 +16,7 @@ interface Props {
   launcherBadge: { class: string; label: string; icon?: string };
   platformBadge: { class: string; label: string };
   tagBadges: Array<{ value: string; label: string }>;
-  hasPlatinum?: boolean;
+  hasCompletedAchievements?: boolean;
 }
 
 const {
@@ -27,7 +27,7 @@ const {
   launcherBadge,
   platformBadge,
   tagBadges,
-  hasPlatinum = false,
+  hasCompletedAchievements = false,
 } = Astro.props;
 
 const tagBadgeClasses: Record<string, string> = {
@@ -61,8 +61,8 @@ const tagBadgeClasses: Record<string, string> = {
           <span>{launcherBadge.label}</span>
         </span>
         <span class={`badge ${platformBadge.class}`}>{platformBadge.label}</span>
-        {hasPlatinum && (
-          <span class='badge badge-achievement-platinum'>
+        {hasCompletedAchievements && (
+          <span class='badge badge-achievement-complete'>
             <TablerIcon src={trophyIcon} />
             <span>100% logros</span>
           </span>

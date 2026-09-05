@@ -1,5 +1,5 @@
 {
-  "name": "games-db-viewer",
+  "name": "noovdb",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "@astrojs/vercel": "^10.0.8",
+    "@fontsource-variable/space-grotesk": "^5.3.0",
+    "@fontsource-variable/unbounded": "^5.3.0",
     "@tabler/icons": "3.46.0",
     "@vercel/blob": "^2.8.0",
     "astro": "^6.4.6",
-    "chart.js": "^4.5.1"
+    "chart.js": "^4.5.1",
+    "gsap": "^3.15.0"
   }
 }

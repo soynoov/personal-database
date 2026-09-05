@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Sidebar from '../../components/Sidebar.astro';
+import AppShell from '../../components/shell/AppShell.astro';
 import TablerIcon from '../../components/TablerIcon.astro';
 import '../../styles/estadisticas.css';
 import arrowRightIcon from '@tabler/icons/outline/arrow-right.svg?url';
@@ -102,16 +102,14 @@ const totalGaps = gapGroups.reduce((sum, group) => sum + group.items.length, 0);
 const nextGapGame = gapGroups.flatMap((group) => group.items)[0] ?? null;
 ---
 
-<BaseLayout title='Estadísticas — Personal Database'>
-  <main class='shell shell-app shell-desktop-app'>
-    <Sidebar
-      orderedDrawerEstados={orderedDrawerEstados}
-      plataformas={plataformas}
-      launchers={launchers}
-      active='estadisticas'
-    />
-
-    <div class='desktop-main stats-dashboard'>
+<BaseLayout title='NooVDB — Estadísticas'>
+  <AppShell
+    orderedDrawerEstados={orderedDrawerEstados}
+    plataformas={plataformas}
+    launchers={launchers}
+    active='estadisticas'
+    mainClass='stats-dashboard'
+  >
       <header class='stats-dashboard-heading'>
         <div>
           <span class='eyebrow'>Tu actividad</span>
@@ -306,8 +304,7 @@ const nextGapGame = gapGroups.flatMap((group) => group.items)[0] ?? null;
           <div><dt>DLC</dt><dd>Cada compra se atribuye a su fecha de adquisición.</dd></div>
         </dl>
       </details>
-    </div>
-  </main>
+  </AppShell>
 
   <script>
     import {

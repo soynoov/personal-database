@@ -551,7 +551,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     }
 
     for (const game of filtered) {
-      const hasPlatinum = hasCompletedAllAchievements(game);
+      const hasCompletedAchievements = hasCompletedAllAchievements(game);
 
       if (activeView === 'cards') {
         const node = elements.template.content.cloneNode(true) as DocumentFragment;
@@ -604,9 +604,10 @@ export function initCatalog(allGames: CatalogGame[]): void {
             : new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1, useGrouping: true }).format(Number(game.horas));
 
         const card = node.querySelector<HTMLAnchorElement>('[data-game-link]')!;
-        card.classList.toggle('is-platinum', hasPlatinum);
-        const platinumBadge = node.querySelector<HTMLElement>('[data-platinum]');
-        if (platinumBadge) platinumBadge.hidden = !hasPlatinum;
+        card.classList.toggle('is-golden', hasCompletedAchievements);
+        card.dataset.gameCardVariant = hasCompletedAchievements ? 'golden' : 'standard';
+        const goldenBadge = node.querySelector<HTMLElement>('[data-golden-badge]');
+        if (goldenBadge) goldenBadge.hidden = !hasCompletedAchievements;
         card.href = `/games/${game.slug}/`;
         fragment.appendChild(node);
         continue;
@@ -615,9 +616,9 @@ export function initCatalog(allGames: CatalogGame[]): void {
       const rowNode = elements.tableTemplate.content.cloneNode(true) as DocumentFragment;
       (rowNode.querySelector('[data-row-title]') as HTMLElement).textContent = formatValue(game.titulo);
       const row = rowNode.querySelector<HTMLAnchorElement>('[data-row-link]')!;
-      row.classList.toggle('is-platinum', hasPlatinum);
-      const rowPlatinum = rowNode.querySelector<HTMLElement>('[data-row-platinum]');
-      if (rowPlatinum) rowPlatinum.hidden = !hasPlatinum;
+      row.classList.toggle('has-all-achievements', hasCompletedAchievements);
+      const achievementBadge = rowNode.querySelector<HTMLElement>('[data-row-achievement-complete]');
+      if (achievementBadge) achievementBadge.hidden = !hasCompletedAchievements;
       (rowNode.querySelector('[data-row-support]') as HTMLElement).textContent =
         Array.isArray(game.generos) && game.generos.length > 0 ? String(game.generos[0]) : 'Sin genero';
 
@@ -690,7 +691,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     const usesRevealInteraction = window.matchMedia('(hover: none) and (min-width: 821px)').matches;
     if (usesRevealInteraction && !card.classList.contains('is-open')) {
       event.preventDefault();
-      elements.cards.querySelectorAll('.mock-game-card.is-open').forEach((item) => item.classList.remove('is-open'));
+      elements.cards.querySelectorAll('.game-card.is-open').forEach((item) => item.classList.remove('is-open'));
       card.classList.add('is-open');
       event.stopPropagation();
     }
@@ -832,7 +833,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     button.addEventListener('click', () => {
       activeView = (button as HTMLElement).dataset.view === 'table' ? 'table' : 'cards';
       render();
-      document.querySelector('.mock-catalog-controls')?.scrollIntoView({ block: 'start' });
+      document.querySelector('.catalog-controls')?.scrollIntoView({ block: 'start' });
     });
   });
 
@@ -883,7 +884,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
   // Cerrar card abierta en touch al tocar fuera
   document.addEventListener('click', () => {
-    document.querySelectorAll('.mock-game-card.is-open').forEach((c) => c.classList.remove('is-open'));
+    document.querySelectorAll('.game-card.is-open').forEach((c) => c.classList.remove('is-open'));
   });
 
   render();

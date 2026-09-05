@@ -146,8 +146,8 @@
   }
 
   .desktop-sidebar,
-  .mock-catalog-controls .field label,
-  .mock-catalog-controls .actions {
+  .catalog-controls .field label,
+  .catalog-controls .actions {
     display: none;
   }
 
@@ -160,7 +160,7 @@
     gap: 0.85rem;
   }
 
-  .pc-hero-card.mock-catalog-hero {
+  .pc-hero-card.catalog-hero {
     min-height: 0;
     padding: 1rem 1rem 1.05rem;
     border-radius: 28px;
@@ -232,11 +232,11 @@
     font-size: 0.9rem;
   }
 
-  .mock-catalog-hero .app-topline {
+  .catalog-hero .app-topline {
     display: block;
   }
 
-  .mock-catalog-hero .eyebrow {
+  .catalog-hero .eyebrow {
     font-size: 0.72rem;
     letter-spacing: 0.28em;
     color: #ff6d66;
@@ -280,37 +280,37 @@
     font-size: 0.78rem;
   }
 
-  .mock-catalog-controls {
+  .catalog-controls {
     padding: 0.8rem;
   }
 
-  .mock-catalog-controls .filters-app {
+  .catalog-controls .filters-app {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: 0.7rem;
     padding: 0;
   }
 
-  .mock-catalog-controls .field-search {
+  .catalog-controls .field-search {
     grid-column: 1 / -1;
   }
 
-  .mock-catalog-controls .field-search input {
+  .catalog-controls .field-search input {
     min-height: 72px;
     border-radius: 18px;
     font-size: 1rem;
     padding-left: 3rem;
   }
 
-  .mock-catalog-controls .field {
+  .catalog-controls .field {
     grid-column: span 3;
   }
 
-  .mock-catalog-controls .field:nth-of-type(5) {
+  .catalog-controls .field:nth-of-type(5) {
     grid-column: span 3;
   }
 
-  .mock-catalog-controls .field select {
+  .catalog-controls .field select {
     min-height: 56px;
     border-radius: 17px;
     font-size: 0.98rem;
@@ -377,50 +377,50 @@
     display: none;
   }
 
-  .mock-catalog-results {
+  .catalog-results {
     border: 0;
     box-shadow: none;
     background: transparent;
   }
 
-  .mock-cards-grid {
+  .game-card-grid {
     padding: 0;
     gap: 0.78rem;
   }
 
-  .mock-game-card {
+  .game-card {
     border-radius: 16px;
   }
 
-  .mock-game-card .card-main {
+  .game-card .card-main {
     grid-template-columns: 115px 1fr;
     min-height: 0;
   }
 
-  .mock-game-card .card-cover {
+  .game-card .card-cover {
     width: 115px;
     min-height: 0;
     height: 135px;
     aspect-ratio: auto;
   }
 
-  .mock-game-card .card-body {
+  .game-card .card-body {
     padding: 0.72rem 0.85rem;
     gap: 0.35rem;
   }
 
-  .cards-bento .mock-game-card h2,
-  .mock-game-card .card h2 {
+  .cards-bento .game-card h2,
+  .game-card .card h2 {
     font-size: 1.08rem;
     line-height: 1.2;
   }
 
-  .mock-game-card .card-kicker,
-  .mock-game-card .card-support {
+  .game-card .card-kicker,
+  .game-card .card-support {
     font-size: 0.8rem;
   }
 
-  .mock-game-card .meta dd {
+  .game-card .meta dd {
     font-size: 1rem;
   }
 
@@ -477,43 +477,43 @@
     font-size: 0.74rem;
   }
 
-  .mock-catalog-controls .filters-app {
+  .catalog-controls .filters-app {
     padding: 0;
   }
 
-  .mock-catalog-controls .field-search input {
+  .catalog-controls .field-search input {
     padding-left: 3rem;
   }
 
-  .mock-game-card .card-main {
+  .game-card .card-main {
     grid-template-columns: 105px 1fr;
     min-height: 0;
   }
 
-  .mock-game-card .card-cover {
+  .game-card .card-cover {
     width: 105px;
     height: 125px;
     aspect-ratio: auto;
     min-height: 0;
   }
 
-  .mock-game-card .card-body {
+  .game-card .card-body {
     padding: 0.65rem 0.78rem;
     border-top: 0;
     border-left: 1px solid rgba(255, 255, 255, 0.06);
   }
 
-  .cards-bento .mock-game-card h2,
-  .mock-game-card .card h2 {
+  .cards-bento .game-card h2,
+  .game-card .card h2 {
     font-size: 1rem;
   }
 
-  .mock-game-card .card-kicker,
-  .mock-game-card .card-support {
+  .game-card .card-kicker,
+  .game-card .card-support {
     font-size: 0.78rem;
   }
 
-  .mock-game-card .meta dd {
+  .game-card .meta dd {
     font-size: 1rem;
   }
 }
