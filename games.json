@@ -7316,9 +7316,10 @@
       "Indie",
       "Rol"
     ],
-    "precio_pagado": null,
-    "precio_actual": null,
-    "precio_salida": null,
+    "precio_pagado": 0,
+    "precio_actual": 20.29,
+    "precio_salida": 28.99,
+    "precio_minimo_historico": 20.29,
     "tags": [],
     "hltb_breakdown": {
       "main": null,
