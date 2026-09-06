@@ -199,32 +199,7 @@
     transition: none;
   }
 
-  /*
-    El frosted vive en una capa propia y se enmascara progresivamente.
-    Así conserva el desenfoque sin dibujar un límite rectangular sobre la portada.
-  */
-  .mock-game-card .card-cover::before {
-    content: '';
-    position: absolute;
-    z-index: 1;
-    inset: 0;
-    pointer-events: none;
-    background: color-mix(in srgb, var(--card-glass) 58%, transparent);
-    backdrop-filter: blur(var(--card-blur)) saturate(1.08);
-    -webkit-backdrop-filter: blur(var(--card-blur)) saturate(1.08);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 22%, rgba(0, 0, 0, 0.18) 34%, black 58%);
-    mask-image: linear-gradient(to bottom, transparent 22%, rgba(0, 0, 0, 0.18) 34%, black 58%);
-    opacity: 0;
-    transition: opacity 210ms ease-out;
-  }
-
-  .mock-game-card:hover .card-cover::before,
-  .mock-game-card:focus-visible .card-cover::before,
-  .mock-game-card.is-open .card-cover::before {
-    opacity: 1;
-  }
-
-  /* Oscurecimiento progresivo sobre el frosted, sin costura entre capas. */
+  /* Oscurecimiento progresivo de la portada, sin desenfocarla. */
   .mock-game-card .card-cover::after {
     content: '';
     position: absolute;
@@ -256,9 +231,9 @@
   si todos los panels miden lo mismo, el borde superior del overlay
   —donde empieza el título— siempre cae en la misma posición Y.
 
-  El fondo del panel se desvanece desde transparente hasta casi opaco durante
-  los primeros --card-body-fade píxeles. El blur se pinta en la capa enmascarada
-  de la portada para que su límite no produzca una costura.
+  El panel es la única superficie frosted. Su máscara desvanece conjuntamente
+  vidrio y fondo durante los primeros --card-body-fade píxeles, manteniendo
+  nítida la zona superior de la portada.
 */
   .mock-game-card .card-body {
     width: 100%;
@@ -267,8 +242,8 @@
     z-index: 3;
 
     /* Superficie progresiva: portada y cuerpo forman una sola pieza. */
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    backdrop-filter: blur(var(--card-blur)) saturate(1.08);
+    -webkit-backdrop-filter: blur(var(--card-blur)) saturate(1.08);
     background: linear-gradient(
       to bottom,
       transparent 0,
@@ -287,8 +262,8 @@
     transform: translateY(100%);
     transition: transform 210ms ease-out;
 
-    -webkit-mask-image: none;
-    mask-image: none;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, black var(--card-body-fade));
+    mask-image: linear-gradient(to bottom, transparent 0, black var(--card-body-fade));
 
     /* Layout interno */
     display: grid; /* especificidad 0,2,0 > .card-body{display:grid}(0,1,0) */

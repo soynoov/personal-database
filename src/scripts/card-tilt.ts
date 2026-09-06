@@ -9,12 +9,9 @@ const OPTICAL_PROPERTIES = [
   '--card-shadow-y',
   '--card-glow-x',
   '--card-glow-y',
-  '--foil-main-x',
-  '--foil-main-y',
-  '--foil-secondary-one-x',
-  '--foil-secondary-one-y',
-  '--foil-secondary-two-x',
-  '--foil-secondary-two-y',
+  '--foil-shift-x',
+  '--foil-shift-y',
+  '--foil-angle',
 ] as const;
 
 type PendingTilt = {
@@ -86,12 +83,9 @@ export function initCardTilt(container: HTMLElement | null): void {
         '--card-shadow-y': `${(-pointerY * 4).toFixed(2)}px`,
         '--card-glow-x': `${(pointerX * 8).toFixed(2)}px`,
         '--card-glow-y': `${(pointerY * 8).toFixed(2)}px`,
-        '--foil-main-x': `${(pointerX * bounds.width * 0.42).toFixed(2)}px`,
-        '--foil-main-y': `${(pointerY * bounds.height * 0.09).toFixed(2)}px`,
-        '--foil-secondary-one-x': `${(pointerX * bounds.width * 0.36).toFixed(2)}px`,
-        '--foil-secondary-one-y': `${(pointerY * bounds.height * 0.08).toFixed(2)}px`,
-        '--foil-secondary-two-x': `${(pointerX * bounds.width * 0.3).toFixed(2)}px`,
-        '--foil-secondary-two-y': `${(pointerY * bounds.height * 0.07).toFixed(2)}px`,
+        '--foil-shift-x': `${(pointerX * bounds.width * 0.72).toFixed(2)}px`,
+        '--foil-shift-y': `${((pointerY + 0.25) * bounds.height * 0.24).toFixed(2)}px`,
+        '--foil-angle': `${(8 + pointerX * 28).toFixed(2)}deg`,
       };
 
       for (const [property, value] of Object.entries(opticalValues)) {
