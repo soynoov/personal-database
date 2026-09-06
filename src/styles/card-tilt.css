@@ -1,52 +1,128 @@
 @layer cards {
   @media (min-width: 821px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
     .mock-cards-grid .mock-game-card {
+      --pointer-x: 0;
+      --pointer-y: 0;
       --card-tilt-x: 0deg;
       --card-tilt-y: 0deg;
-      --card-shine-x: 0px;
-      --card-shine-y: 0px;
+      --card-shadow-x: 0px;
+      --card-shadow-y: 0px;
+      --card-glow-x: 0px;
+      --card-glow-y: 0px;
+      --foil-main-x: 0px;
+      --foil-main-y: 0px;
+      --foil-secondary-one-x: 0px;
+      --foil-secondary-one-y: 0px;
+      --foil-secondary-two-x: 0px;
+      --foil-secondary-two-y: 0px;
       transform-origin: center;
       transform-style: preserve-3d;
       backface-visibility: hidden;
+      transition:
+        transform 250ms cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 250ms ease-out,
+        border-color 180ms ease-out;
     }
 
     .mock-cards-grid .mock-game-card:hover {
-      z-index: 1;
+      z-index: 2;
       transform: perspective(900px) translateY(-3px) rotateX(var(--card-tilt-x))
         rotateY(var(--card-tilt-y)) scale(1.012);
+      box-shadow: var(--card-shadow-x) calc(20px + var(--card-shadow-y)) 42px rgba(0, 0, 0, 0.5);
+    }
+
+    .mock-cards-grid .mock-game-card.is-tracking {
       transition:
-        transform 90ms ease-out,
-        box-shadow 180ms ease;
+        transform 84ms ease-out,
+        box-shadow 120ms ease-out,
+        border-color 120ms ease-out;
       will-change: transform;
     }
 
-    .mock-cards-grid .mock-game-card.is-platinum::after {
-      content: '';
-      position: absolute;
-      z-index: 6;
-      top: -35%;
-      left: 36%;
-      width: 28%;
-      height: 170%;
-      pointer-events: none;
-      background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(255, 232, 143, 0.06) 20%,
-        rgba(255, 246, 207, 0.34) 50%,
-        rgba(255, 232, 143, 0.08) 80%,
-        transparent 100%
-      );
-      mix-blend-mode: screen;
-      opacity: 0;
-      transform: translate3d(var(--card-shine-x), var(--card-shine-y), 0) skewX(-18deg);
-      transition:
-        opacity 160ms ease-out,
-        transform 90ms ease-out;
+    .mock-cards-grid .mock-game-card.is-platinum:hover {
+      box-shadow:
+        inset var(--card-glow-x) var(--card-glow-y) 20px rgba(255, 235, 157, 0.24),
+        var(--card-glow-x) var(--card-glow-y) 26px rgba(207, 157, 48, 0.22),
+        var(--card-shadow-x) calc(20px + var(--card-shadow-y)) 44px rgba(0, 0, 0, 0.54);
     }
 
-    .mock-cards-grid .mock-game-card.is-platinum:hover::after {
-      opacity: 1;
+    .mock-cards-grid .mock-game-card .card-foil {
+      display: block;
+      position: absolute;
+      z-index: 2;
+      inset: -30% -48%;
+      pointer-events: none;
+      background-image:
+        linear-gradient(
+          90deg,
+          transparent 0%,
+          color-mix(in srgb, var(--card-foil-cyan) 34%, transparent) 10%,
+          color-mix(in srgb, var(--card-foil-gold) 40%, transparent) 25%,
+          color-mix(in srgb, var(--card-foil-glint) 78%, transparent) 46%,
+          var(--card-foil-glint) 51%,
+          color-mix(in srgb, var(--card-foil-gold) 74%, transparent) 62%,
+          color-mix(in srgb, var(--card-foil-magenta) 32%, transparent) 88%,
+          transparent 100%
+        ),
+        linear-gradient(
+          90deg,
+          transparent 0%,
+          color-mix(in srgb, var(--card-foil-cyan) 58%, transparent) 20%,
+          color-mix(in srgb, var(--card-foil-glint) 72%, transparent) 43%,
+          var(--card-foil-glint) 52%,
+          color-mix(in srgb, var(--card-foil-gold) 72%, transparent) 68%,
+          color-mix(in srgb, var(--card-foil-magenta) 42%, transparent) 84%,
+          transparent 100%
+        ),
+        linear-gradient(
+          90deg,
+          transparent 0%,
+          color-mix(in srgb, var(--card-foil-cyan) 72%, transparent) 24%,
+          var(--card-foil-glint) 49%,
+          color-mix(in srgb, var(--card-foil-gold) 82%, transparent) 64%,
+          color-mix(in srgb, var(--card-foil-magenta) 52%, transparent) 82%,
+          transparent 100%
+        );
+      background-repeat: no-repeat;
+      background-position:
+        calc(50% + var(--foil-main-x)) calc(50% + var(--foil-main-y)),
+        calc(60% + var(--foil-secondary-one-x)) calc(50% + var(--foil-secondary-one-y)),
+        calc(66% + var(--foil-secondary-two-x)) calc(50% + var(--foil-secondary-two-y));
+      background-size:
+        20% 180%,
+        5% 180%,
+        2.8% 180%;
+      mix-blend-mode: screen;
+      opacity: 0;
+      transform: rotate(-18deg);
+      transform-origin: center;
+      filter: saturate(1.08) blur(0.15px);
+      transition:
+        opacity 250ms ease-out,
+        background-position 250ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .mock-cards-grid .mock-game-card.is-platinum:hover .card-foil {
+      opacity: 0.96;
+    }
+
+    .mock-cards-grid .mock-game-card.is-tracking .card-foil {
+      transition:
+        opacity 130ms ease-out,
+        background-position 84ms ease-out;
+      will-change: background-position, opacity;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) {
+    .mock-cards-grid .mock-game-card:hover,
+    .mock-cards-grid .mock-game-card:focus-visible {
+      transform: none;
+    }
+
+    .mock-game-card .card-body,
+    .mock-game-card .card-cover::after {
+      transition-duration: 100ms;
     }
   }
 }

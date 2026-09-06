@@ -1,67 +1,77 @@
-**Comparison Target**
+# Design QA — Game Cards
 
-- Source visual truth: `C:\Users\heroy\AppData\Local\Temp\codex-clipboard-5e4fdbfc-0388-41c6-b8ad-ad8f1225bce0.png`
-- Desktop implementation: `artifacts/design-qa/hours-benchmarks-focused-1100.png`
-- Full-page implementation: `artifacts/design-qa/hours-benchmarks-full-1440.png`
-- Mobile implementation: `artifacts/design-qa/hours-benchmarks-390.png`
-- Route: `http://127.0.0.1:4322/games/hogwarts-legacy/#hours`
-- Desktop viewport: `1100 x 1000`, device scale factor `1`; mobile viewport: `390 x 1100`, device scale factor `1`.
-- Source pixels: `1055 x 398`; focused implementation: `1100 x 1000`; mobile implementation: `390 x 1100`.
-- State: dark theme, Hogwarts Legacy with complete HLTB references, 59,99 € amortization target and 102 h 36 min played.
-- Requested delta: four straight benchmark bars in the order Historia, Historia+, 100%, Amortización; player hours represented exclusively by a labeled horizontal line.
+## Comparison target
 
-**Findings**
+- Visual source of truth: `docs/design-standardization/assets/43-golden-three-beam-proposed.png` (`1485 × 1059`).
+- Current-state reference: `docs/design-standardization/assets/19-card-standard-hover-current.png`.
+- Focused comparison: `artifacts/design-qa/game-cards-source-vs-implementation.png` (`1100 × 1325`).
+- Desktop implementation: `artifacts/design-qa/game-cards-final-hover-desktop.png` and `artifacts/design-qa/game-cards-final-golden-real-data.png` (`1440 × 1024`).
+- Responsive implementation: `artifacts/design-qa/game-cards-final-tablet.png` (`820 × 1180`) and `artifacts/design-qa/game-cards-final-mobile.png` (`390 × 844`).
+- Keyboard state: `artifacts/design-qa/game-cards-final-focus.png` (`1440 × 1024`).
+- Browser density: device scale factor `1` in Chromium.
+- Route: `http://127.0.0.1:4324/`.
+- State: dark theme; standard card hover, real-data Golden hover, forced same-cover Golden comparison, keyboard focus, responsive and reduced motion.
 
-- No actionable P0, P1 or P2 differences remain.
-- The chart now separates benchmark values from the player's current value: four bars versus one horizontal reference line.
-- Bar order is fixed and independent of magnitude.
-- The line label shows `Mis horas · 102 h 36 min` without relying on hover.
-- Mobile preserves all four labels, values and the line annotation without horizontal overflow.
+The Golden proposal is normative for the optical material and pointer states. The live card anatomy, text and responsive layout continue to follow `theme.css` and the operational catalog rather than copying the mockup composition.
 
-**Required Fidelity Surfaces**
+## Findings
 
-- Fonts and typography: existing font family, weights and chart hierarchy remain; the line annotation uses the same UI font and a compact high-contrast label.
-- Spacing and layout rhythm: the chart keeps the established height and grid while distributing four equal rectangular bars.
-- Colors and visual tokens: HLTB remains lavender, Amortización uses the existing economic gold and Mis horas retains its semantic comparison color.
-- Image quality and asset fidelity: no raster assets were introduced; the existing Tabler chart icon remains unchanged.
-- Copy and content: the heading now describes all objectives rather than only HLTB; labels are Historia, Historia+, 100% and Amortización.
+- No actionable P0, P1 or P2 visual differences remain within this slice.
+- The cover and information surface now overlap through a progressive transparent-to-dark gradient. The previous horizontal seam is absent on desktop, tablet and mobile.
+- The cover image retains `transform: none`; only the complete card scales to `1.012`.
+- Tilt remains capped at `±2.4deg`. A single normalized pointer reading drives tilt, shadow, perimeter light and all three Golden beams.
+- Golden now uses one broad white/warm-gold reflection plus two narrower parallel reflections with restrained cyan and magenta fringes.
+- The three reflections move together with small spatial parallax and no automatic sweep or delayed trail.
+- The active card returns to rest over `250ms`; live tracking uses an interruptible `84ms` transition.
+- Only one card owns the optical variables at a time. Leaving the card removes every inline optical property.
+- Touch, widths through `820px` and `prefers-reduced-motion: reduce` retain the Golden border and trophy while disabling tilt, scale and dynamic foil.
+- `:focus-visible` reveals the same information as hover and shows a visible theme-colored outline.
 
-**Full-view Comparison Evidence**
+## Full-view comparison evidence
 
-- `artifacts/design-qa/hours-benchmarks-full-1440.png` verifies the revised chart remains consistent with Hours, Dinero and the surrounding game sheet.
+- `game-cards-final-hover-desktop.png` verifies the standard card, full-card scale and uninterrupted cover/body transition in the live catalog.
+- `game-cards-final-golden-real-data.png` verifies Golden on the real Far Cry 3 data state, without altering `games.json` for QA.
+- `game-cards-final-tablet.png` and `game-cards-final-mobile.png` verify that the gradient does not introduce clipping or horizontal overflow.
 
-**Focused Region Comparison Evidence**
+## Focused comparison evidence
 
-- The source showed Mis horas as both a bar and an unlabeled horizontal line, with no Amortización bar.
-- `artifacts/design-qa/hours-benchmarks-focused-1100.png` confirms the redundant player-hours bar is removed, Amortización is added in fourth position and the line carries its exact value.
-- `artifacts/design-qa/hours-benchmarks-390.png` confirms the same semantic order and visible annotation on mobile.
+- `game-cards-source-vs-implementation.png` places the approved Golden proposal and the implementation in one image for top-left, center and bottom-right pointer states.
+- The implementation preserves the target hierarchy: one dominant reflection, two visibly smaller followers, a gold perimeter and an unwashed cover outside the beams.
+- The live reflection is intentionally a little less opaque over labels than the proposal so title, badges and metrics remain readable.
 
-**Interaction and Accessibility Checks**
+## Interaction and accessibility checks
 
-- Browser console: no application errors; only Vite development connection messages.
-- WCAG A/AA scan for `#hours`: zero violations. Three contrast checks were indeterminate because elements were overlapped during analysis; none was reported as a violation.
-- The canvas exposes a descriptive accessible label containing every benchmark and Mis horas.
+- Pointer sweep: verified through six consecutive positions at approximately one frame intervals; no stale card or detached reflection remained.
+- Mutual exclusion: one `.is-tracking` card at most.
+- Exit state after `320ms`: computed card transform `none`, foil opacity `0`, zero active tracking classes and no residual inline style.
+- Reduced motion: computed transform `none`, foil `display: none`, Golden border preserved and information reveal shortened to `100ms`.
+- Responsive overflow: document width equals viewport width at `820px` and `390px`.
+- Image zoom: computed image transform remains `none` during hover.
+- Keyboard: focused card matches `:focus-visible`, reveals its body and exposes a `2px` outline.
+- WCAG A/AA scan scoped to `.mock-cards-grid`: zero violations. Eight contrast checks were indeterminate because the analyzer cannot resolve pseudo-element backgrounds; none was reported as a violation.
+- Browser console and page errors: no application errors; only Vite development connection messages.
 
-**Comparison History**
+## Comparison history
 
-- Iteration 1: the reference exposed ambiguous duplication because Mis horas appeared as both a bar and a line, while the economic goal was absent.
-- Fixes: square benchmark bars, calculated real-hour amortization target, fixed ordering, labeled reference line and responsive accessible description.
-- Post-fix evidence: desktop and mobile captures show no clipping, overlap or remaining P0/P1/P2 finding.
+- Baseline: the body could read as a hard horizontal cut and Golden rendered a single moving band.
+- Iteration 1: introduced a dedicated foil layer and three beams, but the main reflection travelled too far off-card at opposing corners.
+- Iteration 2: reduced and differentiated the three parallax ranges so the large beam and both followers remain coherent across the card.
+- A radial localization pass was tested and rejected because it weakened the requested “brilli brilli” read and hid the secondary beams.
+- Final pass: replaced rectangular backdrop blur with an explicit alpha gradient, masked the noise texture independently, added reduced-motion/touch fallbacks and verified the real Golden state.
 
-**Open Questions**
+## Implementation checklist
+
+- [x] Restore the cover/body gradient without a visible seam.
+- [x] Keep the cover image free of independent zoom.
+- [x] Scale the complete card subtly on precise-pointer hover.
+- [x] Coordinate tilt, shadow and light from one pointer reading.
+- [x] Replace the single Golden band with one main and two follower beams.
+- [x] Preserve a single active card and settle cleanly on exit.
+- [x] Support focus, touch and reduced motion.
+- [x] Verify desktop, tablet, mobile, build, console and accessibility.
+
+## Open questions
 
 - None blocking.
-
-**Implementation Checklist**
-
-- [x] Add real-hour amortization target to financial metrics.
-- [x] Render four ordered, square benchmark bars.
-- [x] Render player hours only as a labeled line.
-- [x] Preserve responsive chart labels.
-- [x] Verify build, finance calculations, desktop, mobile, console and accessibility.
-
-**Follow-up Polish**
-
-- No P3 item is required for this handoff.
 
 final result: passed

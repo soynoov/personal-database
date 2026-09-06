@@ -4,7 +4,7 @@
    cards.css — Catálogo de juegos: diseño de tarjetas
    ================================================================
    Estrategia: mobile-first.
-   Diseño: imagen full-bleed + panel inferior con blur (glass-morphism).
+   Diseño: imagen full-bleed + panel inferior solapado por degradado.
 
    Prioridad de cascada: vive en @layer cards. Las variables del tema
    (dimensiones, colores, tipografías) se definen en theme.css.
@@ -28,7 +28,8 @@
 
 @layer cards {
   .mock-cards-grid .mock-game-card.is-platinum,
-  .mock-cards-grid .mock-game-card.is-platinum:hover {
+  .mock-cards-grid .mock-game-card.is-platinum:hover,
+  .mock-cards-grid .mock-game-card.is-platinum:focus-visible {
     border-color: #d7ad4f;
     box-shadow:
       inset 0 0 0 1px rgba(255, 240, 174, 0.28),
@@ -101,6 +102,7 @@
   /* Alias sin el grid padre, para que el hover funcione aunque cambie el contenedor */
   .mock-game-card {
     position: relative;
+    isolation: isolate;
     overflow: hidden;
     border-radius: var(--card-radius);
     cursor: pointer;
@@ -109,13 +111,25 @@
     text-decoration: none;
   }
 
+  .mock-game-card .card-foil {
+    display: none;
+  }
+
   .mock-game-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 18px 38px rgba(0, 0, 0, 0.48);
   }
 
-  /* El panel sube al hacer hover */
-  .mock-game-card:hover .card-body {
+  .mock-game-card:focus-visible {
+    outline: 2px solid var(--theme-purple);
+    outline-offset: 3px;
+    transform: translateY(-3px);
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.48);
+  }
+
+  /* Hover y teclado revelan el mismo contenido. */
+  .mock-game-card:hover .card-body,
+  .mock-game-card:focus-visible .card-body {
     transform: translateY(0);
   }
 
@@ -169,6 +183,7 @@
     padding-bottom: 0; /* limpia el "poster trick" de global.css */
     align-self: unset;
     background: #0d111a; /* fallback mientras carga la imagen */
+    z-index: 0;
   }
 
   /* La imagen ocupa todo el cover con object-fit:cover */
@@ -180,58 +195,76 @@
     object-fit: cover;
     object-position: center top;
     display: block;
-  }
-
-  /* El ::after ya no hace falta: el gradiente del mask-image del body lo cubre */
-  .mock-game-card .card-cover::after {
-    content: none;
+    transform: none;
+    transition: none;
   }
 
   /*
-  card-body: panel glass-morphism con altura FIJA anclado al fondo.
+    Refuerzo del solape portada/panel. Esta capa y el gradiente del body
+    oscurecen progresivamente la portada para que nunca aparezca una costura.
+  */
+  .mock-game-card .card-cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      transparent 0% 26%,
+      color-mix(in srgb, var(--theme-black) 22%, transparent) 34%,
+      color-mix(in srgb, var(--theme-black) 62%, transparent) 44%,
+      color-mix(in srgb, var(--theme-black) 88%, transparent) 100%
+    );
+    opacity: 0;
+    transition: opacity 190ms ease-out;
+  }
+
+  .mock-game-card:hover .card-cover::after,
+  .mock-game-card:focus-visible .card-cover::after,
+  .mock-game-card.is-open .card-cover::after {
+    opacity: 1;
+  }
+
+  /*
+  card-body: panel de información con altura predecible anclado al fondo.
 
   La altura fija es la clave del alineamiento horizontal:
   si todos los panels miden lo mismo, el borde superior del overlay
   —donde empieza el título— siempre cae en la misma posición Y.
 
-  El gradiente en mask-image hace que el blur y el fondo del panel
-  se desvanezcan suavemente desde transparente hasta opaco durante
-  los primeros --card-body-fade píxeles, eliminando la línea de corte.
+  El fondo del panel se desvanece desde transparente hasta opaco durante
+  los primeros --card-body-fade píxeles. No se aplica blur a todo el
+  rectángulo porque su límite produciría una costura antes del degradado.
 */
   .mock-game-card .card-body {
     width: 100%;
     overflow: hidden;
     position: relative; /* necesario para el ::before del noise */
+    z-index: 3;
 
-    /* Glass morphism */
-    backdrop-filter: blur(var(--card-blur));
-    -webkit-backdrop-filter: blur(var(--card-blur));
-    background: var(--card-glass);
-    border-top: 1px solid var(--card-glass-border);
+    /* Superficie progresiva: portada y cuerpo forman una sola pieza. */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: linear-gradient(
+      to bottom,
+      transparent 0,
+      color-mix(in srgb, var(--theme-black) 18%, transparent) 14px,
+      color-mix(in srgb, var(--theme-black) 68%, transparent) var(--card-body-fade),
+      color-mix(in srgb, var(--theme-black) 90%, transparent) calc(var(--card-body-fade) + 58px),
+      color-mix(in srgb, var(--theme-black) 94%, transparent) 100%
+    );
+    border-top: 0;
 
     /*
     Animación hover: el panel empieza fuera de pantalla (abajo) y sube al hacer hover.
     overflow:hidden del card-main lo recorta cuando está desplazado → invisible.
-    cubic-bezier spring: sale rápido y frena con un leve rebote al llegar.
+    La salida rápida mantiene la respuesta ágil sin desplazar otras cards.
   */
     transform: translateY(100%);
-    transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 210ms ease-out;
 
-    /*
-    Gradiente de máscara: el panel pasa de transparente (arriba)
-    a totalmente opaco (abajo) en --card-body-fade píxeles.
-    Esto afecta tanto al fondo como al blur, sin línea dura.
-  */
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      transparent 0px,
-      black var(--card-body-fade)
-    );
-    mask-image: linear-gradient(
-      to bottom,
-      transparent 0px,
-      black var(--card-body-fade)
-    );
+    -webkit-mask-image: none;
+    mask-image: none;
 
     /* Layout interno */
     display: grid; /* especificidad 0,2,0 > .card-body{display:grid}(0,1,0) */
@@ -245,7 +278,7 @@
     margin-top: 0;
   }
 
-  /* Noise grain solo dentro del panel de blur */
+  /* Noise grain solo dentro del panel; su propia máscara evita otra costura. */
   .mock-game-card .card-body::before {
     content: '';
     position: absolute;
@@ -256,6 +289,8 @@
     background-size: 128px 128px;
     opacity: 0.06;
     mix-blend-mode: overlay;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, black var(--card-body-fade));
+    mask-image: linear-gradient(to bottom, transparent 0, black var(--card-body-fade));
   }
 
   /*
@@ -466,7 +501,7 @@
     /* Panel con más respiración y altura algo mayor en desktop */
     .mock-game-card .card-body {
       --card-body-h: 160px;
-      --card-body-fade: 40px;
+      --card-body-fade: 48px;
       padding: calc(var(--card-body-fade) + 0.45rem) 1rem 1rem;
       gap: 1rem;
     }
@@ -700,7 +735,8 @@
     }
 
     .mock-cards-grid .mock-game-card.is-platinum,
-    .mock-cards-grid .mock-game-card.is-platinum:hover {
+    .mock-cards-grid .mock-game-card.is-platinum:hover,
+    .mock-cards-grid .mock-game-card.is-platinum:focus-visible {
       border-color: #cfa84f;
       box-shadow:
         inset 0 0 0 1px rgba(255, 235, 157, 0.2),
@@ -731,8 +767,14 @@
       min-height: 0;
       aspect-ratio: 0.76;
       border: 0;
-      border-bottom: 1px solid rgba(207, 200, 220, 0.12);
+      border-bottom: 0;
       background: #111116;
+    }
+
+    .mock-game-card .card-cover::after {
+      inset: auto 0 0;
+      height: 34%;
+      opacity: 1;
     }
 
     .mock-game-card .card-cover img {
@@ -744,6 +786,7 @@
 
     .mock-game-card .card-body,
     .mock-game-card:hover .card-body,
+    .mock-game-card:focus-visible .card-body,
     .mock-game-card.is-open .card-body {
       position: relative;
       display: grid;
@@ -757,12 +800,20 @@
       row-gap: 0.48rem;
       width: 100%;
       min-width: 0;
-      min-height: 112px;
-      padding: 0.72rem 0.7rem 0.68rem;
+      min-height: calc(112px + var(--card-body-fade));
+      margin-top: calc(-1 * var(--card-body-fade));
+      padding: calc(var(--card-body-fade) + 0.72rem) 0.7rem 0.68rem;
       border: 0;
-      background: rgba(24, 24, 31, 0.88);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      background: linear-gradient(
+        to bottom,
+        transparent 0,
+        color-mix(in srgb, var(--theme-black) 24%, transparent) 14px,
+        color-mix(in srgb, var(--app-surface-1) 78%, transparent) var(--card-body-fade),
+        var(--app-surface-1) calc(var(--card-body-fade) + 34px),
+        var(--app-surface-1) 100%
+      );
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
       transform: none;
       transition: none;
       -webkit-mask-image: none;

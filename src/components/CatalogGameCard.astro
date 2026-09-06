@@ -1,7 +1,10 @@
 ---
 import type { CatalogGame } from '../lib/catalog-game';
+import { getGoldenCompletionKind } from '../lib/game-achievements';
 import { buildGameCoverUrl } from '../lib/game-cover-url';
 import { normalizeStatus } from '../lib/game-status';
+import trophyIcon from '@tabler/icons/outline/trophy.svg?url';
+import TablerIcon from './TablerIcon.astro';
 
 interface Props {
   game: CatalogGame;
@@ -57,6 +60,11 @@ const platformClasses: Record<string, string> = {
 };
 
 const normalizedStatus = normalizeStatus(game.estado);
+const goldenCompletionKind = getGoldenCompletionKind(game);
+const hasPlatinum = goldenCompletionKind !== null;
+const goldenAriaLabel = goldenCompletionKind === 'game'
+  ? 'Juego completado al 100%'
+  : '100% de logros completados';
 const isFreeToPlay = game.tags?.some((tag) => normalizeStatus(tag) === 'free-to-play') ?? false;
 const isEarlyAccess = game.generos?.some((genre) => {
   const normalized = normalizeStatus(genre);
@@ -65,7 +73,7 @@ const isEarlyAccess = game.generos?.some((genre) => {
 const support = [game.lanzamiento, game.generos?.slice(0, 2).join(', ')].filter(Boolean);
 ---
 
-<a class='card mock-game-card' href={`/games/${game.slug}/`}>
+<a class:list={['card', 'mock-game-card', { 'is-platinum': hasPlatinum }]} href={`/games/${game.slug}/`}>
   <div class='card-main'>
     <div class='card-cover'>
       <img
@@ -76,6 +84,12 @@ const support = [game.lanzamiento, game.generos?.slice(0, 2).join(', ')].filter(
         decoding='async'
       />
     </div>
+    <span class='card-foil' aria-hidden='true'></span>
+    {hasPlatinum && (
+      <span class='platinum-badge' aria-label={goldenAriaLabel}>
+        <TablerIcon src={trophyIcon} />
+      </span>
+    )}
     <div class='card-body'>
       <div class='card-head'>
         <div class='card-title-stack'>
