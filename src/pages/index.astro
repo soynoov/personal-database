@@ -12,6 +12,7 @@ import sortIcon from '@tabler/icons/outline/arrow-down.svg?url';
 import '../styles/catalog.css';
 import '../styles/inventory.css';
 import '../styles/cards.css';
+import '../styles/card-tilt.css';
 import '../styles/catalog-mobile.css';
 import '../styles/home-layout.css';
 import { toCatalogGame } from '../lib/catalog-game';
@@ -231,8 +232,10 @@ const tableColumns = [
 
   <script>
     import { initCatalog } from '../scripts/catalog';
+    import { initCardTilt } from '../scripts/card-tilt';
     const dataEl = document.getElementById('__catalog-data');
     const games = JSON.parse(dataEl?.dataset.games ?? '[]');
     initCatalog(games);
+    initCardTilt(document.getElementById('cards'));
   </script>
 </BaseLayout>
