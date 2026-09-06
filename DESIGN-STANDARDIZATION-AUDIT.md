@@ -5,6 +5,8 @@
 > Fecha de auditoría: 6 de septiembre de 2026
 >
 > Viewports comprobados con Chromium: `1440 × 1024`, `820 × 1180` y `390 × 844`
+>
+> Revisión 1.1: bento obligatorio en toda la ficha y Golden basado en un reflejo de tres haces
 
 ## 1. Veredicto ejecutivo
 
@@ -48,7 +50,7 @@ La auditoría no modifica componentes, APIs ni datos. Todos los archivos visuale
 | Nº | Ruta / flujo | Evidencia | Estado de salud |
 |---:|---|---|---|
 | 1 | Catálogo `/` | [desktop](docs/design-standardization/assets/01-catalog-desktop-current.png), [tablet](docs/design-standardization/assets/03-catalog-tablet-current.png), [móvil](docs/design-standardization/assets/02-catalog-mobile-current.png) | **Atención**: buen lenguaje de card, shell y controles excesivamente fragmentados. |
-| 2 | Ficha `/games/league-of-legends/` | [desktop](docs/design-standardization/assets/04-detail-desktop-current.png), [tablet](docs/design-standardization/assets/32-detail-tablet-current.png), [móvil](docs/design-standardization/assets/10-detail-mobile-current.png) | **Atención**: contenido sólido; no comparte la geometría de navegación y acumula paneles anidados. |
+| 2 | Ficha `/games/league-of-legends/` | [desktop](docs/design-standardization/assets/04-detail-desktop-current.png), [tablet](docs/design-standardization/assets/32-detail-tablet-current.png), [móvil](docs/design-standardization/assets/10-detail-mobile-current.png) | **Atención**: el bento actual es una fortaleza obligatoria; debe conservarse al unificar la navegación y el shell. |
 | 3 | Ruleta `/ruleta/` | [desktop](docs/design-standardization/assets/05-roulette-desktop-current.png), [tablet](docs/design-standardization/assets/33-roulette-tablet-current.png), [móvil](docs/design-standardization/assets/11-roulette-mobile-current.png) | **Atención**: la ruleta tiene protagonismo correcto; el shell cambia y la navegación tapa controles en tablet/móvil. |
 | 4 | Estadísticas `/estadisticas/` | [desktop](docs/design-standardization/assets/06-statistics-desktop-current.png), [tablet](docs/design-standardization/assets/34-statistics-tablet-current.png), [móvil](docs/design-standardization/assets/12-statistics-mobile-current.png) | **Atención**: datos legibles; exceso de colores decorativos y geometría propia. |
 | 5 | Alias `/criterio/` | [resultado de la navegación](docs/design-standardization/assets/07-criterion-desktop-current.png) | **Sano**: el código devuelve un `301` a `/criticas/`; no es una segunda interfaz que mantener. |
@@ -74,13 +76,13 @@ La auditoría no modifica componentes, APIs ni datos. Todos los archivos visuale
 |---|---|---|---|---|
 | Alta | A1 | Shell y navegación | La geometría, marca y jerarquía principal cambian entre rutas. | L |
 | Alta | A2 | Responsive / accesibilidad | Datos pendientes recorta contenido en 390 px y su filtro carece de nombre accesible. | S |
-| Alta | A3 | Game Card Golden | El haz lineal se desplaza, pero no describe un material foil coherente con la inclinación. | M |
+| Alta | A3 | Game Card Golden | El único haz actual necesita convertirse en un reflejo óptico de un haz principal y dos secundarios. | M |
 | Alta | A4 | Tokens | Los estilos de página introducen cientos de valores literales fuera de `theme.css`. | L |
 | Alta | A5 | Cards y hero | La transición entre imagen y superficie reaparece como corte duro pese a existir `--card-body-fade`. | S |
 | Media | M1 | Controles y feedback | El catálogo duplica mecanismos de filtro/conteo y el estado vacío es débil. | M |
 | Media | M2 | Datos y métricas | Las tarjetas métricas usan colores funcionales como decoración y pierden jerarquía común. | M |
 | Media | M3 | Responsive | Hay demasiados breakpoints y reglas de clearance para una misma navegación fija. | L |
-| Media | M4 | Ficha y módulos | Paneles dentro de paneles elevan ruido y dificultan comparar datos. | M |
+| Media | M4 | Ficha y módulos | El bento debe sistematizarse y mantenerse protagonista en Horas, Dinero, Rango, Detalles y Valoración. | M |
 | Media | M5 | Carga y error | No hay contrato visual compartido para carga diferida, guardado o error recuperable. | M |
 | Baja | B1 | Tipografía | Las familias están tokenizadas, pero el tamaño y tracking se redefinen con demasiada granularidad. | M |
 | Baja | B2 | Diálogos | El diálogo de autenticación ya es coherente; debe convertirse en patrón, no rediseñarse. | S |
@@ -193,8 +195,8 @@ Las tres capturas Golden son estados técnicos forzados en Chromium. `games.json
 
 - La inclinación ya sigue al puntero y el escalado `1.012` es contenido.
 - No existe zoom independiente de la portada; esta decisión actual debe conservarse.
-- El brillo Golden es una banda lineal de 28% de ancho. Cambia de posición, pero conserva forma y dirección, por lo que se lee como un barrido superpuesto y no como reflejo sobre una superficie inclinada.
-- `pointerX/pointerY` gobiernan tilt y traslación del haz, pero no controlan un campo cromático, el hotspot, la sombra ni la iluminación periférica como un único sistema óptico.
+- El brillo Golden es una única banda lineal de 28% de ancho. La idea del haz es adecuada, pero una sola reflexión produce poco destello y carece de los reflejos secundarios que dan sensación de foil físico.
+- `pointerX/pointerY` gobiernan tilt y traslación del haz, pero todavía no coordinan un haz principal, dos reflexiones menores, la sombra y el borde como un único sistema óptico.
 - En ciertos estados vuelve a percibirse un corte horizontal entre portada y cuerpo, aunque `theme.css` ya define `--card-body-fade: 36px` y `cards.css` documenta expresamente una transición sin línea dura.
 
 #### Fuente normativa
@@ -202,18 +204,19 @@ Las tres capturas Golden son estados técnicos forzados en Chromium. `games.json
 - Implementación actual: `src/scripts/card-tilt.ts` limita el giro a `2.4deg`, usa `requestAnimationFrame`, una única card activa y desactiva el efecto en táctil o movimiento reducido.
 - Implementación actual: `src/styles/card-tilt.css` aplica `scale(1.012)` y un haz lineal con `mix-blend-mode: screen`.
 - `theme.css`: `--card-body-fade`, `--card-glass`, `--card-radius` y `--gold`.
-- Referencia óptica: [Holographic Name Card](https://codepen.io/simeydotme/pen/wvOYJKg) para posición normalizada, reflejo y campo cromático; [Multi-Card Glow Hover](https://codepen.io/simeydotme/pen/gOZRrwb) solo para limitar intensidad. La recopilación procede de [FreeFrontend](https://freefrontend.com/javascript-holographic-effect/).
+- Referencia óptica: [Holographic Name Card](https://codepen.io/simeydotme/pen/wvOYJKg) para posición normalizada y coherencia entre inclinación y reflejo; [Multi-Card Glow Hover](https://codepen.io/simeydotme/pen/gOZRrwb) como control de intensidad. La recopilación procede de [FreeFrontend](https://freefrontend.com/javascript-holographic-effect/). No se adopta su lavado iridiscente de superficie completa.
 
 #### Cambio visual propuesto
 
 - Mantener inclinación máxima `±2.4deg` y escala `1.012` sobre la card completa.
-- Una única lectura normalizada del puntero alimenta inclinación, sombra, hotspot blanco, campo iridiscente y luz periférica.
-- Foil por capas:
-  1. reflejo blanco radial, pequeño y localizado;
-  2. campo cyan/violeta/magenta/dorado desplazado en sentido coherente con el puntero;
-  3. grano extremadamente fino y casi inmóvil;
-  4. sombra exterior e iluminación de borde opuestas a la inclinación.
-- El material activo ocupa aproximadamente 40–50% de la superficie; la portada nunca queda lavada por completo.
+- Una única lectura normalizada del puntero alimenta inclinación, sombra, borde y los tres haces.
+- Reflejo Golden compuesto exactamente por:
+  1. un haz principal ancho, de caída suave y núcleo blanco/dorado intenso;
+  2. un segundo haz estrecho y menos opaco;
+  3. un tercer haz todavía más fino, separado del anterior;
+  4. franjas cromáticas cyan/magenta muy finas solo en los bordes de los haces.
+- Los tres haces comparten ángulo y posición de origen. Se mueven simultáneamente, con pequeñas diferencias de parallax espacial, pero sin retraso temporal visible.
+- El haz principal ocupa aproximadamente 35–42% del ancho de la card; los secundarios, 7–9% y 3–5%. La zona ajena al reflejo conserva contraste y color originales.
 - Sin barrido preprogramado, keyframes automáticos ni reproducción única al entrar.
 - Retorno al centro y desaparición en 220–280 ms.
 - Borde dorado y distintivo permanecen en táctil y `prefers-reduced-motion`; se elimina el material dinámico.
@@ -221,7 +224,7 @@ Las tres capturas Golden son estados técnicos forzados en Chromium. `games.json
 
 #### Hoja de estados corregida — **PROPUESTA**
 
-![Propuesta Golden en cuatro estados](docs/design-standardization/assets/25-golden-proposed-states.png)
+![Propuesta Golden de tres haces en cuatro estados](docs/design-standardization/assets/43-golden-three-beam-proposed.png)
 
 #### Indicaciones técnicas
 
@@ -229,7 +232,9 @@ Las tres capturas Golden son estados técnicos forzados en Chromium. `games.json
 - Derivar el resto en una sola actualización `requestAnimationFrame`; no añadir listeners por card.
 - Mantener `activeCard` como exclusión mutua. Al cambiar de card, limpiar todas las variables ópticas de la anterior.
 - Sustituir el único `::after` lineal por un elemento o capa dedicada al material, para no competir con `card-body::before` y su textura.
-- Usar un gradiente radial para el glint y varios gradientes suaves para el espectro. Las posiciones deben expresarse en porcentajes derivados del puntero, no en un desplazamiento fijo de una franja.
+- Componer los tres haces dentro de una sola capa con gradientes lineales paralelos. El principal lleva una caída amplia; cada secundario tiene su propio ancho, offset y opacidad.
+- Usar el mismo desplazamiento base derivado del puntero y multiplicadores espaciales próximos —por ejemplo `1`, `0.86` y `0.72`— para que las reflexiones respiren sin separarse de la fuente luminosa. No interpolar cada haz con un retraso diferente.
+- Mantener el ángulo común cercano a `-18deg`; las pequeñas franjas cyan/magenta solo perfilan el núcleo, no cubren la superficie.
 - Separar tiempos: seguimiento directo de 70–100 ms y settle de 220–280 ms al abandonar. Una clase `is-tracking` permite distinguir ambos estados.
 - La sombra debe desplazarse en dirección contraria al puntero y permanecer por debajo de la card; el foil no debe alterar contraste de título, badges o metadatos.
 - Corregir la unión de la portada asegurando solape del `card-body` sobre el cover y una máscara/gradiente con fallback; evitar cualquier `border-top` visible.
@@ -247,39 +252,59 @@ No se ha copiado código ni assets de las demos externas. El mockup reinterpreta
 |---|---|---|
 | ![Ficha desktop actual](docs/design-standardization/assets/04-detail-desktop-current.png) | ![Ficha tablet actual](docs/design-standardization/assets/32-detail-tablet-current.png) | ![Ficha móvil actual](docs/design-standardization/assets/10-detail-mobile-current.png) |
 
+| Horas | Dinero | Rango |
+|---|---|---|
+| [captura actual](docs/design-standardization/assets/37-detail-hours-current.png) | [captura actual](docs/design-standardization/assets/38-detail-finance-current.png) | [captura actual](docs/design-standardization/assets/39-detail-rank-current.png) |
+
+| Detalles | Valoración |
+|---|---|
+| [captura actual](docs/design-standardization/assets/40-detail-technical-current.png) | [captura actual](docs/design-standardization/assets/41-detail-rating-current.png) |
+
 #### Desviación observable
 
-- La ficha tiene una composición de contenido más madura que el catálogo, pero funciona como una aplicación separada: navegación, cabecera y márgenes son propios.
+- La ficha tiene una composición bento más madura que el resto de la aplicación. Esa asimetría es una firma visual obligatoria, no ruido que deba eliminarse.
+- La primera propuesta de esta auditoría aplanaba Horas y convertía sus módulos en filas y separadores. Esa dirección queda descartada porque elimina el protagonismo del bento.
+- El problema real es que la ficha funciona como una aplicación separada: navegación, cabecera y márgenes son propios. Unificar el shell no autoriza a uniformar sus widgets.
 - En tablet la línea entre hero y navegación se percibe abrupta.
-- El bloque de horas introduce panel exterior, panel métrico, dos subpaneles, gráfico enmarcado y tres tarjetas adicionales. La acumulación reduce el contraste jerárquico.
+- Horas y Dinero ya tienen una jerarquía clara de módulos grandes y pequeños. Rango, Detalles y Valoración deben reforzar el mismo principio, evitando que sus contenidos se conviertan en una única banda o en tarjetas idénticas.
 - Las acciones de edición cambian de ubicación entre viewports sin un patrón global claro.
 
 #### Fuente normativa
 
+- Requisito de producto confirmado: el bento debe ser protagonista en **todas** las áreas de la ficha —Horas, Dinero, Rango, Detalles y Valoración—.
 - `theme.css`: regla explícita de radios descendentes por nivel de anidación.
-- Patrón dominante de la ficha: tabs y edición contextual son útiles y deben conservarse.
+- Patrón dominante comprobado: `frosted-bento.css`, `flat-blocks.css`, `finance.css`, `competitive.css` y `experience.css` ya contienen grids y spans reutilizables.
+- Patrón dominante de la ficha: navegación interna y edición contextual son útiles y deben conservarse.
 - Dirección futura: `WidgetFrame` y `AppShell` confirman una composición por widgets, pero su implementación pertenece a la migración posterior.
 
 #### Cambio visual propuesto
 
 - Integrar la ficha en el shell compartido.
 - Hero especial con una transición vertical oscura de 72–96 px hacia el contenido, sin corte horizontal.
-- Mantener las tabs, pero reducir el número de contenedores visibles: una sección puede agrupar métrica, contexto y gráfico sin envolver cada dato en otra caja.
-- En móvil, navegación global inferior, header compacto y edición contextual de 44 px, con espacio seguro al final.
+- Mantener una retícula bento de 12 columnas en desktop. Cada sección contiene como mínimo un módulo protagonista, uno o dos módulos de apoyo y celdas secundarias con spans deliberadamente distintos.
+- Horas: cifra principal y gráfico dominantes; periodo, inicio y objetivos como módulos de apoyo.
+- Dinero: meta económica y rentabilidad dominantes; costes, horas ponderadas, excedente y gasto como módulos secundarios.
+- Rango: Peak ELO como pieza protagonista; contexto competitivo en celdas menores cuando exista.
+- Detalles: Progreso, Catalogación, Mi copia e Información técnica conservan tamaños distintos según importancia.
+- Valoración: bloque de notas externas, desglose personal y comentario forman tres escalas diferentes, no una cuadrícula uniforme.
+- En móvil, el bento se convierte en una secuencia ordenada: protagonista a ancho completo y secundarios en dos columnas cuando el contenido y los targets de 44 px lo permitan.
 
 #### Mockup corregido — **PROPUESTA**
 
-![Propuesta responsive de ficha](docs/design-standardization/assets/30-game-detail-proposed.png)
+![Propuesta de sistema bento obligatorio para toda la ficha](docs/design-standardization/assets/42-game-detail-bento-system-proposed.png)
 
 #### Indicaciones técnicas
 
 - Montar la página dentro del mismo wrapper de `BaseLayout`/`Sidebar` que el resto de escenas.
 - Aplicar el fade en la capa del hero o en un pseudo-elemento al final de la imagen, no como una franja sólida del contenido.
-- Reducir bordes visibles: mantener uno para el widget principal y usar separadores internos para periodo, inicio e hitos.
+- Definir una primitiva compartida de grid, por ejemplo `.game-bento-grid`, y variantes de span semánticas como `is-hero`, `is-wide`, `is-tall` e `is-compact`; no codificar coordenadas distintas en cada página.
+- Mantener la regla de radios por nesting: el frame de sección puede contener cards bento visibles siempre que los radios y bordes reduzcan jerárquicamente.
+- No imponer el mismo número de columnas internas a las cinco secciones. La consistencia procede del ritmo, los spans y la jerarquía, no de hacer todas las cards iguales.
+- En móvil, declarar el orden de lectura en el DOM y usar CSS Grid solo para reagrupar secundarios; la lectura accesible no debe depender de la posición visual.
 - Unificar el tamaño y posición de los botones de edición con la variante de icon button del diálogo/editor.
 - Mantener los gráficos con fondo neutro y usar el color funcional solo en series, objetivos y leyenda.
 
-**Prioridad:** Media; el corte de imagen es Alta por ser una regresión visual evidente. **Esfuerzo:** M.
+**Prioridad:** Media para sistematizar el bento; el corte de imagen es Alta por ser una regresión visual evidente. **Esfuerzo:** M.
 
 ### 5.5 Widgets de datos, métricas y gráficos — M2, B1
 
@@ -404,7 +429,7 @@ No deben mezclarse. Aplicar ahora la paleta o fuentes futuras obligaría a juzga
 | Mantener Anton SC, Elms Sans y Stack Sans Text. | Sustituir la escala actual por `--ds-font-*` y `--ds-type-*`. |
 | Unificar shell y `PageHeader` con `--theme-black`, `--theme-white` y `--theme-purple`. | Crear `tokens.css` con la paleta `--ds-*`. |
 | Convertir colores/radios repetidos en aliases de `theme.css`. | Adoptar `WidgetFrame`, `Metric`, `ProgressBar`, `AppShell` y `AppHeader` definitivos. |
-| Simplificar paneles y controles sin alterar datos o IA. | Introducir frost, ambient light y presets de movimiento aprobados. |
+| Sistematizar el bento de toda la ficha sin aplanar sus módulos ni alterar datos o IA. | Introducir frost, ambient light y presets de movimiento aprobados. |
 | Rehacer Golden con puntero normalizado y fallback reducido. | Mapear el foil a `--ds-foil-*` cuando esos tokens sean normativos. |
 | Conservar el diálogo actual como patrón. | Crear `/design-system` y pruebas visuales contra el mockup aprobado. |
 
@@ -421,7 +446,7 @@ No deben mezclarse. Aplicar ahora la paleta o fuentes futuras obligaría a juzga
 
 1. Unificar shell, marca, app header y page header.
 2. Normalizar controles, vacío, carga, error y diálogo.
-3. Extraer métricas, chart frames, listas y acciones compartidas.
+3. Extraer métricas, chart frames, primitivas bento, listas y acciones compartidas.
 4. Migrar valores literales a tokens actuales por dominio, no mediante una reescritura global de una vez.
 
 ### Fase C — decisión y migración de `DESIGN.md`
@@ -438,11 +463,11 @@ No deben mezclarse. Aplicar ahora la paleta o fuentes futuras obligaría a juzga
 | Tipografía | **Medio**: familias coherentes, escala excesivamente fragmentada. | Display/UI/badge respetan su rol; escala corta y cifras tabulares. |
 | Espaciado | **Bajo**: cada dominio recompone gaps y padding. | Ritmo base compartido; excepciones justificadas por widget. |
 | Radios | **Bajo**: 40 valores frente a una regla de anidación ya documentada. | Radio decrece con nesting; pills/círculos son únicas excepciones. |
-| Bordes | **Medio**: generalmente sobrios, pero hay demasiados frames anidados. | Un borde por nivel estructural; separadores internos antes que otra caja. |
+| Bordes | **Medio**: generalmente sobrios; la ficha usa nesting bento legítimo, pero no siempre sistematizado. | El bento puede anidar módulos visibles si borde y radio reducen jerárquicamente; fuera de él, usar separadores antes que otra caja. |
 | Jerarquía | **Bajo**: títulos, marca y métricas cambian por ruta. | Un `PageHeader` y un orden común de título, contexto, métricas y acción. |
 | Responsive | **Bajo**: clipping y nav superpuesta; demasiadas media queries. | Sin overflow a 390; sin overlays a 820; shell estable a 1440. |
 | Estados | **Medio**: hover y diálogo bien encaminados; vacío/carga/error incompletos. | Rest, hover, focus, disabled, empty, loading, error y reduced motion documentados. |
-| Movimiento | **Medio**: tilt sutil correcto, foil incoherente y settle corto. | Una fuente de puntero, 60 Hz, settle 220–280 ms y fallback táctil/reducido. |
+| Movimiento | **Medio**: tilt sutil correcto, reflejo Golden insuficiente y settle corto. | Una fuente de puntero, tres haces simultáneos, 60 Hz, settle 220–280 ms y fallback táctil/reducido. |
 
 ## 9. Accesibilidad y límites de la validación
 
@@ -463,12 +488,12 @@ No deben mezclarse. Aplicar ahora la paleta o fuentes futuras obligaría a juzga
 
 | Archivo | Objetivo |
 |---|---|
-| [25-golden-proposed-states.png](docs/design-standardization/assets/25-golden-proposed-states.png) | Mismo juego en reposo, centro y esquinas opuestas; foil localizado, intensidad contenida y fade de portada. |
+| [43-golden-three-beam-proposed.png](docs/design-standardization/assets/43-golden-three-beam-proposed.png) | Mismo juego en reposo, centro y esquinas opuestas; un haz principal y dos secundarios como una sola reflexión. |
 | [26-catalog-shell-proposed.png](docs/design-standardization/assets/26-catalog-shell-proposed.png) | Shell desktop común usando la paleta y tipografías operativas. |
 | [27-data-widgets-proposed.png](docs/design-standardization/assets/27-data-widgets-proposed.png) | Sistema neutral de métricas, gráficos y leyendas. |
 | [28-pending-responsive-proposed.png](docs/design-standardization/assets/28-pending-responsive-proposed.png) | Lista desktop/móvil sin clipping ni solape de navegación. |
 | [29-controls-feedback-proposed.png](docs/design-standardization/assets/29-controls-feedback-proposed.png) | Filtros simplificados, vacío accionable y diálogo canónico. |
-| [30-game-detail-proposed.png](docs/design-standardization/assets/30-game-detail-proposed.png) | Ficha integrada en el shell y transición suave del hero. |
+| [42-game-detail-bento-system-proposed.png](docs/design-standardization/assets/42-game-detail-bento-system-proposed.png) | Sistema bento para Horas, Dinero, Rango, Detalles y Valoración, con adaptación móvil. |
 | [31-loading-states-proposed.png](docs/design-standardization/assets/31-loading-states-proposed.png) | Carga diferida estable, guardado localizado y error recuperable. |
 
 ## 11. Criterio de cierre de la futura implementación
@@ -479,7 +504,8 @@ La estandarización puede considerarse terminada cuando:
 - no hay overflow horizontal ni contenido cubierto en 390, 820 y 1440 px;
 - todos los controles tienen nombre, foco visible y target táctil adecuado;
 - los valores visuales nuevos proceden de tokens;
-- la card Golden demuestra coherencia entre puntero, tilt, sombra, foil y borde en cuatro estados estáticos y en movimiento;
+- la card Golden demuestra coherencia entre puntero, tilt, sombra, borde, haz principal y dos reflejos secundarios en cuatro estados estáticos y en movimiento;
 - táctil y `prefers-reduced-motion` conservan significado sin inclinación ni foil dinámico;
+- Horas, Dinero, Rango, Detalles y Valoración conservan un bento protagonista en desktop y una jerarquía equivalente en móvil;
 - el estado vacío, carga, error y diálogo tienen un patrón compartido;
 - el build pasa y la comparación visual se realiza contra los mockups aprobados, no contra interpretaciones locales por página.
