@@ -326,7 +326,7 @@
   gap: 0.8rem;
 }
 
-.catalog-hero {
+.mock-catalog-hero {
   position: relative;
   overflow: hidden;
   justify-items: start;
@@ -334,7 +334,7 @@
   align-content: start;
 }
 
-.catalog-hero::before {
+.mock-catalog-hero::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -353,7 +353,7 @@
   pointer-events: none;
 }
 
-.catalog-hero::after {
+.mock-catalog-hero::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -393,35 +393,35 @@
   background-repeat: no-repeat;
 }
 
-.catalog-hero > * {
+.mock-catalog-hero > * {
   position: relative;
   z-index: 1;
 }
 
-.catalog-hero .app-topline,
-.catalog-hero .pc-hero-copy,
-.catalog-hero .pc-stats-bento {
+.mock-catalog-hero .app-topline,
+.mock-catalog-hero .pc-hero-copy,
+.mock-catalog-hero .pc-stats-bento {
   width: 100%;
 }
 
-.catalog-hero .app-topline {
+.mock-catalog-hero .app-topline {
   justify-content: flex-start;
 }
 
-.catalog-hero .pc-hero-copy {
+.mock-catalog-hero .pc-hero-copy {
   max-width: 100%;
 }
 
-.catalog-hero .pc-hero-copy h1 {
+.mock-catalog-hero .pc-hero-copy h1 {
   max-width: none;
 }
 
-.catalog-controls,
-.catalog-results {
+.mock-catalog-controls,
+.mock-catalog-results {
   margin-top: 0;
 }
 
-.catalog-results {
+.mock-catalog-results {
   padding: 0;
   border-radius: 22px;
   border: 1px solid rgba(126, 143, 172, 0.11);
@@ -435,16 +435,16 @@
     0 18px 42px rgba(0, 0, 0, 0.16);
 }
 
-.game-card-grid {
+.mock-cards-grid {
   margin-top: 0;
   padding: 0.88rem;
 }
 
-.catalog-controls .filters-app {
+.mock-catalog-controls .filters-app {
   row-gap: 0.82rem;
 }
 
-.catalog-controls .field-search {
+.mock-catalog-controls .field-search {
   position: relative;
 }
 
@@ -470,15 +470,15 @@
   stroke-linejoin: round;
 }
 
-.catalog-controls .field-search::before {
+.mock-catalog-controls .field-search::before {
   content: none;
 }
 
-.catalog-controls .field-search::after {
+.mock-catalog-controls .field-search::after {
   content: none;
 }
 
-.catalog-controls .field-search input {
+.mock-catalog-controls .field-search input {
   padding-left: 2.9rem;
 }
 
@@ -514,11 +514,11 @@
   opacity: 0.76;
 }
 
-.game-card .card-main {
+.mock-game-card .card-main {
   grid-template-columns: 1fr;
 }
 
-/* ── Estilos de .game-card movidos a src/styles/cards.css ── */
+/* ── Estilos de .mock-game-card movidos a src/styles/cards.css ── */
 
 .mobile-topbar,
 .mobile-filter-toggle,
@@ -616,7 +616,7 @@
   .catalog-filter-toggle {
     display: flex;
   }
-  .catalog-controls .actions {
+  .mock-catalog-controls .actions {
     display: none;
   }
   /* Hide labels on mobile */

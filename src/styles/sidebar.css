@@ -601,7 +601,7 @@
   }
 
   /* --- Controls area colors --- */
-  .catalog-controls,
+  .mock-catalog-controls,
   .catalog-filters,
   .panel-subtoolbar {
     background: #0b0914;
@@ -635,10 +635,10 @@
   }
 
   /* --- Poster card grid colors --- */
-  .game-card-grid {
+  .mock-cards-grid {
     background: #0b0914;
   }
-  .game-card {
+  .mock-game-card {
     background: #110e1d;
   }
 

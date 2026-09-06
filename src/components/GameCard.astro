@@ -1,19 +1,17 @@
 ---
-// Plantillas HTML del catálogo para los resultados recreados por catalog.ts.
-// La Game Card SSR vive en CatalogGameCard.astro; este archivo no es una card
-// independiente y no recibe props.
+// Plantillas HTML para las cards del catálogo (renderizadas via JS en catalog.ts).
+// No recibe props — el contenido lo rellena catalog.ts en el cliente.
 import trophyIcon from '@tabler/icons/outline/trophy.svg?url';
 import TablerIcon from './TablerIcon.astro';
 ---
 
-<!-- Game Card template -->
+<!-- Card template -->
 <template id='card-template'>
-  <a class='card game-card' data-game-card data-game-card-variant='standard' data-game-link href='#'>
+  <a class='card mock-game-card' data-game-link href='#'>
     <div class='card-main'>
       <div class='card-cover' data-cover></div>
-      <span class='golden-badge' data-golden-badge hidden aria-label='100% de logros completados'>
+      <span class='platinum-badge' data-platinum hidden aria-label='100% de logros completados'>
         <TablerIcon src={trophyIcon} />
-        <span>100%</span>
       </span>
       <div class='card-body'>
         <div class='card-head'>
@@ -45,7 +43,7 @@ import TablerIcon from './TablerIcon.astro';
       <div class='inventory-copy'>
         <div class='inventory-title-line'>
           <strong data-row-title></strong>
-          <span class='inventory-achievement-complete' data-row-achievement-complete hidden aria-label='100% de logros completados'>
+          <span class='inventory-platinum' data-row-platinum hidden aria-label='100% de logros completados'>
             <TablerIcon src={trophyIcon} />
           </span>
         </div>

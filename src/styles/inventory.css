@@ -168,7 +168,7 @@
   min-width: 0;
 }
 
-.inventory-achievement-complete {
+.inventory-platinum {
   display: inline-grid;
   flex: 0 0 auto;
   place-items: center;
@@ -180,17 +180,17 @@
   color: #e4ba58;
 }
 
-.inventory-achievement-complete[hidden] {
+.inventory-platinum[hidden] {
   display: none;
 }
 
-.inventory-achievement-complete .tabler-icon {
+.inventory-platinum .tabler-icon {
   width: 13px;
   height: 13px;
 }
 
-.inventory-row.has-all-achievements:hover,
-.inventory-row.has-all-achievements:focus-visible {
+.inventory-row.is-platinum:hover,
+.inventory-row.is-platinum:focus-visible {
   background: linear-gradient(90deg, rgba(161, 112, 28, 0.12), rgba(255, 255, 255, 0.018) 22%);
   box-shadow: inset 2px 0 0 #d8aa47;
 }
