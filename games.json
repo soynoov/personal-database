@@ -7338,7 +7338,7 @@
     "titulo": "Far Cry 3",
     "creado_en": "2026-09-06T16:49:38+02:00",
     "estado": "Terminado",
-    "launcher": "Ubisoft Connect",
+    "launcher": "Pirata",
     "plataforma": "PC",
     "horas": 108,
     "horas_estimadas": true,
@@ -7379,5 +7379,50 @@
       "Aventura"
     ],
     "steam_store_name": "Far Cry 3"
+  },
+  {
+    "titulo": "Blasphemous 2",
+    "creado_en": "2026-09-06T18:31:16+02:00",
+    "estado": "Terminado",
+    "launcher": "Pirata",
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "partidas_al_100": 1,
+    "nota": null,
+    "comentarios": "Completado al 100 % en una copia pirata. El 100 % representa el progreso del juego, no logros registrados.",
+    "lanzamiento": 2023,
+    "modos": [
+      "solitario"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": null,
+    "steam_appid": 2114740,
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Indie"
+    ],
+    "precio_pagado": 0,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": null,
+      "main_plus": null,
+      "completionist": null
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura",
+      "Indie"
+    ],
+    "steam_store_name": "Blasphemous 2"
   }
 ]
