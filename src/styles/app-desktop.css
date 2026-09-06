@@ -31,7 +31,7 @@
   }
 
   .pc-hero-card .eyebrow {
-    color: #ff6e6e;
+    color: var(--editorial-red);
     letter-spacing: 0.24em;
   }
 
@@ -41,7 +41,7 @@
     font-size: clamp(3.25rem, 4.2vw, 5rem);
     line-height: 0.95;
     letter-spacing: -0.045em;
-    color: #f8f2ed;
+    color: var(--text);
   }
 
   .pc-hero-card p {
@@ -143,7 +143,7 @@
   }
 
   .panel-controls-head .eyebrow {
-    color: #ff6e6e;
+    color: var(--editorial-red);
     letter-spacing: 0.22em;
   }
 

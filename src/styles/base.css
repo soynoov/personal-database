@@ -42,7 +42,7 @@ html {
   background:
     linear-gradient(rgba(8, 10, 14, 0.62), rgba(8, 10, 14, 0.82)),
     url("/body.jpeg") center / cover fixed no-repeat;
-  background-color: #0b0e13;
+  background-color: var(--bg);
 }
 
 body {

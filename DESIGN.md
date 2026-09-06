@@ -108,6 +108,10 @@ Cada dato tiene una ubicación canónica dentro de la escena. No se repiten cifr
 
 ## 4. Paleta
 
+### Jerarquía operativa actual
+
+`src/styles/theme.css` mantiene tres colores principales: `--theme-black` (`#1a1a1a`), `--theme-white` (`#ffeacf`, blanco cálido) y `--theme-purple` (`#c9a8ff`). `--editorial-red` es una excepción reservada para microcopy de marca como «Personal Database»; no añade un cuarto color principal. Los colores de estado son funcionales y la paleta de referencia que sigue documenta una posible evolución, no sustituye este trío operativo.
+
 ### 4.1 Colores de referencia
 
 | Nombre | Valor | Papel |

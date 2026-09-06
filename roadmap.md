@@ -12,9 +12,9 @@ Leyenda: `[x]` hecho · `[-]` parcial · `[ ]` pendiente.
 
 ## Visual Updates
 
-- [ ] Game Card: añadir tilt de hasta 3° siguiendo la posición del puntero. El overlay de información existente debe conservarse.
+- [x] Game Card: tilt de 2,4° siguiendo la posición del puntero, sin alterar el overlay de información existente.
 - [ ] Game Card Golden: añadir un efecto foil que siga la posición del puntero.
-- [ ] Desactivar tilt y foil con `prefers-reduced-motion` y cuando no exista un puntero preciso.
+- [-] Desactivar tilt y foil con `prefers-reduced-motion` y cuando no exista un puntero preciso. El tilt ya lo respeta; queda aplicarlo al foil.
 - [ ] Game Sheet · Horas: ajustar la composición a la captura objetivo para que la gráfica se una al bloque superior sin hueco ni solapamiento.
 
 ## Variables Updates
@@ -23,15 +23,16 @@ Leyenda: `[x]` hecho · `[-]` parcial · `[ ]` pendiente.
   - `--font-title`: tipografía de títulos.
   - `--font-text`: tipografía de interfaz y texto.
   - `--font-numbers`: tipografía numérica independiente.
-- [ ] Definir variables maestras de identidad cromática:
-  - `--brand-dark`: base oscura.
-  - `--brand-light`: texto y contraste.
-  - `--brand-purple`: acento de marca.
-- [ ] Separar el alcance de las variables:
-  - `--brand-*` y `--font-*`: identidad editable.
+- [x] Definir los tres colores maestros de identidad cromática:
+  - `--theme-black`: lienzo negro.
+  - `--theme-white`: blanco cálido para texto y contraste.
+  - `--theme-purple`: matizador morado para interacción y selección.
+- [x] Separar `--editorial-red` como excepción para microcopy de marca, incluido «Personal Database»; no cuenta como cuarto color principal.
+- [-] Separar el alcance de las variables:
+  - `--theme-*` y `--font-*`: identidad editable.
   - `--ds-*`: tokens derivados compartidos.
   - `--game-card-*` y `--game-sheet-*`: estado y geometría local de componentes.
-- [ ] Migrar gradualmente colores y medidas literales heredados; no mezclar esta migración con cambios funcionales.
+- [-] Migrar gradualmente colores y medidas literales heredados; el lienzo, el texto principal, el acento y el rojo editorial ya apuntan a variables maestras, pero quedan literales legacy por retirar.
 
 ## Futuro — Histórico de precios
 

@@ -239,7 +239,7 @@
   .mock-catalog-hero .eyebrow {
     font-size: 0.72rem;
     letter-spacing: 0.28em;
-    color: #ff6d66;
+    color: var(--editorial-red);
   }
 
   .pc-hero-card h1 {
