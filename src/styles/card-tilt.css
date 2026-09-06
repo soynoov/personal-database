@@ -24,10 +24,14 @@
         border-color 180ms ease-out;
     }
 
+    .mock-cards-grid .mock-game-card:hover,
+    .mock-cards-grid .mock-game-card:focus-visible {
+      z-index: 20;
+    }
+
     .mock-cards-grid .mock-game-card:hover {
-      z-index: 2;
       transform: perspective(900px) translateY(-3px) rotateX(var(--card-tilt-x))
-        rotateY(var(--card-tilt-y)) scale(1.012);
+        rotateY(var(--card-tilt-y)) scale(1.02);
       box-shadow: var(--card-shadow-x) calc(20px + var(--card-shadow-y)) 42px rgba(0, 0, 0, 0.5);
     }
 
@@ -121,6 +125,7 @@
     }
 
     .mock-game-card .card-body,
+    .mock-game-card .card-cover::before,
     .mock-game-card .card-cover::after {
       transition-duration: 100ms;
     }
