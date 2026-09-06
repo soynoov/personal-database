@@ -7333,5 +7333,51 @@
       "Rol"
     ],
     "steam_store_name": "Palworld"
+  },
+  {
+    "titulo": "Far Cry 3",
+    "creado_en": "2026-09-06T16:49:38+02:00",
+    "estado": "Terminado",
+    "launcher": "Ubisoft Connect",
+    "plataforma": "PC",
+    "horas": 108,
+    "horas_estimadas": true,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "partidas_al_100": 3,
+    "nota": null,
+    "comentarios": "Completado 3 veces al 100 %. Horas estimadas: 108 h (3 × 36 h completionist de HLTB); no son horas registradas.",
+    "lanzamiento": 2012,
+    "modos": [
+      "solitario",
+      "cooperativo",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": 16,
+    "cover_url": null,
+    "steam_appid": 220240,
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "hltb_breakdown": {
+      "main": 16,
+      "main_plus": 25,
+      "completionist": 36
+    },
+    "steam_store_genres": [
+      "Acción",
+      "Aventura"
+    ],
+    "steam_store_name": "Far Cry 3"
   }
 ]

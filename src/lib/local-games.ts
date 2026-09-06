@@ -35,6 +35,8 @@ export type LocalGame = {
   launcher: string | null;
   plataforma: string | null;
   horas: number | null;
+  /** Indica que `horas` es una aproximación y no un registro del launcher. */
+  horas_estimadas?: boolean | null;
   dificultad?: string | null;
   tamano?: string | null;
   steam_appid?: number | null;
@@ -64,6 +66,8 @@ export type LocalGame = {
     actual: number | null;
     total: number | null;
   } | null;
+  /** Número de partidas completadas al 100 %, independiente de los logros. */
+  partidas_al_100?: number | null;
   steam_cromos?: {
     actual: number | null;
     total: number | null;

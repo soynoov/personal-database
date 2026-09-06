@@ -12,7 +12,7 @@ import GameDetailDLCs from '../../components/game-detail/GameDetailDLCs.astro';
 import GameDetailComments from '../../components/game-detail/GameDetailComments.astro';
 import GameDetailMetacritic from '../../components/game-detail/GameDetailMetacritic.astro';
 import { buildGameCoverUrl, buildGameHeroUrl } from '../../lib/game-cover-url';
-import { hasCompletedAllAchievements } from '../../lib/game-achievements';
+import { getFullCompletionRuns, getGoldenCompletionKind } from '../../lib/game-achievements';
 import {
   formatEuro,
   getPurchasePriceComparison,
@@ -126,6 +126,13 @@ const achievements = game.logros && (game.logros.actual !== null || game.logros.
 const achievementProgress = game.logros?.actual !== null && game.logros?.actual !== undefined && Number(game.logros?.total) > 0
   ? Math.max(0, Math.min(100, Number(game.logros?.actual) / Number(game.logros?.total) * 100))
   : null;
+const fullCompletionRuns = getFullCompletionRuns(game);
+const goldenCompletionKind = getGoldenCompletionKind(game);
+const goldenCompletionLabel = goldenCompletionKind === 'game'
+  ? '100% juego'
+  : goldenCompletionKind === 'achievements'
+    ? '100% logros'
+    : null;
 const steamCards = game.steam_cromos && (game.steam_cromos.actual !== null || game.steam_cromos.total !== null)
   ? `${formatValue(game.steam_cromos.actual)} / ${formatValue(game.steam_cromos.total)}`
   : '-';
@@ -257,10 +264,17 @@ const metadataGroups = [
     className: 'data-group-progress',
     items: [
       {
-        label: 'Logros', value: achievements,
-        note: achievementProgress === null ? 'Sin registrar' : `${achievementProgress.toFixed(0)}% completado`,
-        className: 'detail-item-achievements', progress: achievementProgress, kind: 'achievements' as const,
-        state: achievementProgress === null ? 'empty' as const : achievementProgress >= 100 ? 'complete' as const : 'default' as const,
+        label: fullCompletionRuns > 0 && achievementProgress === null ? 'Completitud' : 'Logros',
+        value: fullCompletionRuns > 0 && achievementProgress === null ? '100%' : achievements,
+        note: fullCompletionRuns > 0 && achievementProgress === null
+          ? `${fullCompletionRuns} ${fullCompletionRuns === 1 ? 'partida completada' : 'partidas completadas'} al 100%`
+          : achievementProgress === null ? 'Sin registrar' : `${achievementProgress.toFixed(0)}% completado`,
+        className: 'detail-item-achievements',
+        progress: fullCompletionRuns > 0 && achievementProgress === null ? 100 : achievementProgress,
+        kind: 'achievements' as const,
+        state: fullCompletionRuns > 0 && achievementProgress === null
+          ? 'complete' as const
+          : achievementProgress === null ? 'empty' as const : achievementProgress >= 100 ? 'complete' as const : 'default' as const,
       },
       { label: 'Dificultad', value: formatValue(game.dificultad), note: game.dificultad ? 'Nivel registrado' : 'Sin registrar', kind: 'difficulty' as const, state: game.dificultad ? 'default' as const : 'empty' as const },
       {
@@ -320,7 +334,7 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
       launcherBadge={{ class: launcherClass, label: formatValue(game.launcher, 'Sin launcher'), icon: gamepadIcon }}
       platformBadge={{ class: platformClass, label: formatValue(game.plataforma) }}
       tagBadges={heroBadges}
-      hasPlatinum={hasCompletedAllAchievements(game)}
+      goldenCompletionLabel={goldenCompletionLabel}
     />
     <GameDetailNav hasDlcs={dlcTotal > 0} isCompetitive={isCompetitive} />
 
@@ -332,7 +346,12 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
         hoursChartPoints={hoursBenchmarkBars}
         hltbBreakdown={hltbBreakdown}
         period={{ startLabel: formatCompactDate(game.fecha_inicio), endLabel: formatCompactDate(effectiveEndDate), elapsedDays }}
-        editValues={{ horas: valueMetrics.realHours, fecha_inicio: game.fecha_inicio, fecha_fin: effectiveEndDate }}
+        editValues={{
+          horas: valueMetrics.realHours,
+          horas_estimadas: game.horas_estimadas === true,
+          fecha_inicio: game.fecha_inicio,
+          fecha_fin: effectiveEndDate,
+        }}
         isRecurring={isRecurring}
       />
       <GameDetailFinance
@@ -367,6 +386,7 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
         plataforma: game.plataforma,
         steam_appid: game.steam_appid ?? null,
         dificultad: game.dificultad ?? null,
+        partidas_al_100: game.partidas_al_100 ?? null,
         logros_actual: game.logros?.actual ?? null,
         logros_total: game.logros?.total ?? null,
         steam_cromos_actual: game.steam_cromos?.actual ?? null,

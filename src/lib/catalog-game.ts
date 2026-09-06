@@ -16,6 +16,7 @@ export type CatalogGame = Pick<
   | "launcher"
   | "plataforma"
   | "horas"
+  | "horas_estimadas"
   | "generos"
   | "tags"
   | "precio_pagado"
@@ -27,6 +28,7 @@ export type CatalogGame = Pick<
   | "steam_appid"
   | "cover_url"
   | "logros"
+  | "partidas_al_100"
 > & {
   slug: string;
   amortizado: boolean;
@@ -45,6 +47,7 @@ export function toCatalogGame(game: LocalGame): CatalogGame {
     launcher: game.launcher,
     plataforma: game.plataforma,
     horas: game.horas,
+    horas_estimadas: game.horas_estimadas,
     generos: getGameGenres(game.generos),
     tags: game.tags,
     precio_pagado: game.precio_pagado,
@@ -56,6 +59,7 @@ export function toCatalogGame(game: LocalGame): CatalogGame {
     steam_appid: game.steam_appid,
     cover_url: game.cover_url,
     logros: game.logros,
+    partidas_al_100: game.partidas_al_100,
   };
 }
 

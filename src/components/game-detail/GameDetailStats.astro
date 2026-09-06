@@ -42,6 +42,7 @@ interface Props {
     plataforma: string | null;
     steam_appid: number | null;
     dificultad: string | null;
+    partidas_al_100: number | null;
     logros_actual: number | null;
     logros_total: number | null;
     steam_cromos_actual: number | null;
@@ -168,6 +169,11 @@ const progressIcons: Record<ProgressKind, string> = {
           <label for="data-edit-difficulty">Dificultad</label>
           <input id="data-edit-difficulty" name="dificultad" type="text" placeholder="Fácil, normal, difícil…" value={editValues.dificultad ?? ''} />
         </div>
+        <div class="edit-field">
+          <label for="data-edit-full-runs">Partidas completadas al 100%</label>
+          <input id="data-edit-full-runs" name="partidas_al_100" type="number" step="1" min="0" value={editValues.partidas_al_100 ?? ''} />
+          <small class="edit-field-hint">Activa el acabado golden aunque el juego no tenga logros.</small>
+        </div>
         <div class="edit-field-row">
           <div class="edit-field">
             <label for="data-edit-achievements-current">Logros conseguidos</label>
@@ -286,6 +292,7 @@ const progressIcons: Record<ProgressKind, string> = {
         launcher: data.get('launcher'),
         plataforma: data.get('plataforma'),
         dificultad: data.get('dificultad'),
+        partidas_al_100: data.get('partidas_al_100'),
         logros_actual: data.get('logros_actual'),
         logros_total: data.get('logros_total'),
         modos: data.getAll('modos'),

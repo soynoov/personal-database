@@ -8,7 +8,7 @@
  */
 
 import { buildGameCoverUrl } from "../lib/game-cover-url";
-import { hasCompletedAllAchievements } from "../lib/game-achievements";
+import { getGoldenCompletionKind } from "../lib/game-achievements";
 import type { CatalogGame } from "../lib/catalog-game";
 import { isCompletedStatus, normalizeStatus } from "../lib/game-status";
 import { getGameTagLabel, hasGameTag, normalizeGameTag } from "../lib/game-tags";
@@ -551,7 +551,11 @@ export function initCatalog(allGames: CatalogGame[]): void {
     }
 
     for (const game of filtered) {
-      const hasPlatinum = hasCompletedAllAchievements(game);
+      const goldenCompletionKind = getGoldenCompletionKind(game);
+      const hasPlatinum = goldenCompletionKind !== null;
+      const goldenAriaLabel = goldenCompletionKind === 'game'
+        ? 'Juego completado al 100%'
+        : '100% de logros completados';
 
       if (activeView === 'cards') {
         const node = elements.template.content.cloneNode(true) as DocumentFragment;
@@ -601,12 +605,15 @@ export function initCatalog(allGames: CatalogGame[]): void {
         (node.querySelector('[data-horas]') as HTMLElement).textContent =
           game.horas == null
             ? '-'
-            : new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1, useGrouping: true }).format(Number(game.horas));
+            : `${game.horas_estimadas ? '≈' : ''}${new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1, useGrouping: true }).format(Number(game.horas))}`;
 
         const card = node.querySelector<HTMLAnchorElement>('[data-game-link]')!;
         card.classList.toggle('is-platinum', hasPlatinum);
         const platinumBadge = node.querySelector<HTMLElement>('[data-platinum]');
-        if (platinumBadge) platinumBadge.hidden = !hasPlatinum;
+        if (platinumBadge) {
+          platinumBadge.hidden = !hasPlatinum;
+          platinumBadge.setAttribute('aria-label', goldenAriaLabel);
+        }
         card.href = `/games/${game.slug}/`;
         fragment.appendChild(node);
         continue;
@@ -617,7 +624,10 @@ export function initCatalog(allGames: CatalogGame[]): void {
       const row = rowNode.querySelector<HTMLAnchorElement>('[data-row-link]')!;
       row.classList.toggle('is-platinum', hasPlatinum);
       const rowPlatinum = rowNode.querySelector<HTMLElement>('[data-row-platinum]');
-      if (rowPlatinum) rowPlatinum.hidden = !hasPlatinum;
+      if (rowPlatinum) {
+        rowPlatinum.hidden = !hasPlatinum;
+        rowPlatinum.setAttribute('aria-label', goldenAriaLabel);
+      }
       (rowNode.querySelector('[data-row-support]') as HTMLElement).textContent =
         Array.isArray(game.generos) && game.generos.length > 0 ? String(game.generos[0]) : 'Sin genero';
 
@@ -639,7 +649,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
       (rowNode.querySelector('[data-row-horas]') as HTMLElement).textContent =
         game.horas == null
           ? '-'
-          : `${game.horas.toLocaleString('es-ES', { maximumFractionDigits: 2, useGrouping: 'always' })} h`;
+          : `${game.horas_estimadas ? '≈' : ''}${game.horas.toLocaleString('es-ES', { maximumFractionDigits: 2, useGrouping: 'always' })} h`;
       (rowNode.querySelector('[data-row-precio]') as HTMLElement).textContent = formatViewPrice(game);
       (rowNode.querySelector('[data-row-lanzamiento]') as HTMLElement).textContent = formatValue(game.lanzamiento);
 

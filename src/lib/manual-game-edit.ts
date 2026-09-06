@@ -100,6 +100,7 @@ export function applyManualGamePatch(
   if (body.launcher !== undefined) updated.launcher = toNullableString(body.launcher);
   if (body.plataforma !== undefined) updated.plataforma = toNullableString(body.plataforma);
   if (body.horas !== undefined) updated.horas = toNullableNumber(body.horas);
+  if (body.horas_estimadas !== undefined) updated.horas_estimadas = toNullableBoolean(body.horas_estimadas);
   if (body.dificultad !== undefined) updated.dificultad = toNullableString(body.dificultad);
   if (body.tamano !== undefined) updated.tamano = toNullableString(body.tamano);
   if (body.lanzamiento !== undefined) updated.lanzamiento = toNullablePositiveInteger(body.lanzamiento);
@@ -139,6 +140,9 @@ export function applyManualGamePatch(
   if (body.rango_actual !== undefined) updated.rango_actual = toNullableString(body.rango_actual);
   if (body.rango_maximo !== undefined) updated.rango_maximo = toNullableString(body.rango_maximo);
   if (body.comentarios !== undefined) updated.comentarios = toNullableString(body.comentarios);
+  if (body.partidas_al_100 !== undefined) {
+    updated.partidas_al_100 = toNullableNonNegativeInteger(body.partidas_al_100);
+  }
 
   if (body.logros_actual !== undefined || body.logros_total !== undefined) {
     const actual = body.logros_actual !== undefined
