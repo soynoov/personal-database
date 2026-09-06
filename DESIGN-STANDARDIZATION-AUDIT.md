@@ -6,7 +6,7 @@
 >
 > Viewports comprobados con Chromium: `1440 × 1024`, `820 × 1180` y `390 × 844`
 >
-> Revisión 1.1: bento obligatorio en toda la ficha y Golden basado en un reflejo de tres haces
+> Revisión 1.2: bento obligatorio y adaptable a los datos; Golden basado en un reflejo de tres haces
 
 ## 1. Veredicto ejecutivo
 
@@ -50,7 +50,7 @@ La auditoría no modifica componentes, APIs ni datos. Todos los archivos visuale
 | Nº | Ruta / flujo | Evidencia | Estado de salud |
 |---:|---|---|---|
 | 1 | Catálogo `/` | [desktop](docs/design-standardization/assets/01-catalog-desktop-current.png), [tablet](docs/design-standardization/assets/03-catalog-tablet-current.png), [móvil](docs/design-standardization/assets/02-catalog-mobile-current.png) | **Atención**: buen lenguaje de card, shell y controles excesivamente fragmentados. |
-| 2 | Ficha `/games/league-of-legends/` | [desktop](docs/design-standardization/assets/04-detail-desktop-current.png), [tablet](docs/design-standardization/assets/32-detail-tablet-current.png), [móvil](docs/design-standardization/assets/10-detail-mobile-current.png) | **Atención**: el bento actual es una fortaleza obligatoria; debe conservarse al unificar la navegación y el shell. |
+| 2 | Ficha `/games/league-of-legends/` | [desktop](docs/design-standardization/assets/04-detail-desktop-current.png), [tablet](docs/design-standardization/assets/32-detail-tablet-current.png), [móvil](docs/design-standardization/assets/10-detail-mobile-current.png) | **Atención**: el bento actual es una fortaleza obligatoria; debe conservarse y reordenarse según los datos disponibles al unificar la navegación y el shell. |
 | 3 | Ruleta `/ruleta/` | [desktop](docs/design-standardization/assets/05-roulette-desktop-current.png), [tablet](docs/design-standardization/assets/33-roulette-tablet-current.png), [móvil](docs/design-standardization/assets/11-roulette-mobile-current.png) | **Atención**: la ruleta tiene protagonismo correcto; el shell cambia y la navegación tapa controles en tablet/móvil. |
 | 4 | Estadísticas `/estadisticas/` | [desktop](docs/design-standardization/assets/06-statistics-desktop-current.png), [tablet](docs/design-standardization/assets/34-statistics-tablet-current.png), [móvil](docs/design-standardization/assets/12-statistics-mobile-current.png) | **Atención**: datos legibles; exceso de colores decorativos y geometría propia. |
 | 5 | Alias `/criterio/` | [resultado de la navegación](docs/design-standardization/assets/07-criterion-desktop-current.png) | **Sano**: el código devuelve un `301` a `/criticas/`; no es una segunda interfaz que mantener. |
@@ -82,7 +82,7 @@ La auditoría no modifica componentes, APIs ni datos. Todos los archivos visuale
 | Media | M1 | Controles y feedback | El catálogo duplica mecanismos de filtro/conteo y el estado vacío es débil. | M |
 | Media | M2 | Datos y métricas | Las tarjetas métricas usan colores funcionales como decoración y pierden jerarquía común. | M |
 | Media | M3 | Responsive | Hay demasiados breakpoints y reglas de clearance para una misma navegación fija. | L |
-| Media | M4 | Ficha y módulos | El bento debe sistematizarse y mantenerse protagonista en Horas, Dinero, Rango, Detalles y Valoración. | M |
+| Media | M4 | Ficha y módulos | El bento debe seguir siendo protagonista, pero sus spans y grupos deben responder a datos completos, parciales, vacíos y no aplicables. | M |
 | Media | M5 | Carga y error | No hay contrato visual compartido para carga diferida, guardado o error recuperable. | M |
 | Baja | B1 | Tipografía | Las familias están tokenizadas, pero el tamaño y tracking se redefinen con demasiada granularidad. | M |
 | Baja | B2 | Diálogos | El diálogo de autenticación ya es coherente; debe convertirse en patrón, no rediseñarse. | S |
@@ -260,13 +260,22 @@ No se ha copiado código ni assets de las demos externas. El mockup reinterpreta
 |---|---|
 | [captura actual](docs/design-standardization/assets/40-detail-technical-current.png) | [captura actual](docs/design-standardization/assets/41-detail-rating-current.png) |
 
+La composición de Dinero cambia de forma sustancial según los datos reales:
+
+| Compra con mercado | Free-to-play con micropagos | Datos de compra incompletos |
+|---|---|---|
+| ![Dinero actual con gráfica de mercado desplegada](docs/design-standardization/assets/44-finance-market-current.png) | ![Dinero actual para un free-to-play con micropagos](docs/design-standardization/assets/46-finance-f2p-current.png) | ![Dinero actual con datos incompletos](docs/design-standardization/assets/45-finance-incomplete-current.png) |
+
 #### Desviación observable
 
 - La ficha tiene una composición bento más madura que el resto de la aplicación. Esa asimetría es una firma visual obligatoria, no ruido que deba eliminarse.
 - La primera propuesta de esta auditoría aplanaba Horas y convertía sus módulos en filas y separadores. Esa dirección queda descartada porque elimina el protagonismo del bento.
+- La segunda propuesta recuperaba el bento, pero representaba una única ficha ideal. No definía qué ocurre cuando un dato falta, vale cero, no aplica o activa módulos adicionales.
+- En concreto, la propuesta de Dinero omitía la gráfica de precios. El estado real demuestra que el bloque Mercado puede añadir una gráfica del juego base, un resumen de precios y, cuando hay DLC suficientes, una segunda gráfica.
 - El problema real es que la ficha funciona como una aplicación separada: navegación, cabecera y márgenes son propios. Unificar el shell no autoriza a uniformar sus widgets.
 - En tablet la línea entre hero y navegación se percibe abrupta.
 - Horas y Dinero ya tienen una jerarquía clara de módulos grandes y pequeños. Rango, Detalles y Valoración deben reforzar el mismo principio, evitando que sus contenidos se conviertan en una única banda o en tarjetas idénticas.
+- `LocalGame` admite `rango_actual` y `rango_maximo`, pero `GameDetailCompetitive.astro` solo recibe y representa el máximo. El bento futuro debe reservar una composición válida para ambos sin inventar el rango actual cuando no existe.
 - Las acciones de edición cambian de ubicación entre viewports sin un patrón global claro.
 
 #### Fuente normativa
@@ -274,6 +283,7 @@ No se ha copiado código ni assets de las demos externas. El mockup reinterpreta
 - Requisito de producto confirmado: el bento debe ser protagonista en **todas** las áreas de la ficha —Horas, Dinero, Rango, Detalles y Valoración—.
 - `theme.css`: regla explícita de radios descendentes por nivel de anidación.
 - Patrón dominante comprobado: `frosted-bento.css`, `flat-blocks.css`, `finance.css`, `competitive.css` y `experience.css` ya contienen grids y spans reutilizables.
+- Modelo y condiciones reales comprobados en `LocalGame`, `game-finance.ts`, `GameDetailHours.astro`, `GameDetailFinance.astro`, `GameDetailStats.astro` y `GameDetailMetacritic.astro`.
 - Patrón dominante de la ficha: navegación interna y edición contextual son útiles y deben conservarse.
 - Dirección futura: `WidgetFrame` y `AppShell` confirman una composición por widgets, pero su implementación pertenece a la migración posterior.
 
@@ -281,28 +291,41 @@ No se ha copiado código ni assets de las demos externas. El mockup reinterpreta
 
 - Integrar la ficha en el shell compartido.
 - Hero especial con una transición vertical oscura de 72–96 px hacia el contenido, sin corte horizontal.
-- Mantener una retícula bento de 12 columnas en desktop. Cada sección contiene como mínimo un módulo protagonista, uno o dos módulos de apoyo y celdas secundarias con spans deliberadamente distintos.
+- Mantener una retícula bento de 12 columnas en desktop. Cada sección contiene un módulo protagonista y, solo cuando existen, módulos de apoyo con spans deliberadamente distintos. No se reservan huecos para datos ausentes.
 - Horas: cifra principal y gráfico dominantes; periodo, inicio y objetivos como módulos de apoyo.
-- Dinero: meta económica y rentabilidad dominantes; costes, horas ponderadas, excedente y gasto como módulos secundarios.
-- Rango: Peak ELO como pieza protagonista; contexto competitivo en celdas menores cuando exista.
+- Dinero: meta económica y rentabilidad dominantes; la gráfica de mercado ocupa una celda ancha cuando hay al menos dos referencias; costes, precios, horas ponderadas, excedente y desglose de gasto ocupan el espacio restante.
+- Rango: Peak ELO como pieza protagonista; rango actual como apoyo cuando exista. Si el juego no es competitivo, la sección no se renderiza.
 - Detalles: Progreso, Catalogación, Mi copia e Información técnica conservan tamaños distintos según importancia.
 - Valoración: bloque de notas externas, desglose personal y comentario forman tres escalas diferentes, no una cuadrícula uniforme.
 - En móvil, el bento se convierte en una secuencia ordenada: protagonista a ancho completo y secundarios en dos columnas cuando el contenido y los targets de 44 px lo permitan.
 
+#### Matriz obligatoria de variables y reflujo
+
+| Área | Variables que alteran la composición | Comportamiento recomendado |
+|---|---|---|
+| Horas | Horas `null`, cero o registradas; estimación; recurrente; fechas parciales; HLTB aplicable o ausente. | Distinguir cero de “sin registrar”. Mostrar `≈` y “Tiempo estimado” cuando corresponda. En recurrentes se elimina Fin; en competitivo/recurrente se retiran meta, progreso y barras HLTB no aplicables. Si no hay referencias, no se reserva una celda de gráfica vacía. |
+| Dinero | Compra completa o incompleta; horas ausentes; coste cero; free-to-play; micropagos; DLC; score completo; 0–4 referencias de precio. | El estado incompleto sustituye la rentabilidad por una CTA protagonista. En free-to-play desaparece Juego base y Micropagos pasa a ser la fuente principal. Con dos o más precios, la gráfica del juego base ocupa `7/12` y el resumen `5/12`; con menos, ambos colapsan a tarjetas. La gráfica de DLC solo aparece con dos o más valores agregados. |
+| Rango | No competitivo; competitivo sin rango; solo peak; actual y peak. | Ocultar toda la sección si no aplica. Mostrar un vacío accionable si es competitivo sin datos. Con ambos valores, Peak domina y Actual actúa como celda secundaria; con solo Peak, este ocupa todo el ancho útil. |
+| Detalles | Steam/no Steam; logros parciales o completos; partidas al 100 % sin logros; cromos; dificultad, modos, etiquetas o géneros ausentes. | Retirar Cromos fuera de Steam y recomponer el grid. Sustituir Logros por Completitud cuando esa sea la evidencia disponible. Las celdas vacías informativas pueden mantenerse, pero no deben crear columnas o alturas muertas. |
+| Valoración | Sin datos; solo Metacritic; nota heredada; criterios parciales o completos; mención; Comunidad aplicable. | El vacío es una CTA compacta. Las notas externas no fuerzan un desglose personal vacío a la misma altura. El cálculo y la mención aparecen solo cuando existen; Comunidad añade una fila únicamente en juegos con contexto público/competitivo. |
+
+La composición debe derivarse de estados semánticos, no de coordenadas por juego. Una misma combinación produce siempre el mismo patrón de spans.
+
 #### Mockup corregido — **PROPUESTA**
 
-![Propuesta de sistema bento obligatorio para toda la ficha](docs/design-standardization/assets/42-game-detail-bento-system-proposed.png)
+![Propuesta de sistema bento adaptable a estados reales, con gráfica de Dinero](docs/design-standardization/assets/47-game-detail-bento-data-states-proposed.png)
 
 #### Indicaciones técnicas
 
 - Montar la página dentro del mismo wrapper de `BaseLayout`/`Sidebar` que el resto de escenas.
 - Aplicar el fade en la capa del hero o en un pseudo-elemento al final de la imagen, no como una franja sólida del contenido.
 - Definir una primitiva compartida de grid, por ejemplo `.game-bento-grid`, y variantes de span semánticas como `is-hero`, `is-wide`, `is-tall` e `is-compact`; no codificar coordenadas distintas en cada página.
+- Exponer estados de composición en atributos o clases semánticas —por ejemplo `data-state="complete|partial|empty"`, `data-market="chart|cards|none"` y `data-source="paid|free-to-play"`— en lugar de inferir el layout mediante selectores posicionales.
 - Mantener la regla de radios por nesting: el frame de sección puede contener cards bento visibles siempre que los radios y bordes reduzcan jerárquicamente.
 - No imponer el mismo número de columnas internas a las cinco secciones. La consistencia procede del ritmo, los spans y la jerarquía, no de hacer todas las cards iguales.
-- En móvil, declarar el orden de lectura en el DOM y usar CSS Grid solo para reagrupar secundarios; la lectura accesible no debe depender de la posición visual.
+- En móvil, declarar el orden de lectura en el DOM y usar CSS Grid solo para reagrupar secundarios; la lectura accesible no debe depender de la posición visual. La gráfica, cuando exista, va a ancho completo debajo del resumen principal.
 - Unificar el tamaño y posición de los botones de edición con la variante de icon button del diálogo/editor.
-- Mantener los gráficos con fondo neutro y usar el color funcional solo en series, objetivos y leyenda.
+- Mantener los gráficos con fondo neutro y usar el color funcional solo en series, objetivos y leyenda. El bloque Mercado puede seguir siendo desplegable, pero el estado abierto debe formar parte de la especificación y de la validación visual.
 
 **Prioridad:** Media para sistematizar el bento; el corte de imagen es Alta por ser una regresión visual evidente. **Esfuerzo:** M.
 
@@ -429,7 +452,7 @@ No deben mezclarse. Aplicar ahora la paleta o fuentes futuras obligaría a juzga
 | Mantener Anton SC, Elms Sans y Stack Sans Text. | Sustituir la escala actual por `--ds-font-*` y `--ds-type-*`. |
 | Unificar shell y `PageHeader` con `--theme-black`, `--theme-white` y `--theme-purple`. | Crear `tokens.css` con la paleta `--ds-*`. |
 | Convertir colores/radios repetidos en aliases de `theme.css`. | Adoptar `WidgetFrame`, `Metric`, `ProgressBar`, `AppShell` y `AppHeader` definitivos. |
-| Sistematizar el bento de toda la ficha sin aplanar sus módulos ni alterar datos o IA. | Introducir frost, ambient light y presets de movimiento aprobados. |
+| Sistematizar el bento de toda la ficha sin aplanar sus módulos y haciendo que el reflujo responda a los datos reales. | Introducir frost, ambient light y presets de movimiento aprobados. |
 | Rehacer Golden con puntero normalizado y fallback reducido. | Mapear el foil a `--ds-foil-*` cuando esos tokens sean normativos. |
 | Conservar el diálogo actual como patrón. | Crear `/design-system` y pruebas visuales contra el mockup aprobado. |
 
@@ -446,7 +469,7 @@ No deben mezclarse. Aplicar ahora la paleta o fuentes futuras obligaría a juzga
 
 1. Unificar shell, marca, app header y page header.
 2. Normalizar controles, vacío, carga, error y diálogo.
-3. Extraer métricas, chart frames, primitivas bento, listas y acciones compartidas.
+3. Extraer métricas, chart frames, primitivas bento, listas y acciones compartidas, junto con un contrato común de estados de datos.
 4. Migrar valores literales a tokens actuales por dominio, no mediante una reescritura global de una vez.
 
 ### Fase C — decisión y migración de `DESIGN.md`
@@ -466,7 +489,7 @@ No deben mezclarse. Aplicar ahora la paleta o fuentes futuras obligaría a juzga
 | Bordes | **Medio**: generalmente sobrios; la ficha usa nesting bento legítimo, pero no siempre sistematizado. | El bento puede anidar módulos visibles si borde y radio reducen jerárquicamente; fuera de él, usar separadores antes que otra caja. |
 | Jerarquía | **Bajo**: títulos, marca y métricas cambian por ruta. | Un `PageHeader` y un orden común de título, contexto, métricas y acción. |
 | Responsive | **Bajo**: clipping y nav superpuesta; demasiadas media queries. | Sin overflow a 390; sin overlays a 820; shell estable a 1440. |
-| Estados | **Medio**: hover y diálogo bien encaminados; vacío/carga/error incompletos. | Rest, hover, focus, disabled, empty, loading, error y reduced motion documentados. |
+| Estados | **Medio**: hover y diálogo bien encaminados; vacío/carga/error y reflujo por datos incompletos no están sistematizados. | Rest, hover, focus, disabled, empty, loading, error, reduced motion y combinaciones `complete/partial/empty/not-applicable` documentados. |
 | Movimiento | **Medio**: tilt sutil correcto, reflejo Golden insuficiente y settle corto. | Una fuente de puntero, tres haces simultáneos, 60 Hz, settle 220–280 ms y fallback táctil/reducido. |
 
 ## 9. Accesibilidad y límites de la validación
@@ -493,7 +516,7 @@ No deben mezclarse. Aplicar ahora la paleta o fuentes futuras obligaría a juzga
 | [27-data-widgets-proposed.png](docs/design-standardization/assets/27-data-widgets-proposed.png) | Sistema neutral de métricas, gráficos y leyendas. |
 | [28-pending-responsive-proposed.png](docs/design-standardization/assets/28-pending-responsive-proposed.png) | Lista desktop/móvil sin clipping ni solape de navegación. |
 | [29-controls-feedback-proposed.png](docs/design-standardization/assets/29-controls-feedback-proposed.png) | Filtros simplificados, vacío accionable y diálogo canónico. |
-| [42-game-detail-bento-system-proposed.png](docs/design-standardization/assets/42-game-detail-bento-system-proposed.png) | Sistema bento para Horas, Dinero, Rango, Detalles y Valoración, con adaptación móvil. |
+| [47-game-detail-bento-data-states-proposed.png](docs/design-standardization/assets/47-game-detail-bento-data-states-proposed.png) | Sistema bento adaptable a datos completos, parciales y no aplicables; incluye gráfica de mercado, free-to-play, estado incompleto y reflujo móvil. |
 | [31-loading-states-proposed.png](docs/design-standardization/assets/31-loading-states-proposed.png) | Carga diferida estable, guardado localizado y error recuperable. |
 
 ## 11. Criterio de cierre de la futura implementación
@@ -506,6 +529,8 @@ La estandarización puede considerarse terminada cuando:
 - los valores visuales nuevos proceden de tokens;
 - la card Golden demuestra coherencia entre puntero, tilt, sombra, borde, haz principal y dos reflejos secundarios en cuatro estados estáticos y en movimiento;
 - táctil y `prefers-reduced-motion` conservan significado sin inclinación ni foil dinámico;
-- Horas, Dinero, Rango, Detalles y Valoración conservan un bento protagonista en desktop y una jerarquía equivalente en móvil;
+- Horas, Dinero, Rango, Detalles y Valoración conservan un bento protagonista en desktop y una jerarquía equivalente en móvil, sin huecos muertos al cambiar los datos;
+- Dinero valida por separado compra con gráfica de mercado, free-to-play con micropagos, gasto incompleto, coste cero, horas ausentes y DLC;
+- Rango distingue actual, máximo, vacío competitivo y sección no aplicable; Detalles y Valoración reordenan sus módulos condicionales sin falsear datos;
 - el estado vacío, carga, error y diálogo tienen un patrón compartido;
 - el build pasa y la comparación visual se realiza contra los mockups aprobados, no contra interpretaciones locales por página.
