@@ -824,14 +824,6 @@
     pointer-events: none;
   }
 
-  .cards-bento .card-cover img {
-    transition: transform 220ms ease;
-  }
-
-  .cards-bento .card:hover .card-cover img {
-    transform: scale(1.03);
-  }
-
   .cards-bento .card-body {
     gap: 0.78rem;
     padding: 0.95rem 0.95rem 0.9rem;

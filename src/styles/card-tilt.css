@@ -3,6 +3,8 @@
     .mock-cards-grid .mock-game-card {
       --card-tilt-x: 0deg;
       --card-tilt-y: 0deg;
+      --card-shine-x: 0px;
+      --card-shine-y: 0px;
       transform-origin: center;
       transform-style: preserve-3d;
       backface-visibility: hidden;
@@ -11,11 +13,40 @@
     .mock-cards-grid .mock-game-card:hover {
       z-index: 1;
       transform: perspective(900px) translateY(-3px) rotateX(var(--card-tilt-x))
-        rotateY(var(--card-tilt-y));
+        rotateY(var(--card-tilt-y)) scale(1.012);
       transition:
         transform 90ms ease-out,
         box-shadow 180ms ease;
       will-change: transform;
+    }
+
+    .mock-cards-grid .mock-game-card.is-platinum::after {
+      content: '';
+      position: absolute;
+      z-index: 6;
+      top: -35%;
+      left: 36%;
+      width: 28%;
+      height: 170%;
+      pointer-events: none;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 232, 143, 0.06) 20%,
+        rgba(255, 246, 207, 0.34) 50%,
+        rgba(255, 232, 143, 0.08) 80%,
+        transparent 100%
+      );
+      mix-blend-mode: screen;
+      opacity: 0;
+      transform: translate3d(var(--card-shine-x), var(--card-shine-y), 0) skewX(-18deg);
+      transition:
+        opacity 160ms ease-out,
+        transform 90ms ease-out;
+    }
+
+    .mock-cards-grid .mock-game-card.is-platinum:hover::after {
+      opacity: 1;
     }
   }
 }

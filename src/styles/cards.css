@@ -36,30 +36,6 @@
       0 18px 38px rgba(0, 0, 0, 0.48);
   }
 
-  .mock-game-card.is-platinum::after {
-    content: '';
-    position: absolute;
-    z-index: 6;
-    top: -30%;
-    bottom: -30%;
-    left: -48%;
-    width: 26%;
-    pointer-events: none;
-    background: linear-gradient(90deg, transparent, rgba(255, 239, 173, 0.24), transparent);
-    transform: skewX(-18deg);
-    opacity: 0;
-  }
-
-  .mock-game-card.is-platinum:hover::after {
-    animation: platinum-card-shine 650ms ease-out;
-  }
-
-  @keyframes platinum-card-shine {
-    0% { left: -48%; opacity: 0; }
-    24% { opacity: 1; }
-    100% { left: 122%; opacity: 0; }
-  }
-
   .platinum-badge {
     position: absolute;
     z-index: 7;
@@ -204,11 +180,6 @@
     object-fit: cover;
     object-position: center top;
     display: block;
-    transition: transform 240ms ease;
-  }
-
-  .mock-game-card:hover .card-cover img {
-    transform: scale(1.04);
   }
 
   /* El ::after ya no hace falta: el gradiente del mask-image del body lo cubre */
@@ -741,10 +712,6 @@
       right: 0.5rem;
       width: 30px;
       height: 30px;
-    }
-
-    .mock-game-card.is-platinum:hover::after {
-      animation: none;
     }
 
     .mock-game-card .card-main {

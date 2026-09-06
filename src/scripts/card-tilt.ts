@@ -22,6 +22,8 @@ export function initCardTilt(container: HTMLElement | null): void {
   const resetCard = (card: HTMLElement): void => {
     card.style.removeProperty('--card-tilt-x');
     card.style.removeProperty('--card-tilt-y');
+    card.style.removeProperty('--card-shine-x');
+    card.style.removeProperty('--card-shine-y');
   };
 
   const resetActiveCard = (): void => {
@@ -57,6 +59,14 @@ export function initCardTilt(container: HTMLElement | null): void {
       nextTilt.card.style.setProperty(
         '--card-tilt-y',
         `${(pointerX * MAX_TILT_DEGREES).toFixed(2)}deg`,
+      );
+      nextTilt.card.style.setProperty(
+        '--card-shine-x',
+        `${(pointerX * bounds.width * 0.6).toFixed(2)}px`,
+      );
+      nextTilt.card.style.setProperty(
+        '--card-shine-y',
+        `${(pointerY * bounds.height * 0.08).toFixed(2)}px`,
       );
     });
   };
