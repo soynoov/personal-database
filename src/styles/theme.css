@@ -192,11 +192,22 @@
   --card-glass-border: rgba(255, 255, 255, 0);
 
   /* ── Card Golden: holográfico diagonal, sin arcoíris ──────── */
-  --card-hover-scale: 1.06;
+  --card-hover-scale: 1.10;
   --card-foil-bronze: rgba(175, 102, 25, 0.32);
   --card-foil-amber: rgba(244, 176, 53, 0.5);
   --card-foil-gold: rgba(255, 219, 120, 0.72);
   --card-foil-glint: rgba(255, 247, 221, 0.92);
+
+  /* Ficha: bento operativo y reflejo Golden detrás de los datos. */
+  --detail-bento-surface: var(--app-surface-1);
+  --detail-bento-card: color-mix(in srgb, var(--bg-deep) 80%, var(--surface-card));
+  --detail-bento-emphasis: color-mix(in srgb, var(--detail-bento-card) 94%, var(--theme-purple));
+  --detail-bento-line: color-mix(in srgb, var(--theme-white) 12%, transparent);
+  --detail-bento-gap: 0.75rem;
+  --detail-golden-line: color-mix(in srgb, var(--card-foil-gold) 42%, transparent);
+  --detail-golden-rest: 0.18;
+  --detail-golden-active: 0.42;
+  --detail-golden-settle: 260ms;
 
   /* ── Card: Tipografía interna ───────────────────────────── */
   --card-title-color: #f4efea;

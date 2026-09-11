@@ -5,6 +5,7 @@ import FormCheckbox from '../FormCheckbox.astro';
 import TablerIcon from '../TablerIcon.astro';
 import { GAME_MODES } from '../../lib/game-modes';
 import { PUBLIC_GAME_TAGS } from '../../lib/game-tags';
+import { getDetailGroupLayout, type DetailGroup, type DetailItem, type ProgressKind } from '../../lib/game-detail-layout';
 import categoryIcon from '@tabler/icons/outline/category-2.svg?url';
 import editIcon from '@tabler/icons/outline/edit.svg?url';
 import settingsIcon from '@tabler/icons/outline/settings.svg?url';
@@ -15,26 +16,9 @@ import copyIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
 import databaseIcon from '@tabler/icons/outline/database-cog.svg?url';
 import chevronDownIcon from '@tabler/icons/outline/chevron-down.svg?url';
 
-type ProgressKind = 'difficulty' | 'achievements' | 'cards';
-type DetailState = 'default' | 'empty' | 'complete' | 'not-applicable';
-type DetailItem = {
-  label: string;
-  value: string;
-  className?: string;
-  note?: string;
-  progress?: number | null;
-  kind?: ProgressKind;
-  state?: DetailState;
-  action?: 'steam-appid';
-};
-
 interface Props {
   slug: string;
-  metadataGroups: Array<{
-    title: string;
-    className?: string;
-    items: DetailItem[];
-  }>;
+  metadataGroups: DetailGroup[];
   systemItems: DetailItem[];
   isSteam: boolean;
   editValues: {
@@ -73,11 +57,12 @@ const progressIcons: Record<ProgressKind, string> = {
     </button>
   </div>
 
-  <div class="game-data-groups">
+  <div class="game-data-groups game-bento-grid">
     {metadataGroups.map((group) => {
-      const visibleItems = group.items.filter((item) => item.state !== 'not-applicable');
+      const { visibleItems, state: groupState } = getDetailGroupLayout(group.items);
+      if (groupState === 'not-applicable') return null;
       return (
-        <article class:list={["data-group-card", group.className]}>
+        <article class:list={["data-group-card", group.className]} data-state={groupState}>
           <div class="data-group-head">
             <span class="data-group-icon"><TablerIcon src={groupIcons[group.title] ?? settingsIcon} /></span>
             <h3>{group.title}</h3>
@@ -111,6 +96,9 @@ const progressIcons: Record<ProgressKind, string> = {
               </div>
             ))}
           </dl>
+          {groupState === 'empty' && group.className === 'data-group-progress' && (
+            <button class="detail-empty-action" type="button" data-detail-edit>Registrar mi progreso</button>
+          )}
         </article>
       );
     })}
@@ -281,6 +269,12 @@ const progressIcons: Record<ProgressKind, string> = {
   };
 
   wireDialog('data-edit-trigger', 'data-edit-dialog', 'data-edit-close', 'data-edit-cancel');
+  document.querySelectorAll('[data-detail-edit]').forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      const dialog = document.getElementById('data-edit-dialog');
+      if (dialog instanceof HTMLDialogElement) dialog.showModal();
+    });
+  });
   const dataForm = document.getElementById('data-edit-form');
   const dataError = document.getElementById('data-edit-error');
   const dataSubmit = document.getElementById('data-edit-submit');

@@ -11,6 +11,7 @@
     "build": "astro build",
     "test:finance": "node scripts/verify-game-finance.mjs",
     "test:catalog": "node scripts/verify-catalog-filters.mjs",
+    "test:detail": "node scripts/verify-game-detail.mjs",
     "preview": "astro preview"
   },
   "dependencies": {

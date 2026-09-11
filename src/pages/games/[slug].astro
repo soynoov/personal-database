@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import GameDetailChartsScript from '../../components/GameDetailChartsScript.astro';
 import GameDetailHero from '../../components/game-detail/GameDetailHero.astro';
+import GameDetailGoldenAtmosphere from '../../components/game-detail/GameDetailGoldenAtmosphere.astro';
 import GameDetailTopbar from '../../components/game-detail/GameDetailTopbar.astro';
 import GameDetailNav from '../../components/game-detail/GameDetailNav.astro';
 import GameDetailHours from '../../components/game-detail/GameDetailHours.astro';
@@ -316,8 +317,9 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
 ---
 
 <BaseLayout title={`${game.titulo} | Personal Database`}>
-  <main class="shell game-page game-page-rich" style={heroCoverStyle}>
+  <main class:list={['shell', 'game-page', 'game-page-rich', { 'is-golden': goldenCompletionKind !== null }]} data-golden={goldenCompletionKind ?? undefined} style={heroCoverStyle}>
     <div class="game-page-backdrop" aria-hidden="true"></div>
+    {goldenCompletionKind !== null && <GameDetailGoldenAtmosphere />}
     <GameDetailTopbar
       slug={slug}
       editValues={{
