@@ -1,4 +1,67 @@
-# Design QA — Game Cards · frost y foil dinámico
+# Design QA — Golden en ficha, bento Detalles y pastillas · 2026-09-11
+
+## Findings
+
+No quedan diferencias P0/P1/P2 accionables en el alcance implementado. La auditoría se ha adaptado al bloque Detalles, no se ha reproducido su tablero completo de Dinero. Horas, Dinero, gráficas y datos no se han modificado.
+
+## Comparison target and evidence
+
+- Fuente normativa: `DESIGN-STANDARDIZATION-AUDIT.md`, sección 5.4, y tokens actuales de `src/styles/theme.css`.
+- Fuente visual bento: `docs/design-standardization/assets/47-game-detail-bento-data-states-proposed.png`, 1536 × 1024 px. Su panel Detalles define las variantes Steam/no Steam, completitud y mínimos datos; la distribución de esta entrega adapta la retícula de 12 columnas descrita en el documento.
+- Fuente visual de pastillas aprobada: `C:/Users/heroy/.codex/generated_images/01a0765a-e9e2-70d3-80f3-355a09b42efc/exec-da01161a-a53b-47ed-afff-5405a9a556b1.png`, 1487 × 1058 px. La columna derecha es el objetivo.
+- Ruta principal: `http://127.0.0.1:4321/games/marvel-rivals/`; catálogo `/?golden=true`. Tema oscuro; datos reales de desarrollo; no se guardaron formularios.
+- Chromium con Playwright directo, expresamente autorizado por el usuario. Viewports CSS: 1440 × 1024, 820 × 1180 y 390 × 844; deviceScaleFactor 1. También contexto táctil de iPhone 12 a 390 × 844.
+- Capturas de Detalles por elemento: `.codex-qa/golden-detail-1440.png` (1416 × 614), `golden-detail-820.png` (796 × 801) y `golden-detail-390.png` (378 × 1054). El recorte excluye navegación y no simula la altura total de una pantalla móvil.
+- Comparación conjunta de composición: `.codex-qa/golden-bento-comparison.png`, con fuente, escritorio, tablet, móvil y estado vacío. Reducción proporcional para presentar la hoja; tipografía y wrapping revisados además en las capturas nativas abiertas.
+- Comparación focal de pastillas: `.codex-qa/golden-pills-comparison.png`. Fuente e implementación normalizadas a una altura de card aproximada de 568 px. Captura real hover de 289 × 505 px. La posición del reflejo no es un objetivo estático: cambia con el puntero.
+- Fondo en posiciones opuestas: `.codex-qa/golden-background-left.png` y `golden-background-right.png`, 1440 × 1024. Los haces quedan detrás de las superficies de datos.
+- Las capturas y scripts de navegador en `.codex-qa/` son evidencia local ignorada por Git; no se publican como parte de la aplicación. Este informe sí queda versionado.
+
+## Required fidelity surfaces
+
+- Fonts and typography: se conservan las familias del producto; pastillas de 10 px, sin reducción del texto. Progreso tiene la cifra protagonista y los secundarios una escala menor. Wrapping móvil comprobado en etiquetas largas; no hay recortes ni overflow de celdas. No se usan los textos generados del mock como datos de la aplicación.
+- Spacing and layout rhythm: retícula 12 columnas con Progreso 7/12 y dos apoyos 5/12; gaps de 12 px y radios jerárquicos 32/16/8 px. A 820 px, Progreso ocupa todo el ancho; a 390 px los grupos se ordenan verticalmente, manteniendo secundarios de dos columnas. La card de catálogo crece a 1.10 y conserva z-index 20.
+- Colors and tokens: superficies opacas en Detalles con bordes sobrios y acento violeta; Golden usa los tokens dorados existentes. Las pastillas de plataforma/launcher son neutras, las de estado conservan color semántico con relleno 8 % y borde 18 %. No cambian los filtros ni sus targets.
+- Image quality and assets: portada original y Tabler existentes, sin nuevos assets recreados; la portada no recibe zoom propio (`transform: none`). Se conserva la capa inferior de frosted y el degradado. El foil de la ficha es una superficie decorativa sin eventos por debajo del contenido, no un filtro sobre la imagen o el texto.
+- Copy and content: se mantienen valores reales, cero válido y diferencias entre vacío/no aplicable. Far Cry 3 usa completitud; fuera de Steam no se muestran cromos. El vacío ofrece “Registrar mi progreso” y abre el diálogo existente. No se han cambiado APIs, reglas Golden ni datos.
+
+## Comparison history
+
+1. P2 detectado durante la primera captura: una regla anterior conservaba la cabecera del grupo en una columna lateral y restaba área al bento. Corregido con `grid-template-columns: minmax(0, 1fr)` en `.data-group-card`. La captura final muestra la cabecera encima de las celdas.
+2. P2 detectado en la inspección de capas: el selector genérico del fondo situaba la atmósfera al mismo z-index que el contenido. Corregido con `.game-page-rich.is-golden > .game-golden-atmosphere`. Verificado z-index 0 de atmósfera frente a 1 en Detalles.
+3. Comparación posterior: `.codex-qa/golden-bento-comparison.png` y capturas de posiciones opuestas confirman la jerarquía, legibilidad y geometría estable. Sin otros P0/P1/P2 en la comparación de pastillas.
+4. Los bloqueos del controlador anterior de Chromium y los permisos de lectura del sandbox fueron incidencias del entorno, no se clasificaron como fallos de producto. Playwright directo y build autorizado completaron la validación.
+
+## Interaction and validation
+
+- Playwright: `.codex-qa/verify-golden-final.mjs`; resultado `.codex-qa/golden-final-results.json`, `passed: true`, sin errores de página observados.
+- Golden por logros: Marvel Rivals; Golden por partidas al 100 %: Far Cry 3; parcial no Golden: MiSide; vacío no Golden: Firewatch. Todos comprobados en escritorio y móvil, sin overflow horizontal ni de celdas.
+- El movimiento cambia posición y ángulo de los haces; el bounding box de los datos permanece idéntico entre posiciones opuestas del puntero.
+- Diálogo de datos, acción de vacío, acordeón técnico y editor de App ID abren y cierran con Escape. No se pulsó Guardar. La atmósfera deja de seguir el puntero mientras hay un diálogo abierto.
+- `prefers-reduced-motion` y táctil: sin reflejo dinámico ni transformación de la card; se conserva la identidad Golden estática. Una única card puede tener tracking.
+- Pastillas: altura 26 px, texto 10 px, PC y Steam con el mismo neutro. Hover: escala próxima a 1.10, z-index 20 y portada sin transform propio.
+- Targets nuevos de edición/acción de 44 px y foco visible. No se declara una certificación WCAG ni una auditoría completa de contraste en esta iteración.
+- `npm run test:detail`, `npm run test:catalog`, `npm run test:finance`: passed.
+- `npm run build`: passed (Astro/Vercel, 7.72 s en la última ejecución); `git diff --check`: passed. La extracción mecánica de las pastillas a `src/styles/card-badges.css` también se validó repitiendo todos los checks de Playwright, sin cambios visuales.
+
+## Implementation checklist
+
+- [x] Zoom de card completa de 1.06 a 1.10 sin tocar la inclinación aprobada.
+- [x] Pastillas sutiles aprobadas limitadas al catálogo.
+- [x] Fondo Golden coherente con el puntero y por debajo de los datos.
+- [x] Bento Detalles asimétrico, responsive y sensible a estados de datos.
+- [x] Preservar Horas, Dinero, APIs y cambios ajenos del repositorio.
+- [x] Comparación visual, interacciones, fallbacks, regresiones y build.
+
+## Follow-up polish
+
+- P3 opcional: calibrar la intensidad del reflejo de fondo tras usarlo con el monitor y ratón habituales del usuario. No queda trabajo obligatorio de esta entrega pendiente por ese ajuste subjetivo.
+
+final result: passed
+
+---
+
+# Histórico — Game Cards · frost y foil dinámico (validación anterior)
 
 ## Comparison target
 
