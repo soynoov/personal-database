@@ -1,4 +1,71 @@
-# Design QA — Golden en ficha, bento Detalles y pastillas · 2026-09-11
+# Design QA — Bento Horas, Modos y Golden ultrawide · 2026-09-11
+
+## Findings
+
+No quedan diferencias P0/P1/P2 accionables en el alcance revisado. Se continúa el sistema de marca de la auditoría en Horas y Modos, y se corrige el fondo Golden. No se declara terminada la migración visual de toda la web. Dinero, APIs, cálculos económicos y datos guardados permanecen fuera de este cambio.
+
+## Comparison target and evidence
+
+- Fuente normativa: `DESIGN-STANDARDIZATION-AUDIT.md`, §5.4, y `src/styles/theme.css`. Prevalecen los tokens operativos, sin introducir migraciones futuras.
+- Referencia aprobada: `docs/design-standardization/assets/47-game-detail-bento-data-states-proposed.png` (1536 × 1024). Se adapta su jerarquía bento y reflujo por datos; no se copian los valores ficticios del tablero ni se reproduce la sección Dinero.
+- Incidencias aportadas por el usuario: `C:/Users/heroy/AppData/Local/Temp/codex-clipboard-647ece23-b64c-4c04-9a40-b5d017c76e85.png` (Modos) y `codex-clipboard-2307a8cd-f22b-4c8f-8b1c-0afe6ee1941c.png` (Horas). Documentan el estado anterior, no un objetivo de reproducción literal.
+- Comparación conjunta inspeccionada: `.codex-qa/hours-brand-comparison.png` (1680 × 2283), fuente aprobada, antes y después, recurrentes, HLTB, estimadas y móvil. Capturas reducidas proporcionalmente; el wrapping y los valores se revisaron también a resolución nativa.
+- Comparación conjunta del material: `.codex-qa/golden-field-comparison.png`, card real y tres posiciones del puntero a 3440 × 1440. Las capturas finales del centro muestran el reflejo a través del marco, nunca sobre las celdas de datos.
+- Chromium con Playwright directo, autorizado por el usuario. Rutas locales: `/games/marvel-rivals/`, `/games/league-of-legends/`, `/games/miside/`, `/games/firewatch/`, `/games/valorant/`, `/games/wolfenstein-the-new-order/`, `/games/far-cry-3/` y catálogo `/?golden=true`.
+- Viewports: 1440 × 1024, 820 × 1180, 390 × 844, 320 × 844, 3440 × 1440 y 5120 × 1440; deviceScaleFactor 1. Fallback táctil probado además con contexto iPhone 12.
+- Los datos locales difieren de algunas capturas de producción del usuario (fechas y gasto). No se han reconciliado ni cambiado: esta entrega modifica presentación, no la fuente de datos. Los estados descritos son los reales del entorno comprobado.
+- Evidencia y scripts en `.codex-qa/` son recursos locales ignorados por Git; este informe sí queda versionado.
+
+## Required fidelity surfaces
+
+- Fonts and typography: se mantienen las familias de marca. Horas reales dominan con tamaño adaptable; meta y fechas tienen escalas subordinadas. Las duraciones usan el mismo formateador que el resto del producto. La etiqueta larga de horas estimadas se divide en dos líneas en gráficas estrechas.
+- Spacing and layout rhythm: bento de 12 columnas, cifra principal 7/12 y apoyos 5/12, gaps de 12 px y separación de 16 px antes de la gráfica. Radios 32/16/8 px. Los recurrentes sin HLTB usan dos apoyos; los demás estados conservan Fin y reorganizan las celdas sin huecos artificiales. Móvil apila las métricas y mantiene fechas en dos columnas.
+- Colors and tokens: blanco cálido `--text`, violeta `--theme-purple`, superficies `--detail-bento-*` y bordes sobrios. Comparativa con horas personales violetas, referencias neutras y amortización dorada. El marco Golden deja pasar luz mediante `--detail-golden-surface`; las celdas internas siguen opacas.
+- Image quality and assets: portada original, iconos Tabler y fuentes existentes. `golden-material.css` comparte literalmente bandas diagonales y grano fino entre catálogo y ficha. No hay raster nuevo, blur sobre la portada ni zoom independiente de imagen.
+- Copy and content: se distinguen cero (`0 min`), vacío (`Sin registrar`) y estimación (`≈` y etiqueta explícita). No se muestran HLTB ni Fin en recurrentes; la aplicabilidad competitiva sigue las reglas existentes. Sin referencias no se deja una gráfica vacía. Los tres modos se presentan como lista de pastillas neutras, conservando todos los valores.
+
+## Comparison history
+
+1. P2 anterior: Periodo no llenaba su columna, el bloque de gráfica tocaba la fila superior y los estilos de Horas no seguían el bento aprobado. Corregidos retícula, gaps, superficies, jerarquía y escalas.
+2. P2 anterior: los recurrentes seguían mostrando el desglose HLTB aunque sus objetivos no eran aplicables. El desglose ahora respeta la misma aplicabilidad que la meta y las barras.
+3. Se cambió la comparativa a barras horizontales con valores directos y eje desde cero. Los datos de partida y las fórmulas permanecen iguales; no se fuerza una interpretación económica nueva.
+4. P2 detectado en revisión nativa a 320 px: “Horas estimadas” se cortaba en el canvas. Corregido con wrapping; captura final `.codex-qa/hours-far-cry-3-320.png` revisada completa.
+5. P2 anterior del fondo: el material se estiraba con el viewport y apenas se percibía en ultrawide. Ahora el centro sigue al puntero en píxeles y el campo mantiene un máximo de 1100 × 960 px.
+6. Ajuste tras comparación central: el fondo quedaba completamente tapado por el marco opaco. Se permite luz solo en la superficie exterior (82 % de opacidad de base), conservando opacos los datos y la gráfica. La geometría permanece idéntica al mover el ratón.
+7. La primera compilación detectó que el formateador de horas arrastraba dependencias de servidor al cliente. Se extrajo a `game-duration.ts`, manteniendo su exportación anterior y su comportamiento. La compilación final y las pruebas financieras pasan.
+
+## Interaction and validation
+
+- `.codex-qa/verify-hours-golden.mjs` y `hours-golden-results.json`: passed. Escritorio, tablet, móvil, Golden, card de catálogo, diálogo y fallbacks.
+- `.codex-qa/verify-hours-states.mjs` y `hours-edge-results.json`: passed. Valorant vacío sin gráfica, Wolfenstein cero, Far Cry 3 estimado y tres modos; 1440, 390 y 320 px, sin overflow horizontal ni de celdas.
+- Golden a 3440 y 5120 px: centro del campo coincide con el puntero con tolerancia de 2 px; ancho 1100 y alto 960 constantes. Posiciones opuestas y centro comprobados; bounding box de Horas sin cambios.
+- Se conserva desactivación al salir, cambiar de ventana, abrir diálogo o usar movimiento reducido/táctil. Transición de salida 260 ms. Ningún efecto automático. Las superficies decorativas no interceptan clics.
+- Catálogo: mismo material compartido, tracking y portada con `transform: none`; no se cambian el zoom o la inclinación aprobados.
+- Editor de Horas abierto y cerrado con Escape; no se guardó ningún formulario. No se modificaron APIs ni se enviaron escrituras de datos.
+- Los canvas tienen etiqueta accesible con todos los valores; controles de edición de 44 px y foco visible. No se declara certificación WCAG ni una auditoría de accesibilidad integral.
+- Cero errores de página observados en las pruebas de navegador.
+- `npm run test:detail`, `npm run test:finance`, `npm run test:catalog`: passed. Casos añadidos para cero, null, estimadas, referencias inválidas y ausencia de mutación del payload.
+- `npm run build`: passed (Astro/Vercel, 6.91 s en la última compilación). `git diff --check`: passed.
+
+## Implementation checklist
+
+- [x] Aplicar el bento de marca a Horas, conservando estados reales de datos.
+- [x] Mantener todas las variables relevantes y la comparativa, sin placeholders de gráficas vacías.
+- [x] Separar Modos en pastillas sutiles sin separadores huérfanos.
+- [x] Compartir material diagonal entre card y fondo Golden y seguir al puntero en ultrawide.
+- [x] Mantener datos legibles, geometría estable y fallbacks accesibles.
+- [x] Revisar comparaciones conjuntas y capturas nativas, tests y build.
+- [x] Excluir de la entrega las modificaciones preexistentes de `games.json`, `AGENTS.md` y otros artefactos.
+
+## Follow-up polish
+
+- P3 opcional: calibrar intensidad percibida en el monitor ultrawide físico del usuario. Se ha comprobado geometría y resultado visual en Chromium a las resoluciones indicadas; no se ha medido brillo del panel físico ni rendimiento en hardware de baja gama.
+
+final result: passed
+
+---
+
+# Histórico — Golden en ficha, bento Detalles y pastillas · 2026-09-11
 
 ## Findings
 

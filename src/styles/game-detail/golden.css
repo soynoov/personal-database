@@ -1,13 +1,13 @@
 @import '../theme.css';
+@import '../golden-material.css';
 
 @layer global {
-  /* The optical layer is a sibling BEHIND the content, never a text overlay. */
   .game-page-rich.is-golden > .game-golden-atmosphere {
-    --golden-x: 50%;
-    --golden-y: 40%;
-    --golden-field-x: 50%;
-    --golden-field-y: 50%;
-    --golden-angle: 130deg;
+    --golden-x: 50vw;
+    --golden-y: 40vh;
+    --foil-field-x: 50%;
+    --foil-field-y: 50%;
+    --foil-angle: 130deg;
     position: fixed;
     inset: 0;
     z-index: 0;
@@ -15,53 +15,61 @@
     pointer-events: none;
     contain: strict;
     background:
-      radial-gradient(ellipse at 0 22%, color-mix(in srgb, var(--card-foil-amber) 24%, transparent), transparent 42%),
-      radial-gradient(ellipse at 100% 78%, color-mix(in srgb, var(--card-foil-gold) 18%, transparent), transparent 42%);
+      radial-gradient(ellipse at 0 22%, color-mix(in srgb, var(--card-foil-amber) 18%, transparent), transparent 42%),
+      radial-gradient(ellipse at 100% 78%, color-mix(in srgb, var(--card-foil-gold) 12%, transparent), transparent 42%);
   }
 
-  .game-golden-atmosphere::before,
-  .game-golden-atmosphere::after {
-    content: '';
+  /* A bounded patch of the same material as a card, not a viewport-stretched wash. */
+  .game-golden-field {
     position: absolute;
-    inset: -15%;
+    left: var(--golden-x);
+    top: var(--golden-y);
+    width: min(var(--detail-golden-width), calc(100vw + 240px));
+    height: min(var(--detail-golden-height), calc(100vh + 220px));
+    transform: translate(-50%, -50%);
+    opacity: 0;
     pointer-events: none;
     mix-blend-mode: screen;
-    opacity: var(--detail-golden-rest);
-    background-image: repeating-linear-gradient(
-      var(--golden-angle),
-      transparent 0% 18%, var(--card-foil-bronze) 21%,
-      var(--card-foil-gold) 23%, var(--card-foil-glint) 23.8%,
-      var(--card-foil-amber) 25%, transparent 28% 30%,
-      var(--card-foil-gold) 30.4%, transparent 31% 33%,
-      var(--card-foil-glint) 33.3%, transparent 34% 52%
-    );
-    background-size: 200% 200%;
-    background-position: var(--golden-field-x) var(--golden-field-y);
-    mask-image: linear-gradient(90deg, black, transparent 38% 62%, black);
+    mask-image: radial-gradient(ellipse 66% 60% at center, black 8%, rgba(0, 0, 0, 0.85) 35%, transparent 78%);
+    transition: opacity var(--detail-golden-settle) ease-out;
   }
-
-  .game-golden-atmosphere::after {
-    opacity: 0;
-    mask-image: radial-gradient(ellipse 48% 52% at var(--golden-x) var(--golden-y), black, transparent 78%);
-    transition: opacity var(--detail-golden-settle) ease-out, background-position var(--detail-golden-settle) ease-out;
+  .game-golden-field::before, .game-golden-field::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .game-golden-field::before {
+    background-image: var(--golden-bands);
+    background-size: 250% 250%;
+    background-position: var(--foil-field-x) var(--foil-field-y);
+    transition: background-position 84ms ease-out;
+  }
+  .game-golden-field::after {
+    background-image:
+      radial-gradient(ellipse at center, color-mix(in srgb, var(--card-foil-glint) 32%, transparent), transparent 58%),
+      var(--golden-grain);
+    background-size: 100% 100%, 180% 180%;
+    background-position: center, calc(100% - var(--foil-field-x)) calc(100% - var(--foil-field-y));
   }
 
   @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-    .game-golden-atmosphere.is-lit::after {
+    .game-golden-atmosphere.is-lit .game-golden-field {
       opacity: var(--detail-golden-active);
       transition-duration: 120ms;
     }
   }
-
-  .game-page-rich.is-golden :is(.game-hero-cinematic, #technical) {
+  .game-page-rich.is-golden :is(.game-hero-cinematic, #hours, #technical) {
     border-color: var(--detail-golden-line);
   }
-
+  .game-page-rich.is-golden :is(#hours, #technical) {
+    /* Only the outer frame passes light; inner data surfaces remain opaque. */
+    background: var(--detail-golden-surface);
+  }
   .game-page-rich.is-golden .game-overview-card.game-overview-card-cinematic .game-overview-media {
     border-color: var(--card-foil-gold);
   }
-
   @media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) {
-    .game-golden-atmosphere::after { display: none; }
+    .game-golden-field { display: none; }
   }
 }

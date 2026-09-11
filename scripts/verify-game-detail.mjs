@@ -5,6 +5,14 @@ const server = await createServer({ appType: 'custom', server: { middlewareMode:
 try {
   const { getDetailGroupLayout } = await server.ssrLoadModule('/src/lib/game-detail-layout.ts');
   const { getGoldenCompletionKind } = await server.ssrLoadModule('/src/lib/game-achievements.ts');
+  const { getHoursComparisonPoints } = await server.ssrLoadModule('/src/lib/game-hours-view.ts');
+  assert.deepEqual(getHoursComparisonPoints({ myHours: null }), []);
+  assert.deepEqual(getHoursComparisonPoints({ myHours: 0 }), [{ label: 'Mis horas', value: 0, kind: 'personal' }]);
+  const hoursPayload = { myHours: 800.6, benchmarkBars: [{ label: 'Amortización', value: 134.42 }] };
+  assert.deepEqual(getHoursComparisonPoints(hoursPayload).map(point => point.value), [800.6, 134.42]);
+  assert.equal(hoursPayload.benchmarkBars.length, 1, 'Comparison does not mutate stored references');
+  assert.equal(getHoursComparisonPoints({ myHours: 4.6, myHoursLabel: 'Horas estimadas' })[0].label, 'Horas estimadas');
+  assert.deepEqual(getHoursComparisonPoints({ benchmarkBars: [{ label: 'Nulo', value: null }, { label: 'Inválido', value: NaN }, { label: 'Negativo', value: -1 }] }), []);
   const item = (state, value = '-') => ({ label: 'Dato', value, state });
   assert.equal(getDetailGroupLayout([]).state, 'not-applicable');
   assert.equal(getDetailGroupLayout([item('not-applicable')]).visibleItems.length, 0);

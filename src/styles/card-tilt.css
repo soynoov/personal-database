@@ -1,3 +1,5 @@
+@import './golden-material.css';
+
 @layer cards {
   @media (min-width: 821px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
     .mock-cards-grid .mock-game-card {
@@ -76,16 +78,7 @@
 
     .mock-cards-grid .mock-game-card .card-foil::before {
       /* One broad reflection and two fine satellites, repeated in a diagonal metal field. */
-      background-image: repeating-linear-gradient(
-        var(--foil-angle),
-        transparent 0%, var(--card-foil-bronze) 4%,
-        var(--card-foil-amber) 7%, var(--card-foil-gold) 9%,
-        var(--card-foil-glint) 10%, var(--card-foil-gold) 11%,
-        var(--card-foil-bronze) 14%, transparent 17%,
-        transparent 18%, var(--card-foil-glint) 18.5%, transparent 19.2%,
-        transparent 21%, var(--card-foil-gold) 21.4%, transparent 22%,
-        transparent 30%
-      );
+      background-image: var(--golden-bands);
       background-size: 250% 250%;
       background-position: var(--foil-field-x) var(--foil-field-y);
       transition: background-position 260ms ease-out;
@@ -94,7 +87,7 @@
     .mock-cards-grid .mock-game-card .card-foil::after {
       background-image:
         radial-gradient(ellipse at var(--foil-light-x) var(--foil-light-y), color-mix(in srgb, var(--card-foil-glint) 45%, transparent), transparent 58%),
-        repeating-linear-gradient(130deg, transparent 0 3px, color-mix(in srgb, var(--card-foil-glint) 6%, transparent) 3.2px, transparent 4px);
+        var(--golden-grain);
       background-size: 100% 100%, 180% 180%;
       background-position: center, calc(100% - var(--foil-field-x)) calc(100% - var(--foil-field-y));
       transition: background-position 260ms ease-out;

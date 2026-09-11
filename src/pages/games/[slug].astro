@@ -21,7 +21,7 @@ import {
   isAcquiredDlc,
 } from '../../lib/game-finance';
 import { normalizeStatus } from '../../lib/game-status';
-import { formatGameModes, getGameModes } from '../../lib/game-modes';
+import { formatGameModes, getGameModes, getGameModeLabel } from '../../lib/game-modes';
 import { getGameGenres } from '../../lib/game-genres';
 import { isCommunityCriterionApplicable } from '../../lib/game-reviews';
 import { getGameTagLabel, hasGameTag, normalizeGameTag } from '../../lib/game-tags';
@@ -219,18 +219,11 @@ const hoursBenchmarkBars = [
     ? []
     : [{ label: 'Amortización', value: valueMetrics.economicTargetRealHours, color: '#c7a45a' }]),
 ];
-const myHoursColor = valueMetrics.realHours === null
-  ? '#718096'
-  : hltbBreakdown.main !== null && valueMetrics.realHours < hltbBreakdown.main
-    ? '#b9777f'
-    : hltbBreakdown.mainPlus !== null && valueMetrics.realHours >= hltbBreakdown.mainPlus
-      ? '#8ea779'
-      : '#b18d6a';
 const hoursChartPayload = {
   type: 'hours-vs-benchmarks',
   myHours: valueMetrics.realHours,
   benchmarkBars: hoursBenchmarkBars,
-  myHoursColor,
+  myHoursLabel: game.horas_estimadas === true ? 'Horas estimadas' : 'Mis horas',
 };
 
 const start = game.fecha_inicio ? new Date(`${game.fecha_inicio}T00:00:00`) : null;
@@ -292,7 +285,7 @@ const metadataGroups = [
     items: [
       { label: 'Géneros', value: genres, state: genres === '-' ? 'empty' as const : 'default' as const },
       { label: 'Etiquetas', value: tagsLabel === 'Sin etiquetas' ? '-' : tagsLabel, state: tagsLabel === 'Sin etiquetas' ? 'empty' as const : 'default' as const },
-      { label: 'Modos', value: modesLabel, state: modesLabel === 'Sin registrar' ? 'empty' as const : 'default' as const },
+      { label: 'Modos', value: modesLabel, values: gameModes.map(getGameModeLabel), className: 'detail-item-modes', state: modesLabel === 'Sin registrar' ? 'empty' as const : 'default' as const },
       { label: 'Lanzamiento', value: formatValue(game.lanzamiento), state: game.lanzamiento ? 'default' as const : 'empty' as const },
     ],
   },

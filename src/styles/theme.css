@@ -205,8 +205,10 @@
   --detail-bento-line: color-mix(in srgb, var(--theme-white) 12%, transparent);
   --detail-bento-gap: 0.75rem;
   --detail-golden-line: color-mix(in srgb, var(--card-foil-gold) 42%, transparent);
-  --detail-golden-rest: 0.18;
-  --detail-golden-active: 0.42;
+  --detail-golden-surface: color-mix(in srgb, var(--detail-bento-surface) 82%, transparent);
+  --detail-golden-active: 0.82;
+  --detail-golden-width: 1100px;
+  --detail-golden-height: 960px;
   --detail-golden-settle: 260ms;
 
   /* ── Card: Tipografía interna ───────────────────────────── */

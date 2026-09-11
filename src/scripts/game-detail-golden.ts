@@ -1,5 +1,5 @@
 const MOTION_QUERY = '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)';
-const PROPERTIES = ['--golden-x', '--golden-y', '--golden-field-x', '--golden-field-y', '--golden-angle'];
+const PROPERTIES = ['--golden-x', '--golden-y', '--foil-field-x', '--foil-field-y', '--foil-angle'];
 
 export function initGameDetailGolden(): void {
   const surface = document.querySelector<HTMLElement>('[data-golden-atmosphere]');
@@ -29,14 +29,14 @@ export function initGameDetailGolden(): void {
     frame = window.requestAnimationFrame(() => {
       frame = null;
       if (!pointer || !motion.matches) return;
-      // A viewport-sized plane stays stable while scrolling. Only the background moves.
+      // Pixel position follows the pointer; optical texture size is independent of ultrawide width.
       const x = Math.max(-1, Math.min(1, pointer.x / Math.max(1, window.innerWidth) * 2 - 1));
       const y = Math.max(-1, Math.min(1, pointer.y / Math.max(1, window.innerHeight) * 2 - 1));
-      surface.style.setProperty('--golden-x', `${50 + x * 45}%`);
-      surface.style.setProperty('--golden-y', `${50 + y * 40}%`);
-      surface.style.setProperty('--golden-field-x', `${50 + x * 28 + y * 10}%`);
-      surface.style.setProperty('--golden-field-y', `${50 + y * 22 - x * 8}%`);
-      surface.style.setProperty('--golden-angle', `${130 + x * 5 - y * 3}deg`);
+      surface.style.setProperty('--golden-x', `${pointer.x}px`);
+      surface.style.setProperty('--golden-y', `${pointer.y}px`);
+      surface.style.setProperty('--foil-field-x', `${50 + x * 24 + y * 10}%`);
+      surface.style.setProperty('--foil-field-y', `${50 + y * 22 - x * 8}%`);
+      surface.style.setProperty('--foil-angle', `${130 + x * 6 - y * 4}deg`);
       surface.classList.add('is-lit');
     });
   };

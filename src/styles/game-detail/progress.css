@@ -113,6 +113,24 @@
     line-height: 1.5;
   }
 
+  .game-page-rich #technical .detail-value-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0.2rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .game-page-rich #technical .detail-value-list li {
+    max-width: 100%;
+    padding: 0.25rem 0.55rem;
+    border: 1px solid var(--detail-bento-line);
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--theme-white) 3%, transparent);
+    color: var(--muted);
+    font: 500 0.75rem/1.4 var(--font-badge);
+  }
+
   .game-page-rich #technical .data-group-progress .data-group-grid {
     grid-template-rows: minmax(150px, 1fr) auto;
   }

@@ -1,0 +1,19 @@
+@import './theme.css';
+
+/* Shared optical material, resolved on the surface so its angle stays reactive. */
+@layer global {
+  .card-foil, .game-golden-field {
+    --golden-bands: repeating-linear-gradient(
+      var(--foil-angle, 130deg),
+      transparent 0%, var(--card-foil-bronze) 4%,
+      var(--card-foil-amber) 7%, var(--card-foil-gold) 9%,
+      var(--card-foil-glint) 10%, var(--card-foil-gold) 11%,
+      var(--card-foil-bronze) 14%, transparent 17%,
+      transparent 18%, var(--card-foil-glint) 18.5%, transparent 19.2%,
+      transparent 21%, var(--card-foil-gold) 21.4%, transparent 22%,
+      transparent 30%
+    );
+    --golden-grain: repeating-linear-gradient(130deg, transparent 0 3px,
+      color-mix(in srgb, var(--card-foil-glint) 6%, transparent) 3.2px, transparent 4px);
+  }
+}

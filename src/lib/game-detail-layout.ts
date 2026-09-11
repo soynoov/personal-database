@@ -3,6 +3,7 @@ export type ProgressKind = 'difficulty' | 'achievements' | 'cards';
 export type DetailItem = {
   label: string;
   value: string;
+  values?: string[];
   className?: string;
   note?: string;
   progress?: number | null;

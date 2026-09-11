@@ -27,8 +27,12 @@ interface Props {
 const { slug, metrics, hoursChartPayload, hoursChartPoints, hltbBreakdown, period, editValues, isRecurring = false } = Astro.props;
 const progress = Math.max(0, Math.min(100, metrics.hltbProgressPercent ?? 0));
 const chartValueCount = hoursChartPoints.length + (metrics.realHours === null ? 0 : 1);
-const hasHltbBreakdown = [hltbBreakdown.main, hltbBreakdown.mainPlus, hltbBreakdown.completionist]
-  .some((value) => value !== null);
+const hltbReferences = metrics.showHltbTarget ? [
+  { label: 'Historia', value: hltbBreakdown.main },
+  { label: 'Historia+', value: hltbBreakdown.mainPlus },
+  { label: '100%', value: hltbBreakdown.completionist },
+].filter((entry): entry is { label: string; value: number } => entry.value !== null && Number.isFinite(entry.value)) : [];
+const hasHltbBreakdown = hltbReferences.length > 0;
 const chartA11yLabel = [
   ...hoursChartPoints.map((point) => `${point.label}: ${formatHoursDuration(point.value)}`),
   ...(metrics.realHours === null
@@ -39,7 +43,7 @@ const hasStartDate = Boolean(editValues.fecha_inicio);
 const hasEndDate = !isRecurring && Boolean(editValues.fecha_fin);
 const hasPeriodData = hasStartDate || hasEndDate;
 const hasHltbTarget = metrics.showHltbTarget && metrics.hltbTargetHours !== null;
-const showHltbCard = metrics.showHltbTarget;
+const showHltbCard = hasHltbTarget;
 const periodSummary = isRecurring
   ? 'Recurrente'
   : period.elapsedDays !== null
@@ -72,7 +76,7 @@ const hltbState = !metrics.showHltbTarget
   </div>
 
   <div class="hours-priority-grid" data-hltb={showHltbCard ? 'true' : 'false'} data-recurring={isRecurring ? 'true' : 'false'}>
-    <article class="value-kpi value-kpi-primary">
+    <article class:list={['value-kpi', 'value-kpi-primary', metrics.realHours === null && 'is-null']}>
       <span class="value-kpi-icon"><TablerIcon src={clockIcon} /></span>
       <div class="value-kpi-copy">
         <span>{editValues.horas_estimadas ? 'Horas estimadas' : 'Horas reales'}</span>
@@ -87,11 +91,19 @@ const hltbState = !metrics.showHltbTarget
           <span>Meta HLTB</span>
           <strong>{hasHltbTarget ? formatHoursDuration(metrics.hltbTargetHours) : '—'}</strong>
           <small>{hltbState}</small>
+          {metrics.hltbProgressPercent !== null && (
+            <div class="hours-target-progress">
+              <div class="value-progress" role="progressbar" aria-label="Progreso de la meta HLTB" aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(progress)}>
+                <span style={`--value-progress:${progress}%`}></span>
+              </div>
+              <span>{Math.round(metrics.hltbProgressPercent)}%</span>
+            </div>
+          )}
         </div>
       </article>
     )}
 
-    <article class:list={["hours-info-card", "hours-period-summary", !hasPeriodData && "is-null"]}>
+    <article class:list={["hours-info-card", "hours-period-summary", !isRecurring && !hasPeriodData && "is-null"]}>
       <span class="hours-info-icon"><TablerIcon src={calendarIcon} /></span>
       <div>
         <span>Periodo</span>
@@ -117,21 +129,6 @@ const hltbState = !metrics.showHltbTarget
       </article>
     )}
 
-    {hasHltbTarget && (
-      <article class="hours-progress-card">
-        <div class="hours-progress-head">
-          <span>Progreso HLTB</span>
-          <strong>{metrics.hltbProgressPercent === null ? '—' : `${Math.round(metrics.hltbProgressPercent)}%`}</strong>
-        </div>
-        <div class="value-progress" role="progressbar" aria-label="Progreso de la meta HLTB" aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(progress)}>
-          <span style={`--value-progress:${progress}%`}></span>
-        </div>
-        <div class="hours-progress-foot">
-          <span>{hltbState}</span>
-          {metrics.hltbRemainingHours === 0 && <strong>Meta completada</strong>}
-        </div>
-      </article>
-    )}
   </div>
 
   {hoursChartPoints.length > 0 && (
@@ -140,22 +137,18 @@ const hltbState = !metrics.showHltbTarget
         <div class="hours-chart-heading">
           <span class="hours-info-icon"><TablerIcon src={chartIcon} /></span>
           <div>
-            <span>Comparativa de objetivos</span>
-            <h3 id="hours-chart-title">Tus horas frente a objetivos</h3>
+            <span>Horas y referencias</span>
+            <h3 id="hours-chart-title">Comparativa de tiempo</h3>
           </div>
           <span class="chart-badge">{chartValueCount} valores</span>
         </div>
-        {hoursChartPoints.length > 0 ? (
-          <div class="chart-canvas-wrap chart-canvas-wrap-hours">
-            <canvas id="hours-detail-chart" data-chart={JSON.stringify(hoursChartPayload)} role="img" aria-label={chartA11yLabel}></canvas>
-          </div>
-        ) : <div class="chart-empty">Sin referencias suficientes</div>}
+        <div class="chart-canvas-wrap chart-canvas-wrap-hours" style={`--hours-chart-height:${Math.max(180, chartValueCount * 48 + 48)}px`}>
+          <canvas id="hours-detail-chart" data-chart={JSON.stringify(hoursChartPayload)} role="img" aria-label={chartA11yLabel}></canvas>
+        </div>
       </section>
       {hasHltbBreakdown && (
-        <dl class="hours-breakdown-grid" aria-label="Desglose HLTB">
-          <div class:list={[hltbBreakdown.main === null && "is-null"]}><dt>Historia</dt><dd>{formatHoursDuration(hltbBreakdown.main)}</dd></div>
-          <div class:list={[hltbBreakdown.mainPlus === null && "is-null"]}><dt>Historia+</dt><dd>{formatHoursDuration(hltbBreakdown.mainPlus)}</dd></div>
-          <div class:list={[hltbBreakdown.completionist === null && "is-null"]}><dt>100%</dt><dd>{formatHoursDuration(hltbBreakdown.completionist)}</dd></div>
+        <dl class="hours-breakdown-grid" aria-label="Desglose HLTB" style={`--hltb-count:${hltbReferences.length}`}>
+          {hltbReferences.map(({ label, value }) => <div><dt>{label}</dt><dd>{formatHoursDuration(value)}</dd></div>)}
         </dl>
       )}
     </div>
