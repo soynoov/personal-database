@@ -9,9 +9,11 @@
       --card-shadow-y: 0px;
       --card-glow-x: 0px;
       --card-glow-y: 0px;
-      --foil-shift-x: 0px;
-      --foil-shift-y: 0px;
-      --foil-angle: 8deg;
+      --foil-light-x: 50%;
+      --foil-light-y: 50%;
+      --foil-field-x: 50%;
+      --foil-field-y: 50%;
+      --foil-angle: 130deg;
       transform-origin: center;
       transform-style: preserve-3d;
       backface-visibility: hidden;
@@ -21,14 +23,17 @@
         border-color 180ms ease-out;
     }
 
-    .mock-cards-grid .mock-game-card:hover,
     .mock-cards-grid .mock-game-card:focus-visible {
+      z-index: 10;
+    }
+
+    .mock-cards-grid .mock-game-card:hover {
       z-index: 20;
     }
 
     .mock-cards-grid .mock-game-card:hover {
       transform: perspective(900px) translateY(-3px) rotateX(var(--card-tilt-x))
-        rotateY(var(--card-tilt-y)) scale(1.02);
+        rotateY(var(--card-tilt-y)) scale(var(--card-hover-scale));
       box-shadow: var(--card-shadow-x) calc(20px + var(--card-shadow-y)) 42px rgba(0, 0, 0, 0.5);
     }
 
@@ -42,8 +47,8 @@
 
     .mock-cards-grid .mock-game-card.is-platinum:hover {
       box-shadow:
-        inset var(--card-glow-x) var(--card-glow-y) 20px rgba(255, 235, 157, 0.24),
-        var(--card-glow-x) var(--card-glow-y) 26px rgba(207, 157, 48, 0.22),
+        inset var(--card-glow-x) var(--card-glow-y) 20px color-mix(in srgb, var(--card-foil-glint) 26%, transparent),
+        var(--card-glow-x) var(--card-glow-y) 26px color-mix(in srgb, var(--card-foil-amber) 44%, transparent),
         var(--card-shadow-x) calc(20px + var(--card-shadow-y)) 44px rgba(0, 0, 0, 0.54);
     }
 
@@ -51,62 +56,61 @@
       display: block;
       position: absolute;
       z-index: 5;
-      top: 50%;
-      left: 50%;
-      width: 70%;
-      height: 125%;
+      inset: 0;
       pointer-events: none;
-      background:
-        linear-gradient(
-          90deg,
-          transparent 0%,
-          color-mix(in srgb, var(--card-foil-cyan) 18%, transparent) 4%,
-          color-mix(in srgb, var(--card-foil-gold) 32%, transparent) 11%,
-          color-mix(in srgb, var(--card-foil-glint) 52%, transparent) 18%,
-          var(--card-foil-glint) 25%,
-          color-mix(in srgb, var(--card-foil-gold) 88%, transparent) 30%,
-          color-mix(in srgb, var(--card-foil-glint) 34%, transparent) 37%,
-          color-mix(in srgb, var(--card-foil-magenta) 18%, transparent) 45%,
-          transparent 52%,
-          transparent 59%,
-          color-mix(in srgb, var(--card-foil-cyan) 30%, transparent) 62%,
-          color-mix(in srgb, var(--card-foil-glint) 74%, transparent) 66%,
-          color-mix(in srgb, var(--card-foil-gold) 76%, transparent) 69%,
-          transparent 74%,
-          transparent 80%,
-          color-mix(in srgb, var(--card-foil-cyan) 36%, transparent) 83%,
-          color-mix(in srgb, var(--card-foil-glint) 92%, transparent) 86%,
-          color-mix(in srgb, var(--card-foil-gold) 68%, transparent) 88.5%,
-          color-mix(in srgb, var(--card-foil-magenta) 20%, transparent) 91%,
-          transparent 100%
-        ),
-        radial-gradient(
-          ellipse 72% 48% at 38% 50%,
-          color-mix(in srgb, var(--card-foil-gold) 20%, transparent),
-          transparent 72%
-        );
       mix-blend-mode: screen;
       opacity: 0;
-      translate: -50% -50%;
-      transform: translate3d(var(--foil-shift-x), var(--foil-shift-y), 0) rotate(var(--foil-angle));
-      transform-origin: center;
-      filter: saturate(1.1) blur(0.12px);
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8% 92%, transparent 100%);
-      mask-image: linear-gradient(to bottom, transparent 0%, black 8% 92%, transparent 100%);
-      transition:
-        opacity 250ms ease-out,
-        transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+      /* Confine the optical field; the cover itself stays sharp and unfiltered. */
+      -webkit-mask-image: radial-gradient(ellipse 72% 64% at var(--foil-light-x) var(--foil-light-y), black 8%, rgba(0, 0, 0, 0.8) 35%, transparent 78%);
+      mask-image: radial-gradient(ellipse 72% 64% at var(--foil-light-x) var(--foil-light-y), black 8%, rgba(0, 0, 0, 0.8) 35%, transparent 78%);
+      transition: opacity 260ms ease-out;
+    }
+
+    .mock-cards-grid .mock-game-card .card-foil::before,
+    .mock-cards-grid .mock-game-card .card-foil::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+    }
+
+    .mock-cards-grid .mock-game-card .card-foil::before {
+      /* One broad reflection and two fine satellites, repeated in a diagonal metal field. */
+      background-image: repeating-linear-gradient(
+        var(--foil-angle),
+        transparent 0%, var(--card-foil-bronze) 4%,
+        var(--card-foil-amber) 7%, var(--card-foil-gold) 9%,
+        var(--card-foil-glint) 10%, var(--card-foil-gold) 11%,
+        var(--card-foil-bronze) 14%, transparent 17%,
+        transparent 18%, var(--card-foil-glint) 18.5%, transparent 19.2%,
+        transparent 21%, var(--card-foil-gold) 21.4%, transparent 22%,
+        transparent 30%
+      );
+      background-size: 250% 250%;
+      background-position: var(--foil-field-x) var(--foil-field-y);
+      transition: background-position 260ms ease-out;
+    }
+
+    .mock-cards-grid .mock-game-card .card-foil::after {
+      background-image:
+        radial-gradient(ellipse at var(--foil-light-x) var(--foil-light-y), color-mix(in srgb, var(--card-foil-glint) 45%, transparent), transparent 58%),
+        repeating-linear-gradient(130deg, transparent 0 3px, color-mix(in srgb, var(--card-foil-glint) 6%, transparent) 3.2px, transparent 4px);
+      background-size: 100% 100%, 180% 180%;
+      background-position: center, calc(100% - var(--foil-field-x)) calc(100% - var(--foil-field-y));
+      transition: background-position 260ms ease-out;
     }
 
     .mock-cards-grid .mock-game-card.is-platinum.is-tracking .card-foil {
-      opacity: 0.94;
+      opacity: 0.9;
     }
 
     .mock-cards-grid .mock-game-card.is-tracking .card-foil {
-      transition:
-        opacity 120ms ease-out,
-        transform 72ms linear;
-      will-change: transform, opacity;
+      transition-duration: 120ms;
+    }
+
+    .mock-cards-grid .mock-game-card.is-tracking .card-foil::before,
+    .mock-cards-grid .mock-game-card.is-tracking .card-foil::after {
+      transition-duration: 84ms;
     }
   }
 

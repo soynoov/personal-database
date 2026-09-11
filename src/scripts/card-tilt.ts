@@ -1,5 +1,5 @@
 const CARD_SELECTOR = '.mock-game-card';
-const MAX_TILT_DEGREES = 2.4;
+const MAX_TILT_DEGREES = 7;
 const OPTICAL_PROPERTIES = [
   '--pointer-x',
   '--pointer-y',
@@ -9,8 +9,10 @@ const OPTICAL_PROPERTIES = [
   '--card-shadow-y',
   '--card-glow-x',
   '--card-glow-y',
-  '--foil-shift-x',
-  '--foil-shift-y',
+  '--foil-light-x',
+  '--foil-light-y',
+  '--foil-field-x',
+  '--foil-field-y',
   '--foil-angle',
 ] as const;
 
@@ -53,7 +55,15 @@ export function initCardTilt(container: HTMLElement | null): void {
     if (activeCard === card) return;
     if (activeCard) resetCard(activeCard);
     activeCard = card;
-    activeBounds = card.getBoundingClientRect();
+    // Freeze a layout-sized plane on entry, so the enlarged/tilted bounds never
+    // feed back into the pointer calculation while moving over the same card.
+    const rect = card.getBoundingClientRect();
+    activeBounds = new DOMRect(
+      rect.left + (rect.width - card.offsetWidth) / 2,
+      rect.top + (rect.height - card.offsetHeight) / 2,
+      card.offsetWidth,
+      card.offsetHeight,
+    );
     card.classList.add('is-tracking');
   };
 
@@ -79,13 +89,15 @@ export function initCardTilt(container: HTMLElement | null): void {
         '--pointer-y': pointerY.toFixed(4),
         '--card-tilt-x': `${(-pointerY * MAX_TILT_DEGREES).toFixed(2)}deg`,
         '--card-tilt-y': `${(pointerX * MAX_TILT_DEGREES).toFixed(2)}deg`,
-        '--card-shadow-x': `${(-pointerX * 7).toFixed(2)}px`,
-        '--card-shadow-y': `${(-pointerY * 4).toFixed(2)}px`,
-        '--card-glow-x': `${(pointerX * 8).toFixed(2)}px`,
-        '--card-glow-y': `${(pointerY * 8).toFixed(2)}px`,
-        '--foil-shift-x': `${(pointerX * bounds.width * 0.72).toFixed(2)}px`,
-        '--foil-shift-y': `${((pointerY + 0.25) * bounds.height * 0.24).toFixed(2)}px`,
-        '--foil-angle': `${(8 + pointerX * 28).toFixed(2)}deg`,
+        '--card-shadow-x': `${(-pointerX * 12).toFixed(2)}px`,
+        '--card-shadow-y': `${(-pointerY * 7).toFixed(2)}px`,
+        '--card-glow-x': `${(pointerX * 10).toFixed(2)}px`,
+        '--card-glow-y': `${(pointerY * 10).toFixed(2)}px`,
+        '--foil-light-x': `${(50 + pointerX * 38).toFixed(2)}%`,
+        '--foil-light-y': `${(50 + pointerY * 38).toFixed(2)}%`,
+        '--foil-field-x': `${(50 + pointerX * 24 + pointerY * 10).toFixed(2)}%`,
+        '--foil-field-y': `${(50 + pointerY * 22 - pointerX * 8).toFixed(2)}%`,
+        '--foil-angle': `${(130 + pointerX * 6 - pointerY * 4).toFixed(2)}deg`,
       };
 
       for (const [property, value] of Object.entries(opticalValues)) {

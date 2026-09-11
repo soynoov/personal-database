@@ -231,9 +231,9 @@
   si todos los panels miden lo mismo, el borde superior del overlay
   —donde empieza el título— siempre cae en la misma posición Y.
 
-  El panel es la única superficie frosted. Su máscara desvanece conjuntamente
-  vidrio y fondo durante los primeros --card-body-fade píxeles, manteniendo
-  nítida la zona superior de la portada.
+  El ::after es la única superficie frosted. Separar vidrio y contenido evita
+  el corte de Chromium al combinar backdrop-filter y máscara sobre el panel
+  transformado. La portada superior permanece nítida.
 */
   .mock-game-card .card-body {
     width: 100%;
@@ -242,16 +242,7 @@
     z-index: 3;
 
     /* Superficie progresiva: portada y cuerpo forman una sola pieza. */
-    backdrop-filter: blur(var(--card-blur)) saturate(1.08);
-    -webkit-backdrop-filter: blur(var(--card-blur)) saturate(1.08);
-    background: linear-gradient(
-      to bottom,
-      transparent 0,
-      color-mix(in srgb, var(--theme-black) 18%, transparent) 14px,
-      color-mix(in srgb, var(--theme-black) 68%, transparent) var(--card-body-fade),
-      color-mix(in srgb, var(--theme-black) 93%, transparent) calc(var(--card-body-fade) + 58px),
-      color-mix(in srgb, var(--theme-black) 98%, transparent) 100%
-    );
+    background: none;
     border-top: 0;
 
     /*
@@ -261,9 +252,6 @@
   */
     transform: translateY(100%);
     transition: transform 210ms ease-out;
-
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, black var(--card-body-fade));
-    mask-image: linear-gradient(to bottom, transparent 0, black var(--card-body-fade));
 
     /* Layout interno */
     display: grid; /* especificidad 0,2,0 > .card-body{display:grid}(0,1,0) */
@@ -275,6 +263,26 @@
     /* Limpieza de herencia de global.css */
     border-left: 0;
     margin-top: 0;
+  }
+
+  .mock-game-card .card-body::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    backdrop-filter: blur(var(--card-blur)) saturate(1.08);
+    -webkit-backdrop-filter: blur(var(--card-blur)) saturate(1.08);
+    background: linear-gradient(
+      to bottom,
+      transparent 0,
+      color-mix(in srgb, var(--theme-black) 18%, transparent) 14px,
+      color-mix(in srgb, var(--theme-black) 68%, transparent) var(--card-body-fade),
+      color-mix(in srgb, var(--theme-black) 93%, transparent) calc(var(--card-body-fade) + 58px),
+      color-mix(in srgb, var(--theme-black) 98%, transparent) 100%
+    );
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, black var(--card-body-fade));
+    mask-image: linear-gradient(to bottom, transparent 0, black var(--card-body-fade));
   }
 
   /* Noise grain solo dentro del panel; su propia máscara evita otra costura. */
@@ -650,6 +658,10 @@
 
     .mock-game-card .card-body::before {
       opacity: 0.025;
+    }
+
+    .mock-game-card .card-body::after {
+      display: none;
     }
 
     .mock-game-card .card-title-stack h2 {

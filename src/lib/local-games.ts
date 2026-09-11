@@ -1,7 +1,9 @@
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { existsSync } from "node:fs";
-import { BlobPreconditionFailedError, get, put } from "@vercel/blob";
+import { createGameBlobStore, hasGameBlobCredentials } from "./game-blob-store.mjs";
+import { slugifyGameTitle, validateGameLibrary } from "./game-library.mjs";
+export { GamesVersionConflictError, slugifyGameTitle } from "./game-library.mjs";
 import { isCompletedStatus, normalizeStatus } from "./game-status";
 import { gameHasMode, normalizeGameModes } from "./game-modes";
 import { normalizeGameTag } from "./game-tags";
@@ -104,7 +106,7 @@ export type LocalGame = {
 const localGamesPath = path.resolve(process.cwd(), "games.json");
 const parentGamesPath = path.resolve(process.cwd(), "..", "games.json");
 const gamesPath = existsSync(localGamesPath) ? localGamesPath : parentGamesPath;
-const productionGamesPath = "personal-database/games.json";
+const gameBlobStore = createGameBlobStore();
 const gamesVersions = new WeakMap<LocalGame[], string | null>();
 const historicCreationByTitle = historicGameCreationDates as Record<string, string>;
 
@@ -145,28 +147,14 @@ function applyGameDataMigrations(games: LocalGame[]) {
   });
 }
 
-export class GamesVersionConflictError extends Error {
-  constructor() {
-    super('La biblioteca cambió mientras editabas.');
-    this.name = 'GamesVersionConflictError';
-  }
-}
-
 export function hasProductionGameStorage() {
-  return Boolean(
-    process.env.BLOB_READ_WRITE_TOKEN ||
-      (process.env.BLOB_STORE_ID && process.env.VERCEL_OIDC_TOKEN),
-  );
+  return hasGameBlobCredentials();
 }
 
 export async function readBundledGames() {
   const raw = await readFile(gamesPath, "utf8");
   const normalized = raw.replace(/^\uFEFF/, "");
-  return applyGameDataMigrations(JSON.parse(normalized) as LocalGame[]);
-}
-
-function toStrongBlobEtag(etag: string) {
-  return etag.replace(/^W\//, "");
+  return applyGameDataMigrations(validateGameLibrary(JSON.parse(normalized), 'games.json') as LocalGame[]);
 }
 
 function containsText(value: unknown, search?: string | null) {
@@ -180,10 +168,7 @@ export async function readGames() {
     return readBundledGames();
   }
 
-  const result = await get(productionGamesPath, {
-    access: "private",
-    useCache: false,
-  });
+  const result = await gameBlobStore.read();
 
   if (!result) {
     const bundledGames = await readBundledGames();
@@ -191,17 +176,8 @@ export async function readGames() {
     return bundledGames;
   }
 
-  if (result.statusCode !== 200 || !result.stream) {
-    throw new Error("Vercel Blob no devolvió el contenido de la biblioteca.");
-  }
-
-  const raw = await new Response(result.stream).text();
-  const games = applyGameDataMigrations(
-    JSON.parse(raw.replace(/^\uFEFF/, "")) as LocalGame[],
-  );
-  // Las respuestas comprimidas pueden presentar el ETag como débil (`W/`).
-  // Blob espera el identificador fuerte equivalente al procesar `ifMatch`.
-  gamesVersions.set(games, toStrongBlobEtag(result.blob.etag));
+  const games = applyGameDataMigrations(result.games as LocalGame[]);
+  gamesVersions.set(games, result.etag);
   return games;
 }
 
@@ -211,6 +187,7 @@ export async function readGames() {
  * incluido en el deploy. El ETag evita pisar cambios concurrentes.
  */
 export async function writeGames(games: LocalGame[]) {
+  validateGameLibrary(games);
   const json = `${JSON.stringify(games, null, 2)}\n`;
 
   if (!process.env.VERCEL) {
@@ -226,31 +203,7 @@ export async function writeGames(games: LocalGame[]) {
 
   const previousEtag = gamesVersions.get(games);
 
-  try {
-    const saved = await put(productionGamesPath, json, {
-      access: "private",
-      addRandomSuffix: false,
-      allowOverwrite: true,
-      cacheControlMaxAge: 60,
-      contentType: "application/json; charset=utf-8",
-      ...(previousEtag ? { ifMatch: previousEtag } : {}),
-    });
-    gamesVersions.set(games, saved.etag);
-  } catch (error) {
-    if (error instanceof BlobPreconditionFailedError) {
-      throw new GamesVersionConflictError();
-    }
-    throw error;
-  }
-}
-
-export function slugifyGameTitle(title: string) {
-  return String(title)
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+  gamesVersions.set(games, await gameBlobStore.write(games, previousEtag));
 }
 
 export function findGameBySlug(games: LocalGame[], slug: string) {

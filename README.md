@@ -40,6 +40,50 @@ En Vercel, la app lee y escribe `personal-database/games.json` dentro de un Blob
 privado. El JSON incluido en el repositorio sigue siendo el respaldo inicial si
 el Blob todavia esta vacio.
 
+### Altas automáticas de `games.json` → Blob
+
+- Con `npm run dev` abierto y las credenciales de Blob en `.env.local`, se
+  comprueban las altas al arrancar y al guardar `games.json` (espera de 400 ms
+  para agrupar los eventos de guardado).
+- Cada build de **producción en Vercel** importa también las altas del JSON
+  del despliegue. Los builds locales y los de Preview no sincronizan datos.
+- Solo se añaden títulos que no existen en Blob, usando la misma identidad
+  normalizada que las rutas de juego. **Las fichas ya existentes en Blob no se
+  sobrescriben**: conservan horas, logros, precios y ediciones online.
+- No se borran juegos remotos al quitarlos del JSON. Renombrar un título cambia
+  su identidad: no debe usarse la sincronización de altas para renombrar fichas.
+- Esto no es una fusión bidireccional: `games.json` sigue siendo la fuente local
+  y Blob la biblioteca persistente online. Para cambios de fichas existentes,
+  usa el editor web; no se publican modificaciones locales automáticamente.
+- Las escrituras verifican la versión ETag. Si coincide una edición online,
+  se vuelve a leer y combinar (máximo tres intentos). Un Blob inexistente se
+  crea sin permitir sobrescritura. No se escribe cuando no hay altas.
+
+Comprobación manual, sin escribir:
+
+```powershell
+npm run sync:games:check
+```
+
+Sincronización manual (por ejemplo, si editaste con el servidor cerrado):
+
+```powershell
+npm run sync:games
+```
+
+Si faltan credenciales o falla la red, el servidor local sigue funcionando y
+muestra el error en su terminal; puedes reintentar con el comando anterior.
+En producción, un error de sincronización hace fallar el build para evitar un
+despliegue que aparente haber incorporado las altas. No se registran tokens.
+La credencial debe apuntar al Blob privado de esta biblioteca; no compartas
+el mismo almacén con otro proyecto o una biblioteca de pruebas.
+
+Pruebas de altas, conservación de datos, concurrencia y automatización:
+
+```powershell
+npm run test:games-sync
+```
+
 Para habilitarlo en otro proyecto de Vercel:
 
 1. Conecta un Vercel Blob privado al proyecto para que exista `BLOB_READ_WRITE_TOKEN`.
