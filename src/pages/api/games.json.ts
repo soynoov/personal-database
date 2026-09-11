@@ -10,6 +10,7 @@ export const GET: APIRoute = async ({ url }) => {
     plataforma: url.searchParams.get("plataforma") ?? undefined,
     tag: url.searchParams.get("tag") ?? undefined,
     modo: url.searchParams.get("modo") ?? undefined,
+    golden: url.searchParams.get("golden") ?? undefined,
   });
 
   const limit = getCatalogLimit(url.searchParams.get("limit"));

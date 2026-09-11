@@ -8,7 +8,7 @@
  */
 
 import { buildGameCoverUrl } from "../lib/game-cover-url";
-import { getGoldenCompletionKind } from "../lib/game-achievements";
+import { getGoldenCompletionKind, matchesGoldenFilter } from "../lib/game-achievements";
 import type { CatalogGame } from "../lib/catalog-game";
 import { isCompletedStatus, normalizeStatus } from "../lib/game-status";
 import { getGameTagLabel, hasGameTag, normalizeGameTag } from "../lib/game-tags";
@@ -239,6 +239,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     mobileSort: document.querySelector<HTMLSelectElement>('#mobile-sort'),
     precio: el<HTMLSelectElement>('#precio'),
     rentabilidad: el<HTMLSelectElement>('#rentabilidad'),
+    golden: el<HTMLSelectElement>('#golden'),
     mobileFilterToggle: document.querySelector<HTMLButtonElement>('#mobile-filter-toggle'),
     mobileExtraFilters: document.querySelector<HTMLElement>('#mobile-extra-filters'),
     mobileFilterBackdrop: document.querySelector<HTMLButtonElement>('#catalog-filter-backdrop'),
@@ -279,7 +280,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
   // Restaurar params de URL
   const params = new URLSearchParams(window.location.search);
-  for (const key of ['search', 'estado', 'launcher', 'plataforma', 'tag', 'modo', 'sort', 'precio', 'rentabilidad']) {
+  for (const key of ['search', 'estado', 'launcher', 'plataforma', 'tag', 'modo', 'sort', 'precio', 'rentabilidad', 'golden']) {
     const el = elements[key as keyof typeof elements] as HTMLInputElement | HTMLSelectElement | null;
     const value = params.get(key);
     if (el && value) el.value = value;
@@ -297,8 +298,9 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
   const isQuickChipActive = (chipValue: string, filters: Record<string, string>): boolean => {
     if (chipValue === '') {
-      return filters.estado === '' && filters.precio === '' && filters.tag === '' && filters.rentabilidad === '';
+      return filters.estado === '' && filters.precio === '' && filters.tag === '' && filters.rentabilidad === '' && filters.golden === '';
     }
+    if (chipValue === 'golden') return filters.golden === 'true';
     if (STATUS_QUICK_FILTERS.has(chipValue)) {
       return chipValue === 'terminado'
         ? isCompletedStatus(filters.estado)
@@ -386,6 +388,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
       sort: elements.sort.value,
       precio: elements.precio.value,
       rentabilidad: elements.rentabilidad.value,
+      golden: elements.golden.value,
     };
     if (elements.mobileSort && elements.mobileSort.value !== filters.sort) {
       elements.mobileSort.value = filters.sort;
@@ -411,7 +414,8 @@ export function initCatalog(allGames: CatalogGame[]): void {
           matchesTagFilter(game, filters.tag) &&
           (filters.precio ? getPriceFilterBucket(game) === filters.precio : true) &&
           (filters.rentabilidad ? game.rentabilidad === filters.rentabilidad : true) &&
-          matchesModeFilter(game, filters.modo)
+          matchesModeFilter(game, filters.modo) &&
+          matchesGoldenFilter(game, filters.golden)
         );
       })
       .sort((a, b) => compareCatalogGames(a, b, filters.sort));
@@ -467,6 +471,8 @@ export function initCatalog(allGames: CatalogGame[]): void {
           label = `Etiqueta: ${getGameTagLabel(value)}`;
         } else if (key === 'modo') {
           label = `Modo: ${getGameModeLabel(value)}`;
+        } else if (key === 'golden') {
+          label = 'Golden Card';
         } else if (key === 'rentabilidad') {
           const profitabilityLabels: Record<string, string> = {
             amortized: 'Amortizados',
@@ -690,7 +696,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     render();
   });
 
-  [elements.estado, elements.launcher, elements.plataforma, elements.tag, elements.modo, elements.sort, elements.precio, elements.rentabilidad]
+  [elements.estado, elements.launcher, elements.plataforma, elements.tag, elements.modo, elements.sort, elements.precio, elements.rentabilidad, elements.golden]
     .forEach((control) => control.addEventListener('change', render));
 
   elements.cards.addEventListener('click', (event) => {
@@ -738,6 +744,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     if (elements.mobileSort) elements.mobileSort.value = DEFAULT_SORT;
     elements.precio.value = '';
     elements.rentabilidad.value = '';
+    elements.golden.value = '';
     mobileExtraFiltersOpen = false;
     render();
     if (restoreFilterToggle) elements.mobileFilterToggle?.focus();
@@ -758,6 +765,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
     if (key === 'modo') elements.modo.value = '';
     if (key === 'precio') elements.precio.value = '';
     if (key === 'rentabilidad') elements.rentabilidad.value = '';
+    if (key === 'golden') elements.golden.value = '';
     render();
   });
 
@@ -769,6 +777,9 @@ export function initCatalog(allGames: CatalogGame[]): void {
         elements.precio.value = '';
         elements.tag.value = '';
         elements.rentabilidad.value = '';
+        elements.golden.value = '';
+      } else if (nextValue === 'golden') {
+        elements.golden.value = elements.golden.value === 'true' ? '' : 'true';
       } else if (STATUS_QUICK_FILTERS.has(nextValue)) {
         const isActive = nextValue === 'terminado'
           ? isCompletedStatus(elements.estado.value)

@@ -10,6 +10,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "test:finance": "node scripts/verify-game-finance.mjs",
+    "test:catalog": "node scripts/verify-catalog-filters.mjs",
     "preview": "astro preview"
   },
   "dependencies": {

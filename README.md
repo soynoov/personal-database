@@ -103,6 +103,7 @@ simultaneos en lugar de sobrescribirlos silenciosamente.
 /api/games.json?estado=Terminado
 /api/games.json?launcher=Steam
 /api/games.json?plataforma=PC
+/api/games.json?golden=true
 /api/library.json
 /api/library.json?search=Ori
 /api/stores.json

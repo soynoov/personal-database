@@ -295,10 +295,6 @@
       display: none;
     }
 
-    .mock-catalog-controls .catalog-filters-selects .cf-profitability {
-      grid-column: 1 / -1;
-    }
-
     .catalog-filter-sheet-actions {
       display: grid;
       grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
@@ -420,6 +416,7 @@
     }
 
     .mobile-tab-dot-playing { background: #63c681; }
+    .mobile-tab-dot-golden { background: var(--card-foil-gold); }
     .mobile-tab-dot-completed { background: #6aa9dd; }
     .mobile-tab-dot-wishlist { background: #77709a; }
 

@@ -279,6 +279,16 @@
   --legend-accent: var(--status-completed-fg);
 }
 
+.legend-chip-golden {
+  --legend-accent: var(--card-foil-gold);
+}
+
+@media (min-width: 1181px) {
+  .mock-catalog-controls .catalog-filters-selects > .field {
+    grid-column: span 4;
+  }
+}
+
 .legend-chip-playing {
   --legend-accent: var(--status-playing-fg);
 }

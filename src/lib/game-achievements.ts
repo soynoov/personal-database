@@ -20,3 +20,7 @@ export function getGoldenCompletionKind(game: GoldenCompletionGame): GoldenCompl
   if (getFullCompletionRuns(game) > 0) return 'game';
   return hasCompletedAllAchievements(game) ? 'achievements' : null;
 }
+
+export function matchesGoldenFilter(game: GoldenCompletionGame, filter?: string | null): boolean {
+  return filter !== 'true' || getGoldenCompletionKind(game) !== null;
+}

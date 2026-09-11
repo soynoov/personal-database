@@ -132,6 +132,13 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
           <option value='incomplete'>Datos incompletos</option>
         </select>
       </div>
+      <div class='field cf-extra cf-golden'>
+        <label for='golden'>Golden Card</label>
+        <select id='golden'>
+          <option value=''>Todas las cards</option>
+          <option value='true'>Solo Golden</option>
+        </select>
+      </div>
       <div class='catalog-filter-sheet-actions'>
         <button class='catalog-filter-reset-mobile' id='reset-filters-mobile' type='button' disabled>Limpiar</button>
         <button class='catalog-filter-apply' id='catalog-filter-apply' type='button'>
@@ -164,6 +171,9 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
 
   <div class='mobile-tab-bar' id='mobile-tab-bar' role='group' aria-label='Filtros rápidos'>
     <button class='mobile-tab' type='button' data-quick-filter='' aria-pressed='true'>Todos</button>
+    <button class='mobile-tab' type='button' data-quick-filter='golden' aria-pressed='false'>
+      <span class='mobile-tab-dot mobile-tab-dot-golden' aria-hidden='true'></span>Golden Card
+    </button>
     <button class='mobile-tab' type='button' data-quick-filter='jugando' aria-pressed='false'>
       <span class='mobile-tab-dot mobile-tab-dot-playing' aria-hidden='true'></span>Jugando
     </button>
@@ -212,6 +222,9 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
   <div class='legend legend-app' role='group' aria-label='Filtros destacados'>
     <button class='legend-chip legend-chip-all' type='button' data-quick-filter=''>
       <span class='legend-dot'></span>Todos
+    </button>
+    <button class='legend-chip legend-chip-golden' type='button' data-quick-filter='golden' aria-pressed='false'>
+      <span class='legend-dot' aria-hidden='true'></span>Golden Card
     </button>
     <button class='legend-chip legend-chip-completed' type='button' data-quick-filter='terminado'>
       <span class='legend-dot'></span>Terminado

@@ -3,6 +3,7 @@ import { slugifyGameTitle } from "./local-games";
 import { isCompletedStatus, normalizeStatus } from "./game-status";
 import { getGameTagLabel, hasGameTag, normalizeGameTag } from "./game-tags";
 import { gameHasMode } from "./game-modes";
+import { matchesGoldenFilter } from "./game-achievements";
 import { getGameGenres } from "./game-genres";
 import {
   getGameProfitabilityStatus,
@@ -70,6 +71,7 @@ type CatalogFilters = {
   plataforma?: string | null;
   tag?: string | null;
   modo?: string | null;
+  golden?: string | null;
 };
 
 const containsText = (value: unknown, search?: string | null): boolean => {
@@ -106,7 +108,8 @@ export function filterCatalogGames(games: CatalogGame[], filters: CatalogFilters
       containsText(game.launcher, filters.launcher) &&
       containsText(game.plataforma, filters.plataforma) &&
       matchesTag(game, filters.tag) &&
-      (!filters.modo || gameHasMode(game, filters.modo))
+      (!filters.modo || gameHasMode(game, filters.modo)) &&
+      matchesGoldenFilter(game, filters.golden)
     );
   });
 }
