@@ -148,43 +148,6 @@ const { estados, launchers, plataformas, totalGames, initialView = 'cards' } = A
     </div>
   </div>
 
-  <div class='mobile-sort-bar'>
-    <label for='mobile-sort'>Ordenar:</label>
-    <select id='mobile-sort' aria-label='Ordenar catálogo'>
-      <option value='titulo-asc'>A-Z</option>
-      <option value='titulo-desc' hidden>Z-A</option>
-      <option value='estado-asc' hidden>Estado A-Z</option>
-      <option value='estado-desc' hidden>Estado Z-A</option>
-      <option value='launcher-asc' hidden>Launcher A-Z</option>
-      <option value='launcher-desc' hidden>Launcher Z-A</option>
-      <option value='plataforma-asc' hidden>Plataforma A-Z</option>
-      <option value='plataforma-desc' hidden>Plataforma Z-A</option>
-      <option value='horas-asc' hidden>Menos horas</option>
-      <option value='horas-desc' selected>Horas jugadas</option>
-      <option value='precio-asc' hidden>Menor precio</option>
-      <option value='precio-desc' hidden>Mayor precio</option>
-      <option value='lanzamiento-asc' hidden>Más antiguo</option>
-      <option value='lanzamiento-desc'>Más reciente</option>
-    </select>
-    <span class='mobile-results-count'><strong data-results-count>{totalGames}</strong> juegos</span>
-  </div>
-
-  <div class='mobile-tab-bar' id='mobile-tab-bar' role='group' aria-label='Filtros rápidos'>
-    <button class='mobile-tab' type='button' data-quick-filter='' aria-pressed='true'>Todos</button>
-    <button class='mobile-tab' type='button' data-quick-filter='golden' aria-pressed='false'>
-      <span class='mobile-tab-dot mobile-tab-dot-golden' aria-hidden='true'></span>Golden Card
-    </button>
-    <button class='mobile-tab' type='button' data-quick-filter='jugando' aria-pressed='false'>
-      <span class='mobile-tab-dot mobile-tab-dot-playing' aria-hidden='true'></span>Jugando
-    </button>
-    <button class='mobile-tab' type='button' data-quick-filter='terminado' aria-pressed='false'>
-      <span class='mobile-tab-dot mobile-tab-dot-completed' aria-hidden='true'></span>Terminado
-    </button>
-    <button class='mobile-tab' type='button' data-quick-filter='wishlist' aria-pressed='false'>
-      <span class='mobile-tab-dot mobile-tab-dot-wishlist' aria-hidden='true'></span>Wishlist
-    </button>
-  </div>
-
   <div class='active-filter-pills' id='active-filter-pills' hidden></div>
 
   <div class='panel-subtoolbar'>

@@ -1,4 +1,93 @@
-# Design QA — Bento Horas, Modos y Golden ultrawide · 2026-09-11
+# Design QA — Rediseño de marca en toda la web · 2026-09-12
+
+## Findings
+
+El sistema operativo de marca se aplica al catálogo, ficha, ruleta, estadísticas, Metacrítica y datos pendientes. Las propuestas se adaptan a los datos reales y a las aclaraciones posteriores: bento protagonista, pastillas sutiles y material Golden ya aprobado. No quedan diferencias P0/P1/P2 accionables en las superficies y estados comprobados. Las migraciones futuras de `DESIGN.md` no se activan.
+
+## Comparison target and evidence
+
+- Fuente: `DESIGN-STANDARDIZATION-AUDIT.md`, especialmente §5.4, y tokens operativos de `src/styles/theme.css`.
+- Referencias: `26-catalog-shell-proposed.png`, `27-data-widgets-proposed.png`, `28-pending-responsive-proposed.png`, `29-controls-feedback-proposed.png`, `31-loading-states-proposed.png` y `47-game-detail-bento-data-states-proposed.png`, dentro de `docs/design-standardization/assets/`.
+- Comparaciones conjuntas abiertas e inspeccionadas: `.codex-qa/brand-catalog-comparison.png`, `brand-stats-comparison.png`, `brand-pending-comparison.png`, `brand-detail-comparison.png` y `brand-controls-comparison.png`. Cada hoja distingue propuesta y captura real. El texto, los iconos y el wrapping también se revisaron en las capturas nativas.
+- Capturas antes/después: `.codex-qa/site-{catalog,roulette,stats,reviews,pending,detail}-{1440,820,390}-{before,final}.png`. Son viewports, no capturas ficticias de página completa.
+- Componentes de ficha: `brand-clean-{marvel-rivals,dead-by-daylight,miside}-{finance,technical,metacritica}-{1440,390}.png`; se oculta únicamente la navegación fija durante el recorte del componente, para evitar que se superponga a la imagen. Las capturas de viewport conservan toda la navegación real.
+- Chromium con Playwright directo, autorizado por el usuario; servidor local `http://127.0.0.1:4321/`.
+- Matriz principal: seis rutas a 1440 × 1024, 820 × 1180 y 390 × 844. Dieciocho respuestas 200, sin overflow horizontal ni errores de página. Alias `/criterio/` comprobado como redirección 301 a `/criticas/`.
+- Breakpoints adicionales del catálogo: 320, 960, 961 y 1100 px. Golden: 3440 y 5120 px, contexto táctil y movimiento reducido.
+- Los datos locales difieren de producción y de los mockups. No se reconciliaron; `games.json`, APIs y fórmulas no forman parte del cambio.
+- Evidencia y scripts en `.codex-qa/` son archivos locales ignorados; este informe sí queda versionado.
+
+## Required fidelity surfaces
+
+- **Fonts and typography:** Anton SC en títulos de página, Elms Sans en UI/cifras y Stack Sans Text en pastillas. Blanco cálido en títulos y datos, meta subordinada. Se preserva el texto real y el tamaño de las pastillas aceptadas. No se incorporan Caacupe ni Geist.
+- **Spacing and layout:** shell común con sidebar 248/80 px y cabecera 64 px; contenido máximo 1440 px, márgenes 32/16 px, retículas adaptables y radios 32/16/8. Bento en métricas, secciones y ficha, sin columnas vacías cuando faltan datos. Los filtros y la navegación móvil tienen espacio propio y orden de superposición correcto.
+- **Colors and tokens:** negro, blanco cálido y violeta actuales; superficies neutrales `--panel-*`, controles y gráficas alimentados desde `theme.css`. Se elimina el arcoíris decorativo de métricas y sectores de ruleta. Los colores de estado y Golden siguen teniendo significado.
+- **Image quality and assets:** portadas, favicon, tipografías e iconos Tabler existentes. Sin imágenes recreadas ni assets de las demos. El foil, el frosted inferior y el zoom de la card completa aceptados no cambian; la portada no tiene zoom independiente.
+- **Copy and content:** se distinguen cero, vacío, incompleto y estimado. Se conserva la comparativa económica cuando existen referencias; sin ellas no se dibuja una gráfica vacía. Las horas mensuales explicitan su atribución al mes de inicio. Las etiquetas de filtros activos se muestran en español.
+- **Icons:** familia Tabler compartida; se corrige la herencia de fondos de pastilla sobre máscaras de iconos en Metacrítica. El enlace GitHub mantiene nombre accesible con sidebar contraída.
+- **States:** vista cards/tabla, filtros, ordenación, Golden, búsqueda sin resultados, recuperación, formularios, guardando, error, autenticación, acordeones, sorteo y resultado. Los estados locales no bloquean ni ocultan la ficha completa.
+
+## Adaptaciones deliberadas
+
+1. La última aclaración del usuario exige bento en todas partes. Por eso las métricas y listas tienen más estructura de contenedor que algunas hojas iniciales de la auditoría.
+2. Géneros usa barras con los mismos recuentos y porcentajes: sus categorías se solapan y un donut sugeriría partes excluyentes de un total.
+3. Mercado usa barras desde cero: salida/compra/actual/mínimo son referencias, no una serie temporal continua. Se conservan precios, denominadores y cálculos.
+4. La interacción Golden aprobada posteriormente prevalece sobre los parámetros antiguos: escala 1.10, material diagonal dorado y fondo localizado que sigue al puntero. Se conserva su implementación anterior.
+5. El estado de la biblioteca determina la densidad: se comprobó compra base, DLC, micropagos, F2P, precios ausentes, valoración parcial, Steam/no Steam y estados de horas, sin copiar datos ficticios del mockup.
+
+## Comparison history
+
+- P2 corregido: shell, cabeceras, tonos y espaciados distintos por ruta. Se extraen `AppShell`, `PageHeader`, `MetricCard` y `EmptyState` y se ordena la capa de marca.
+- P2 corregido en primera pasada: overflow móvil de catálogo y pendientes por tamaño mínimo de grid. Se usa `minmax(0, 1fr)` y se reorganizan filas/acciones.
+- P2 corregido: controles heredados con padding, fondo o ancho incorrectos, buscador de ruleta comprimido y selector de pendientes sin etiqueta visible.
+- P2 corregido: un `change` redundante del buscador reemplazaba el botón de vacío durante el clic. Solo se renderiza si cambia el valor; la recuperación vuelve a funcionar a la primera.
+- P2 corregido: sidebar compacta seguía midiendo 248 px por prioridad de variables. El ancho se resuelve en el shell y se verifica a 80 px.
+- P2 corregido: panel de filtros móvil quedaba detrás de navegación; ahora aísla el resto de la interfaz y respeta el viewport. Ordenar está disponible en el selector compartido también en móvil.
+- P2 corregido: la navegación de ficha perdía su posición sticky y el marcador activo no coincidía con el nuevo margen de los enlaces. Ambos usan el espacio de la cabecera compartida; destinos comprobados en escritorio y móvil.
+- P2 corregido: iconos de Metacrítica heredaban el fondo semitransparente de las pastillas y perdían contraste. Restauradas máscaras con `currentColor`, sin bordes internos.
+- Ajuste del test de navegación: se espera al estado activo, no a un retardo fijo de 700 ms que era insuficiente para el desplazamiento largo de la ficha con DLC. Los enlaces funcionan sin cambiar la velocidad aprobada de scroll.
+
+## Interaction and validation
+
+| Área | Resultado |
+|---|---|
+| Catálogo | Golden, combinación de filtros, búsqueda, orden, cards/tabla, vacío/limpiar, sidebar, Ctrl/Cmd+K y hover verificados. |
+| Responsive | Filtros y menús utilizables a 320/390/820/960/961/1100; seis rutas sin overflow a 1440/820/390. |
+| Pendientes | Buscar, combinar categorías, limpiar vacío y abrir el editor correcto desde la lista. |
+| Estadísticas | Filtros GET, tabla mensual de 12 filas, referencias y nota de categorías no excluyentes. |
+| Metacrítica | Criterios desplegables, enlaces a ficha y alias histórico. |
+| Ruleta | Vacío, añadir juegos, sortear, mostrar ganador, excluir y repetir; resultado responsive y enfocable. |
+| Ficha | Seis juegos con estados distintos, Dinero/rango/Detalles/Valoración en escritorio y móvil; sin bloques de gráfica vacíos. |
+| Edición | Guardando local, error recuperable y autenticación. Dos solicitudes interceptadas con 503/401 en Chromium; ninguna escritura real. |
+| Horas | Valorant vacío, Wolfenstein cero y Far Cry 3 estimado a 1440/390/320; etiquetas y modos sin desbordamiento. |
+| Golden | Campo siguiendo al puntero a 3440/5120, geometría estable, regreso al salir y fallbacks táctil/reduced-motion. |
+
+- Scripts: `.codex-qa/verify-brand-site.mjs`, `capture-brand-site.mjs`, `compare-brand-site.mjs`, `inspect-brand-states.mjs`, `verify-hours-golden.mjs` y `verify-hours-states.mjs`.
+- `npm run test:detail`, `npm run test:finance`, `npm run test:catalog`: passed.
+- `npm run build`: passed (Astro con adaptador Vercel).
+- `git diff --check`: passed. Sin nuevas declaraciones `!important` ni `transition: all`; archivos modificados por debajo de 1000 líneas.
+- Accesibilidad focal: etiquetas de controles, nombres de diálogos, foco visible, Escape, aislamiento modal, valores de canvas accesibles y movimiento reducido. No se declara auditoría WCAG integral ni resultado de axe.
+
+## Implementation checklist
+
+- [x] Aplicar colores, tipografía y bento del sistema operativo a las seis rutas.
+- [x] Unificar navegación, cabeceras, métricas, filtros, botones, vacíos y formularios.
+- [x] Mantener las variables reales de datos y las gráficas significativas.
+- [x] Conservar Golden, frosted y hover aprobados sin alterar las portadas.
+- [x] Probar flujos, teclado y responsive, e inspeccionar comparaciones conjuntas.
+- [x] Separar de la entrega los cambios preexistentes de `AGENTS.md`, `games.json` y `artifacts/`.
+
+## Follow-up polish
+
+- P3: retirar gradualmente CSS legacy ya sobreescrito, sin mezclarlo con este rediseño ni arriesgar estados no visibles. La capa `brand` concentra el sistema operativo por dominio.
+- P3: comprobar intensidad del Golden en el monitor físico del usuario; aquí se comprueba con Chromium, no con medición del panel.
+- Fuera de alcance: migraciones futuras de tipografía/`--ds-*`, reconciliación de datos, cambios de fórmulas, auditoría de accesibilidad completa y perfiles de rendimiento en equipos de baja gama.
+
+final result: passed
+
+---
+
+# Histórico — Bento Horas, Modos y Golden ultrawide · 2026-09-11
 
 ## Findings
 

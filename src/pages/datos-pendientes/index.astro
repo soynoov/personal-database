@@ -1,32 +1,20 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Sidebar from '../../components/Sidebar.astro';
+import MetricCard from '../../components/MetricCard.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import PageHeader from '../../components/PageHeader.astro';
 import TablerIcon from '../../components/TablerIcon.astro';
 import '../../styles/data-pending.css';
+import '../../styles/brand-pending.css';
 import arrowRightIcon from '@tabler/icons/outline/arrow-right.svg?url';
 import checkIcon from '@tabler/icons/outline/check.svg?url';
 import databaseIcon from '@tabler/icons/outline/database-exclamation.svg?url';
 import searchIcon from '@tabler/icons/outline/search.svg?url';
 import { getDataCompleteness } from '../../lib/game-data-completeness';
-import { normalizeStatus } from '../../lib/game-status';
-import { getUniqueValues, readGames } from '../../lib/local-games';
+import { readGames } from '../../lib/local-games';
 
 const games = await readGames();
 const report = getDataCompleteness(games);
-const launchers = getUniqueValues(games, 'launcher');
-const plataformas = getUniqueValues(games, 'plataforma');
-const estados = getUniqueValues(games, 'estado');
-const drawerEstadosOrdered = [
-  'Jugando', 'Terminado', 'Pendiente', 'Wishlist',
-  'Pausado', 'Abandonado', 'Retirado', 'Recurrente',
-];
-const estadosSet = new Set(estados.map(normalizeStatus));
-const knownEstadoValues = new Set(drawerEstadosOrdered.map(normalizeStatus));
-const orderedDrawerEstados = [
-  ...drawerEstadosOrdered.filter((estado) => estadosSet.has(normalizeStatus(estado)) || estado === 'Wishlist'),
-  ...estados.filter((estado) => !knownEstadoValues.has(normalizeStatus(estado))),
-];
-
 const categoryLabels = {
   copia: 'Mi copia',
   actividad: 'Actividad',
@@ -42,48 +30,23 @@ const editorAnchors = {
 } as const;
 ---
 
-<BaseLayout title='Pendientes — Personal Database'>
-  <main class='shell shell-app shell-desktop-app'>
-    <Sidebar
-      orderedDrawerEstados={orderedDrawerEstados}
-      plataformas={plataformas}
-      launchers={launchers}
-      active='datos'
-    />
-
-    <div class='desktop-main data-pending-page'>
-      <header class='data-pending-heading'>
-        <div>
-          <span class='eyebrow'>Calidad de tu biblioteca</span>
-          <h1>Pendientes</h1>
-          <p>Localiza fichas incompletas y abre directamente el editor que necesitas.</p>
-        </div>
-        <div class='data-completion-ring' style={`--completion:${report.completionPct * 3.6}deg`} aria-label={`${report.completionPct}% de datos completados`}>
+<BaseLayout title='Pendientes — NooVDB' active='datos' pageClass='data-pending-page'>
+      <PageHeader title="Pendientes" eyebrow="Calidad de tu biblioteca" description="Localiza fichas incompletas y abre directamente el editor que necesitas.">
+        <div slot='aside' class='data-completion-ring' style={`--completion:${report.completionPct * 3.6}deg`} aria-label={`${report.completionPct}% de datos completados`}>
           <div><strong>{report.completionPct}%</strong><span>completo</span></div>
         </div>
-      </header>
+      </PageHeader>
 
-      <section class='data-summary' aria-label='Resumen de datos pendientes'>
-        <article class='panel data-summary-card data-summary-primary'>
-          <span>Fichas por completar</span>
-          <strong>{report.incompleteGames}</strong>
-          <small>de {report.totalGames} juegos</small>
-        </article>
-        <article class='panel data-summary-card'>
-          <span>Campos pendientes</span>
-          <strong>{report.totalMissing}</strong>
-          <small>ordenados por prioridad</small>
-        </article>
-        <article class='panel data-summary-card data-summary-success'>
-          <span>Fichas completas</span>
-          <strong>{report.totalGames - report.incompleteGames}</strong>
-          <small>sin datos esenciales pendientes</small>
-        </article>
+      <section class='metric-grid data-summary' aria-label='Resumen de datos pendientes'>
+        <MetricCard label='Fichas por completar' value={report.incompleteGames} context={`de ${report.totalGames} juegos`} icon={databaseIcon} primary />
+        <MetricCard label='Campos pendientes' value={report.totalMissing} context='Ordenados por prioridad' />
+        <MetricCard label='Fichas completas' value={report.totalGames - report.incompleteGames} context='Sin datos esenciales pendientes' icon={checkIcon} />
       </section>
 
       <section class='panel data-filter-bar' aria-label='Filtrar datos pendientes'>
         <label class='data-search-field'>
           <TablerIcon src={searchIcon} />
+          <span class='sr-only'>Buscar datos pendientes por juego</span>
           <input type='search' placeholder='Buscar un juego…' autocomplete='off' data-pending-search />
         </label>
         <label class='data-category-field'>
@@ -96,7 +59,7 @@ const editorAnchors = {
             <option value='valoracion'>Valoración</option>
           </select>
         </label>
-        <strong data-pending-count>{report.incompleteGames} juegos</strong>
+        <strong data-pending-count aria-live='polite'>{report.incompleteGames} juegos</strong>
       </section>
 
       {report.games.length > 0 ? (
@@ -146,7 +109,7 @@ const editorAnchors = {
               </article>
             );
           })}
-          <div class='panel data-filter-empty'>No hay juegos que coincidan con estos filtros.</div>
+          <div class='data-filter-empty'><EmptyState title='Sin coincidencias' description='Prueba otro nombre o muestra todas las categorías.' action='Limpiar filtros' reset='pending' /></div>
         </section>
       ) : (
         <section class='panel data-all-complete'>
@@ -160,8 +123,7 @@ const editorAnchors = {
         <TablerIcon src={databaseIcon} />
         <p><strong>Qué se revisa:</strong> estado y datos de tu copia; según el estado del juego, también horas, fechas, precio pagado y valoración personal. Dificultad, logros, cromos y comentarios son opcionales.</p>
       </aside>
-    </div>
-  </main>
+
 
   <script>
     import { initDataPendingFilters } from '../../scripts/data-pending';

@@ -1,0 +1,137 @@
+@import '../theme.css';
+
+@layer brand {
+  .game-page-rich {
+    --flat-section: var(--panel-bg); --flat-card: var(--panel-inner); --flat-card-emphasis: var(--panel-emphasis);
+    --flat-card-muted: var(--panel-inner); --flat-icon: var(--control-bg); --flat-line: var(--panel-line);
+    --flat-line-strong: var(--selection-line); --flat-label: var(--muted); --flat-copy: var(--text);
+    --flat-copy-muted: var(--muted); --flat-accent: var(--theme-purple); --flat-progress: var(--theme-purple);
+  }
+  .game-page-rich .game-page-topbar { justify-content: flex-end; min-height: var(--control-height); margin: 0; }
+  .game-page-rich .game-page-topbar .game-edit-trigger { width: auto; gap: var(--space-2); padding-inline: var(--space-4); font-size: var(--type-label); }
+  .game-page-rich .game-page-topbar .game-edit-trigger-label { display: inline; }
+  .game-page-rich .game-hero-cinematic { border-radius: var(--radius-1); overflow: hidden; border-color: var(--panel-line); }
+  .game-page-rich .game-hero-cinematic::before { height: 100%; clip-path: none; }
+  .game-page-rich .game-overview-copy h1 { color: var(--text); }
+  .game-page-rich .game-sections-nav-shell { --nav-surface: var(--panel-bg); position: sticky; z-index: 50; top: var(--app-header-height); margin: 0; border-color: var(--panel-line); border-radius: var(--radius-2); background: var(--panel-bg); box-shadow: none; }
+  .game-page-rich .game-sections-nav-shell .game-sections-nav { padding: var(--space-2) var(--space-6); gap: var(--space-6); scroll-padding-inline: var(--space-6); }
+  .game-page-rich .game-sections-nav-shell .game-sections-nav a { min-height: var(--control-height); color: var(--muted); font-size: var(--type-ui); }
+  .game-page-rich .game-sections-nav-shell .game-sections-nav a.is-active { color: var(--theme-purple); }
+  .game-page-rich .game-sections-nav-shell .game-sections-nav a::after { bottom: calc(-1 * var(--space-2)); background: var(--theme-purple); }
+  .game-page-rich :is(.analysis-panel, .competitive-section, #technical, #dlcs, .game-metacritic, .detail-comments) { padding: var(--space-6); gap: var(--space-4); border: 1px solid var(--panel-line); border-radius: var(--radius-1); background: var(--panel-bg); box-shadow: none; backdrop-filter: none; scroll-margin-top: 76px; }
+  .game-page-rich.is-golden :is(.analysis-panel, .competitive-section, #technical, #dlcs, .game-metacritic, .detail-comments) { border-color: var(--detail-golden-line); background: var(--detail-golden-surface); }
+  .game-page-rich .competitive-section::before { content: none; }
+  .game-page-rich :is(.section-title-row, .game-metacritic-head, .detail-comments-head) { margin: 0 0 var(--space-4); gap: var(--space-4); padding: 0; }
+  .game-page-rich :is(.section-title-row, .game-metacritic-head, .detail-comments-head) h2 { margin-top: var(--space-2); color: var(--text); font: 650 var(--type-section)/1.2 var(--font-body); letter-spacing: -0.02em; }
+  .game-page-rich :is(.finance-goal-card, .finance-progress-card, .finance-incomplete-state, .finance-kpi-grid article, .finance-breakdown, .finance-market-details, .competitive-rank-card, .metacritic-score-card, .metacritic-breakdown, .metacritic-empty-state) { border: 1px solid var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); box-shadow: none; }
+  .game-page-rich .finance-priority-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-3); }
+  .game-page-rich .finance-goal-card { grid-column: 1; grid-template-columns: minmax(0, 1fr); min-height: 0; background: var(--panel-emphasis); }
+  .game-page-rich .finance-progress-card { grid-column: 2; min-height: 0; padding: var(--space-6); }
+  .game-page-rich .finance-goal-primary { padding: var(--space-6); gap: var(--space-4); }
+  .game-page-rich .finance-goal-copy > strong { color: var(--text); font: 650 clamp(1.8rem, 3vw, 3rem)/1.1 var(--font-body); }
+  .game-page-rich .finance-progress-multiple { color: var(--text); font: 650 clamp(2rem, 3vw, 3rem)/1.1 var(--font-body); }
+  .game-page-rich .finance-goal-cost { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); padding: var(--space-4) var(--space-6); border: 0; border-top: 1px solid var(--panel-line); background: transparent; }
+  .game-page-rich .finance-goal-cost strong { font-size: 1.5rem; color: var(--text); }
+  .game-page-rich .finance-progress-head { display: grid; gap: var(--space-2); }
+  .game-page-rich :is(.finance-progress-head small, .finance-progress-status, .finance-goal-copy small) { color: var(--muted); font-size: var(--type-label); line-height: var(--leading-body); }
+  .game-page-rich .finance-progress-card.is-complete .finance-progress-status { color: var(--success); }
+  .game-page-rich .finance-progress-card .value-progress { height: 6px; border: 0; background: var(--chart-track); }
+  .game-page-rich .finance-incomplete-state { padding: var(--space-4); gap: var(--space-4); }
+  .game-page-rich .finance-incomplete-copy strong { color: var(--text); }
+  .game-page-rich .finance-incomplete-copy small { color: var(--muted); }
+  .game-page-rich .finance-incomplete-action { min-height: var(--control-height); padding: var(--space-3) var(--space-4); border: 1px solid var(--selection-line); border-radius: var(--radius-3); background: var(--selection-bg); color: var(--theme-purple); }
+  .game-page-rich .finance-kpi-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-3); }
+  .game-page-rich .finance-kpi-grid article { padding: var(--space-4); gap: var(--space-2); }
+  .game-page-rich .finance-kpi-grid :is(article:first-child, article.is-null) { padding: var(--space-4); opacity: 1; filter: none; border-color: var(--panel-line); }
+  .game-page-rich .finance-kpi-grid strong { color: var(--text); font-size: 1.25rem; }
+  .game-page-rich .finance-kpi-grid small { color: var(--muted); }
+  .game-page-rich .finance-breakdown { padding: var(--space-4); }
+  .game-page-rich .finance-breakdown-head { margin-bottom: var(--space-4); }
+  .game-page-rich .finance-breakdown-head h3 { color: var(--text); font: 600 var(--type-body)/1.4 var(--font-body); }
+  .game-page-rich .finance-breakdown dl { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-3); }
+  .game-page-rich .finance-breakdown dl > div { padding: var(--space-4); border: 1px solid var(--panel-line); border-radius: var(--radius-3); background: var(--control-bg); }
+  .game-page-rich .finance-breakdown dd { color: var(--text); }
+  .game-page-rich .finance-breakdown .finance-breakdown-note { color: var(--muted); }
+  .game-page-rich .finance-market-details > summary { min-height: var(--control-height); padding: var(--space-4); color: var(--text); }
+  .game-page-rich .finance-market-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-3); padding: 0 var(--space-4) var(--space-4); }
+  .game-page-rich .finance-market-grid.is-summary-only { grid-template-columns: minmax(0, 1fr); }
+  .game-page-rich .finance-market-grid :is(.chart-visual-card, .finance-market-values > div) { border-color: var(--panel-line); border-radius: var(--radius-3); background: var(--control-bg); }
+  .game-page-rich .finance-market-values { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); margin: 0; }
+  .game-page-rich .finance-market-values > div { padding: var(--space-3); }
+  .game-page-rich .finance-market-values > div.is-null { opacity: 1; filter: none; }
+  .game-page-rich .finance-market-values > div.is-null dd { color: var(--muted); }
+  .game-page-rich .finance-market-values dd { color: var(--text); font-size: 1.15rem; }
+  .game-page-rich .finance-market-values .finance-market-note { color: var(--muted); font-size: var(--type-label); }
+  .game-page-rich .chart-visual-card-dlc { grid-column: 1 / -1; }
+  .game-page-rich .chart-header strong { color: var(--text); }
+  .game-page-rich .chart-badge { border-color: var(--panel-line); color: var(--muted); background: transparent; }
+  .game-page-rich .chart-note { margin: var(--space-4) 0 0; color: var(--muted); font: 400 var(--type-label)/1.5 var(--font-body); }
+  .game-page-rich .dlc-sync-prices-btn { min-height: var(--control-height); padding: var(--space-2) var(--space-3); border: 1px solid var(--selection-line); border-radius: var(--radius-4); background: var(--selection-bg); color: var(--theme-purple); }
+  .game-page-rich .competitive-rank-grid { grid-template-columns: minmax(0, 1fr); }
+  .game-page-rich .competitive-rank-grid:has(.competitive-rank-card-current) { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .game-page-rich .competitive-rank-card { min-height: 144px; justify-content: center; gap: var(--space-4); padding: var(--space-6); }
+  .game-page-rich .competitive-rank-card-peak { border-color: var(--selection-line); background: var(--panel-emphasis); }
+  .game-page-rich .competitive-rank-label { position: static; color: var(--muted); letter-spacing: 0.04em; font-size: var(--type-label); }
+  .game-page-rich .competitive-rank-label .tabler-icon { color: var(--theme-purple); }
+  .game-page-rich .competitive-rank-card strong { color: var(--text); font: 650 var(--type-metric)/1.1 var(--font-body); white-space: normal; overflow-wrap: anywhere; }
+  .game-page-rich .competitive-rank-card-current strong { font-size: 1.75rem; }
+  .game-page-rich .competitive-rank-card.is-empty strong { color: var(--muted); font-size: 1.25rem; }
+  .game-page-rich .competitive-rank-card .brand-button { align-self: start; padding-inline: var(--space-4); }
+  .game-page-rich .metacritic-score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-3); }
+  .game-page-rich .metacritic-score-card { padding: var(--space-4); min-height: 128px; }
+  .game-page-rich .metacritic-score-card:has(.is-personal) { border-color: var(--selection-line); background: var(--panel-emphasis); }
+  .game-page-rich .metacritic-score-copy > span { color: var(--muted); font-size: var(--type-label); }
+  .game-page-rich .metacritic-score-copy > strong { color: var(--text); font-size: var(--type-ui); }
+  .game-page-rich .metacritic-score-copy > small { color: var(--muted); }
+  .game-page-rich .metacritic-score-value { width: auto; min-width: 64px; border: 0; border-radius: 0; background: transparent; color: var(--text); font: 650 2.25rem/1.2 var(--font-body); }
+  .game-page-rich .metacritic-score-value > small { margin-left: var(--space-1); font-size: var(--type-label); color: var(--muted); }
+  .game-page-rich .metacritic-breakdown { padding: var(--space-4); }
+  .game-page-rich .metacritic-breakdown-head h3 { color: var(--text); font: 600 var(--type-body)/1.3 var(--font-body); }
+  .game-page-rich .metacritic-breakdown-head > span { color: var(--muted); }
+  .game-page-rich .metacritic-criterion { padding: var(--space-4); border: 1px solid var(--panel-line); border-radius: var(--radius-3); background: var(--control-bg); }
+  .game-page-rich .metacritic-criterion-row strong { color: var(--text); }
+  .game-page-rich .metacritic-criterion-row span { color: var(--muted); }
+  .game-page-rich .metacritic-criterion progress { accent-color: var(--theme-purple); background: var(--chart-track); }
+  .game-page-rich .metacritic-criterion progress::-webkit-progress-bar { background: var(--chart-track); }
+  .game-page-rich .metacritic-criterion progress::-webkit-progress-value { background: var(--theme-purple); }
+  .game-page-rich .metacritic-criterion progress::-moz-progress-bar { background: var(--theme-purple); }
+  .game-page-rich :is(.metacritic-honorary, .metacritic-score-equation) { border: 1px solid var(--panel-line); border-radius: var(--radius-3); background: var(--control-bg); box-shadow: none; }
+  .game-page-rich .metacritic-honorary-level, .game-page-rich .metacritic-honorary-reason { border-color: var(--panel-line); background: transparent; }
+  .game-page-rich .metacritic-score-term strong { color: var(--text); }
+  .game-page-rich .metacritic-score-term.is-result strong { color: var(--theme-purple); }
+  .game-page-rich .metacritic-empty-state { gap: var(--space-4); padding: var(--space-4); }
+  .game-page-rich .metacritic-empty-state strong { color: var(--text); }
+  .game-page-rich .metacritic-empty-state p { color: var(--muted); }
+  .game-page-rich .metacritic-review-prompt { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-4); border: 1px solid var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); color: var(--muted); font-size: var(--type-ui); }
+  .game-page-rich .metacritic-review-prompt button { padding-inline: var(--space-4); }
+  .game-page-rich .detail-comments-text { padding: var(--space-4); border: 1px solid var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); color: var(--text); font: 400 var(--type-ui)/1.7 var(--font-body); }
+  .game-page-rich .detail-comments-empty .detail-comments-text { color: var(--muted); }
+  .game-page-rich :is(.dlc-card, .dlc-gallery-card) { border-color: var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); box-shadow: none; }
+  .game-page-rich .dlc-showcase-card { border-color: var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); box-shadow: none; }
+  .game-page-rich .dlc-showcase-body { padding: var(--space-4); background: var(--panel-inner); }
+  .game-page-rich .dlc-showcase-body h3 { color: var(--text); }
+  .game-page-rich .dlc-showcase-facts .detail-item { border-color: var(--panel-line); border-radius: var(--radius-3); background: var(--control-bg); }
+  .game-page-rich .dlc-showcase-facts dt { color: var(--muted); }
+  .game-page-rich .dlc-showcase-facts dd { color: var(--text); }
+  .game-page-rich .dlc-filter-segmented { border-color: var(--panel-line); border-radius: var(--radius-pill); background: var(--control-bg); }
+  .game-page-rich .dlc-filter-segmented button { min-height: var(--control-height); color: var(--muted); }
+  .game-page-rich .dlc-filter-segmented button.is-active { color: var(--text); background: var(--selection-bg); }
+  @media (max-width: 1100px) {
+    .game-page-rich .finance-market-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 700px) {
+    .game-page-rich :is(.analysis-panel, .competitive-section, #technical, #dlcs, .game-metacritic, .detail-comments) { padding: var(--space-4); }
+    .game-page-rich .finance-priority-grid { grid-template-columns: minmax(0, 1fr); }
+    .game-page-rich .finance-goal-card { grid-column: 1; grid-row: 1; }
+    .game-page-rich .finance-progress-card { grid-column: 1; grid-row: 2; padding: var(--space-4); }
+    .game-page-rich .finance-goal-primary { padding: var(--space-4); }
+    .game-page-rich .finance-goal-cost { padding: var(--space-4); }
+    .game-page-rich .finance-kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .game-page-rich .finance-breakdown dl { grid-template-columns: minmax(0, 1fr); }
+    .game-page-rich .finance-market-values { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .game-page-rich .competitive-rank-grid:has(.competitive-rank-card-current) { grid-template-columns: minmax(0, 1fr); }
+    .game-page-rich .competitive-rank-card { padding: var(--space-4); }
+    .game-page-rich .metacritic-score-grid { grid-template-columns: minmax(0, 1fr); }
+    .game-page-rich .metacritic-score-card { min-height: 100px; }
+  }
+}

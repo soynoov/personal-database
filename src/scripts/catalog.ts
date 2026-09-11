@@ -262,18 +262,16 @@ export function initCatalog(allGames: CatalogGame[]): void {
   };
 
   const modalIsolationTargets = Array.from(document.querySelectorAll<HTMLElement>([
-    '.home-catalog-hero',
+    '.page-header',
+    '.app-header',
     '.desktop-sidebar',
     '#cards-shell',
     '#table-shell',
     '.catalog-filters-top',
-    '.mobile-sort-bar',
-    '.mobile-tab-bar',
     '#active-filter-pills',
     '.panel-subtoolbar',
     '.legend-app',
     '.mobile-bottom-nav',
-    '.mobile-drawer',
   ].join(',')));
   const previousAriaHidden = new Map<HTMLElement, string | null>();
   let modalIsolationActive = false;
@@ -377,7 +375,9 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
   // ─── Detail dialog ─────────────────────────────────────────────────────────
 
+  let renderedSearchValue = elements.search.value;
   const render = (): void => {
+    renderedSearchValue = elements.search.value;
     const filters = {
       search: elements.search.value.trim(),
       estado: elements.estado.value,
@@ -444,9 +444,9 @@ export function initCatalog(allGames: CatalogGame[]): void {
       elements.mobileFilterCount.hidden = mobileFilterCount === 0;
     }
     const estadoPillColors: Record<string, string> = {
-      jugando: '#6ee76c', terminado: '#67b1ff', completado: '#67b1ff',
-      pendiente: '#f5c518', wishlist: '#5ad0ff', pausado: '#f5a818',
-      abandonado: '#ff7055', retirado: '#ff7055', recurrente: '#c9a0ff',
+      jugando: 'var(--status-playing-fg)', terminado: 'var(--status-completed-fg)', completado: 'var(--status-completed-fg)',
+      pendiente: 'var(--status-pending-fg)', wishlist: 'var(--status-wishlist-fg)', pausado: 'var(--danger)',
+      abandonado: 'var(--danger)', retirado: 'var(--muted)', recurrente: 'var(--status-recurring-fg)',
     };
 
     if (activeFilterEntries.length > 0) {
@@ -464,7 +464,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
           label = String(value);
           const dot = document.createElement('span');
           dot.className = 'active-pill-dot';
-          dot.style.background = estadoPillColors[normalizeStatus(value)] ?? '#8b9ab5';
+          dot.style.background = estadoPillColors[normalizeStatus(value)] ?? 'var(--muted)';
           dot.setAttribute('aria-hidden', 'true');
           button.appendChild(dot);
         } else if (key === 'tag') {
@@ -481,7 +481,8 @@ export function initCatalog(allGames: CatalogGame[]): void {
           };
           label = `Rentabilidad: ${profitabilityLabels[String(value)] ?? value}`;
         } else {
-          label = `${key}: ${value}`;
+          const labels: Record<string, string> = { search: 'Búsqueda', launcher: 'Launcher', plataforma: 'Plataforma', precio: 'Precio' };
+          label = `${labels[key] ?? key}: ${value}`;
         }
 
         button.appendChild(document.createTextNode(label));
@@ -548,10 +549,8 @@ export function initCatalog(allGames: CatalogGame[]): void {
     inactiveContainer.replaceChildren();
 
     if (filtered.length === 0) {
-      const empty = document.createElement('div');
-      empty.className = 'empty';
-      empty.textContent = 'No hay resultados con esos filtros.';
-      activeContainer.replaceChildren(empty);
+      const empty = document.getElementById('catalog-empty-template') as HTMLTemplateElement;
+      activeContainer.replaceChildren(empty.content.cloneNode(true));
       updateViewMode();
       return;
     }
@@ -665,21 +664,6 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
     activeContainer.replaceChildren(fragment);
 
-    // Sincronizar drawer
-    document.querySelectorAll<HTMLElement>('[data-drawer-filter]').forEach((item) => {
-      const filter = item.dataset.drawerFilter;
-      const value = item.dataset.value ?? '';
-      let active = false;
-      if (filter === 'sort') active = elements.sort.value === value;
-      else if (filter === 'estado') active = normalizeStatus(elements.estado.value) === normalizeStatus(value);
-      else if (filter === 'launcher') active = elements.launcher.value === value;
-      else if (filter === 'plataforma') active = elements.plataforma.value === value;
-      else if (filter === 'tag') active = normalizeGameTag(elements.tag.value) === normalizeGameTag(value);
-      else if (filter === 'modo') active = elements.modo.value === value;
-      else if (filter === 'precio') active = elements.precio.value === value;
-      else if (filter === 'rentabilidad') active = elements.rentabilidad.value === value;
-      item.classList.toggle('is-active', active);
-    });
 
     updateViewMode();
   };
@@ -693,7 +677,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
   });
   elements.search.addEventListener('change', () => {
     window.clearTimeout(searchRenderTimer);
-    render();
+    if (elements.search.value !== renderedSearchValue) render();
   });
 
   [elements.estado, elements.launcher, elements.plataforma, elements.tag, elements.modo, elements.sort, elements.precio, elements.rentabilidad, elements.golden]
@@ -751,6 +735,12 @@ export function initCatalog(allGames: CatalogGame[]): void {
   };
 
   elements.reset.addEventListener('click', resetFilters);
+  document.addEventListener('click', event => {
+    if (event.target instanceof Element && event.target.closest('[data-empty-reset="catalog"]')) {
+      resetFilters();
+      elements.search.focus();
+    }
+  });
   elements.mobileReset?.addEventListener('click', resetFilters);
 
   elements.activeFilterPills.addEventListener('click', (event) => {
@@ -857,56 +847,11 @@ export function initCatalog(allGames: CatalogGame[]): void {
     });
   });
 
-  // Mobile drawer
-  const drawerEl = document.querySelector('#mobile-drawer');
-  const drawerOverlay = document.querySelector('#mobile-drawer-overlay');
-  const drawerCloseBtn = document.querySelector('#mobile-drawer-close');
-  const drawerOpenBtn = document.querySelector('#mobile-drawer-open');
-
-  const openMobileDrawer = () => {
-    drawerEl?.classList.add('is-open');
-    drawerEl?.setAttribute('aria-hidden', 'false');
-    drawerOverlay?.classList.add('is-visible');
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeMobileDrawer = () => {
-    drawerEl?.classList.remove('is-open');
-    drawerEl?.setAttribute('aria-hidden', 'true');
-    drawerOverlay?.classList.remove('is-visible');
-    document.body.style.overflow = '';
-  };
-
-  drawerOpenBtn?.addEventListener('click', openMobileDrawer);
-  drawerCloseBtn?.addEventListener('click', closeMobileDrawer);
-  drawerOverlay?.addEventListener('click', closeMobileDrawer);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMobileDrawer(); });
-
-  document.querySelectorAll<HTMLElement>('[data-drawer-filter]').forEach((item) => {
-    item.addEventListener('click', () => {
-      const filter = item.dataset.drawerFilter;
-      const value = item.dataset.value ?? '';
-      if (filter === 'sort') {
-        elements.sort.value = value;
-        if (elements.mobileSort) elements.mobileSort.value = value;
-      }
-      else if (filter === 'estado') elements.estado.value = value;
-      else if (filter === 'launcher') elements.launcher.value = value;
-      else if (filter === 'plataforma') elements.plataforma.value = value;
-      else if (filter === 'tag') elements.tag.value = value;
-      else if (filter === 'modo') elements.modo.value = value;
-      else if (filter === 'precio') elements.precio.value = value;
-      else if (filter === 'rentabilidad') elements.rentabilidad.value = value;
-      closeMobileDrawer();
-      render();
-    });
-  });
-
   // Cerrar card abierta en touch al tocar fuera
   document.addEventListener('click', () => {
     document.querySelectorAll('.mock-game-card.is-open').forEach((c) => c.classList.remove('is-open'));
   });
 
   render();
-  if (!window.location.hash) requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0 }));
+  if (!window.location.hash && document.activeElement !== elements.search) requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0 }));
 }

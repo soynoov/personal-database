@@ -63,7 +63,11 @@ const { hasDlcs, isCompetitive } = Astro.props;
   };
 
   const updateActiveSection = () => {
-    const activationLine = Math.min(160, window.innerHeight * 0.24);
+    // Match the real anchor clearance below the shared header and section nav.
+    const firstSection = sectionById.values().next().value;
+    const scrollPadding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+    const scrollMargin = firstSection ? parseFloat(getComputedStyle(firstSection).scrollMarginTop) || 0 : 0;
+    const activationLine = Math.max(160, scrollPadding + scrollMargin + 2);
     let visibleId = sectionById.keys().next().value as string | undefined;
 
     if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {

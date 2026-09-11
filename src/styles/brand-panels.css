@@ -1,0 +1,28 @@
+@import './theme.css';
+
+@layer brand {
+  .brand-page :where(.panel) { min-width: 0; border: 1px solid var(--panel-line); border-radius: var(--radius-1); background: var(--panel-bg); box-shadow: none; }
+  .metric-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+  .metric-grid-four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .metric-card { display: grid; align-content: start; gap: var(--space-3); min-width: 0; padding: var(--space-6); border: 1px solid var(--panel-line); border-radius: var(--radius-1); background: var(--panel-bg); }
+  .metric-card-primary { border-color: var(--selection-line); background: var(--panel-emphasis); }
+  .metric-card-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); min-height: 24px; color: var(--muted); font: 550 var(--type-label)/1.4 var(--font-body); }
+  .metric-card-head .tabler-icon { flex-shrink: 0; width: 20px; height: 20px; color: var(--theme-purple); }
+  .metric-card > strong { color: var(--text); font: 650 var(--type-metric)/1.1 var(--font-body); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .metric-card > small { color: var(--muted); font: 400 var(--type-label)/var(--leading-body) var(--font-body); }
+  .brand-page :where(.recap-section, .criterion-section) { padding: var(--space-6); }
+  .brand-page :where(.recap-section-head, .criterion-section-head) { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-6); }
+  .brand-page :where(.recap-section-head, .criterion-section-head) h2 { margin: var(--space-2) 0 0; font: 650 var(--type-section)/1.2 var(--font-body); color: var(--text); letter-spacing: -0.02em; }
+  .brand-page :where(.recap-section-count, .criterion-count, .stats-quality-badge, .roulette-count) { padding: var(--space-2) var(--space-3); border: 1px solid var(--panel-line); border-radius: var(--radius-pill); background: transparent; color: var(--muted); font: 500 var(--type-label)/1.4 var(--font-badge); }
+  .brand-page :where(.recap-empty, .criterion-empty) { min-height: 160px; display: grid; align-content: center; gap: var(--space-2); padding: var(--space-6); border: 1px solid var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); color: var(--muted); font: 400 var(--type-ui)/1.5 var(--font-body); }
+  .brand-page :where(.criterion-empty) strong { color: var(--text); }
+  .brand-page [hidden], dialog [hidden] { display: none; }
+  @media (max-width: 1100px) { .metric-grid-four { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) {
+    .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+    .metric-grid:not(.metric-grid-four) > :first-child { grid-column: 1 / -1; }
+    .metric-card { padding: var(--space-4); gap: var(--space-2); }
+    .metric-card > strong { font-size: 1.75rem; }
+    .brand-page :where(.recap-section, .criterion-section) { padding: var(--space-4); }
+  }
+}

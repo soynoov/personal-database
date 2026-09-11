@@ -1,0 +1,57 @@
+@import './theme.css';
+
+@layer brand {
+  .roulette-setup { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-4); align-items: stretch; margin: 0; }
+  .roulette-stage { display: grid; align-content: center; gap: var(--space-4); min-width: 0; padding: var(--space-6); border: 1px solid var(--panel-line); border-radius: var(--radius-1); background: var(--panel-bg); }
+  .roulette-wheel-wrap { width: min(100%, 640px); margin-inline: auto; }
+  .roulette-wheel-wrap::after { border-color: var(--panel-line); box-shadow: none; }
+  .roulette-pointer { color: var(--theme-purple); filter: none; }
+  .roulette-stage-actions { margin-top: var(--space-4); gap: var(--space-3); }
+  .roulette-button { min-height: var(--control-height); padding: var(--space-3) var(--space-4); font-size: var(--type-ui); border-radius: var(--radius-3); }
+  .roulette-feedback { min-height: 3em; margin: 0; color: var(--muted); font-size: var(--type-label); line-height: var(--leading-body); }
+  .roulette-builder { min-width: 0; padding: var(--space-6); gap: var(--space-4); border: 1px solid var(--panel-line); border-radius: var(--radius-1); background: var(--panel-bg); box-shadow: none; backdrop-filter: none; }
+  .roulette-builder-heading { gap: var(--space-3); flex-wrap: wrap; }
+  .roulette-builder h2 { margin: var(--space-2) 0 0; color: var(--text); font: 650 var(--type-section)/1.2 var(--font-body); }
+  .roulette-builder .field label { color: var(--muted); font-size: var(--type-label); font-weight: 500; }
+  .roulette-search-control { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-2); padding: 0; border: 0; border-radius: 0; background: transparent; }
+  .roulette-search-control > .tabler-icon { display: none; }
+  .roulette-search-control input { min-width: 0; width: 100%; }
+  .roulette-search-control button { flex-shrink: 0; width: var(--control-height); height: var(--control-height); padding: var(--space-3); border: 1px solid var(--selection-line); border-radius: var(--radius-3); color: var(--theme-purple); background: var(--selection-bg); }
+  .roulette-filter-grid { gap: var(--space-3); }
+  .roulette-list-toolbar { border-color: var(--panel-line); padding-top: var(--space-4); flex-wrap: wrap; gap: var(--space-2); }
+  .roulette-list-toolbar strong { color: var(--text); font-size: var(--type-ui); }
+  .roulette-select-all { min-height: var(--control-height); color: var(--muted); font-size: var(--type-label); }
+  .roulette-candidate-list { min-height: 140px; max-height: 300px; border: 1px solid var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); scrollbar-color: var(--chart-secondary) transparent; }
+  .roulette-candidate { min-height: 68px; gap: var(--space-3); padding: var(--space-3); border-color: var(--panel-line); }
+  .roulette-candidate:hover { background: var(--control-hover); }
+  .roulette-candidate input, .roulette-select-all input { accent-color: var(--theme-purple); }
+  .roulette-candidate img { border-radius: var(--radius-4); background: var(--control-bg); }
+  .roulette-candidate-copy strong { color: var(--text); font-size: var(--type-ui); }
+  .roulette-candidate-copy small { color: var(--muted); font-size: var(--type-micro); }
+  .roulette-candidate-marker { box-shadow: none; }
+  .roulette-empty { color: var(--muted); font-size: var(--type-ui); }
+  .roulette-empty .tabler-icon { color: var(--theme-purple); }
+  .roulette-empty strong { color: var(--text); }
+  .roulette-result { overflow: hidden; padding: var(--space-8); border: 1px solid var(--panel-line); border-radius: var(--radius-1); background: var(--panel-bg); }
+  .roulette-result-heading h2 { color: var(--muted); font: 600 var(--type-ui)/1.5 var(--font-body); }
+  .roulette-result-heading h3 { font: 400 clamp(2rem, 4vw, 4rem)/1.1 var(--font-display); color: var(--text); -webkit-text-stroke: 0; text-shadow: none; }
+  .roulette-winner { width: 100%; max-width: 780px; }
+  .roulette-winner-cover { border-color: var(--panel-line); border-radius: var(--radius-2); box-shadow: none; background: var(--panel-inner); }
+  .roulette-winner-copy { border: 1px solid var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); }
+  .roulette-winner-copy > p, .roulette-winner-meta dd { color: var(--muted); }
+  .roulette-winner-copy > p, .roulette-winner-status, .roulette-winner-meta > div { border-color: var(--panel-line); }
+  .roulette-winner-meta dt { color: var(--text); }
+  .roulette-participants-title strong { color: var(--muted); }
+  .roulette-participants-title > span { background: var(--panel-line); }
+  .roulette-participant { border-color: var(--panel-line); border-radius: var(--radius-3); background: var(--panel-inner); }
+  .roulette-result[hidden], .roulette-setup[hidden] { display: none; }
+  @media (max-width: 1200px) { .roulette-setup { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 600px) {
+    .roulette-stage, .roulette-builder { padding: var(--space-4); }
+    .roulette-result { padding: var(--space-4); }
+    .roulette-stage-actions { display: grid; grid-template-columns: minmax(0, 1fr); width: 100%; }
+    .roulette-stage-actions .roulette-button { width: 100%; }
+    .roulette-result-actions { width: 100%; }
+    .roulette-result-actions .roulette-button { width: 100%; }
+  }
+}

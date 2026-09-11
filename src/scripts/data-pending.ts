@@ -26,6 +26,14 @@ export function initDataPendingFilters() {
     root.dataset.empty = visible === 0 ? 'true' : 'false';
   };
 
+  root.addEventListener('click', event => {
+    if (event.target instanceof Element && event.target.closest('[data-empty-reset="pending"]')) {
+      search.value = '';
+      category.value = '';
+      apply();
+      search.focus();
+    }
+  });
   search.addEventListener('input', apply);
   category.addEventListener('change', apply);
   apply();

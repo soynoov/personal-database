@@ -187,14 +187,12 @@ const incompleteActionLabel = metrics.baseSpend === null ? 'Registrar precio' : 
   </section>
 
   {showMarket && (
-    <details class="value-secondary-details finance-market-details">
+    <details class="value-secondary-details finance-market-details" open={moneyChartPoints.length >= 2 || dlcChartPoints.length >= 2}>
       <summary><TablerIcon src={chartIcon} /><span>Mercado</span></summary>
-      <div class:list={["finance-market-grid", !showBaseMarket && "is-dlc-only"]}>
-        {showBaseMarket && <div class="chart-visual-card chart-visual-card-money">
+      <div class:list={["finance-market-grid", !showBaseMarket && "is-dlc-only", moneyChartPoints.length < 2 && "is-summary-only"]}>
+        {showBaseMarket && moneyChartPoints.length >= 2 && <div class="chart-visual-card chart-visual-card-money">
           <div class="chart-header"><strong>Precios del juego base</strong><span class="chart-badge">{moneyChartPoints.length} valores</span></div>
-          {moneyChartPoints.length >= 2 ? (
-            <div class="chart-canvas-wrap chart-canvas-wrap-money"><canvas id="money-detail-chart" data-chart={JSON.stringify(moneyChartPayload)}></canvas></div>
-          ) : <div class="chart-empty">Sin referencias suficientes</div>}
+          <div class="chart-canvas-wrap chart-canvas-wrap-money"><canvas id="money-detail-chart" role="img" aria-label="Comparación de precios del juego base en euros" data-chart={JSON.stringify(moneyChartPayload)}></canvas></div>
         </div>}
         {showBaseMarket && <dl class="finance-market-values">
           {visibleMarketCards.map((card) => <div class:list={[card.value === '—' && "is-null", card.className]}><dt>{card.label}</dt><dd>{card.value}</dd>{card.note && <dd class="finance-market-note">{card.note}</dd>}</div>)}
@@ -207,8 +205,8 @@ const incompleteActionLabel = metrics.baseSpend === null ? 'Registrar precio' : 
             </div>
             <span class="dlc-sync-prices-status" id="dlc-sync-prices-status" aria-live="polite"></span>
             {dlcChartPoints.length >= 2 ? (
-              <div class="chart-canvas-wrap"><canvas id="dlc-finance-chart" data-chart={JSON.stringify(dlcChartPayload)}></canvas></div>
-            ) : <div class="chart-empty">Sin referencias suficientes</div>}
+              <div class="chart-canvas-wrap"><canvas id="dlc-finance-chart" role="img" aria-label={`Precios de DLC: ${dlcChartPoints.map(point => `${point.label}: ${formatEuro(point.value)}`).join('; ')}`} data-chart={JSON.stringify(dlcChartPayload)}></canvas></div>
+            ) : <p class="chart-note">Las referencias disponibles se muestran en el listado de DLC.</p>}
           </div>
         )}
       </div>

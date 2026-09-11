@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Sidebar from '../../components/Sidebar.astro';
+import PageHeader from '../../components/PageHeader.astro';
 import TablerIcon from '../../components/TablerIcon.astro';
 import chevronDownIcon from '@tabler/icons/outline/chevron-down.svg?url';
 import circleMinusIcon from '@tabler/icons/outline/circle-minus.svg?url';
@@ -19,6 +19,7 @@ import { PUBLIC_GAME_TAGS } from '../../lib/game-tags';
 import { toRouletteGame } from '../../lib/roulette-game';
 import '../../styles/roulette.css';
 import '../../styles/roulette-result.css';
+import '../../styles/brand-roulette.css';
 
 const games = await readGames();
 const rouletteGames = games
@@ -32,36 +33,14 @@ const generos = [...new Set(games.flatMap((game) => game.generos ?? []))]
   .filter(Boolean)
   .sort((a, b) => a.localeCompare(b, 'es'));
 
-const drawerEstadosOrdered = [
-  'Jugando', 'Terminado', 'Pendiente', 'Wishlist',
-  'Pausado', 'Abandonado', 'Retirado', 'Recurrente',
-];
-const estadosSet = new Set(estados.map(normalizeStatus));
-const knownEstadoValues = new Set(drawerEstadosOrdered.map(normalizeStatus));
-const orderedDrawerEstados = [
-  ...drawerEstadosOrdered.filter((estado) => estadosSet.has(normalizeStatus(estado)) || estado === 'Wishlist'),
-  ...estados.filter((estado) => !knownEstadoValues.has(normalizeStatus(estado))),
-];
 
 const defaultSlugs = rouletteGames
   .filter((game) => normalizeStatus(game.estado) === 'jugando')
   .map((game) => game.slug);
 ---
 
-<BaseLayout title='Ruleta — Personal Database'>
-  <main class='shell shell-app shell-desktop-app roulette-page'>
-    <Sidebar
-      orderedDrawerEstados={orderedDrawerEstados}
-      plataformas={plataformas}
-      launchers={launchers}
-      active='ruleta'
-    />
-
-    <div class='desktop-main roulette-main'>
-      <header class='roulette-header'>
-        <span class='eyebrow'>Personal Database</span>
-        <h1>Ruleta</h1>
-      </header>
+<BaseLayout title='Ruleta — NooVDB' active='ruleta' pageClass='roulette-page roulette-main'>
+      <PageHeader title="Ruleta" eyebrow="Elige tu próxima partida" />
 
       <section class='roulette-setup' id='roulette-setup' aria-labelledby='roulette-title'>
         <div class='roulette-stage'>
@@ -99,7 +78,7 @@ const defaultSlugs = rouletteGames
               <span class='roulette-kicker'>Preparar selección</span>
               <h2>¿A qué juego?</h2>
             </div>
-            <span class='roulette-count' id='roulette-count'>0 candidatos</span>
+            <span class='roulette-count' id='roulette-count' aria-live='polite'>0 candidatos</span>
           </div>
 
           <div class='roulette-search field'>
@@ -181,7 +160,7 @@ const defaultSlugs = rouletteGames
         </aside>
       </section>
 
-      <section class='roulette-result' id='roulette-result' hidden aria-labelledby='roulette-result-title'>
+      <section class='roulette-result' id='roulette-result' hidden tabindex='-1' aria-labelledby='roulette-result-title'>
         <div class='roulette-result-arc' aria-hidden='true'>
           <canvas id='roulette-result-wheel' width='900' height='900'></canvas>
           <span class='roulette-result-pointer'><TablerIcon src={chevronDownIcon} /></span>
@@ -237,7 +216,6 @@ const defaultSlugs = rouletteGames
           <div class='roulette-participant-strip' id='roulette-participant-strip'></div>
         </div>
       </section>
-    </div>
 
     <div
       id='__roulette-data'
@@ -245,7 +223,6 @@ const defaultSlugs = rouletteGames
       data-default-slugs={JSON.stringify(defaultSlugs)}
       hidden
     ></div>
-  </main>
 
   <script>
     import { initRoulette } from '../../scripts/roulette';

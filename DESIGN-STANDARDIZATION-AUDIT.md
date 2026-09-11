@@ -1,12 +1,39 @@
 # Auditoría de estandarización visual de NooVDB
 
-> Estado: propuesta de corrección, sin cambios sobre la interfaz real
+> Estado: auditoría histórica y referencia aprobada; rediseño operativo aplicado el 12 de septiembre de 2026
 >
 > Fecha de auditoría: 6 de septiembre de 2026
 >
 > Viewports comprobados con Chromium: `1440 × 1024`, `820 × 1180` y `390 × 844`
 >
 > Revisión 1.2: bento obligatorio y adaptable a los datos; Golden basado en un reflejo de tres haces
+
+## Estado de implementación · 12 de septiembre de 2026
+
+Se aplica el sistema operativo aprobado a todas las rutas: catálogo, ficha de juego, ruleta, estadísticas, Metacrítica y datos pendientes. `/criterio/` conserva su redirección a `/criticas/`. Las capturas, métricas y hallazgos de las secciones siguientes describen el **estado auditado el 6 de septiembre**, no deben interpretarse como defectos pendientes de la versión actual.
+
+| Familia | Implementación |
+|---|---|
+| Shell y navegación | `AppShell` compartido, sidebar de 248 px/80 px, cabecera de 64 px, menú móvil, búsqueda global y acceso por teclado. |
+| Color y tipografía | Negro, blanco cálido y violeta de `theme.css`; Anton SC, Elms Sans y Stack Sans Text. Superficies neutras y colores semánticos limitados a su función. |
+| Bento | Paneles exteriores de 32 px, celdas de 16 px y niveles interiores de 8 px; jerarquía y reflujo según datos, no bloques de tamaño fijo con huecos vacíos. |
+| Catálogo | Cabecera y métricas compactas, una sola familia de filtros, ordenación accesible, vista cards/tabla, Golden Card y vacío recuperable. |
+| Ficha | Horas y Detalles conservados; Dinero, rango, valoración, DLC y comentarios integrados en el mismo sistema. Mercado conserva las referencias válidas y no crea gráficas vacías. |
+| Estadísticas | Métricas compartidas, retícula bento, filtros legibles, tabla mensual accesible, notas metodológicas y gráficas con tokens de marca. |
+| Ruleta | Escenario y selección en bento, sectores con violeta/blanco cálido contenido, resultado y controles coherentes con el shell. |
+| Metacrítica y pendientes | Métricas, criterios desplegables, listas y acciones unificados; filas de pendientes adaptadas a móvil. |
+| Estados compartidos | Foco visible, formularios y diálogos, guardado local, error recuperable y autenticación. No se cambian las APIs. |
+
+### Adaptaciones respecto a las propuestas iniciales
+
+- **Bento protagonista en toda la web:** se aplica la aclaración posterior del usuario, incluso donde las primeras hojas mostraban filas más planas.
+- **Golden:** prevalece la iteración posterior aceptada por el usuario: material diagonal dorado que responde al ratón, hover de la card completa a `1.10`, portada sin zoom propio y fondo de ficha con campo localizado que sigue al puntero. No se retrocede a las inclinaciones, tamaño o foil de la primera auditoría.
+- **Géneros:** barras en lugar de donut porque un juego puede pertenecer a varias categorías. No cambia ningún recuento ni porcentaje.
+- **Mercado:** barras desde cero para comparar referencias de precio, evitando presentar categorías como una serie temporal. Se mantienen valores y cálculos económicos.
+- **Horas mensuales:** la nota visible aclara que son horas totales atribuidas al mes de inicio, no sesiones registradas por mes. Se conserva el método existente.
+- **Datos reales:** cero, vacío, estimaciones, Steam/no Steam, compras, DLC, micropagos y puntuaciones parciales siguen diferenciados. Las cifras ficticias de las propuestas no se copian a la base de datos.
+
+Validación y evidencia: [design-qa.md](design-qa.md). Las capturas de implementación y comparaciones se guardan localmente en `.codex-qa/`; no se confunden con los mockups marcados como propuesta. Las migraciones futuras de tipografía y tokens `--ds-*` siguen sin activarse. Esta entrega no reconcilia ni modifica `games.json`, Vercel Blob, APIs o fórmulas.
 
 ## 1. Veredicto ejecutivo
 

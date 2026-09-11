@@ -1,3 +1,4 @@
+import { readChartTheme, readCssColors } from './chart-theme';
 import { buildGameCoverUrl, buildGameHeroUrl } from '../lib/game-cover-url';
 import { gameHasMode } from '../lib/game-modes';
 import { normalizeStatus } from '../lib/game-status';
@@ -5,16 +6,8 @@ import { hasGameTag } from '../lib/game-tags';
 import type { RouletteGame } from '../lib/roulette-game';
 import gamepadIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
 
-const WHEEL_COLORS = [
-  ['rgba(107, 62, 130, 0.97)', 'rgba(32, 20, 43, 0.99)'],
-  ['rgba(61, 87, 125, 0.97)', 'rgba(22, 29, 43, 0.99)'],
-  ['rgba(122, 59, 91, 0.97)', 'rgba(43, 20, 34, 0.99)'],
-  ['rgba(44, 107, 104, 0.97)', 'rgba(16, 39, 41, 0.99)'],
-  ['rgba(125, 87, 42, 0.97)', 'rgba(44, 31, 19, 0.99)'],
-  ['rgba(119, 54, 65, 0.97)', 'rgba(42, 20, 27, 0.99)'],
-  ['rgba(47, 101, 120, 0.97)', 'rgba(17, 36, 47, 0.99)'],
-  ['rgba(83, 65, 126, 0.97)', 'rgba(27, 22, 45, 0.99)'],
-];
+let wheelColors: string[][] = [];
+let wheelTheme: ReturnType<typeof readChartTheme>;
 
 const coverUrlCache = new Map<string, string>();
 const FILTER_STORAGE_KEY = 'personal-db:roulette-filters:v1';
@@ -69,6 +62,7 @@ const paintWheel = (
   const fitted = fitCanvas(canvas);
   if (!fitted) return;
   const { context, size } = fitted;
+  const theme = wheelTheme;
   const center = size / 2;
   const radius = center - 10;
   context.clearRect(0, 0, size, size);
@@ -76,13 +70,13 @@ const paintWheel = (
   if (games.length === 0) {
     context.beginPath();
     context.arc(center, center, radius - 2, 0, Math.PI * 2);
-    context.fillStyle = '#121b29';
+    context.fillStyle = theme.panel;
     context.fill();
-    context.strokeStyle = 'rgba(153, 171, 196, 0.22)';
+    context.strokeStyle = theme.line;
     context.lineWidth = 2;
     context.stroke();
-    context.fillStyle = '#8d9aac';
-    context.font = `600 ${Math.max(14, size * 0.028)}px "Elms Sans", sans-serif`;
+    context.fillStyle = theme.muted;
+    context.font = `600 ${Math.max(14, size * 0.028)}px ${theme.font}`;
     context.textAlign = 'center';
     context.textBaseline = 'middle';
     context.fillText('Añade al menos 2 juegos', center, center);
@@ -102,7 +96,7 @@ const paintWheel = (
     context.clip();
 
     const middle = start + arc / 2;
-    const [innerColor, outerColor] = WHEEL_COLORS[index % WHEEL_COLORS.length];
+    const [innerColor, outerColor] = wheelColors[index % wheelColors.length];
     const gradient = context.createRadialGradient(
       center,
       center,
@@ -134,7 +128,7 @@ const paintWheel = (
     context.beginPath();
     context.moveTo(center, center);
     context.lineTo(center + Math.cos(start) * radius, center + Math.sin(start) * radius);
-    context.strokeStyle = 'rgba(7, 12, 20, 0.9)';
+    context.strokeStyle = theme.panel;
     context.lineWidth = Math.max(1, size * 0.004);
     context.stroke();
 
@@ -143,7 +137,7 @@ const paintWheel = (
       context.save();
       context.translate(center, center);
       context.rotate(middle);
-      context.fillStyle = '#fff8f4';
+      context.fillStyle = theme.text;
       context.shadowColor = 'rgba(0, 0, 0, 0.8)';
       context.shadowBlur = 5;
       context.font = `700 ${Math.max(11, size * (games.length <= 8 ? 0.029 : 0.021))}px "Elms Sans", sans-serif`;
@@ -157,18 +151,18 @@ const paintWheel = (
 
   context.beginPath();
   context.arc(center, center, radius, 0, Math.PI * 2);
-  context.strokeStyle = '#26354a';
+  context.strokeStyle = theme.secondary;
   context.lineWidth = Math.max(5, size * 0.012);
   context.stroke();
 
   context.beginPath();
   context.arc(center, center, radius * 0.155, 0, Math.PI * 2);
-  context.fillStyle = '#121c2a';
+  context.fillStyle = theme.panel;
   context.fill();
-  context.strokeStyle = '#35455c';
+  context.strokeStyle = theme.secondary;
   context.lineWidth = Math.max(2, size * 0.006);
   context.stroke();
-  context.fillStyle = '#f06262';
+  context.fillStyle = theme.primary;
   context.font = `700 ${Math.max(14, size * 0.038)}px "Elms Sans", sans-serif`;
   context.textAlign = 'center';
   context.textBaseline = 'middle';
@@ -202,6 +196,9 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
   const result = getElement<HTMLElement>('roulette-result');
   const wheel = getElement<HTMLCanvasElement>('roulette-wheel');
   const resultWheel = getElement<HTMLCanvasElement>('roulette-result-wheel');
+  wheelTheme = readChartTheme(wheel);
+  wheelColors = readCssColors(wheel, Array.from({ length: 6 }, (_, index) => `--wheel-fill-${index + 1}`))
+    .map(color => [color, wheelTheme.panel]);
   const spinButton = getElement<HTMLButtonElement>('roulette-spin');
   const clearButton = getElement<HTMLButtonElement>('roulette-clear');
   const addButton = getElement<HTMLButtonElement>('roulette-add');
@@ -295,7 +292,7 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
 
     const marker = document.createElement('span');
     marker.className = 'roulette-candidate-marker';
-    marker.style.setProperty('--candidate-color', WHEEL_COLORS[poolGames().indexOf(game) % WHEEL_COLORS.length][0]);
+    marker.style.setProperty('--candidate-color', wheelColors[poolGames().indexOf(game) % wheelColors.length][0]);
 
     const image = document.createElement('img');
     image.src = gameCoverUrl(game);

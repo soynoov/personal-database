@@ -1,0 +1,51 @@
+@import './theme.css';
+
+@layer brand {
+  :where(button, a, input, select, textarea, summary):focus-visible { outline: 2px solid var(--theme-purple); outline-offset: 3px; }
+  :where(button, input, select, textarea) { font-family: var(--font-body); }
+  :where(button, a) { -webkit-tap-highlight-color: transparent; }
+  button:disabled { cursor: not-allowed; }
+  :where(.brand-page, dialog) :where(input:not([type='checkbox']):not([type='radio']):not([type='range']), select, textarea) {
+    max-width: 100%; min-width: 0; min-height: var(--control-height); padding: var(--space-3);
+    border: 1px solid var(--panel-line); border-radius: var(--radius-3); background: var(--control-bg); color: var(--text);
+    font: 400 var(--type-ui)/1.4 var(--font-body); box-shadow: none;
+  }
+  :where(input, textarea)::placeholder { color: var(--muted); opacity: 0.8; }
+  :where(input, select, textarea):disabled { color: var(--disabled-fg); }
+  :where(input[type='checkbox'], input[type='radio'], input[type='range']) { accent-color: var(--theme-purple); }
+  select option, select optgroup { background: var(--control-bg); color: var(--text); }
+  select { appearance: auto; color-scheme: dark; }
+  select option:checked { background: var(--theme-purple); color: var(--bg-deep); }
+  .brand-page :is(.section-eyebrow, .roulette-kicker, .metacritic-kicker) { color: var(--theme-purple); font-size: var(--type-micro); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .brand-page :is(.game-edit-trigger, .metacritic-edit-trigger, .dlc-sync-button, .technical-editor-trigger) { width: var(--control-height); min-width: var(--control-height); min-height: var(--control-height); height: var(--control-height); padding: 0; border: 1px solid var(--panel-line); border-radius: var(--radius-3); color: var(--theme-purple); background: var(--control-bg); box-shadow: none; }
+  :is(.edit-dialog, .editor-auth-dialog, .detail-dialog) { padding: 0; max-width: min(640px, calc(100vw - var(--space-8))); max-height: calc(100dvh - var(--space-8)); overflow: auto; border: 1px solid var(--panel-line); border-radius: var(--radius-2); background: var(--panel-bg); color: var(--text); box-shadow: var(--shadow); }
+  :is(.edit-dialog, .editor-auth-dialog, .detail-dialog)::backdrop { background: var(--overlay-bg); backdrop-filter: blur(12px); }
+  :is(.edit-dialog-body, .editor-auth-form) { padding: var(--space-6); }
+  :is(.edit-dialog-head, .editor-auth-heading) h2 { color: var(--text); font: 650 var(--type-section)/1.2 var(--font-body); }
+  .edit-field label, .edit-fieldset legend { color: var(--muted); font-size: var(--type-label); }
+  :is(.edit-dialog-submit, .editor-auth-submit, .catalog-filter-apply, .stats-filter-submit, .roulette-button-primary, .brand-button-primary) { min-height: var(--control-height); border: 1px solid var(--theme-purple); border-radius: var(--radius-3); background: var(--theme-purple); color: var(--bg-deep); box-shadow: none; font: 650 var(--type-ui)/1.4 var(--font-body); cursor: pointer; }
+  :is(.edit-dialog-submit, .editor-auth-submit, .catalog-filter-apply, .stats-filter-submit, .roulette-button-primary, .brand-button-primary):hover { background: color-mix(in srgb, var(--theme-purple) 85%, var(--theme-white)); }
+  :is(.edit-dialog-cancel, .edit-dialog-close, .editor-auth-cancel, .roulette-button-ghost, .brand-button) { min-height: var(--control-height); border: 1px solid var(--panel-line); border-radius: var(--radius-3); background: var(--control-bg); color: var(--text); box-shadow: none; }
+  :is(.edit-dialog-submit, .editor-auth-submit, .roulette-button-primary):disabled { opacity: 0.55; }
+  :is(.edit-dialog-error, .editor-auth-error, .dlc-editor-error, .brand-error) { padding: var(--space-3) var(--space-4); border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent); border-radius: var(--radius-3); background: color-mix(in srgb, var(--danger) 6%, var(--panel-bg)); color: var(--danger); font-size: var(--type-ui); line-height: var(--leading-body); }
+  .brand-empty { display: grid; justify-items: center; align-content: center; gap: var(--space-3); min-height: 260px; padding: var(--space-8); border: 1px solid var(--panel-line); border-radius: var(--radius-2); text-align: center; background: var(--panel-bg); color: var(--muted); }
+  .brand-empty > .tabler-icon { width: 40px; height: 40px; color: var(--theme-purple); }
+  .brand-empty h2 { margin: 0; max-width: 24ch; color: var(--text); font: 650 var(--type-section)/1.25 var(--font-body); }
+  .brand-empty p { margin: 0; max-width: 40ch; font-size: var(--type-ui); line-height: var(--leading-body); }
+  .brand-empty :is(a, button) { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); margin-top: var(--space-2); padding: var(--space-3) var(--space-6); text-decoration: none; }
+  [aria-busy='true'] { cursor: progress; }
+  .editor-auth { max-width: min(480px, calc(100vw - var(--space-8))); border: 1px solid var(--panel-line); border-radius: var(--radius-2); background: var(--panel-bg); color: var(--text); box-shadow: var(--shadow); }
+  .editor-auth::backdrop { background: var(--overlay-bg); backdrop-filter: blur(12px); }
+  .editor-auth__panel { padding: var(--space-6); border: 0; border-radius: inherit; background: var(--panel-bg); box-shadow: none; }
+  .editor-auth h2 { color: var(--text); font: 650 var(--type-section)/1.2 var(--font-body); }
+  .editor-auth__eyebrow { color: var(--theme-purple); }
+  .editor-auth__copy, .editor-auth__field > span { color: var(--muted); }
+  .editor-auth__icon { background: var(--control-bg); color: var(--theme-purple); border-color: var(--panel-line); border-radius: var(--radius-3); }
+  .editor-auth__submit { min-height: var(--control-height); border: 1px solid var(--theme-purple); border-radius: var(--radius-3); background: var(--theme-purple); color: var(--bg-deep); font-weight: 650; box-shadow: none; }
+  .editor-auth__icon { box-shadow: none; }
+  .editor-auth__cancel, .editor-auth__close { min-height: var(--control-height); border: 1px solid var(--panel-line); border-radius: var(--radius-3); background: var(--control-bg); color: var(--text); }
+  .editor-auth__close { width: var(--control-height); }
+  .editor-auth__error { color: var(--danger); }
+  .edit-dialog-wide { width: 960px; max-width: calc(100vw - var(--space-8)); }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+}

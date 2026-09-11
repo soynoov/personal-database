@@ -1,0 +1,38 @@
+---
+import Sidebar from './Sidebar.astro';
+import TablerIcon from './TablerIcon.astro';
+import menuIcon from '@tabler/icons/outline/menu-2.svg?url';
+import searchIcon from '@tabler/icons/outline/search.svg?url';
+import '../styles/brand-shell.css';
+import '../styles/brand-controls.css';
+import '../styles/brand-panels.css';
+interface Props {
+  active?: 'catalogo' | 'ruleta' | 'estadisticas' | 'datos' | 'criticas';
+  pageClass?: string;
+  pageStyle?: string;
+  golden?: string | null;
+  detail?: boolean;
+}
+const { active = 'catalogo', pageClass = '', pageStyle, golden, detail = false } = Astro.props;
+---
+<a class="skip-link" href="#main-content">Saltar al contenido</a>
+<div class="shell shell-app shell-desktop-app app-shell">
+  <Sidebar active={active} />
+  <div class="desktop-main app-column">
+    <header class="app-header">
+      <button class="app-icon-button" id="app-menu-toggle" type="button" aria-label="Abrir navegación" aria-controls="app-navigation-menu" aria-expanded="false"><TablerIcon src={menuIcon} /></button>
+      {detail && <a class="app-breadcrumb" href="/">Catálogo</a>}
+      <span class="app-mobile-brand">NOOVDB</span>
+      <button class="app-search-command" type="button" id="app-search-command" aria-label="Buscar en el catálogo"><TablerIcon src={searchIcon} /><span>Buscar juegos</span><kbd>Ctrl K</kbd></button>
+    </header>
+    <main id="main-content" class:list={['brand-page', pageClass, { 'is-golden': Boolean(golden) }]} data-golden={golden ?? undefined} style={pageStyle}>
+      <slot />
+    </main>
+  </div>
+</div>
+<script>
+  import { initAppShell } from '../scripts/app-shell';
+  import { initUiFeedback } from '../scripts/ui-feedback';
+  initAppShell();
+  initUiFeedback();
+</script>

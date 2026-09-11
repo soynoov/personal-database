@@ -89,27 +89,27 @@ const formatDecimal = (value: number | null) =>
 
   {hasMetacriticData ? <>
   <div class="metacritic-score-grid">
-    <article class={`metacritic-score-card is-${getScoreTone(metascore, 100)}`}>
+    {metascore !== null && <article class={`metacritic-score-card is-${getScoreTone(metascore, 100)}`}>
       <div class="metacritic-score-copy">
         <span>Metascore</span>
         <strong>{getScoreSummary(metascore, 100)}</strong>
         <small>Crítica profesional</small>
       </div>
       <div class="metacritic-score-value">
-        {metascore === null ? '—' : Math.round(metascore)}
+        {Math.round(metascore)}<small>/100</small>
       </div>
-    </article>
+    </article>}
 
-    <article class={`metacritic-score-card is-${getScoreTone(userscore)}`}>
+    {userscore !== null && <article class={`metacritic-score-card is-${getScoreTone(userscore)}`}>
       <div class="metacritic-score-copy">
         <span>User score</span>
         <strong>{getScoreSummary(userscore)}</strong>
         <small>Comunidad de Metacritic</small>
       </div>
       <div class="metacritic-score-value is-round">
-        {formatDecimal(userscore)}
+        {formatDecimal(userscore)}<small>/10</small>
       </div>
-    </article>
+    </article>}
 
     <article class={`metacritic-score-card is-${getScoreTone(displayedPersonalScore)}`}>
       <div class="metacritic-score-copy">
@@ -124,12 +124,12 @@ const formatDecimal = (value: number | null) =>
           </small>
       </div>
       <div class="metacritic-score-value is-round is-personal">
-        {displayedPersonalScore === null ? '—' : formatDecimal(displayedPersonalScore)}
+        {displayedPersonalScore === null ? '—' : formatDecimal(displayedPersonalScore)}<small>/10</small>
       </div>
     </article>
   </div>
 
-  <div class="metacritic-breakdown">
+  {hasCriterionData ? <div class="metacritic-breakdown">
     <div class="metacritic-breakdown-head">
       <div>
         <span class="section-eyebrow">Desglose personal</span>
@@ -150,7 +150,7 @@ const formatDecimal = (value: number | null) =>
           <progress
             max={criterion.max}
             value={criterion.value ?? 0}
-            aria-label={`${criterion.label}: ${criterion.value ?? 0} de ${criterion.max}`}
+            aria-label={criterion.value === null ? `${criterion.label}: sin puntuar` : `${criterion.label}: ${criterion.value} de ${criterion.max}`}
           />
         </article>
       ))}
@@ -220,7 +220,7 @@ const formatDecimal = (value: number | null) =>
       )}
     </div>
     )}
-  </div>
+  </div> : <div class="metacritic-review-prompt"><span>Completa los criterios para obtener tu nota personal.</span><button class="brand-button" type="button" data-edit-target="metacritic-edit-trigger">Añadir valoración</button></div>}
   </> : (
     <div class="metacritic-empty-state">
       <span class="metacritic-empty-icon"><TablerIcon src={starIcon} /></span>

@@ -12,9 +12,10 @@ import trophyIcon from '@tabler/icons/outline/trophy.svg?url';
 interface Props {
   slug: string;
   peakRank: string | null;
+  currentRank?: string | null;
 }
 
-const { slug, peakRank } = Astro.props;
+const { slug, peakRank, currentRank } = Astro.props;
 const displayRank = (value: string | null) => value?.trim() || 'Sin registrar';
 ---
 
@@ -22,7 +23,7 @@ const displayRank = (value: string | null) => value?.trim() || 'Sin registrar';
   <div class="section-title-row competitive-section-head">
     <div>
       <span class="section-eyebrow">Competitivo</span>
-      <h2>Peak ELO</h2>
+      <h2>Rango competitivo</h2>
     </div>
     <button
       class="game-edit-trigger game-edit-trigger-sm"
@@ -42,7 +43,9 @@ const displayRank = (value: string | null) => value?.trim() || 'Sin registrar';
         <span>Mejor rango alcanzado</span>
       </div>
       <strong title={displayRank(peakRank)}>{displayRank(peakRank)}</strong>
+      {!peakRank && <button type="button" class="brand-button" data-edit-target="competitive-edit-trigger">Registrar mi mejor rango</button>}
     </article>
+    {currentRank?.trim() && <article class="competitive-rank-card competitive-rank-card-current"><span class="competitive-rank-label">Rango actual</span><strong>{currentRank.trim()}</strong></article>}
   </div>
 </section>
 

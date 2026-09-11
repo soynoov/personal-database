@@ -1,0 +1,75 @@
+@import './theme.css';
+
+@layer brand {
+  .stats-dashboard .stats-filter-bar { display: grid; grid-template-columns: 100px repeat(3, minmax(0, 1fr)) auto auto; gap: var(--space-3); align-items: end; padding: var(--space-4) var(--space-6); }
+  .stats-filter-bar label { display: grid; gap: var(--space-2); min-width: 0; }
+  .stats-filter-bar label > span { color: var(--muted); font-size: var(--type-label); }
+  .stats-filter-bar select { width: 100%; }
+  .stats-filter-bar :is(button, a) { height: var(--control-height); min-height: var(--control-height); }
+  .stats-filter-submit { padding-inline: var(--space-4); }
+  .stats-filter-reset { display: grid; place-items: center; width: var(--control-height); border: 1px solid var(--panel-line); border-radius: var(--radius-3); color: var(--muted); background: var(--control-bg); }
+  .stats-scope { margin: 0; color: var(--muted); font-size: var(--type-ui); }
+  .stats-scope strong { color: var(--text); }
+  .stats-year-progress { width: 260px; color: var(--muted); font-size: var(--type-label); }
+  .stats-year-progress > div { background: var(--chart-track); }
+  .stats-year-progress > div > span { background: var(--theme-purple); box-shadow: none; }
+  .stats-year-progress strong { color: var(--text); }
+  .stats-dashboard-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-4); grid-template-areas: 'monthly genre' 'completed launchers' 'quality quality'; }
+  .stats-dashboard-grid > .panel { grid-column: auto; grid-row: auto; min-height: 0; margin: 0; }
+  .stats-dashboard-grid .stats-monthly-panel { grid-area: monthly; }
+  .stats-dashboard-grid .stats-genre-panel { grid-area: genre; }
+  .stats-dashboard-grid .stats-completed-panel { grid-area: completed; }
+  .stats-dashboard-grid .stats-launchers-panel { grid-area: launchers; }
+  .stats-dashboard-grid .stats-quality-panel { grid-area: quality; }
+  .recap-chart-card { height: 280px; min-height: 0; padding: 0; border: 0; background: transparent; }
+  .recap-bar-list { display: grid; gap: var(--space-4); }
+  .recap-bar-row { display: grid; gap: var(--space-2); }
+  .recap-bar-row-label { display: flex; justify-content: space-between; gap: var(--space-3); font-size: var(--type-label); color: var(--text); }
+  .recap-bar-row-label > span:last-child { flex-shrink: 0; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .recap-bar-track { height: 6px; border-radius: var(--radius-pill); background: var(--chart-track); overflow: hidden; }
+  .recap-bar-fill { height: 100%; border-radius: inherit; background: var(--chart-primary); box-shadow: none; }
+  .stats-genre-bars .recap-bar-fill { background: var(--chart-secondary); }
+  .chart-note { margin: var(--space-6) 0 0; color: var(--muted); font: 400 var(--type-label)/var(--leading-body) var(--font-body); }
+  .chart-data-table { margin-top: var(--space-4); color: var(--muted); font-size: var(--type-label); }
+  .chart-data-table summary { display: flex; align-items: center; min-height: var(--control-height); cursor: pointer; }
+  .chart-data-table table { width: 100%; border-collapse: collapse; text-align: left; }
+  .chart-data-table :is(th, td) { padding: var(--space-2); border-bottom: 1px solid var(--panel-line); }
+  .chart-data-table caption { text-align: left; padding-block: var(--space-3); }
+  .chart-data-table tr > :last-child { text-align: right; }
+  .recap-completados-row { padding: var(--space-3) 0; border-color: var(--panel-line); color: var(--muted); }
+  .recap-completed-icon { background: var(--control-bg); border: 1px solid var(--panel-line); border-radius: var(--radius-3); color: var(--theme-purple); }
+  .recap-completed-copy strong { font: 600 var(--type-ui)/1.4 var(--font-body); color: var(--text); }
+  .recap-completed-copy small, .recap-completados-row time { font-size: var(--type-label); color: var(--muted); }
+  .recap-highlight { margin-top: var(--space-6); padding: var(--space-4); border: 1px solid var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); }
+  .recap-highlight > span { color: var(--muted); }
+  .recap-highlight strong { color: var(--text); font: 600 var(--type-ui)/1.4 var(--font-body); }
+  .recap-quality-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
+  .recap-quality-metric { display: grid; gap: var(--space-2); min-width: 0; padding: var(--space-4); border: 1px solid var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); }
+  .recap-quality-metric strong { color: var(--text); font: 650 1.75rem/1.2 var(--font-body); }
+  .recap-quality-metric span { color: var(--muted); font-size: var(--type-label); }
+  .stats-quality-badge.has-gaps { color: var(--muted); border-color: var(--panel-line); background: transparent; }
+  .stats-quality-next { min-height: 64px; margin-block: var(--space-4); padding: var(--space-4); border: 1px solid var(--selection-line); border-radius: var(--radius-2); background: var(--selection-bg); }
+  .stats-quality-next strong { color: var(--text); }
+  .stats-quality-next small { color: var(--muted); }
+  .stats-gaps-details { margin: var(--space-4) 0 0; border-color: var(--panel-line); }
+  .stats-gaps-details > summary, .recap-quality-list-wrap > summary { min-height: var(--control-height); color: var(--muted); }
+  .recap-quality-list-wrap { border-color: var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); }
+  .recap-quality-list-wrap summary strong { color: var(--theme-purple); background: var(--selection-bg); }
+  .recap-quality-pill { min-height: var(--control-height); display: inline-flex; align-items: center; padding: var(--space-2) var(--space-3); border-color: var(--panel-line); background: var(--control-bg); color: var(--muted); }
+  .recap-methodology-panel summary { min-height: var(--control-height); color: var(--text); }
+  .recap-methodology { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); margin-top: var(--space-4); }
+  .recap-methodology > div { padding: var(--space-4); border: 1px solid var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); }
+  .recap-methodology dt { color: var(--text); }
+  .recap-methodology dd { color: var(--muted); line-height: var(--leading-body); }
+  @media (max-width: 1100px) { .stats-dashboard .stats-filter-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 760px) {
+    .stats-dashboard-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'monthly' 'genre' 'launchers' 'completed' 'quality'; }
+    .stats-dashboard .stats-filter-bar { padding: var(--space-4); }
+    .stats-filter-submit { grid-column: 1 / -1; }
+    .stats-filter-bar:has(.stats-filter-reset) .stats-filter-submit { grid-column: auto; }
+    .recap-quality-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .recap-quality-grid > :last-child { grid-column: 1 / -1; }
+    .recap-methodology { grid-template-columns: minmax(0, 1fr); }
+    .stats-year-progress { width: min(280px, 100%); }
+  }
+}

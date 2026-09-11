@@ -1,8 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Sidebar from '../../components/Sidebar.astro';
+import MetricCard from '../../components/MetricCard.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import PageHeader from '../../components/PageHeader.astro';
 import TablerIcon from '../../components/TablerIcon.astro';
 import '../../styles/criterio.css';
+import '../../styles/brand-reviews.css';
 import arrowRightIcon from '@tabler/icons/outline/arrow-right.svg?url';
 import checksIcon from '@tabler/icons/outline/checks.svg?url';
 import chevronDownIcon from '@tabler/icons/outline/chevron-down.svg?url';
@@ -11,26 +14,13 @@ import equalIcon from '@tabler/icons/outline/equal.svg?url';
 import starIcon from '@tabler/icons/outline/star.svg?url';
 import usersIcon from '@tabler/icons/outline/users-group.svg?url';
 import { buildGameCoverUrl } from '../../lib/game-cover-url';
-import { getUniqueValues, readGames, slugifyGameTitle } from '../../lib/local-games';
-import { isCompletedStatus, normalizeStatus } from '../../lib/game-status';
+import { readGames, slugifyGameTitle } from '../../lib/local-games';
+import { isCompletedStatus } from '../../lib/game-status';
 import { calculatePersonalScore, isCommunityCriterionApplicable, REVIEW_CRITERIA } from '../../lib/game-reviews';
 
 const games = await readGames();
-const estados = getUniqueValues(games, 'estado');
-const launchers = getUniqueValues(games, 'launcher');
-const plataformas = getUniqueValues(games, 'plataforma');
 const baseCriterionCount = REVIEW_CRITERIA.filter((criterion) => criterion.key !== 'comunidad').length;
 
-const drawerEstadosOrdered = [
-  'Jugando', 'Terminado', 'Pendiente', 'Wishlist',
-  'Pausado', 'Abandonado', 'Retirado', 'Recurrente',
-];
-const estadosSet = new Set(estados.map(normalizeStatus));
-const knownEstadoValues = new Set(drawerEstadosOrdered.map(normalizeStatus));
-const orderedDrawerEstados = [
-  ...drawerEstadosOrdered.filter((estado) => estadosSet.has(normalizeStatus(estado)) || estado === 'Wishlist'),
-  ...estados.filter((estado) => !knownEstadoValues.has(normalizeStatus(estado))),
-];
 
 const ratedGames = games
   .flatMap((game) => {
@@ -59,44 +49,19 @@ const formatRating = (rating: number) =>
   new Intl.NumberFormat('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(rating);
 ---
 
-<BaseLayout title='Metacrítica — Personal Database'>
-  <main class='shell shell-app shell-desktop-app'>
-    <Sidebar
-      orderedDrawerEstados={orderedDrawerEstados}
-      plataformas={plataformas}
-      launchers={launchers}
-      active='criticas'
-    />
-
-    <div class='desktop-main criterion-main'>
-      <section class='panel criterion-hero'>
-        <div>
-          <span class='eyebrow'>Tu propia escala</span>
-          <h1>Metacrítica</h1>
-        </div>
-        <div class='criterion-hero-score' role='group' aria-label={`Nota media ${averageRating === null ? 'sin datos' : `${formatRating(averageRating)} sobre 10`}`}>
+<BaseLayout title='Metacrítica — NooVDB' active='criticas' pageClass='criterion-main'>
+      <PageHeader title="Metacrítica" eyebrow="Tu propia escala">
+        <div slot='aside' class='criterion-hero-score' role='group' aria-label={`Nota media ${averageRating === null ? 'sin datos' : `${formatRating(averageRating)} sobre 10`}`}>
           <span>Media personal</span>
           <strong>{averageRating === null ? '—' : formatRating(averageRating)}</strong>
           <small>/ 10</small>
         </div>
-      </section>
+      </PageHeader>
 
-      <section class='criterion-stats' aria-label='Resumen de puntuaciones'>
-        <article class='panel criterion-stat'>
-          <span>Juegos puntuados</span>
-          <strong>{ratedGames.length}</strong>
-          <small>con una nota propia</small>
-        </article>
-        <article class='panel criterion-stat'>
-          <span>Cobertura</span>
-          <strong>{coverage}%</strong>
-          <small>de los juegos terminados</small>
-        </article>
-        <article class='panel criterion-stat'>
-          <span>Pendientes</span>
-          <strong>{pendingRatings.length}</strong>
-          <small>terminados sin valorar</small>
-        </article>
+      <section class='metric-grid' aria-label='Resumen de puntuaciones'>
+        <MetricCard label='Juegos puntuados' value={ratedGames.length} context='Con una nota propia' icon={starIcon} primary />
+        <MetricCard label='Cobertura' value={`${coverage}%`} context='De los juegos terminados' icon={checksIcon} />
+        <MetricCard label='Pendientes' value={pendingRatings.length} context='Terminados sin valorar' />
       </section>
 
       <section class='panel criterion-section criterion-methodology'>
@@ -202,10 +167,7 @@ const formatRating = (rating: number) =>
             ))}
           </div>
         ) : (
-          <div class='criterion-empty'>
-            <strong>Aún no has puntuado ningún juego.</strong>
-            <span>Abre una ficha y completa sus criterios de valoración.</span>
-          </div>
+          <EmptyState title='Tu primera crítica' description='Abre una ficha y completa sus criterios de valoración.' action='Elegir un juego' href='/' icon={starIcon} />
         )}
       </section>
 
@@ -247,6 +209,5 @@ const formatRating = (rating: number) =>
           </div>
         )}
       </section>
-    </div>
-  </main>
+
 </BaseLayout>

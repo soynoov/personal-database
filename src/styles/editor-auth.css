@@ -1,3 +1,6 @@
+@import './theme.css';
+
+@layer global {
 .editor-auth {
   width: min(430px, calc(100vw - 32px));
   max-width: none;
@@ -149,4 +152,5 @@
     padding: 24px 20px 20px;
     border-radius: 20px;
   }
+}
 }

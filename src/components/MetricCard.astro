@@ -1,0 +1,16 @@
+---
+import TablerIcon from './TablerIcon.astro';
+interface Props {
+  label: string;
+  value: number | string;
+  context?: string;
+  icon?: string;
+  primary?: boolean;
+}
+const { label, value, context, icon, primary = false } = Astro.props;
+---
+<article class:list={['metric-card', primary && 'metric-card-primary']}>
+  <div class='metric-card-head'><span>{label}</span>{icon && <TablerIcon src={icon} />}</div>
+  <strong>{typeof value === 'number' ? value.toLocaleString('es-ES') : value}</strong>
+  {context && <small>{context}</small>}
+</article>

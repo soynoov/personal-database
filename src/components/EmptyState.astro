@@ -1,0 +1,12 @@
+---
+import TablerIcon from './TablerIcon.astro';
+import searchOffIcon from '@tabler/icons/outline/search-off.svg?url';
+interface Props { title: string; description?: string; action?: string; href?: string; reset?: string; icon?: string; }
+const { title, description, action, href, reset, icon = searchOffIcon } = Astro.props;
+---
+<div class='brand-empty' role='status'>
+  <TablerIcon src={icon} />
+  <h2>{title}</h2>
+  {description && <p>{description}</p>}
+  {action && (href ? <a class='brand-button-primary' href={href}>{action}</a> : <button class='brand-button-primary' type='button' data-empty-reset={reset}>{action}</button>)}
+</div>

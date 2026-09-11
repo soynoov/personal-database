@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Sidebar from '../../components/Sidebar.astro';
+import MetricCard from '../../components/MetricCard.astro';
+import PageHeader from '../../components/PageHeader.astro';
 import TablerIcon from '../../components/TablerIcon.astro';
 import '../../styles/estadisticas.css';
+import '../../styles/brand-statistics.css';
 import arrowRightIcon from '@tabler/icons/outline/arrow-right.svg?url';
 import arrowUpRightIcon from '@tabler/icons/outline/arrow-up-right.svg?url';
 import calculatorIcon from '@tabler/icons/outline/calculator.svg?url';
@@ -24,16 +26,6 @@ const estados = getUniqueValues(games, 'estado');
 const launchers = getUniqueValues(games, 'launcher');
 const plataformas = getUniqueValues(games, 'plataforma');
 
-const drawerEstadosOrdered = [
-  'Jugando', 'Terminado', 'Pendiente', 'Wishlist',
-  'Pausado', 'Abandonado', 'Retirado', 'Recurrente',
-];
-const estadosSet = new Set(estados.map(normalizeStatus));
-const knownEstadoValues = new Set(drawerEstadosOrdered.map(normalizeStatus));
-const orderedDrawerEstados = [
-  ...drawerEstadosOrdered.filter((estado) => estadosSet.has(normalizeStatus(estado)) || estado === 'Wishlist'),
-  ...estados.filter((estado) => !knownEstadoValues.has(normalizeStatus(estado))),
-];
 
 const today = new Date();
 const currentYear = today.getFullYear();
@@ -87,10 +79,6 @@ const monthlyChartPayload = {
   labels: monthLabels,
   values: recap.monthly.map((month) => month.horas),
 };
-const genreChartPayload = {
-  labels: recap.generosTop.map((genre) => genre.name),
-  values: recap.generosTop.map((genre) => genre.count),
-};
 
 const gapGroups = [
   { title: 'Terminados sin fecha de fin', items: quality.gaps.terminadosSinFecha },
@@ -102,22 +90,10 @@ const totalGaps = gapGroups.reduce((sum, group) => sum + group.items.length, 0);
 const nextGapGame = gapGroups.flatMap((group) => group.items)[0] ?? null;
 ---
 
-<BaseLayout title='Estadísticas — Personal Database'>
-  <main class='shell shell-app shell-desktop-app'>
-    <Sidebar
-      orderedDrawerEstados={orderedDrawerEstados}
-      plataformas={plataformas}
-      launchers={launchers}
-      active='estadisticas'
-    />
-
-    <div class='desktop-main stats-dashboard'>
-      <header class='stats-dashboard-heading'>
-        <div>
-          <span class='eyebrow'>Tu actividad</span>
-          <h1>Estadísticas</h1>
-        </div>
+<BaseLayout title='Estadísticas — NooVDB' active='estadisticas' pageClass='stats-dashboard'>
+      <PageHeader title="Estadísticas" eyebrow="Tu actividad">
         <div
+          slot='aside'
           class='stats-year-progress'
           role='progressbar'
           aria-label={`Progreso de ${year}`}
@@ -129,7 +105,7 @@ const nextGapGame = gapGroups.flatMap((group) => group.items)[0] ?? null;
           <div aria-hidden='true'><span style={`width:${yearProgressPct}%`}></span></div>
           <strong>{yearProgressPct}%</strong>
         </div>
-      </header>
+      </PageHeader>
 
       <form class='panel stats-filter-bar' method='get' aria-label='Filtrar estadísticas'>
         <label>
@@ -175,27 +151,11 @@ const nextGapGame = gapGroups.flatMap((group) => group.items)[0] ?? null;
         <span>{filteredGames.length} de {games.length} juegos</span>
       </div>
 
-      <section class='recap-stats' aria-label='Indicadores principales'>
-        <article class='panel recap-stat recap-stat-accent'>
-          <div class='recap-stat-head'><span>Completados</span><TablerIcon src={circleCheckIcon} /></div>
-          <strong>{recap.completados.length}</strong>
-          <span class:list={['recap-delta', `recap-delta-${completadosDelta.tone}`]}>{completadosDelta.sign}{completadosDelta.value} vs {year - 1}</span>
-        </article>
-        <article class='panel recap-stat recap-stat-accent-alt'>
-          <div class='recap-stat-head'><span>Horas jugadas</span><TablerIcon src={clockIcon} /></div>
-          <strong>{formatHours(recap.horasAtribuidas)}</strong>
-          <span class:list={['recap-delta', `recap-delta-${horasDelta.tone}`]}>{horasDelta.sign}{formatHours(Math.abs(horasDelta.value))} vs {year - 1}</span>
-        </article>
-        <article class='panel recap-stat'>
-          <div class='recap-stat-head'><span>Gastado</span><TablerIcon src={walletIcon} /></div>
-          <strong>{formatMoney(recap.gastoAtribuido)}</strong>
-          <span class:list={['recap-delta', `recap-delta-${gastoDelta.tone}`]}>{gastoDelta.sign}{formatMoney(Math.abs(gastoDelta.value))} vs {year - 1}</span>
-        </article>
-        <article class='panel recap-stat recap-stat-accent-warn'>
-          <div class='recap-stat-head'><span>Empezados</span><TablerIcon src={gamepadIcon} /></div>
-          <strong>{recap.iniciados.length}</strong>
-          <span class='recap-stat-note'>{recap.promedioHorasPorJuego} h de media</span>
-        </article>
+      <section class='metric-grid metric-grid-four' aria-label='Indicadores principales'>
+        <MetricCard label='Completados' value={recap.completados.length} icon={circleCheckIcon} primary context={`${completadosDelta.sign}${completadosDelta.value} vs ${year - 1}`} />
+        <MetricCard label='Horas jugadas' value={formatHours(recap.horasAtribuidas)} icon={clockIcon} context={`${horasDelta.value < 0 ? '−' : horasDelta.sign}${formatHours(Math.abs(horasDelta.value))} vs ${year - 1}`} />
+        <MetricCard label='Gastado' value={formatMoney(recap.gastoAtribuido)} icon={walletIcon} context={`${gastoDelta.value < 0 ? '−' : gastoDelta.sign}${formatMoney(Math.abs(gastoDelta.value))} vs ${year - 1}`} />
+        <MetricCard label='Empezados' value={recap.iniciados.length} icon={gamepadIcon} context={`${recap.promedioHorasPorJuego} h de media`} />
       </section>
 
       <div class='stats-dashboard-grid'>
@@ -205,23 +165,25 @@ const nextGapGame = gapGroups.flatMap((group) => group.items)[0] ?? null;
             <span class='recap-section-count'>{formatHours(recap.horasAtribuidas)}</span>
           </div>
           {recap.iniciados.length ? (
-            <div class='recap-chart-card'><canvas id='recap-monthly-chart' data-chart={JSON.stringify(monthlyChartPayload)}></canvas></div>
+            <div class='recap-chart-card'><canvas id='recap-monthly-chart' role='img' aria-label={`Horas por mes de ${year}`} data-chart={JSON.stringify(monthlyChartPayload)}></canvas></div>
           ) : <div class='recap-empty'>Sin actividad para esta selección.</div>}
+          {recap.iniciados.length > 0 && <details class='chart-data-table'><summary>Ver datos mensuales</summary><table><caption>Horas atribuidas al mes de inicio</caption><thead><tr><th>Mes</th><th>Horas</th></tr></thead><tbody>{recap.monthly.map((month, index) => <tr><th scope='row'>{monthLabels[index]}</th><td>{formatHours(month.horas)}</td></tr>)}</tbody></table></details>}
+          <p class='chart-note'>Horas totales de cada juego, atribuidas a su mes de inicio; no es un registro mensual de sesiones.</p>
         </section>
 
         <section class='panel recap-section stats-genre-panel'>
           <div class='recap-section-head'><div><span class='section-eyebrow'>Distribución</span><h2>Géneros</h2></div></div>
           {recap.generosTop.length ? (
             <>
-              <div class='stats-donut-wrap'>
-                <canvas id='recap-genre-chart' data-chart={JSON.stringify(genreChartPayload)}></canvas>
-                <div class='stats-donut-center' aria-hidden='true'><strong>{recap.iniciados.length}</strong><span>juegos</span></div>
-              </div>
-              <div class='stats-genre-legend'>
-                {recap.generosTop.slice(0, 4).map((genre, index) => (
-                  <span><i style={`--legend-index:${index}`}></i>{genre.name}<strong>{genre.pct}%</strong></span>
+              <div class='recap-bar-list stats-genre-bars'>
+                {recap.generosTop.map((genre) => (
+                  <div class='recap-bar-row'>
+                    <div class='recap-bar-row-label'><span>{genre.name}</span><span>{genre.count} · {genre.pct}%</span></div>
+                    <div class='recap-bar-track' aria-hidden='true'><div class='recap-bar-fill' style={`width:${genre.pct}%`}></div></div>
+                  </div>
                 ))}
               </div>
+              <p class='chart-note'>Porcentaje de juegos empezados. Un juego puede tener varios géneros.</p>
             </>
           ) : <div class='recap-empty'>Sin géneros para esta selección.</div>}
         </section>
@@ -306,61 +268,10 @@ const nextGapGame = gapGroups.flatMap((group) => group.items)[0] ?? null;
           <div><dt>DLC</dt><dd>Cada compra se atribuye a su fecha de adquisición.</dd></div>
         </dl>
       </details>
-    </div>
-  </main>
+
 
   <script>
-    import {
-      ArcElement, CategoryScale, Chart, DoughnutController, Filler,
-      LineController, LineElement, LinearScale, PointElement, Tooltip,
-    } from 'chart.js';
-
-    Chart.register(
-      ArcElement, CategoryScale, DoughnutController, Filler,
-      LineController, LineElement, LinearScale, PointElement, Tooltip,
-    );
-
-    const chartColors = ['#a875ff', '#63c6ff', '#ee75c8', '#6378ff', '#79e2be', '#ffbd6d'];
-    const monthlyCanvas = document.getElementById('recap-monthly-chart');
-    if (monthlyCanvas instanceof HTMLCanvasElement) {
-      const payload = JSON.parse(monthlyCanvas.dataset.chart ?? '{"labels":[],"values":[]}');
-      const context = monthlyCanvas.getContext('2d');
-      const gradient = context?.createLinearGradient(0, 0, 0, 260);
-      gradient?.addColorStop(0, 'rgba(168, 117, 255, 0.38)');
-      gradient?.addColorStop(1, 'rgba(168, 117, 255, 0.01)');
-      new Chart(monthlyCanvas, {
-        type: 'line',
-        data: { labels: payload.labels, datasets: [{
-          label: 'Horas', data: payload.values, fill: true,
-          backgroundColor: gradient ?? 'rgba(168, 117, 255, 0.2)',
-          borderColor: '#a875ff', borderWidth: 2.5, tension: 0.38,
-          pointBackgroundColor: '#e9dcff', pointBorderColor: '#a875ff', pointRadius: 3, pointHoverRadius: 5,
-        }] },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { display: false }, tooltip: {
-            backgroundColor: 'rgba(12, 10, 24, 0.96)', borderColor: 'rgba(168, 117, 255, 0.42)', borderWidth: 1, padding: 10,
-            callbacks: { label: (ctx: any) => `${Number(ctx.parsed.y).toFixed(1)} h` },
-          } },
-          scales: {
-            x: { grid: { display: false }, ticks: { color: 'rgba(226, 221, 239, 0.55)', font: { size: 11 } } },
-            y: { beginAtZero: true, grid: { color: 'rgba(137, 120, 165, 0.14)' }, ticks: { color: 'rgba(226, 221, 239, 0.45)', font: { size: 11 } } },
-          },
-        },
-      });
-    }
-
-    const genreCanvas = document.getElementById('recap-genre-chart');
-    if (genreCanvas instanceof HTMLCanvasElement) {
-      const payload = JSON.parse(genreCanvas.dataset.chart ?? '{"labels":[],"values":[]}');
-      new Chart(genreCanvas, {
-        type: 'doughnut',
-        data: { labels: payload.labels, datasets: [{ data: payload.values, backgroundColor: chartColors, borderWidth: 0, spacing: 3 }] },
-        options: {
-          responsive: true, maintainAspectRatio: false, cutout: '70%',
-          plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(12, 10, 24, 0.96)', padding: 10 } },
-        },
-      });
-    }
+    import { initStatisticsCharts } from '../../scripts/statistics-charts';
+    initStatisticsCharts();
   </script>
 </BaseLayout>

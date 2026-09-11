@@ -5,14 +5,14 @@
    acceder a las variables del tema.
 
    Orden de capas (mayor prioridad = al final):
-     @layer global → cards → badges
+     @layer global → brand → cards → badges
    Así badges.css siempre gana sin necesitar !important.
    ================================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Anton+SC&family=Elms+Sans:wght@100..900&family=Stack+Sans+Text:wght@200..700&display=swap');
 
 /* ── Orden de capas ─────────────────────────────────────────── */
-@layer global, cards, badges;
+@layer global, brand, cards, badges;
 
 /* ── Variables del tema ─────────────────────────────────────── */
 :root {
@@ -219,4 +219,56 @@
   /* ── Compatibilidad: alias legacy ───────────────────────── */
   --color-lollipop: var(--lollipop);
   --color-pistachio: var(--pistachio);
+
+  /* Sistema operativo compartido — auditoría A1/A4/M2, sin migración --ds-. */
+  --page-canvas: var(--bg-deep);
+  --panel-bg: var(--app-surface-1);
+  --panel-inner: var(--detail-bento-card);
+  --panel-emphasis: var(--detail-bento-emphasis);
+  --panel-line: var(--detail-bento-line);
+  --control-bg: color-mix(in srgb, var(--theme-black) 72%, var(--bg-deep));
+  --control-hover: color-mix(in srgb, var(--theme-purple) 10%, var(--control-bg));
+  --selection-bg: color-mix(in srgb, var(--theme-purple) 12%, transparent);
+  --selection-line: color-mix(in srgb, var(--theme-purple) 45%, transparent);
+  --overlay-bg: color-mix(in srgb, var(--bg-deep) 76%, transparent);
+  --disabled-fg: color-mix(in srgb, var(--muted) 60%, var(--bg-deep));
+  --success: var(--pistachio);
+  --danger: #ef8698;
+  --warning: #e2b87c;
+  --chart-primary: var(--theme-purple);
+  --chart-secondary: #ac95c3;
+  --chart-tertiary: #8d829d;
+  --chart-quaternary: #c6bcc0;
+  --chart-quinary: #a89b85;
+  --chart-senary: #7f758c;
+  --chart-fill: color-mix(in srgb, var(--theme-purple) 16%, transparent);
+  --chart-fill-end: color-mix(in srgb, var(--theme-purple) 1%, transparent);
+  --chart-track: color-mix(in srgb, var(--theme-white) 9%, transparent);
+  --wheel-fill-1: color-mix(in srgb, var(--theme-purple) 34%, var(--bg-deep));
+  --wheel-fill-2: color-mix(in srgb, var(--theme-purple) 18%, var(--bg-deep));
+  --wheel-fill-3: color-mix(in srgb, var(--theme-white) 22%, var(--bg-deep));
+  --wheel-fill-4: color-mix(in srgb, var(--chart-secondary) 40%, var(--bg-deep));
+  --wheel-fill-5: color-mix(in srgb, var(--chart-quinary) 32%, var(--bg-deep));
+  --wheel-fill-6: color-mix(in srgb, var(--theme-purple) 26%, var(--bg-deep));
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --type-micro: 0.6875rem;
+  --type-label: 0.75rem;
+  --type-ui: 0.875rem;
+  --type-body: 1rem;
+  --type-section: clamp(1.35rem, 1.6vw, 1.75rem);
+  --type-page: clamp(2.5rem, 4vw, 3.75rem);
+  --type-metric: clamp(1.75rem, 2.5vw, 2.75rem);
+  --leading-body: 1.5;
+  --control-height: 44px;
+  --sidebar-width: 248px;
+  --app-header-height: 64px;
+  --page-max-width: 1440px;
+  --mobile-nav-clearance: 104px;
+  --motion-fast: 140ms;
 }
