@@ -48,19 +48,27 @@ const {
 
     <div class="game-overview-copy">
       <h1>{title}</h1>
-      <div class="badges game-page-badges">
+    </div>
+
+    <div class="badges game-page-badges" role="group" aria-label="Información del juego">
+      <div class="game-hero-badge-row">
         <GamePill kind="status" value={status} />
         <GamePill kind="launcher" value={launcher} />
         <GamePill kind="platform" value={platform} />
-        {goldenCompletionLabel && (
-          <GamePill kind="achievement" value={goldenCompletionLabel}>
-            <TablerIcon src={trophyIcon} />
-          </GamePill>
-        )}
-        {tagBadges.map((tag) => (
-          <GamePill kind="tag" value={tag.value} label={tag.label} />
-        ))}
       </div>
+      {(goldenCompletionLabel || tagBadges.length > 0) && (
+        <div class="game-hero-badge-row">
+          {goldenCompletionLabel && (
+            <GamePill kind="achievement" value={goldenCompletionLabel} label="100%"
+              role="img" aria-label={goldenCompletionLabel} title={goldenCompletionLabel}>
+              <TablerIcon src={trophyIcon} />
+            </GamePill>
+          )}
+          {tagBadges.map((tag) => (
+            <GamePill kind="tag" value={tag.value} label={tag.label} />
+          ))}
+        </div>
+      )}
     </div>
   </section>
 </section>

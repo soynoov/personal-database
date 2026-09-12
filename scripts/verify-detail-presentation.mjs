@@ -37,6 +37,10 @@ try {
   assert.equal(getGamePill('tag','free-to-play').label,'Free to Play');
   assert.match(getGamePill('launcher','Steam').content,/launcher-inline-icon/);
   assert.equal(getGamePill('platform','PC').content,'<span>PC</span>');
+  const completion = getGamePill('achievement', '100% de logros completados', '100%');
+  assert.equal(completion.label, '100%');
+  assert.equal(completion.content, '<span>100%</span>');
+  assert.match(completion.className, /badge-achievement-platinum/);
   assert.equal(getGamePill('neutral','<img src=x onerror=alert(1)>').content,'<span>&lt;img src=x onerror=alert(1)&gt;</span>');
   assert.match(getGamePill('launcher','<script>x</script>').className,/badge-launcher-default/);
   console.log('Detail presentation: paired DLC cohorts, null/zero, price references, amortization and shared safe pills PASSED.');

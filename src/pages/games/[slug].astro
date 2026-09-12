@@ -98,9 +98,9 @@ const achievementProgress = game.logros?.actual !== null && game.logros?.actual 
 const fullCompletionRuns = getFullCompletionRuns(game);
 const goldenCompletionKind = getGoldenCompletionKind(game);
 const goldenCompletionLabel = goldenCompletionKind === 'game'
-  ? '100% juego'
+  ? 'Juego completado al 100%'
   : goldenCompletionKind === 'achievements'
-    ? '100% logros'
+    ? '100% de logros completados'
     : null;
 const steamCards = game.steam_cromos && (game.steam_cromos.actual !== null || game.steam_cromos.total !== null)
   ? `${formatValue(game.steam_cromos.actual)} / ${formatValue(game.steam_cromos.total)}`

@@ -12,12 +12,40 @@
   .game-page-rich .game-page-topbar .game-edit-trigger-label { display: inline; }
   .game-page-rich .game-hero-cinematic { border-radius: var(--radius-1); overflow: hidden; border-color: var(--panel-line); }
   .game-page-rich .game-hero-cinematic::before { height: 100%; clip-path: none; }
+  /* Protect the text with a continuous scrim; retain the artwork above/right. */
+  .game-page-rich .game-hero-cinematic::after {
+    background:
+      linear-gradient(0deg,
+        color-mix(in srgb, var(--theme-black) 98%, transparent) 0%,
+        color-mix(in srgb, var(--theme-black) 94%, transparent) 28%,
+        color-mix(in srgb, var(--theme-black) 60%, transparent) 64%,
+        color-mix(in srgb, var(--theme-black) 12%, transparent) 100%),
+      linear-gradient(90deg,
+        color-mix(in srgb, var(--theme-black) 70%, transparent),
+        color-mix(in srgb, var(--theme-black) 35%, transparent) 56%, transparent);
+  }
   .game-page-rich .game-overview-copy h1 { color: var(--text); }
-  .game-page-rich .game-overview-card.game-overview-card-cinematic { height: auto; min-height: 216px; padding: var(--space-6) var(--space-8); gap: var(--space-8); align-items: center; }
-  .game-page-rich .game-overview-card.game-overview-card-cinematic .game-overview-media { align-self: center; height: auto; aspect-ratio: 2 / 3; }
-  .game-page-rich .game-overview-copy { min-width: 0; gap: var(--space-4); }
+  .game-page-rich .game-overview-card.game-overview-card-cinematic {
+    height: auto; min-height: 216px; padding: var(--space-6) var(--space-8);
+    grid-template-areas: 'poster copy' 'poster badges';
+    gap: var(--space-3) var(--space-8); align-items: center;
+  }
+  .game-page-rich .game-overview-card.game-overview-card-cinematic .game-overview-media { grid-area: poster; align-self: center; height: auto; aspect-ratio: 2 / 3; }
+  .game-page-rich .game-overview-copy { grid-area: copy; min-width: 0; gap: var(--space-4); align-self: end; }
+  .game-page-rich .game-page-badges {
+    grid-area: badges; align-self: start; display: flex; flex-direction: column;
+    align-items: flex-start; min-width: 0; width: 100%; margin: 0;
+  }
+  .game-page-rich .game-hero-badge-row {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: var(--space-2); width: 100%; min-width: 0;
+  }
   @media (max-width: 760px) {
-    .game-page-rich .game-overview-card.game-overview-card-cinematic { width: 100%; margin: 0; min-height: 0; padding: var(--space-4); gap: var(--space-4); }
+    .game-page-rich .game-overview-card.game-overview-card-cinematic {
+      width: 100%; margin: 0; min-height: 0; padding: var(--space-4); gap: var(--space-4);
+      grid-template-areas: 'poster copy' 'badges badges';
+    }
+    .game-page-rich .game-overview-copy { align-self: center; }
     .game-page-rich .game-overview-copy h1 { overflow-wrap: anywhere; }
   }
   .game-page-rich .game-sections-nav-shell { --nav-surface: var(--panel-bg); position: sticky; z-index: 50; top: var(--app-header-height); margin: 0; border-color: var(--panel-line); border-radius: var(--radius-2); background: var(--panel-bg); box-shadow: none; }
