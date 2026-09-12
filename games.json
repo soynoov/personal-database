@@ -7424,5 +7424,38 @@
       "Indie"
     ],
     "steam_store_name": "Blasphemous 2"
+  },
+  {
+    "titulo": "Sid Meier's Civilization VII",
+    "creado_en": "2026-09-12T00:12:10Z",
+    "estado": "Abandonado",
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 7,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2025,
+    "modos": [
+      "solitario",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": null,
+    "steam_appid": 1295660,
+    "generos": [
+      "Estrategia"
+    ],
+    "precio_pagado": 0,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "steam_store_name": "Sid Meier's Civilization VII"
   }
 ]
