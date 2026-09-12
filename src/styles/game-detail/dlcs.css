@@ -4,7 +4,7 @@
    game-detail/dlcs.css — sección DLCs
    Estilos de la GALERÍA y del DIÁLOGO DE EDICIÓN.
    Los estilos de la card individual (.dlc-showcase-card, etc.)
-   viven en DLCCard.astro como <style> con scope de componente.
+   viven en dlc-card.css, importado por DLCCard.astro.
    ================================================================ */
 
 @layer global {
@@ -12,8 +12,8 @@
 /* ── DLC gallery ────────────────────────────────────────────────── */
 .dlc-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: var(--space-3);
   min-width: 0;
 }
 
@@ -291,12 +291,6 @@
 }
 
 /* ── Responsive galería ─────────────────────────────────────────── */
-@media (max-width: 1120px) {
-  .dlc-gallery {
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
-  }
-}
-
 @media (max-width: 720px) {
   .game-page-section#dlcs .section-title-row {
     align-items: flex-start;

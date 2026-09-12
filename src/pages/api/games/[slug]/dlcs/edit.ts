@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { requireEditor } from '../../../../../lib/edit-auth';
+import { applyManualDlcPatch } from '../../../../../lib/manual-dlc-edit';
 import {
   findGameBySlug,
   GamesVersionConflictError,
@@ -13,17 +14,6 @@ const jsonResponse = (status: number, body: Record<string, unknown>) =>
     status,
     headers: { 'Content-Type': 'application/json' },
   });
-
-const toNullableNumber = (value: unknown): number | null => {
-  if (value === null || value === undefined || String(value).trim() === '') return null;
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : null;
-};
-
-const toNullableIsoDate = (value: unknown): string | null => {
-  const text = typeof value === 'string' ? value.trim() : '';
-  return /^\d{4}-\d{2}-\d{2}$/.test(text) ? text : null;
-};
 
 const todayInMadrid = () => new Intl.DateTimeFormat('en-CA', {
   timeZone: 'Europe/Madrid',
@@ -59,19 +49,8 @@ export const POST: APIRoute = async ({ params, request }) => {
       });
     }
 
-    const items = existing.map((item, index) => {
-      const patch = patches[index] as Record<string, unknown> | undefined;
-      if (!patch) return item;
-      const wasOwned = Boolean(item.fecha_adquisicion);
-      if (patch.owned !== true) return { ...item, fecha_adquisicion: null, precio_pagado: null };
-      return {
-        ...item,
-        fecha_adquisicion:
-          toNullableIsoDate(patch.fecha_adquisicion) ??
-          (wasOwned ? item.fecha_adquisicion : todayInMadrid()),
-        precio_pagado: toNullableNumber(patch.precio_pagado),
-      };
-    });
+    const today = todayInMadrid();
+    const items = existing.map((item, index) => applyManualDlcPatch(item, patches[index] as Record<string, unknown> | undefined, today));
     const updated = {
       ...game,
       actualizado_en: new Date().toISOString(),

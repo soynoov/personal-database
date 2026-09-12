@@ -1,0 +1,59 @@
+@import '../theme.css';
+
+@layer brand {
+  .dlc-balance { --balance-accent: var(--muted); }
+  .game-page-rich .finance-market-grid .dlc-balance {
+    display: grid; gap: var(--space-4); padding: var(--space-4);
+    background: var(--panel-inner); border-radius: var(--radius-3);
+  }
+  .dlc-balance[data-balance='loss'] { --balance-accent: var(--danger); }
+  .dlc-balance[data-balance='gain'] { --balance-accent: var(--success); }
+  .dlc-balance > *, .dlc-balance-grid > * { min-width: 0; }
+  .dlc-balance-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: var(--space-3); }
+  .dlc-balance-header h3 { margin: 0; color: var(--text); font: 650 var(--type-body)/1.4 var(--font-body); }
+  .dlc-balance .market-scope { margin: var(--space-1) 0 0; color: var(--muted); font: 400 var(--type-label)/1.5 var(--font-body); }
+  .dlc-balance .dlc-sync-prices-status:empty { display: none; }
+  .dlc-balance-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-3); }
+  .dlc-balance-result { display: grid; align-content: center; gap: var(--space-3); padding: var(--space-4); border: 1px solid color-mix(in srgb, var(--balance-accent) 30%, transparent); border-radius: var(--radius-4); background: color-mix(in srgb, var(--balance-accent) 7%, var(--panel-inner)); }
+  .dlc-balance-state { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); color: var(--balance-accent); font: 600 var(--type-ui)/1.4 var(--font-body); }
+  .dlc-balance-state .tabler-icon { width: 18px; height: 18px; }
+  .dlc-balance-state small { margin-left: auto; color: var(--muted); font-size: var(--type-micro); font-weight: 400; }
+  .dlc-balance-amount { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-3); color: var(--balance-accent); font-variant-numeric: tabular-nums; }
+  .dlc-balance-amount strong { font: 650 clamp(1.9rem, 3vw, 2.6rem)/1.15 var(--font-body); overflow-wrap: anywhere; }
+  .dlc-balance-amount > span { font: 600 var(--type-ui)/1.4 var(--font-body); }
+  .dlc-balance-result p { margin: 0; color: var(--muted); font: 400 var(--type-label)/1.5 var(--font-body); }
+  .dlc-balance-prices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); margin: 0; }
+  .dlc-balance-prices > div { display: grid; align-content: center; gap: var(--space-2); min-width: 0; padding: var(--space-4); border: 1px solid var(--panel-line); border-radius: var(--radius-4); background: var(--control-bg); }
+  .dlc-balance-prices dt { color: var(--muted); font: 500 var(--type-ui)/1.4 var(--font-body); }
+  .dlc-balance-prices dd { margin: 0; color: var(--text); font: 600 clamp(1.35rem, 2vw, 1.9rem)/1.2 var(--font-body); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .dlc-balance-prices .dlc-balance-price-note { color: var(--muted); font: 400 var(--type-label)/1.4 var(--font-body); }
+  .dlc-balance-method, .dlc-balance-coverage { margin: 0; color: var(--muted); font: 400 var(--type-label)/1.6 var(--font-body); }
+  .dlc-balance a { color: var(--theme-purple); text-underline-offset: 3px; }
+  .dlc-balance-coverage { display: grid; gap: var(--space-2); border-top: 1px solid var(--panel-line); padding-top: var(--space-3); }
+  .dlc-balance-coverage > p { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--space-1) var(--space-2); margin: 0; }
+  .dlc-balance-coverage > p > strong { color: var(--warning); font-weight: 550; }
+  .market-dlc-pending > summary { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); min-height: var(--control-height); cursor: pointer; list-style: none; }
+  .market-dlc-pending > summary::after { content: '+'; margin-left: auto; color: var(--theme-purple); }
+  .market-dlc-pending[open] > summary::after { content: '−'; }
+  .market-dlc-pending > summary::-webkit-details-marker { display: none; }
+  .market-dlc-pending p { margin: var(--space-2) 0 0; }
+  .dlc-balance-empty { padding: var(--space-4); border: 1px solid var(--panel-line); border-radius: var(--radius-4); background: var(--control-bg); }
+  .dlc-balance-empty strong { color: var(--text); font-size: var(--type-ui); }
+  .dlc-balance-empty p { margin: var(--space-2) 0 0; color: var(--muted); font: 400 var(--type-label)/1.6 var(--font-body); }
+  .market-dlc-breakdown { color: var(--text); font-size: var(--type-label); }
+  .market-dlc-breakdown > summary { display: list-item; min-height: var(--control-height); align-content: center; cursor: pointer; color: var(--theme-purple); }
+  .market-table-scroll { overflow-x: auto; max-width: 100%; }
+  .market-dlc-breakdown table { width: 100%; border-collapse: collapse; text-align: left; }
+  .market-dlc-breakdown caption { padding-block: var(--space-3); text-align: left; color: var(--muted); }
+  .market-dlc-breakdown :is(th, td) { padding: var(--space-3); border-bottom: 1px solid var(--panel-line); line-height: 1.5; }
+  .market-dlc-breakdown td, .market-dlc-breakdown thead th:not(:first-child) { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .market-dlc-breakdown tbody th { min-width: 180px; font-weight: 450; }
+  .market-dlc-breakdown td[data-balance='loss'] { color: var(--danger); }
+  .market-dlc-breakdown td[data-balance='gain'] { color: var(--success); }
+  .dlc-balance :is(summary, a, .market-table-scroll):focus-visible { outline: 2px solid var(--theme-purple); outline-offset: 2px; }
+  @media (max-width: 760px) {
+    .dlc-balance-grid { grid-template-columns: minmax(0, 1fr); }
+    .game-page-rich .finance-market-grid .dlc-balance { padding: var(--space-3); }
+    .dlc-balance-prices > div { padding: var(--space-3); }
+  }
+}

@@ -14,10 +14,7 @@ import GameDetailComments from '../../components/game-detail/GameDetailComments.
 import GameDetailMetacritic from '../../components/game-detail/GameDetailMetacritic.astro';
 import { buildGameCoverUrl, buildGameHeroUrl } from '../../lib/game-cover-url';
 import { getFullCompletionRuns, getGoldenCompletionKind } from '../../lib/game-achievements';
-import {
-  formatEuro,
-  getGameValueMetrics,
-} from '../../lib/game-finance';
+import { getGameValueMetrics } from '../../lib/game-finance';
 import { getGameMarketView } from '../../lib/game-market-view';
 import { normalizeStatus } from '../../lib/game-status';
 import { formatGameModes, getGameModes, getGameModeLabel } from '../../lib/game-modes';
@@ -47,17 +44,6 @@ const heroCoverStyle = `--hero-cover:url("${heroImageUrl.replace(/"/g, '\\"')}")
 
 const formatValue = (value: unknown, fallback = '-') =>
   value === null || value === undefined || value === '' ? fallback : String(value);
-const formatCurrency = (value: unknown, fallback = '-') => {
-  if (value === null || value === undefined || value === '') return fallback;
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? formatEuro(parsed, fallback) : String(value);
-};
-const formatDate = (value: unknown) => {
-  if (!value) return '-';
-  const date = new Date(`${value}T00:00:00`);
-  if (Number.isNaN(date.getTime())) return String(value);
-  return new Intl.DateTimeFormat('es-ES', { day: '2-digit', month: 'long', year: 'numeric' }).format(date);
-};
 const formatCompactDate = (value: unknown) => {
   if (!value) return '-';
   const date = new Date(`${value}T00:00:00`);
@@ -279,12 +265,11 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
     />
     {dlcTotal > 0 && (
       <GameDetailDLCs
+        gameTitle={game.titulo}
         slug={slug}
         dlcItems={dlcItems}
         dlcTotal={dlcTotal}
-        formatDate={formatDate}
         formatValue={formatValue}
-        formatCurrency={formatCurrency}
       />
     )}
     <GameDetailMetacritic slug={slug} critique={game.critica ?? null} legacyScore={legacyScore} includeCommunity={includeCommunity} />

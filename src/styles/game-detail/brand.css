@@ -140,13 +140,6 @@
   .game-page-rich .metacritic-review-prompt button { padding-inline: var(--space-4); }
   .game-page-rich .detail-comments-text { padding: var(--space-4); border: 1px solid var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); color: var(--text); font: 400 var(--type-ui)/1.7 var(--font-body); }
   .game-page-rich .detail-comments-empty .detail-comments-text { color: var(--muted); }
-  .game-page-rich :is(.dlc-card, .dlc-gallery-card) { border-color: var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); box-shadow: none; }
-  .game-page-rich .dlc-showcase-card { border-color: var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); box-shadow: none; }
-  .game-page-rich .dlc-showcase-body { padding: var(--space-4); background: var(--panel-inner); }
-  .game-page-rich .dlc-showcase-body h3 { color: var(--text); }
-  .game-page-rich .dlc-showcase-facts .detail-item { border-color: var(--panel-line); border-radius: var(--radius-3); background: var(--control-bg); }
-  .game-page-rich .dlc-showcase-facts dt { color: var(--muted); }
-  .game-page-rich .dlc-showcase-facts dd { color: var(--text); }
   .game-page-rich .dlc-filter-segmented { border-color: var(--panel-line); border-radius: var(--radius-pill); background: var(--control-bg); }
   .game-page-rich .dlc-filter-segmented button { min-height: var(--control-height); color: var(--muted); }
   .game-page-rich .dlc-filter-segmented button.is-active { color: var(--text); background: var(--selection-bg); }

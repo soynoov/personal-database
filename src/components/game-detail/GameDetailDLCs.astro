@@ -2,9 +2,8 @@
 /**
  * GameDetailDLCs.astro — Sección DLCs (galería de expansiones).
  * Muestra las tarjetas de cada DLC con su propia portada (o un estado
- * "sin portada" si no hay cover_url o la imagen rompe), precios y notas.
- * Las funciones de formato (formatDate, formatValue, formatCurrency) se pasan
- * como props desde [slug].astro porque los datos DLC no se pre-formatean.
+ * "sin portada" si no hay cover_url o la imagen rompe), fecha y balance.
+ * Los datos de presentación de cada card se normalizan en game-dlc-view.ts.
  * Datos: dlcItems, dlcTotal computados en [slug].astro.
  */
 import '../../styles/game-detail/dlcs.css';
@@ -14,18 +13,19 @@ import FormCheckbox from '../FormCheckbox.astro';
 import TablerIcon from '../TablerIcon.astro';
 import editIcon from '@tabler/icons/outline/edit.svg?url';
 import xIcon from '@tabler/icons/outline/x.svg?url';
+import { isAcquiredDlc } from '../../lib/game-finance';
+import type { DlcItem } from '../../lib/game-dlc-view';
 
 interface Props {
   slug: string;
-  dlcItems: any[];
+  gameTitle: string;
+  dlcItems: DlcItem[];
   dlcTotal: number;
-  formatDate: (value: unknown) => string;
   formatValue: (value: unknown, fallback?: string) => string;
-  formatCurrency: (value: unknown, fallback?: string) => string;
 }
 
-const { slug, dlcItems, dlcTotal, formatDate, formatValue, formatCurrency } = Astro.props;
-const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dlc.fecha_adquisicion !== undefined).length;
+const { slug, gameTitle, dlcItems, dlcTotal, formatValue } = Astro.props;
+const ownedCount = dlcItems.filter(isAcquiredDlc).length;
 ---
 
 <section class="game-page-section" id="dlcs">
@@ -65,7 +65,7 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
     <>
       <div class="dlc-gallery" id="dlc-gallery">
         {dlcItems.map((dlc) => (
-          <DLCCard dlc={dlc} {formatDate} {formatValue} {formatCurrency} />
+          <DLCCard dlc={dlc} {gameTitle} />
         ))}
       </div>
       <div class="dlc-load-more-row" id="dlc-load-more-row" style="display:none">
@@ -133,7 +133,7 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
               class="dlc-edit-row-owned"
               inputClass="dlc-edit-owned-checkbox"
               dataRow={i}
-              checked={dlc.fecha_adquisicion !== null && dlc.fecha_adquisicion !== undefined}
+              checked={isAcquiredDlc(dlc)}
             >
               Lo tengo
             </FormCheckbox>
@@ -142,7 +142,7 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
               class="dlc-edit-date-input"
               data-row={i}
               value={dlc.fecha_adquisicion ?? ''}
-              disabled={dlc.fecha_adquisicion === null || dlc.fecha_adquisicion === undefined}
+              disabled={!isAcquiredDlc(dlc)}
             />
             <input
               type="number"
@@ -152,7 +152,7 @@ const ownedCount = dlcItems.filter((dlc) => dlc.fecha_adquisicion !== null && dl
               data-row={i}
               placeholder="Precio pagado"
               value={dlc.precio_pagado ?? ''}
-              disabled={dlc.fecha_adquisicion === null || dlc.fecha_adquisicion === undefined}
+              disabled={!isAcquiredDlc(dlc)}
             />
           </div>
         ))}

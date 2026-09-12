@@ -2,13 +2,8 @@ import type { LocalGame } from './local-games';
 import { getPaidUnitPrice } from './local-games';
 import { getPurchasePriceComparison, isAcquiredDlc } from './game-finance';
 import { hasGameTag } from './game-tags';
+import { getPriceBalance, parsePrice as price } from './price-balance';
 
-const price = (value: unknown): number | null => {
-  if (value === null || value === undefined || value === '' || typeof value === 'boolean') return null;
-  if (typeof value === 'string' && !value.trim()) return null;
-  const parsed = Number(value);
-  return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
-};
 const sum = (values: number[]) => Number(values.reduce((total, value) => total + value, 0).toFixed(2));
 export type PriceReference = { kind: 'launch' | 'purchase' | 'current'; label: string; value: number };
 
@@ -18,16 +13,17 @@ export function getDlcPriceComparison(items: NonNullable<LocalGame['dlcs']>['ite
   const rows = acquired.flatMap((dlc) => {
     const paid = price(dlc.precio_pagado);
     const current = price(dlc.precio_actual);
-    return paid === null || current === null ? [] : [{ title: dlc.titulo, paid, current }];
+    return paid === null || current === null ? [] : [{ title: dlc.titulo, paid, current, balance: getPriceBalance(paid, current) }];
   });
   const paidTotal = rows.length ? sum(rows.map(row => row.paid)) : null;
   const currentTotal = rows.length ? sum(rows.map(row => row.current)) : null;
   const pending = (items ?? []).filter(dlc => !isAcquiredDlc(dlc));
   const pendingPrices = pending.map(dlc => price(dlc.precio_actual)).filter((value): value is number => value !== null);
+  const balance = getPriceBalance(paidTotal, currentTotal);
   return {
     rows, acquiredCount: acquired.length, excludedCount: acquired.length - rows.length,
     paidTotal, currentTotal,
-    difference: paidTotal === null || currentTotal === null ? null : Number((currentTotal - paidTotal).toFixed(2)),
+    balance, difference: balance.difference,
     pendingCount: pending.length, pendingKnownCount: pendingPrices.length,
     pendingTotal: pendingPrices.length ? sum(pendingPrices) : null,
   };
