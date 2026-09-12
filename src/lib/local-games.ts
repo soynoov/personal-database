@@ -8,24 +8,9 @@ import { isCompletedStatus, normalizeStatus } from "./game-status";
 import { gameHasMode, normalizeGameModes } from "./game-modes";
 import { normalizeGameTag } from "./game-tags";
 import historicGameCreationDates from "../data/game-created-at.json";
-
-export type GameCritique = {
-  metascore?: number | null;
-  userscore?: number | null;
-  criterios?: {
-    jugabilidad?: number | null;
-    historia?: number | null;
-    musica?: number | null;
-    graficos_arte?: number | null;
-    entretenimiento?: number | null;
-    originalidad?: number | null;
-    comunidad?: number | null;
-  } | null;
-  mencion_honorifica?: {
-    nivel?: number | null;
-    comentario?: string | null;
-  } | null;
-};
+import { migrateGameReview } from './review-migration';
+import type { GameCritique } from './review-types';
+export type { GameCritique } from './review-types';
 
 export type LocalGame = {
   titulo: string;
@@ -133,17 +118,17 @@ function applyGameDataMigrations(games: LocalGame[]) {
     };
 
     if (game.titulo !== "Mini Airways") {
-      return migratedGame;
+      return migrateGameReview(migratedGame);
     }
 
-    return {
+    return migrateGameReview({
       ...migratedGame,
       modos,
       steam_appid: 2289650,
       tags: (tags ?? []).filter(
         (tag) => String(tag).trim().toLowerCase() !== "free-to-play",
       ),
-    };
+    });
   });
 }
 

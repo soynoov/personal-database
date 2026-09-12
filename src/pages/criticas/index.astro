@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import MetricCard from '../../components/MetricCard.astro';
+import GamePill from '../../components/GamePill.astro';
 import EmptyState from '../../components/EmptyState.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import TablerIcon from '../../components/TablerIcon.astro';
@@ -9,205 +10,104 @@ import '../../styles/brand-reviews.css';
 import arrowRightIcon from '@tabler/icons/outline/arrow-right.svg?url';
 import checksIcon from '@tabler/icons/outline/checks.svg?url';
 import chevronDownIcon from '@tabler/icons/outline/chevron-down.svg?url';
-import divideIcon from '@tabler/icons/outline/divide.svg?url';
-import equalIcon from '@tabler/icons/outline/equal.svg?url';
 import starIcon from '@tabler/icons/outline/star.svg?url';
-import usersIcon from '@tabler/icons/outline/users-group.svg?url';
 import { buildGameCoverUrl } from '../../lib/game-cover-url';
 import { readGames, slugifyGameTitle } from '../../lib/local-games';
 import { isCompletedStatus } from '../../lib/game-status';
-import { calculatePersonalScore, isCommunityCriterionApplicable, REVIEW_CRITERIA } from '../../lib/game-reviews';
+import { getPublishedReview, getReviewProgress, isCommunityCriterionApplicable, REVIEW_CRITERIA, OVERALL_SCORE_SCALE } from '../../lib/game-reviews';
 
 const games = await readGames();
-const baseCriterionCount = REVIEW_CRITERIA.filter((criterion) => criterion.key !== 'comunidad').length;
-
-
-const ratedGames = games
-  .flatMap((game) => {
-    const rating = calculatePersonalScore(game.critica, isCommunityCriterionApplicable(game));
-    return rating !== null
-      ? [{ game, rating }]
-      : [];
-  })
-  .sort((a, b) => b.rating - a.rating || a.game.titulo.localeCompare(b.game.titulo, 'es'));
-
-const completedGames = games.filter((game) => isCompletedStatus(game.estado));
-const pendingRatings = completedGames
-  .filter((game) => calculatePersonalScore(game.critica, isCommunityCriterionApplicable(game)) === null)
-  .sort((a, b) => a.titulo.localeCompare(b.titulo, 'es'));
-const nextPendingRating = pendingRatings[0] ?? null;
-const remainingPendingRatings = pendingRatings.slice(1);
-
-const averageRating = ratedGames.length > 0
-  ? ratedGames.reduce((sum, item) => sum + item.rating, 0) / ratedGames.length
-  : null;
-const coverage = completedGames.length > 0
-  ? Math.round((ratedGames.length / completedGames.length) * 100)
-  : 0;
-
-const formatRating = (rating: number) =>
-  new Intl.NumberFormat('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(rating);
+const reviews = games.map((game) => ({
+  game,
+  ...getPublishedReview(game.critica, game.nota, isCommunityCriterionApplicable(game)),
+  progress: getReviewProgress(game.critica, isCommunityCriterionApplicable(game)),
+}));
+const ratedGames = reviews.filter((item) => item.score !== null)
+  .sort((a, b) => b.score! - a.score! || a.game.titulo.localeCompare(b.game.titulo, 'es'));
+const v2 = ratedGames.filter((item) => item.source === 'v2');
+const previous = ratedGames.filter((item) => item.source === 'anterior');
+const completed = reviews.filter((item) => isCompletedStatus(item.game.estado));
+const pending = reviews.filter((item) => !item.progress.complete && (isCompletedStatus(item.game.estado) || item.game.critica?.version === 2))
+  .sort((a, b) => a.game.titulo.localeCompare(b.game.titulo, 'es'));
+const average = v2.length ? v2.reduce((sum, item) => sum + item.score!, 0) / v2.length : null;
+const coverage = completed.length ? Math.round(completed.filter((item) => item.source === 'v2').length / completed.length * 100) : 0;
+const format = (value: number | null) => value === null ? '—' : value.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 ---
 
-<BaseLayout title='Metacrítica — NooVDB' active='criticas' pageClass='criterion-main'>
-      <PageHeader title="Metacrítica" eyebrow="Tu propia escala">
-        <div slot='aside' class='criterion-hero-score' role='group' aria-label={`Nota media ${averageRating === null ? 'sin datos' : `${formatRating(averageRating)} sobre 10`}`}>
-          <span>Media personal</span>
-          <strong>{averageRating === null ? '—' : formatRating(averageRating)}</strong>
-          <small>/ 10</small>
-        </div>
-      </PageHeader>
+<BaseLayout title="Valoraciones — NooVDB" active="criticas" pageClass="criterion-main">
+  <PageHeader title="Valoraciones" eyebrow="Tu propia escala">
+    <div slot="aside" class="criterion-hero-score" role="group" aria-label="Media de valoraciones completas del sistema nuevo">
+      <span>Media NooV Score v2</span><strong>{format(average)}</strong><small>/ 10</small>
+    </div>
+  </PageHeader>
+  <section class="metric-grid" aria-label="Resumen de puntuaciones">
+    <MetricCard label="Valoraciones v2" value={v2.length} context={`${previous.length} notas anteriores conservadas`} icon={starIcon} primary />
+    <MetricCard label="Cobertura v2" value={`${coverage}%`} context="De los juegos terminados" icon={checksIcon} />
+    <MetricCard label="Pendientes" value={pending.length} context="Por valorar o completar la migración" />
+  </section>
 
-      <section class='metric-grid' aria-label='Resumen de puntuaciones'>
-        <MetricCard label='Juegos puntuados' value={ratedGames.length} context='Con una nota propia' icon={starIcon} primary />
-        <MetricCard label='Cobertura' value={`${coverage}%`} context='De los juegos terminados' icon={checksIcon} />
-        <MetricCard label='Pendientes' value={pendingRatings.length} context='Terminados sin valorar' />
-      </section>
-
-      <section class='panel criterion-section criterion-methodology'>
-        <div class='criterion-section-head'>
-          <div>
-            <span class='section-eyebrow'>Sistema de puntuación</span>
-            <h2>Qué significa cada nota</h2>
-          </div>
-          <span class='criterion-count'>Resultado final sobre 10</span>
-        </div>
-
-        <div class='criterion-formula' role='group' aria-label={`${baseCriterionCount} criterios base, puntos obtenidos entre puntos máximos, comunidad con peso cero coma cinco cuando aplica, mención honorífica con bonus de hasta cero coma tres y resultado máximo de diez`}>
-          <span><TablerIcon src={checksIcon} /> {baseCriterionCount} criterios base</span>
-          <span><TablerIcon src={divideIcon} /> Puntos obtenidos / máximos</span>
-          <span><TablerIcon src={usersIcon} /> Comunidad ×0,5 cuando aplica</span>
-          <span><TablerIcon src={starIcon} /> Mención: hasta +0,3</span>
-          <span><TablerIcon src={equalIcon} /> Máximo 10</span>
-        </div>
-
-        <div class='criterion-methodology-grid'>
-          {REVIEW_CRITERIA.map((criterion, index) => (
-            <details class:list={['criterion-method-card', criterion.key === 'comunidad' && 'criterion-method-card-conditional']} open={index === 0}>
-              <summary class='criterion-method-card-head'>
-                <h3>{criterion.label}</h3>
-                <div>
-                  <span>{criterion.min}–{criterion.max}</span>
-                  <span>{criterion.weight === 1 ? `${criterion.max} ${criterion.max === 1 ? 'punto máximo' : 'puntos máximos'}` : `Peso ×${String(criterion.weight).replace('.', ',')}`}</span>
-                  {criterion.key === 'comunidad' && <span>Solo comunidad pública / competitivo</span>}
-                </div>
-                <TablerIcon src={chevronDownIcon} class='criterion-method-chevron' />
-              </summary>
-              <div class='criterion-method-body'>
-                <span class='sr-only'>{criterion.measures}</span>
-                {criterion.scale ? (
-                  <ol class='criterion-scale-list'>
-                    {Object.entries(criterion.scale).map(([score, description]) => (
-                      <li>
-                        <strong>{score}</strong>
-                        <span>{description}</span>
-                      </li>
-                    ))}
-                  </ol>
-                ) : null}
-              </div>
-            </details>
-          ))}
-        </div>
-
-        <details class='criterion-honorary-method'>
-          <summary>
-            <div>
-              <span class='section-eyebrow'>Bonus final</span>
-              <h3>Mención honorífica · disfrute personal</h3>
-            </div>
-            <div class='criterion-formula'>
-              <span>+0,1 por nivel</span>
-              <span>Máximo 10</span>
-            </div>
-            <TablerIcon src={chevronDownIcon} class='criterion-method-chevron' />
+  <section class="panel criterion-section criterion-methodology" id="escala">
+    <div class="criterion-section-head">
+      <div><span class="section-eyebrow">NooV Score v2</span><h2>Qué significa cada nota</h2></div>
+      <GamePill label="Sin bonus extra" />
+    </div>
+    <p>Valora tu experiencia con respuestas descritas, no intentando adivinar la nota final. El 10 significa prácticamente perfecto; un juego que te gusta puede ser un 7.</p>
+    <details class="criterion-pending-more">
+      <summary><span>Escala completa · del 0 al 10</span><TablerIcon src={chevronDownIcon} /></summary>
+      <ol class="criterion-scale-list">
+        {OVERALL_SCORE_SCALE.map((meaning, index) => <li><strong>{index}</strong><span>{meaning}</span></li>)}
+      </ol>
+    </details>
+    <div class="criterion-methodology-grid">
+      {REVIEW_CRITERIA.map((criterion) => (
+        <details class:list={['criterion-method-card', criterion.key === 'comunidad' && 'criterion-method-card-conditional']}>
+          <summary class="criterion-method-card-head">
+            <h3>{criterion.label}</h3>
+            <div><span>0–{criterion.max}</span><span>Peso {criterion.weight}%</span>{criterion.key === 'comunidad' && <span>Multijugador público / competitivo</span>}</div>
+            <TablerIcon src={chevronDownIcon} class="criterion-method-chevron" />
           </summary>
-          <ol class='criterion-scale-list'>
-            <li><strong>0</strong><span>No especialmente · +0.</span></li>
-            <li><strong>1</strong><span>Me gustó · +0,1.</span></li>
-            <li><strong>2</strong><span>Lo disfruté mucho · +0,2.</span></li>
-            <li><strong>3</strong><span>Me encantó · +0,3.</span></li>
-          </ol>
+          <div class="criterion-method-body">
+            <p>{criterion.measures}</p>
+            <ol class="criterion-scale-list">
+              {Object.entries(criterion.scale).map(([score, description]) => <li><strong>{score}</strong><span>{description}</span></li>)}
+            </ol>
+          </div>
         </details>
-      </section>
+      ))}
+    </div>
+    <details class="criterion-pending-more">
+      <summary><span>Cálculo, Originalidad y notas anteriores</span><TablerIcon src={chevronDownIcon} /></summary>
+      <p>Normalizamos cada área a 0–10 y calculamos su media ponderada. Los pesos indicados corresponden a las ocho áreas: cuando una no aplica, redistribuimos su peso proporcionalmente. Pendiente y cero no son lo mismo; no se publica una nota v2 con áreas aplicables sin responder.</p>
+      <p>Originalidad es una insignia sin puntos. Diversión sustituye a la mención honorífica y no suma un segundo bonus. El 10 solo aparece si todas las áreas aplicables están al máximo; el redondeo nunca lo regala.</p>
+      <p>Las notas anteriores y sus respuestas quedan archivadas. Se han importado los criterios compatibles, pero Rendimiento y Progresión necesitan tu valoración. Hasta completarla se conserva la nota anterior, también para el bonus de amortización. Las medias de v2 no mezclan sistemas distintos.</p>
+    </details>
+  </section>
 
-      <section class='panel criterion-section'>
-        <div class='criterion-section-head'>
-          <div>
-            <span class='section-eyebrow'>Reseñas</span>
-            <h2>Tu clasificación</h2>
-          </div>
-          <span class='criterion-count'>{ratedGames.length} puntuadas</span>
+  <section class="panel criterion-section">
+    <div class="criterion-section-head"><div><span class="section-eyebrow">Tus juegos</span><h2>Valoraciones guardadas</h2></div><span class="criterion-count">{ratedGames.length} con nota</span></div>
+    {ratedGames.length ? <div class="criterion-review-grid">
+      {ratedGames.map(({ game, score, source, progress }, index) => <a class="criterion-review-card" href={`/games/${slugifyGameTitle(game.titulo)}/#metacritica`}>
+        <div class="criterion-review-cover"><img src={buildGameCoverUrl(game)} alt="" loading={index < 4 ? 'eager' : 'lazy'} decoding="async" /></div>
+        <div class="criterion-review-copy">
+          <span class="criterion-review-state">{game.estado ?? 'Sin estado'}</span><h3>{game.titulo}</h3>
+          <GamePill label={source === 'v2' ? 'NooV Score v2' : 'Nota anterior'} />
+          <span class="criterion-review-action">{source === 'v2' ? 'Ver perfil y desglose' : `Completar ${progress.missing.length} áreas pendientes`}</span>
         </div>
+        <div class="criterion-review-score"><strong>{format(score)}</strong><span>/ 10</span></div>
+      </a>)}
+    </div> : <EmptyState title="Tu primera valoración" description="Completa sus áreas cuando tengas criterio sobre un juego." action="Elegir un juego" href="/" icon={starIcon} />}
+  </section>
 
-        {ratedGames.length > 0 ? (
-          <div class='criterion-review-grid'>
-            {ratedGames.map(({ game, rating }, index) => (
-              <a class='criterion-review-card' href={`/games/${slugifyGameTitle(game.titulo)}/`}>
-                <div class='criterion-review-cover'>
-                  <img
-                    src={buildGameCoverUrl(game)}
-                    alt=''
-                    aria-hidden='true'
-                    loading={index < 4 ? 'eager' : 'lazy'}
-                    decoding='async'
-                  />
-                </div>
-                <div class='criterion-review-copy'>
-                  <span class='criterion-review-state'>{game.estado ?? 'Sin estado'}</span>
-                  <h3>{game.titulo}</h3>
-                  <p>{game.comentarios || 'Sin reseña escrita todavía.'}</p>
-                  <span class='criterion-review-action'>Abrir ficha y ver el desglose</span>
-                </div>
-                <div class='criterion-review-score'>
-                  <strong>{formatRating(rating)}</strong>
-                  <span>/ 10</span>
-                </div>
-              </a>
-            ))}
-          </div>
-        ) : (
-          <EmptyState title='Tu primera crítica' description='Abre una ficha y completa sus criterios de valoración.' action='Elegir un juego' href='/' icon={starIcon} />
-        )}
-      </section>
-
-      <section class='panel criterion-section'>
-        <div class='criterion-section-head'>
-          <div>
-            <span class='section-eyebrow'>Cola de valoración</span>
-            <h2>Terminados sin nota</h2>
-          </div>
-          <span class='criterion-count'>{pendingRatings.length} pendientes</span>
-        </div>
-
-        {nextPendingRating ? (
-          <div class='criterion-pending-stack'>
-            <a class='criterion-next-review' href={`/games/${slugifyGameTitle(nextPendingRating.titulo)}/#metacritica`}>
-              <span><small>Siguiente</small><strong>{nextPendingRating.titulo}</strong></span>
-              <span>Valorar <TablerIcon src={arrowRightIcon} /></span>
-            </a>
-            {remainingPendingRatings.length > 0 && (
-              <details class='criterion-pending-more'>
-                <summary>
-                  <span>Ver los otros {remainingPendingRatings.length}</span>
-                  <TablerIcon src={chevronDownIcon} />
-                </summary>
-                <div class='criterion-pending-list'>
-                  {remainingPendingRatings.map((game) => (
-                    <a href={`/games/${slugifyGameTitle(game.titulo)}/#metacritica`}>
-                      <span>{game.titulo}</span>
-                      <small>Valorar</small>
-                    </a>
-                  ))}
-                </div>
-              </details>
-            )}
-          </div>
-        ) : (
-          <div class='criterion-empty'>
-            <strong>Todos tus juegos terminados tienen nota.</strong>
-          </div>
-        )}
-      </section>
-
+  <section class="panel criterion-section">
+    <div class="criterion-section-head"><div><span class="section-eyebrow">Sin perder tus notas</span><h2>Por completar</h2></div><span class="criterion-count">{pending.length} pendientes</span></div>
+    {pending.length ? <div class="criterion-pending-stack">
+      <a class="criterion-next-review" href={`/games/${slugifyGameTitle(pending[0].game.titulo)}/?edit=review#metacritica`}>
+        <span><small>Siguiente</small><strong>{pending[0].game.titulo}</strong></span><span>Valorar <TablerIcon src={arrowRightIcon} /></span>
+      </a>
+      {pending.length > 1 && <details class="criterion-pending-more">
+        <summary><span>Ver los otros {pending.length - 1}</span><TablerIcon src={chevronDownIcon} /></summary>
+        <div class="criterion-pending-list">{pending.slice(1).map(({ game, progress }) => <a href={`/games/${slugifyGameTitle(game.titulo)}/?edit=review#metacritica`}><span>{game.titulo}</span><small>{progress.missing.length} áreas</small></a>)}</div>
+      </details>}
+    </div> : <div class="criterion-empty"><strong>No quedan valoraciones pendientes en esta cola.</strong></div>}
+  </section>
 </BaseLayout>

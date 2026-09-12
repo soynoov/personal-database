@@ -2,8 +2,7 @@ import { getPurchasedUnits, type LocalGame } from './local-games';
 import { normalizeStatus } from './game-status';
 import { hasGameTag } from './game-tags';
 import {
-  getPersonalScoreCalculation,
-  getReviewCriterionScores,
+  getPublishedReview,
   isCommunityCriterionApplicable,
 } from './game-reviews';
 
@@ -87,6 +86,7 @@ export type GameValueMetrics = {
   acquiredDlcCount: number;
   realHours: number | null;
   personalScore: number | null;
+  scoreSource: 'v2' | 'anterior' | 'none';
   scoreComplete: boolean;
   scoreMultiplier: number;
   scoreBonusPercent: number;
@@ -130,14 +130,8 @@ export function getGameValueMetrics(game: LocalGame): GameValueMetrics {
   const realHours = game.horas === null || game.horas === undefined ? null : parsedHours;
 
   const includeCommunity = isCommunityCriterionApplicable(game);
-  const criterionScores = getReviewCriterionScores(game.critica, includeCommunity);
-  const hasCriterionData = criterionScores.some((criterion) => criterion.value !== null);
-  const scoreCalculation = getPersonalScoreCalculation(game.critica, includeCommunity);
-  const parsedLegacyScore = finiteNonNegative(game.nota);
-  const legacyScore = parsedLegacyScore !== null && parsedLegacyScore <= 10
-    ? parsedLegacyScore
-    : null;
-  const personalScore = scoreCalculation?.finalScore ?? (!hasCriterionData ? legacyScore : null);
+  const publishedReview = getPublishedReview(game.critica, game.nota, includeCommunity);
+  const personalScore = publishedReview.score;
   const scoreComplete = personalScore !== null;
   const scoreMultiplier = getScoreMultiplier(personalScore);
   const scoreBonusPercent = round((scoreMultiplier - 1) * 100, 1);
@@ -212,6 +206,7 @@ export function getGameValueMetrics(game: LocalGame): GameValueMetrics {
     acquiredDlcCount: dlcs.acquired.length,
     realHours,
     personalScore,
+    scoreSource: publishedReview.source,
     scoreComplete,
     scoreMultiplier,
     scoreBonusPercent,

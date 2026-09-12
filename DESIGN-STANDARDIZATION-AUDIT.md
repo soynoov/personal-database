@@ -10,6 +10,18 @@
 
 ## Estado de implementación · 12 de septiembre de 2026
 
+### Valoración elegida · NooV Score v2
+
+La última decisión del usuario conserva **solo el bloque Valoración de la propuesta 3**; no autoriza a recomponer otra vez Horas, Dinero, Detalles ni el fondo Golden. Se implementa una columna de nota personal con User score/Metascore compactos y un perfil radar con lista numérica al lado. El cálculo queda plegado. Paneles 32/16 px, separación de celdas 12 px, tipografía y colores de `theme.css`; máximo de 44 px en la cifra personal. En tablet se redistribuyen los grupos; en móvil se apilan sin reducir los controles por debajo de 44 px.
+
+- Ocho áreas: Jugabilidad/sistemas, Arte, Música, Historia/inmersión, Rendimiento, Progresión, Comunidad y Diversión. Originalidad es una insignia sin puntos; desaparecen la mención como bonus y el comentario del formulario.
+- Cuatro pasos con respuestas descritas, navegación anterior/siguiente y borrador recuperable en el navegador. No se muestra una nota cambiante mientras se responde. «Aún no puedo valorarlo», cero y «No aplica» son estados diferentes.
+- Media ponderada de áreas normalizadas a 0–10. El 10 solo corresponde al máximo de todas las áreas aplicables; nunca se obtiene por redondeo o bonus. El radar muestra el perfil normalizado, no los pesos: estos están en el desplegable del cálculo.
+- Migración versionada e idempotente de los criterios compatibles. Rendimiento y Progresión quedan pendientes; no se deducen de las horas o de otra nota. Se archivan la crítica completa y la nota anterior. Hasta completar v2 se conserva la nota publicada anterior, también para amortización. Las medias de v2 no mezclan ambos sistemas.
+- Las reglas, escalas, pesos operativos, compatibilidad, recuperación y pruebas se documentan en [NOOV-SCORE-V2.md](docs/NOOV-SCORE-V2.md). Esta revisión sustituye las propuestas históricas de mención honorífica que siguen apareciendo más abajo.
+
+### Resto de la interfaz
+
 Se aplica el sistema operativo aprobado a todas las rutas: catálogo, ficha de juego, ruleta, estadísticas, Metacrítica y datos pendientes. `/criterio/` conserva su redirección a `/criticas/`. Las capturas, métricas y hallazgos de las secciones siguientes describen el **estado auditado el 6 de septiembre**, no deben interpretarse como defectos pendientes de la versión actual.
 
 | Familia | Implementación |

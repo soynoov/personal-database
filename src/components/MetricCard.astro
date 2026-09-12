@@ -6,11 +6,12 @@ interface Props {
   context?: string;
   icon?: string;
   primary?: boolean;
+  unit?: string;
 }
-const { label, value, context, icon, primary = false } = Astro.props;
+const { label, value, context, icon, primary = false, unit } = Astro.props;
 ---
 <article class:list={['metric-card', primary && 'metric-card-primary']}>
   <div class='metric-card-head'><span>{label}</span>{icon && <TablerIcon src={icon} />}</div>
-  <strong>{typeof value === 'number' ? value.toLocaleString('es-ES') : value}</strong>
+  <strong>{typeof value === 'number' ? value.toLocaleString('es-ES') : value}{unit && <span class="metric-unit">{unit}</span>}</strong>
   {context && <small>{context}</small>}
 </article>

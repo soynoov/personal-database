@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test:reviews": "node scripts/verify-reviews.mjs",
+    "migrate:reviews": "node scripts/migrate-reviews-v2.mjs",
     "sync:games": "node scripts/sync-games.mjs --apply",
     "sync:games:check": "node scripts/sync-games.mjs",
     "test:games-sync": "node --test scripts/tests/games-sync.test.mjs",

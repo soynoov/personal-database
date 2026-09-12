@@ -1,5 +1,6 @@
 import { getLegacySoloValue, normalizeGameModes } from './game-modes';
-import { calculatePersonalScore, isCommunityCriterionApplicable } from './game-reviews';
+import { calculatePersonalScore, getPublishedReview, isCommunityCriterionApplicable } from './game-reviews';
+import { parseReviewV2 } from './review-edit';
 import { getGameGenres } from './game-genres';
 import type { GameCritique, LocalGame } from './local-games';
 import { normalizePurchaseStores } from './purchase-stores';
@@ -170,7 +171,30 @@ export function applyManualGamePatch(
     updated.steam_cromos = actual === null && total === null ? null : { actual, total };
   }
 
-  if (body.critica !== undefined) {
+  const personalInput = body.critica_personal ?? body.critica;
+  const personalSource = personalInput && typeof personalInput === 'object'
+    ? personalInput as Record<string, unknown> : null;
+  if ((body.critica !== undefined || body.critica_personal !== undefined) && (!personalSource || Array.isArray(personalSource))) {
+    return { ok: false, status: 400, error: 'La valoración debe contener un objeto de respuestas válido.' };
+  }
+  const isV2Review = personalSource?.version === 2;
+  if (personalSource?.version !== undefined && !isV2Review) {
+    return { ok: false, status: 400, error: 'Versión de valoración no compatible.' };
+  }
+  if (game.critica?.version === 2 && personalSource && !isV2Review) {
+    return { ok: false, status: 409, error: 'El sistema de valoración ha cambiado. Recarga la ficha antes de guardar.' };
+  }
+  if (isV2Review && personalSource) {
+    const parsed = parseReviewV2(personalSource, game.critica);
+    if (!parsed.ok) return parsed;
+    updated.critica = parsed.critique;
+    if (body.critica !== undefined) {
+      if (personalSource.metascore !== undefined) updated.critica.metascore = toBoundedNumber(personalSource.metascore, 0, 100);
+      if (personalSource.userscore !== undefined) updated.critica.userscore = toBoundedNumber(personalSource.userscore, 0, 10);
+    }
+  }
+
+  if (body.critica !== undefined && !isV2Review) {
     updated.critica = toGameCritique(body.critica);
     updated.nota = calculatePersonalScore(
       updated.critica,
@@ -178,7 +202,7 @@ export function applyManualGamePatch(
     );
   }
 
-  if (body.critica_personal !== undefined) {
+  if (body.critica_personal !== undefined && !isV2Review) {
     const source = typeof body.critica_personal === 'object' && body.critica_personal !== null
       ? body.critica_personal as Record<string, unknown>
       : {};
@@ -236,6 +260,18 @@ export function applyManualGamePatch(
     updated.tags = nextTags;
   }
 
+  if (personalSource || updated.critica?.version === 2) {
+    if (updated.critica?.version === 2) {
+      const completeScore = calculatePersonalScore(updated.critica, isCommunityCriterionApplicable(updated));
+      if (completeScore !== null) {
+        updated.critica = { ...updated.critica, ultima_completa: {
+          nota: completeScore, criterios: { ...updated.critica.criterios },
+          no_aplica: [...(updated.critica.no_aplica ?? [])], original: updated.critica.original ?? null,
+        } };
+      }
+    }
+    updated.nota = getPublishedReview(updated.critica, updated.nota, isCommunityCriterionApplicable(updated)).score;
+  }
   updated.actualizado_en = new Date().toISOString();
   return { ok: true, game: updated };
 }

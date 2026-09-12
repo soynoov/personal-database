@@ -22,7 +22,7 @@ const costLabel = metrics.costPerRealHour === null ? 'Sin calcular' : `${formatE
       <div><dt>Micropagos registrados</dt><dd>{formatEuro(metrics.microtransactionSpend)}</dd></div>
     </dl>
     <p>Meta: 1 € de gasto por hora ponderada. Horas ponderadas = horas jugadas × {metrics.scoreMultiplier.toLocaleString('es-ES', { maximumFractionDigits: 4 })}.</p>
-    {metrics.scoreBonusPercent > 0 ? <p>Bonus My Score: +{metrics.scoreBonusPercent.toLocaleString('es-ES')}%. {formatHoursDuration(metrics.weightedHours)} ponderadas · coste ajustado {formatEuro(metrics.adjustedCostPerHour, 'Sin calcular')}{metrics.adjustedCostPerHour !== null && ' / h ponderada'}.</p> : <p>Sin bonus My Score: las horas ponderadas coinciden con las horas reales.</p>}
+    {metrics.scoreBonusPercent > 0 ? <p>Bonus NooV Score: +{metrics.scoreBonusPercent.toLocaleString('es-ES')}%{metrics.scoreSource === 'anterior' && ' (nota anterior, pendiente de completar la valoración nueva)'}. {formatHoursDuration(metrics.weightedHours)} ponderadas · coste ajustado {formatEuro(metrics.adjustedCostPerHour, 'Sin calcular')}{metrics.adjustedCostPerHour !== null && ' / h ponderada'}.</p> : <p>Sin bonus NooV Score: las horas ponderadas coinciden con las horas reales.</p>}
     <p>No se suma el balance de precios a la amortización: aquí solo cuenta el gasto y el uso. {metrics.usageProvisional && 'Resultado provisional; los importes pendientes no se tratan como cero.'}</p>
   </div>
 </details>

@@ -3,6 +3,7 @@ import { isCompletedStatus, normalizeStatus } from './game-status';
 import { hasGameTag } from './game-tags';
 import type { LocalGame } from './local-games';
 import { slugifyGameTitle } from './local-games';
+import { getReviewProgress, isCommunityCriterionApplicable } from './game-reviews';
 
 export type DataEditor = 'status' | 'technical' | 'hours' | 'finance' | 'review';
 export type DataGapCategory = 'copia' | 'actividad' | 'compra' | 'valoracion';
@@ -86,9 +87,10 @@ function getGaps(game: LocalGame) {
     if (!hasNumber(game.precio_pagado)) add('precio_pagado', 'Precio pagado', 'compra', 'finance');
   }
 
-  if (isCompletedStatus(game.estado) || status === 'abandonado') {
+  if (isCompletedStatus(game.estado) || status === 'abandonado' || game.critica?.version === 2) {
     applicableFields += 1;
-    if (!hasNumber(game.nota)) add('nota', 'Valoración personal', 'valoracion', 'review');
+    const pendingV2 = game.critica?.version === 2 && !getReviewProgress(game.critica, isCommunityCriterionApplicable(game)).complete;
+    if (pendingV2 || !hasNumber(game.nota)) add('nota', pendingV2 ? 'Completar valoración v2' : 'Valoración personal', 'valoracion', 'review');
   }
 
   return { gaps, applicableFields };

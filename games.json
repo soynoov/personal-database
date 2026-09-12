@@ -70,7 +70,29 @@
     "steam_last_sync_at": "2026-08-20T11:24:03.500Z",
     "critica": {
       "metascore": 83,
-      "userscore": 7.8
+      "userscore": 7.8,
+      "version": 2,
+      "criterios": {
+        "jugabilidad": null,
+        "progresion": null,
+        "graficos_arte": null,
+        "historia": null,
+        "musica": null,
+        "rendimiento": null,
+        "comunidad": null,
+        "entretenimiento": null
+      },
+      "original": null,
+      "no_aplica": [],
+      "migracion": {
+        "version_origen": 1,
+        "nota_anterior": 8,
+        "nota_guardada": 8,
+        "critica_anterior": {
+          "metascore": 83,
+          "userscore": 7.8
+        }
+      }
     }
   },
   {
@@ -246,20 +268,46 @@
       "actual": null,
       "total": null
     },
-    "nota": 8,
+    "nota": 7.8,
     "critica": {
       "metascore": 81,
       "userscore": 8.2,
       "criterios": {
         "jugabilidad": 4,
+        "progresion": null,
+        "graficos_arte": 3,
         "historia": 4,
         "musica": 3,
-        "graficos_arte": 3,
+        "rendimiento": null,
+        "comunidad": null,
         "entretenimiento": 4
       },
       "mencion_honorifica": {
         "nivel": 0,
         "comentario": null
+      },
+      "version": 2,
+      "original": null,
+      "no_aplica": [],
+      "migracion": {
+        "version_origen": 1,
+        "nota_anterior": 7.8,
+        "nota_guardada": 8,
+        "critica_anterior": {
+          "metascore": 81,
+          "userscore": 8.2,
+          "criterios": {
+            "jugabilidad": 4,
+            "historia": 4,
+            "musica": 3,
+            "graficos_arte": 3,
+            "entretenimiento": 4
+          },
+          "mencion_honorifica": {
+            "nivel": 0,
+            "comentario": null
+          }
+        }
       }
     },
     "comentarios": null,

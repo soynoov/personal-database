@@ -1,0 +1,69 @@
+---
+import type { GameCritique } from '../../lib/local-games';
+import { REVIEW_STEPS, getReviewCriterionScores } from '../../lib/game-reviews';
+import '../../styles/game-detail/review-wizard.css';
+import FormCheckbox from '../FormCheckbox.astro';
+import TablerIcon from '../TablerIcon.astro';
+import closeIcon from '@tabler/icons/outline/x.svg?url';
+interface Props { slug: string; critique: GameCritique | null; includeCommunity: boolean }
+const { slug, critique, includeCommunity } = Astro.props;
+const criteria = getReviewCriterionScores(critique, includeCommunity);
+---
+<dialog class="edit-dialog review-wizard" id="metacritic-edit-dialog" aria-labelledby="review-wizard-title">
+  <form id="metacritic-edit-form" data-slug={slug} data-base-revision={JSON.stringify(critique)} data-community={String(includeCommunity)}>
+    <header class="review-wizard-head">
+      <div><span class="section-eyebrow">NooV Score · 8 áreas, sin escribir</span><h2 id="review-wizard-title">Tu experiencia, paso a paso</h2></div>
+      <button class="review-icon-button" type="button" id="metacritic-edit-close" aria-label="Cerrar valoración"><TablerIcon src={closeIcon} /></button>
+    </header>
+    <nav class="review-step-nav" aria-label="Pasos de la valoración">
+      {REVIEW_STEPS.map((label, index) => <button type="button" data-review-step-to={index} aria-current={index === 0 ? 'step' : undefined}><span>{index + 1}</span>{label}</button>)}
+    </nav>
+    <div class="review-wizard-scroll">
+      <div class="review-draft-notice" id="review-draft-notice" hidden>
+        <p>Hay un borrador guardado en este navegador. No se ha publicado.</p>
+        <div><button type="button" id="review-draft-restore">Recuperar borrador</button><button type="button" id="review-draft-discard">Descartar</button></div>
+      </div>
+      {critique?.migracion && <p class="review-import-notice">Hemos conservado tus respuestas anteriores. Comprueba sus nuevos significados y completa las áreas pendientes; la nota anterior no cambia hasta entonces.</p>}
+      <p class="review-scale-reminder">El máximo significa prácticamente perfecto en ese aspecto. «Me gustó» no obliga a marcar el máximo.</p>
+      <p class="edit-dialog-error" id="metacritic-edit-error" role="alert" tabindex="-1" hidden></p>
+      {REVIEW_STEPS.map((label, index) => <section class="review-step" data-review-step={index} hidden={index !== 0} aria-label={label}>
+        <h3 tabindex="-1" class="review-step-heading">{index + 1}. {label}</h3>
+        <div class="review-question-grid">
+          {criteria.filter((item) => item.step === index).map((item) => <fieldset class="review-question" aria-describedby={`review-help-${item.key}`}>
+            <legend><span>{item.label} · {item.min}–{item.max}</span><strong>{item.question}</strong></legend>
+            <p id={`review-help-${item.key}`} class="review-question-help">{item.measures}</p>
+            <div class="review-answers">
+              {Object.entries(item.scale).map(([value, description]) => <label class="review-answer">
+                <input type="radio" name={item.key} value={value} checked={!item.notApplicable && item.value === Number(value)} />
+                <span class="review-answer-number">{value}</span><span>{description}</span>
+              </label>)}
+              {item.value !== null && !Number.isInteger(item.value) && <label class="review-answer"><input type="radio" name={item.key} value={item.value} checked /><span class="review-answer-number">{item.value}</span><span>Valor anterior importado; puedes elegir un nivel nuevo.</span></label>}
+            </div>
+            <div class="review-answer-extras">
+              <label><input type="radio" name={item.key} value="" checked={item.value === null && !item.notApplicable} />Aún no puedo valorarlo</label>
+              {item.optional && <label><input type="radio" name={item.key} value="na" checked={item.notApplicable} />No aplica a este juego</label>}
+            </div>
+          </fieldset>)}
+        </div>
+        {index === 3 && <div class="review-originality edit-field-checkbox">
+          <FormCheckbox inputId="edit-originalidad" name="original" checked={critique?.original === true}>
+            Originalidad · aporta una idea, enfoque o combinación propia
+          </FormCheckbox>
+          <p>Insignia sin puntos. Pertenecer a un género conocido no impide ser original.</p>
+        </div>}
+      </section>)}
+    </div>
+    <footer class="review-wizard-footer">
+      <output id="review-wizard-progress" aria-live="polite"></output>
+      <div class="review-wizard-actions">
+        <button type="button" id="review-step-back">Anterior</button>
+        <button type="button" id="review-step-next" class="review-primary">Siguiente</button>
+        <button type="submit" id="metacritic-edit-submit" class="review-primary" hidden>Guardar valoración</button>
+      </div>
+    </footer>
+  </form>
+</dialog>
+<script>
+  import { initReviewWizard } from '../../scripts/review-wizard';
+  initReviewWizard();
+</script>

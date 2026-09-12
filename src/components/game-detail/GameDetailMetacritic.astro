@@ -1,23 +1,16 @@
 ---
-import '../../styles/game-detail/metacritic-equation.css';
-import '../../styles/game-detail/metacritic.css';
 import '../../styles/game-detail/edit.css';
+import '../../styles/game-detail/review-v2.css';
 import type { GameCritique } from '../../lib/local-games';
-import {
-  getPersonalScoreCalculation,
-  getReviewCriterionScores,
-  getScoreSummary,
-  getScoreTone,
-} from '../../lib/game-reviews';
-import FormCheckbox from '../FormCheckbox.astro';
+import { getPublishedReview, getReviewProgress, getPersonalScoreMeaning, getScoreTone } from '../../lib/game-reviews';
+import { boundedReviewNumber } from '../../lib/review-legacy';
+import MetricCard from '../MetricCard.astro';
+import GamePill from '../GamePill.astro';
+import ReviewWizard from './ReviewWizard.astro';
 import TablerIcon from '../TablerIcon.astro';
-import checksIcon from '@tabler/icons/outline/checks.svg?url';
-import divideIcon from '@tabler/icons/outline/divide.svg?url';
-import usersIcon from '@tabler/icons/outline/users-group.svg?url';
-import starIcon from '@tabler/icons/outline/star.svg?url';
-import equalIcon from '@tabler/icons/outline/equal.svg?url';
-import arrowRightIcon from '@tabler/icons/outline/arrow-right.svg?url';
 import editIcon from '@tabler/icons/outline/edit.svg?url';
+import sparklesIcon from '@tabler/icons/outline/sparkles.svg?url';
+import chevronIcon from '@tabler/icons/outline/chevron-right.svg?url';
 
 interface Props {
   slug: string;
@@ -25,436 +18,75 @@ interface Props {
   legacyScore: number | null;
   includeCommunity: boolean;
 }
-
 const { slug, critique, legacyScore, includeCommunity } = Astro.props;
-const scoreCalculation = getPersonalScoreCalculation(critique, includeCommunity);
-const personalScore = scoreCalculation?.finalScore ?? null;
-const criterionScores = getReviewCriterionScores(critique, includeCommunity);
-const hasCriterionData = criterionScores.some((criterion) => criterion.value !== null);
-const displayedPersonalScore = personalScore ?? (hasCriterionData ? null : legacyScore);
-const completedCriteria = criterionScores.filter((criterion) => criterion.value !== null).length;
-const honoraryLevel = critique?.mencion_honorifica?.nivel ?? 0;
-const honoraryComment = critique?.mencion_honorifica?.comentario ?? '';
-const honoraryOptions = [
-  { level: 0, label: 'No especialmente', bonus: 'Sin bonus' },
-  { level: 1, label: 'Me gustó', bonus: '+0,1' },
-  { level: 2, label: 'Lo disfruté mucho', bonus: '+0,2' },
-  { level: 3, label: 'Me encantó', bonus: '+0,3' },
-];
-const honoraryLabel = honoraryOptions.find((option) => option.level === honoraryLevel)?.label ?? '';
-
-const toNullableScore = (value: unknown) => {
-  if (value === null || value === undefined || value === '') return null;
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : null;
-};
-
-const metascore = toNullableScore(critique?.metascore);
-const userscore = toNullableScore(critique?.userscore);
-const hasMetacriticData = metascore !== null
-  || userscore !== null
-  || displayedPersonalScore !== null
-  || hasCriterionData
-  || honoraryLevel > 0
-  || Boolean(honoraryComment);
-const hasPersonalReview = displayedPersonalScore !== null
-  || hasCriterionData
-  || honoraryLevel > 0
-  || Boolean(honoraryComment);
-const formatDecimal = (value: number | null) =>
-  value === null
-    ? '—'
-    : new Intl.NumberFormat('es-ES', {
-        minimumFractionDigits: 1,
-        maximumFractionDigits: 1,
-      }).format(value);
+const published = getPublishedReview(critique, legacyScore, includeCommunity);
+const progress = getReviewProgress(critique, includeCommunity);
+const totalWeight = progress.applicable.reduce((sum, item) => sum + item.weight, 0);
+const format = (value: number | null) => value === null ? '—' : value.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const metascore = boundedReviewNumber(critique?.metascore, 100);
+const userscore = boundedReviewNumber(critique?.userscore, 10);
+const radar = progress.applicable.map((item) => ({ label: item.shortLabel, value: item.normalized }));
 ---
-
-<section class="game-metacritic panel" id="metacritica">
+<section class="game-metacritic panel review-v2" id="metacritica">
   <header class="game-metacritic-head">
-    <div>
-      <span class="section-eyebrow">Crítica</span>
-      <h2>Valoración</h2>
+    <div><span class="section-eyebrow">Crítica</span><h2>Valoración</h2></div>
+    <div class="review-head-actions">
+      {critique?.original === true && <GamePill label="Original"><TablerIcon src={sparklesIcon} /></GamePill>}
+      <button class="game-edit-trigger metacritic-edit-trigger" id="metacritic-edit-trigger" type="button" aria-label="Editar mi valoración">
+        <TablerIcon src={editIcon} />
+      </button>
     </div>
-    <button
-      class="metacritic-edit-trigger"
-      id="metacritic-edit-trigger"
-      type="button"
-      aria-label={hasPersonalReview ? 'Editar mi valoración' : 'Añadir mi valoración'}
-    >
-      <TablerIcon src={editIcon} />
-      <span>{hasPersonalReview ? 'Editar' : 'Añadir valoración'}</span>
-    </button>
   </header>
 
-  {hasMetacriticData ? <>
-  <div class="metacritic-score-grid">
-    {metascore !== null && <article class={`metacritic-score-card is-${getScoreTone(metascore, 100)}`}>
-      <div class="metacritic-score-copy">
-        <span>Metascore</span>
-        <strong>{getScoreSummary(metascore, 100)}</strong>
-        <small>Crítica profesional</small>
+  <div class="review-bento">
+    <div class="review-summary">
+      <div class="review-personal">
+        <MetricCard label="NooV Score" value={format(published.score)} unit="/ 10" context={published.source === 'anterior' ? critique?.ultima_completa ? 'Última nota completa · revisión pendiente' : 'Nota anterior · pendiente de completar v2' : published.source === 'v2' ? getPersonalScoreMeaning(published.score) : 'Aún sin valorar'} primary />
+        {progress.missing.length > 0 && <button class="review-text-action" type="button" data-edit-target="metacritic-edit-trigger">
+          {progress.answered.length > 0 ? `Completar ${progress.missing.length} áreas pendientes` : 'Empezar valoración'}
+        </button>}
       </div>
-      <div class="metacritic-score-value">
-        {Math.round(metascore)}<small>/100</small>
+      <div class="review-external">
+        <div class={`is-${getScoreTone(userscore)}`}><MetricCard label="User score" value={`${format(userscore)} / 10`} context={userscore === null ? 'Sin dato de Metacritic' : 'Comunidad de Metacritic'} /></div>
+        <div class={`is-${getScoreTone(metascore, 100)}`}><MetricCard label="Metascore" value={`${metascore === null ? '—' : metascore} / 100`} context={metascore === null ? 'Sin dato de Metacritic' : 'Crítica profesional'} /></div>
       </div>
-    </article>}
+    </div>
 
-    {userscore !== null && <article class={`metacritic-score-card is-${getScoreTone(userscore)}`}>
-      <div class="metacritic-score-copy">
-        <span>User score</span>
-        <strong>{getScoreSummary(userscore)}</strong>
-        <small>Comunidad de Metacritic</small>
+    <div class="review-profile">
+      <div class="review-profile-head">
+        <h3>De dónde viene tu nota</h3>
+        <span>{progress.answered.length}/{progress.applicable.length} áreas</span>
       </div>
-      <div class="metacritic-score-value is-round">
-        {formatDecimal(userscore)}<small>/10</small>
+      <div class="review-profile-body">
+        <figure class="review-radar" aria-describedby="review-radar-caption">
+          <div class="review-radar-canvas">
+            <canvas id="review-radar" data-review-radar={JSON.stringify(radar)} role="img" aria-label="Perfil de valoración. Los valores exactos están en la lista contigua."></canvas>
+          </div>
+          <figcaption id="review-radar-caption">Escala común 0–10 · no representa el peso de cada área.</figcaption>
+        </figure>
+        <dl class="review-values">
+          {progress.criteria.map((item) => <div class:list={[item.value === null && 'is-pending']}>
+            <dt>{item.shortLabel}</dt>
+            <dd>{item.notApplicable ? 'No aplica' : item.value === null ? 'Pendiente' : <><strong>{item.value.toLocaleString('es-ES')}</strong><span> / {item.max}</span></>}</dd>
+          </div>)}
+        </dl>
       </div>
-    </article>}
-
-    <article class={`metacritic-score-card is-${getScoreTone(displayedPersonalScore)}`}>
-      <div class="metacritic-score-copy">
-        <span>My score</span>
-        <strong>{personalScore === null && legacyScore !== null ? 'Desglose pendiente' : getScoreSummary(personalScore)}</strong>
-          <small>
-            {personalScore === null
-              ? `${completedCriteria}/${criterionScores.length} criterios completos`
-              : scoreCalculation && scoreCalculation.honoraryBonus > 0
-                ? `Base ${formatDecimal(scoreCalculation.baseScore)} + mención ${formatDecimal(scoreCalculation.honoraryBonus)}`
-                : 'Puntos obtenidos sobre el máximo'}
-          </small>
-      </div>
-      <div class="metacritic-score-value is-round is-personal">
-        {displayedPersonalScore === null ? '—' : formatDecimal(displayedPersonalScore)}<small>/10</small>
-      </div>
-    </article>
+    </div>
   </div>
 
-  {hasCriterionData ? <div class="metacritic-breakdown">
-    <div class="metacritic-breakdown-head">
-      <div>
-        <span class="section-eyebrow">Desglose personal</span>
-        <h3>De dónde sale tu nota</h3>
-      </div>
-      <span>{completedCriteria}/{criterionScores.length} criterios</span>
+  <details class="review-calculation">
+    <summary><TablerIcon src={chevronIcon} /><span>Cómo se calcula y qué significa</span><small>{published.source === 'v2' ? 'NooV Score v2' : 'Sin medias incompletas'}</small></summary>
+    <div class="review-calculation-body">
+      <p>Cada área se lleva a 0–10 y se pondera por su peso. «No aplica» se excluye y redistribuye su peso; una respuesta pendiente no cuenta como cero. Originalidad es una insignia y Diversión no añade bonus.</p>
+      <div class="review-weights">{progress.applicable.map((item) => <span>{item.shortLabel} <strong>{(item.weight / totalWeight * 100).toLocaleString('es-ES', { maximumFractionDigits: 1 })}%</strong></span>)}</div>
+      <p>El 10 exige el máximo en todas las áreas aplicables: prácticamente perfecto en lo que propone. Un 7 es bueno; un 8, muy bueno; un 9, excelente pero mejorable.</p>
+      {critique?.migracion && <p>Respuestas importadas del sistema anterior: revisa sus nuevos significados. Rendimiento y Progresión no se han inventado. La nota y la mención anteriores quedan archivadas; la nota anterior se conserva hasta completar esta valoración.</p>}
+      <a href="/criticas/#escala">Consultar todos los criterios y niveles</a>
     </div>
-
-    <div class="metacritic-criteria">
-      {criterionScores.map((criterion) => (
-        <article class="metacritic-criterion" title={criterion.description ?? criterion.measures}>
-          <div class="metacritic-criterion-row">
-            <strong>{criterion.label}</strong>
-            <span>
-              {criterion.value === null ? 'Sin puntuar' : `${criterion.value}/${criterion.max}`}
-            </span>
-          </div>
-          <progress
-            max={criterion.max}
-            value={criterion.value ?? 0}
-            aria-label={criterion.value === null ? `${criterion.label}: sin puntuar` : `${criterion.label}: ${criterion.value} de ${criterion.max}`}
-          />
-        </article>
-      ))}
-    </div>
-
-    {(scoreCalculation || honoraryLevel > 0 || honoraryComment) && (
-    <div class:list={["metacritic-breakdown-footer", honoraryLevel > 0 && "has-honorary", honoraryComment && "has-comment"]}>
-      {honoraryLevel > 0 && (
-        <article class:list={["metacritic-honorary", "has-value", honoraryComment && "has-comment"]}>
-          <div class="metacritic-honorary-level">
-            <div>
-              <span class="metacritic-honorary-icon"><TablerIcon src={starIcon} /></span>
-              <span>
-                <small>Mención honorífica</small>
-                <strong>{honoraryLabel}</strong>
-              </span>
-            </div>
-          </div>
-          {honoraryComment && (
-            <div class="metacritic-honorary-reason">
-              <span>Apunte</span>
-              <p>{honoraryComment}</p>
-            </div>
-          )}
-        </article>
-      )}
-
-      {scoreCalculation && (
-        <section
-          class="metacritic-score-equation"
-          aria-label={`Nota base ${formatDecimal(scoreCalculation.baseScore)}${scoreCalculation.honoraryBonus > 0 ? ` más mención ${formatDecimal(scoreCalculation.honoraryBonus)}` : ''}, resultado ${formatDecimal(scoreCalculation.finalScore)}`}
-        >
-          <div class="metacritic-score-equation-head">
-            <span class="metacritic-criteria-status">
-              <TablerIcon src={checksIcon} />
-              {completedCriteria === criterionScores.length ? 'Todos los criterios' : 'Criterios necesarios'}
-            </span>
-            <details class="metacritic-formula-details">
-              <summary>Cómo se calcula</summary>
-              <div>
-                <span><TablerIcon src={divideIcon} /> Puntos obtenidos / máximos</span>
-                {includeCommunity && <span><TablerIcon src={usersIcon} /> Comunidad ×0,5</span>}
-                {honoraryLevel > 0 && <span><TablerIcon src={starIcon} /> Mención +0,1 por nivel</span>}
-                <span><TablerIcon src={equalIcon} /> Máximo 10</span>
-              </div>
-            </details>
-          </div>
-          <div class:list={["metacritic-score-equation-values", scoreCalculation.honoraryBonus <= 0 && "without-bonus"]}>
-            <span class="metacritic-score-term">
-              <small>Base</small>
-              <strong>{formatDecimal(scoreCalculation.baseScore)}</strong>
-            </span>
-            {scoreCalculation.honoraryBonus > 0 && <>
-              <span class="metacritic-score-operator" aria-hidden="true">+</span>
-              <span class="metacritic-score-term">
-                <small>Mención</small>
-                <strong>{formatDecimal(scoreCalculation.honoraryBonus)}</strong>
-              </span>
-            </>}
-            <span class="metacritic-score-operator is-equals" aria-hidden="true">=</span>
-            <span class="metacritic-score-term is-result">
-              <small>My score</small>
-              <strong>{formatDecimal(scoreCalculation.finalScore)}</strong>
-            </span>
-          </div>
-        </section>
-      )}
-    </div>
-    )}
-  </div> : <div class="metacritic-review-prompt"><span>Completa los criterios para obtener tu nota personal.</span><button class="brand-button" type="button" data-edit-target="metacritic-edit-trigger">Añadir valoración</button></div>}
-  </> : (
-    <div class="metacritic-empty-state">
-      <span class="metacritic-empty-icon"><TablerIcon src={starIcon} /></span>
-      <div>
-        <strong>Sin valoración todavía</strong>
-        <p>Añade la crítica cuando tengas criterio suficiente sobre el juego.</p>
-      </div>
-    </div>
-  )}
+  </details>
 </section>
-
-<dialog class="edit-dialog metacritic-edit-dialog" id="metacritic-edit-dialog">
-  <div class="edit-dialog-body">
-    <div class="edit-dialog-head">
-      <div>
-        <h2>Editar mi valoración</h2>
-        <p class="edit-dialog-sub">Tu nota se calcula automáticamente a partir de tus criterios.</p>
-      </div>
-      <button class="edit-dialog-close" id="metacritic-edit-close" type="button" aria-label="Cerrar">×</button>
-    </div>
-
-    <p class="edit-dialog-error" id="metacritic-edit-error" hidden></p>
-
-    <form id="metacritic-edit-form" data-slug={slug}>
-      <section class="metacritic-edit-group" aria-labelledby="metacritic-personal-title">
-        <div class="metacritic-edit-group-head">
-          <div>
-            <span class="section-eyebrow">Cálculo automático</span>
-            <h3 id="metacritic-personal-title">Tu valoración</h3>
-          </div>
-          <a href="/criticas/">Qué significa cada nota <TablerIcon src={arrowRightIcon} /></a>
-        </div>
-
-        <div class="metacritic-edit-criteria">
-          {criterionScores.map((criterion) => criterion.key === 'originalidad' ? (
-            <FormCheckbox
-              class="metacritic-rating-field is-binary"
-              inputId="edit-originalidad"
-              inputClass="metacritic-originality-check"
-              checked={criterion.value === 1}
-              ariaLabel="El juego aporta una idea, enfoque o combinación propia"
-            >
-              <span>
-                Originalidad
-                <small>Aporta algo propio</small>
-              </span>
-            </FormCheckbox>
-          ) : (
-            <label class:list={["metacritic-rating-field", criterion.key === 'comunidad' && 'is-community']} for={`edit-${criterion.key}`}>
-              <span>
-                {criterion.label}
-                <small>{criterion.min}–{criterion.max}</small>
-              </span>
-              <select id={`edit-${criterion.key}`} name={criterion.key}>
-                <option value="" selected={criterion.value === null}>Sin puntuar</option>
-                {Array.from(
-                  { length: criterion.max - criterion.min + 1 },
-                  (_, index) => index + criterion.min,
-                ).map((score) => (
-                  <option value={score} selected={criterion.value === score}>
-                    {score} / {criterion.max}
-                  </option>
-                ))}
-              </select>
-            </label>
-          ))}
-        </div>
-      </section>
-
-      <section class="metacritic-edit-group metacritic-edit-honorary" aria-labelledby="metacritic-honorary-title">
-        <div class="metacritic-edit-group-head">
-          <div>
-            <span class="section-eyebrow">Opcional</span>
-            <h3 id="metacritic-honorary-title">Mención honorífica</h3>
-          </div>
-          <output class="metacritic-honorary-preview" aria-live="polite">
-            <TablerIcon src={starIcon} />
-            <span>Bonus</span>
-            <strong id="edit-honorary-bonus">+0,{honoraryLevel}</strong>
-          </output>
-        </div>
-
-        <div class="metacritic-honorary-fields">
-          <fieldset class="metacritic-honorary-levels">
-            <legend>¿Cuánto lo disfrutaste?</legend>
-            <div class="metacritic-honorary-choice-grid">
-              {honoraryOptions.map((option) => (
-                <label class="metacritic-honorary-choice">
-                  <input
-                    type="radio"
-                    name="honorary_level"
-                    value={option.level}
-                    checked={honoraryLevel === option.level}
-                  />
-                  <span>
-                    <strong>{option.level} · {option.label}</strong>
-                    <small>{option.bonus}</small>
-                  </span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
-          <label
-            class="metacritic-honorary-comment"
-            id="edit-honorary-comment-field"
-            for="edit-honorary-comment"
-            hidden={honoraryLevel === 0}
-          >
-            <span>Apunte <small>Opcional</small></span>
-            <textarea
-              id="edit-honorary-comment"
-              name="honorary_comment"
-              placeholder="Solo si quieres recordar algo concreto"
-              disabled={honoraryLevel === 0}
-            >{honoraryComment}</textarea>
-          </label>
-        </div>
-      </section>
-
-      <div class="edit-dialog-actions">
-        <button class="edit-dialog-cancel" id="metacritic-edit-cancel" type="button">Cancelar</button>
-        <button class="edit-dialog-submit" id="metacritic-edit-submit" type="submit">Guardar valoración</button>
-      </div>
-    </form>
-  </div>
-</dialog>
-
+<ReviewWizard slug={slug} critique={critique} includeCommunity={includeCommunity} />
 <script>
-  import { editorFetch } from '../../scripts/editor-auth';
-  import { finishGameEdit } from '../../scripts/game-edit-feedback';
-
-  const trigger = document.getElementById('metacritic-edit-trigger');
-  const dialog = document.getElementById('metacritic-edit-dialog');
-  const form = document.getElementById('metacritic-edit-form');
-  const closeBtn = document.getElementById('metacritic-edit-close');
-  const cancelBtn = document.getElementById('metacritic-edit-cancel');
-  const errorBox = document.getElementById('metacritic-edit-error');
-  const submitBtn = document.getElementById('metacritic-edit-submit');
-  const honoraryLevelInputs = Array.from(
-    document.querySelectorAll<HTMLInputElement>('input[name="honorary_level"]'),
-  );
-  const honoraryCommentField = document.getElementById('edit-honorary-comment-field');
-  const honoraryCommentInput = document.getElementById('edit-honorary-comment');
-  const honoraryBonus = document.getElementById('edit-honorary-bonus');
-  const originalityInput = document.getElementById('edit-originalidad');
-
-  if (
-    trigger instanceof HTMLButtonElement &&
-    dialog instanceof HTMLDialogElement &&
-    form instanceof HTMLFormElement &&
-    errorBox instanceof HTMLElement &&
-    submitBtn instanceof HTMLButtonElement
-  ) {
-    const hideError = () => errorBox.setAttribute('hidden', '');
-    const showError = (message: string) => {
-      errorBox.textContent = message;
-      errorBox.removeAttribute('hidden');
-    };
-    const syncHonoraryFields = (revealComment = false) => {
-      const selectedLevel = honoraryLevelInputs.find((input) => input.checked);
-      const level = Number(selectedLevel?.value ?? 0);
-      const hasHonoraryMention = level > 0;
-
-      honoraryCommentField?.toggleAttribute('hidden', !hasHonoraryMention);
-      if (honoraryCommentInput instanceof HTMLTextAreaElement) {
-        honoraryCommentInput.disabled = !hasHonoraryMention;
-        honoraryCommentInput.required = false;
-      }
-      if (honoraryBonus instanceof HTMLElement) {
-        honoraryBonus.textContent = `+0,${level}`;
-      }
-      if (revealComment && hasHonoraryMention && honoraryCommentField instanceof HTMLElement) {
-        requestAnimationFrame(() => honoraryCommentField.scrollIntoView({ block: 'center' }));
-      }
-    };
-
-    honoraryLevelInputs.forEach((input) =>
-      input.addEventListener('change', () => syncHonoraryFields(true)),
-    );
-    syncHonoraryFields();
-
-    trigger.addEventListener('click', () => {
-      hideError();
-      dialog.showModal();
-    });
-    closeBtn?.addEventListener('click', () => dialog.close());
-    cancelBtn?.addEventListener('click', () => dialog.close());
-    dialog.addEventListener('click', (event) => {
-      if (event.target === dialog) dialog.close();
-    });
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      hideError();
-
-      const data = new FormData(form);
-      const payload = {
-        critica_personal: {
-          criterios: {
-            jugabilidad: data.get('jugabilidad'),
-            historia: data.get('historia'),
-            musica: data.get('musica'),
-            graficos_arte: data.get('graficos_arte'),
-            entretenimiento: data.get('entretenimiento'),
-            originalidad: originalityInput instanceof HTMLInputElement && originalityInput.checked ? 1 : 0,
-            comunidad: data.get('comunidad'),
-          },
-          mencion_honorifica: {
-            nivel: data.get('honorary_level'),
-            comentario: data.get('honorary_comment'),
-          },
-        },
-      };
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Guardando…';
-
-      try {
-        const slug = form.dataset.slug ?? '';
-        const response = await editorFetch(`/api/games/${slug}/edit`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        const result = await response.json().catch(() => ({}));
-        if (!response.ok || !result.ok) {
-          throw new Error(result.error || `No se pudo guardar (HTTP ${response.status}).`);
-        }
-        finishGameEdit('metacritica', 'Valoración actualizada');
-      } catch (error) {
-        showError(error instanceof Error ? error.message : 'No se pudo guardar.');
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Guardar valoración';
-      }
-    });
-  }
+  import { initReviewRadar } from '../../scripts/review-radar';
+  initReviewRadar();
 </script>
