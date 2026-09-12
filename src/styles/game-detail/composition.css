@@ -69,12 +69,29 @@
   @media (min-width: 1101px) {
     .game-page-rich #hours .hours-priority-grid[data-hltb='false'] .value-kpi-primary { grid-column: span 6; grid-row: auto; }
     .game-page-rich #hours .hours-priority-grid[data-hltb='false'] .hours-info-card { grid-column: span 2; }
-    .game-page-rich #hours .hours-priority-grid[data-hltb='false'][data-recurring='true'] .hours-info-card { grid-column: span 3; }
   }
   @media (min-width: 601px) and (max-width: 1100px) {
     .game-page-rich #hours .hours-priority-grid[data-hltb='false'] .value-kpi-primary { grid-column: 1 / -1; grid-row: auto; }
     .game-page-rich #hours .hours-priority-grid[data-hltb='false'] .hours-info-card { grid-column: span 4; }
-    .game-page-rich #hours .hours-priority-grid[data-hltb='false'][data-recurring='true'] .hours-info-card { grid-column: span 6; }
+  }
+
+  /* Two compact metadata rows share the hours tile's height, without fixed heights. */
+  .game-page-rich #hours .hours-priority-grid[data-hltb='false'][data-recurring='true'] .hours-info-card {
+    grid-column: 1 / -1;
+    min-height: 0;
+    padding: var(--space-1) var(--space-3);
+    flex-direction: row;
+    align-items: center;
+  }
+  .game-page-rich #hours .hours-priority-grid[data-hltb='false'][data-recurring='true'] .hours-info-card > div { gap: 0; }
+  @media (min-width: 701px) {
+    .game-page-rich #hours .hours-priority-grid[data-hltb='false'][data-recurring='true'] .value-kpi-primary {
+      grid-column: 1 / span 6;
+      grid-row: 1 / span 2;
+      flex-direction: row;
+      align-items: center;
+    }
+    .game-page-rich #hours .hours-priority-grid[data-hltb='false'][data-recurring='true'] .hours-info-card { grid-column: 7 / -1; }
   }
   @media (max-width: 700px) {
     .game-page-rich :is(#hours, #finance, #technical, #competitive, #dlcs, #metacritica, #comentario, #finance-data-notice) { padding: var(--space-4); }
