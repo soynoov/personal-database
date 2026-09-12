@@ -30,8 +30,8 @@ Se aplica el sistema operativo aprobado a todas las rutas: catálogo, ficha de j
 - **Golden:** las cards conservan el material diagonal dorado que responde al ratón, hover de la card completa a `1.10` y portada sin zoom propio. Por la revisión posterior del usuario, el fondo de la ficha es estático y queda anclado a toda la ventana, también en ultrawide: visible desde la primera carga y durante el scroll, sin depender del puntero ni de JavaScript. Conserva intensidad, densidad física de las bandas y superficies de datos opacas. Al no tener movimiento, permanece visible también en táctil y con `prefers-reduced-motion`.
 - **Géneros:** barras en lugar de donut porque un juego puede pertenecer a varias categorías. No cambia ningún recuento ni porcentaje.
 - **Mercado:** por preferencia posterior del usuario, línea y área tenue entre Salida, Mi compra y Actual; la compra tiene marcador y celda destacados. Se indica que son referencias por copia, no un historial ni fechas de compra. El mínimo histórico se mantiene separado como referencia discontinua.
-- **DLC:** balance de precios protagonista en euros y porcentaje —negativo, positivo o neutro—, acompañado por «Invertido / Comprar hoy» en bento. Se comparan los mismos DLC adquiridos con ambos precios registrados; cobertura parcial y pendientes se indican sin mezclarlos con la inversión. El desglose añade balance por título, ordenado de menor a mayor. Es una diferencia de precios registrados, no una valoración de reventa ni amortización por uso. Las cards son compactas, con miniatura, fecha y una fila «Pagué / Hoy / Balance», sin una caja grande por dato. Card, filtros, editor y balance comparten el criterio de adquisición; un precio pagado de 0 € también cuenta aunque falte la fecha.
-- **Meta de horas:** Horas presenta la amortización como una única barra de progreso con «Faltan X horas» o «Meta alcanzada», limitada visualmente al 100%. La meta usa horas de juego y el bonus de la fórmula existente; las horas adicionales no agrandan la escala. Gasto incompleto, horas sin registrar, horas estimadas y coste cero tienen estados explícitos. Se conservan las referencias HLTB y se elimina de Dinero la comparativa repetida de horas frente a amortización. No se sustituyen importes desconocidos por cero ni se cambian fórmulas.
+- **DLC:** desplegable cerrado inicialmente, con saldo, porcentaje y cobertura siempre visibles. Dentro se conserva el bento «Invertido / Precio de referencia» y el balance por título, ordenado de menor a mayor. Se comparan los mismos DLC adquiridos con ambos precios registrados. Es una diferencia de precios, no una valoración de reventa ni amortización por uso. Las cards compactas conservan miniatura, fecha y fila «Pagué / Hoy / Balance». Card, filtros, editor y balance comparten el criterio de adquisición; pagar 0 € también cuenta aunque falte la fecha.
+- **Meta de horas:** una única barra de amortización con «Faltan X horas» o «Meta alcanzada», limitada visualmente al 100%. Usa la fórmula y bonus existentes; con gasto positivo conocido e importes pendientes se calcula como «Provisional». Coste por hora, gasto y múltiplo de uso están en Horas; el cálculo se consulta en un desplegable cerrado inicialmente. Sin coste conocido pero con importes pendientes no se declara la meta completada. HLTB conserva sus referencias independientes y Dinero no repite la amortización.
 - **Registro puntual:** Competitivo muestra solo el mejor rango alcanzado. El rango actual deja de ocupar espacio en la ficha; sus datos históricos se conservan y no se requiere mantenerlos actualizados.
 - **Pastillas:** `GamePill.astro` y su adaptador cliente comparten presentación, iconos y `game-pill.css`; se usa en SSR, cards filtradas, tabla, cabecera, metadatos y DLC. Altura mínima de 26 px, Stack Sans Text y fondos sutiles. Los controles interactivos de filtrado conservan su tamaño táctil y semántica de botón.
 - **Legibilidad del banner:** degradado continuo más oscuro detrás del título y las pastillas, sin tapar la portada. Estado, tienda y plataforma forman una fila; Golden y etiquetas, otra, con reflujo si falta espacio. En móvil las pastillas ocupan el ancho completo bajo portada y título. El distintivo Golden muestra «100%» y conserva su significado completo como nombre accesible y descripción emergente.
@@ -40,6 +40,37 @@ Se aplica el sistema operativo aprobado a todas las rutas: catálogo, ficha de j
 - **Datos reales:** cero, vacío, estimaciones, Steam/no Steam, compras, DLC, micropagos y puntuaciones parciales siguen diferenciados. Las cifras ficticias de las propuestas no se copian a la base de datos.
 
 Validación y evidencia: [design-qa.md](design-qa.md). Las capturas de implementación y comparaciones se guardan localmente en `.codex-qa/`; no se confunden con los mockups marcados como propuesta. Las migraciones futuras de tipografía y tokens `--ds-*` siguen sin activarse. Esta entrega no reconcilia ni modifica `games.json`, Vercel Blob ni las fórmulas de amortización. El contrato de las APIs se conserva; la edición de DLC protege la fecha desconocida de una compra ya registrada para no asignarle automáticamente la fecha de hoy.
+
+### Opción 1 implementada: compra y uso separados
+
+Esta revisión sustituye las primeras propuestas de Dinero que reunían amortización y mercado. La composición aprobada se adapta a `theme.css`, sin activar las migraciones futuras de `DESIGN.md` ni modificar el fondo Golden.
+
+![Propuesta aprobada de composición; no es una captura real](docs/design-standardization/assets/48-purchase-balance-proposed.png)
+
+| Zona | Lectura principal | Reglas operativas |
+|---|---|---|
+| Aviso independiente sobre Dinero | Datos económicos pendientes | Ámbar, solo carencias pertinentes. Acciones hacia los editores de juego/DLC. Si falta precio de referencia, acceso a referencias o a la actualización de DLC existente. No bloquea otros cálculos. |
+| Resumen de Dinero | Balance de compra, Pagué, Precio de referencia | Bento `6/3/3`; hasta 1100 px, resultado sobre dos importes. Productos comparables y últimos precios registrados explícitos. |
+| Juego base | Diferencia contra el precio actual registrado | Línea Salida → Mi compra → Actual conservada; no inventa una cronología. Marcador de compra verde/rosa según resultado. La gráfica es por copia; el saldo utiliza todas las copias compradas. |
+| Balance de mis DLC | Saldo, porcentaje y cobertura | Cerrado inicialmente; apertura con ratón, Enter o Espacio. Tabla interna desplazable en móvil, sin desbordar el bento. |
+| Horas | Meta de amortización y coste por hora | Una barra de meta; desglose plegado. Gasto conocido del juego, todos los DLC adquiridos con precio pagado y micropagos registrados. Estado provisional cuando faltan importes. |
+
+**Cálculos:**
+
+- Balance de compra = suma de precios actuales comparables − suma de importes pagados por esos mismos productos. Porcentaje = balance / suma pagada × 100; no se suman porcentajes individuales.
+- El juego base aplica las mismas copias a ambos importes. Free-to-play no añade una compra ficticia del juego; un juego adquirido gratis con precio pagado explícito `0` sí es comparable. Wishlist sin compra registrada no se considera adquisición.
+- DLC no adquiridos y productos sin ambos precios quedan fuera del balance, con cobertura parcial explícita. Un precio actual desconocido no impide sumar el precio pagado a la amortización.
+- Sin comparables no hay saldo ni importes agregados ficticios. Sobre una compra gratuita no existe porcentaje calculable: se indica «Sin coste inicial».
+- La amortización conserva el objetivo de 1 € por hora ponderada y el bonus My Score. Con gasto positivo conocido se calcula provisionalmente aunque falten otros importes. Gasto conocido cero + importes pendientes no equivale a compra gratuita ni a meta alcanzada. Sin horas, Dinero sigue funcionando y Horas pide registrarlas cuando existe una meta.
+- No se suma variación de precios a horas de uso: miden cosas distintas. Un juego puede tener pérdidas de compra y estar amortizado por uso.
+
+**Ejemplo de aceptación DBD** (fixture de prueba, no datos que escribir): juego base `9,99 → 19,99 €`; 18 DLC comparables `104,50 → 69,92 €`; otros 4 DLC con precio pagado pendiente; micropagos `5 €`. Balance conjunto **−24,58 € / −21,5%**, sobre **114,49 €** pagados comparables; gasto conocido para amortización **119,49 €**. El `games.json` local conserva otros precios actuales y no se sobrescribe para coincidir con la propuesta.
+
+**Sistema visual:** radio exterior `--radius-1` (32 px), celdas `--radius-2` (16 px), separación `--space-3` (12 px), padding exterior `--space-6` (24 px). Métricas principales limitadas a 44 px. Elms Sans y Stack Sans Text existentes; `GamePill`, `MetricCard` y Tabler compartidos. Botón de edición de 44 px con icono de 16 px. Violeta para interacción, `--success`/`--danger` para resultado y `--warning` para pendientes.
+
+**Integración:** `game-market-view.ts` incorpora el balance consolidado; `game-finance.ts` y `game-hours-goal.ts` exponen cálculo provisional. Se conservan contratos de APIs, almacenamiento y la clasificación del catálogo: un registro incompleto sigue siendo `incomplete` allí. Los tests de compra se incluyen en `npm run test:finance`; la presentación de la ficha, en `npm run test:detail`.
+
+Validación local: escritorio `1440 × 1024`, tablet `820 × 1180`, móvil `390 × 844` y ultrawide `3440 × 1440`; detalle de resultados e iteraciones en [design-qa.md](design-qa.md).
 
 ## 1. Veredicto ejecutivo
 

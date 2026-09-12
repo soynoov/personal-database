@@ -3,7 +3,7 @@ import { formatEuro } from './game-finance';
 export type PriceBalanceState = 'loss' | 'gain' | 'neutral' | 'unavailable';
 
 export const parsePrice = (value: unknown): number | null => {
-  if (value === null || value === undefined || typeof value === 'boolean' || (typeof value === 'string' && !value.trim())) return null;
+  if ((typeof value !== 'number' && typeof value !== 'string') || (typeof value === 'string' && !value.trim())) return null;
   const parsed = Number(value);
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
 };

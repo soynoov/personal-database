@@ -1,0 +1,30 @@
+---
+import { formatEuro } from '../../lib/game-finance';
+import { formatSignedEuro, formatSignedPercent, type getPriceBalance } from '../../lib/price-balance';
+import GamePill from '../GamePill.astro';
+import TablerIcon from '../TablerIcon.astro';
+import downIcon from '@tabler/icons/outline/trending-down.svg?url';
+import upIcon from '@tabler/icons/outline/trending-up.svg?url';
+import equalIcon from '@tabler/icons/outline/equal.svg?url';
+interface Props { label: string; balance: ReturnType<typeof getPriceBalance>; partial?: boolean; compact?: boolean }
+const { label, balance, partial = false, compact = false } = Astro.props;
+const available = balance.state !== 'unavailable';
+const status = balance.state === 'loss' ? 'En pérdidas' : balance.state === 'gain' ? 'En positivo' : 'Sin variación';
+const icon = balance.state === 'loss' ? downIcon : balance.state === 'gain' ? upIcon : equalIcon;
+const description = balance.state === 'loss'
+  ? `Comprar lo mismo costaría ${formatEuro(Math.abs(balance.difference ?? 0))} menos.`
+  : balance.state === 'gain'
+    ? `Pagaste ${formatEuro(balance.difference)} menos que el precio de referencia.`
+    : 'El precio registrado coincide con lo que pagaste.';
+---
+<section class:list={['purchase-balance', compact && 'is-compact']} data-balance={balance.state} aria-label={label}>
+  <div class="purchase-balance-heading"><h3>{label}</h3>{partial && available && <GamePill value="Parcial" />}</div>
+  {available ? <>
+    <p class="purchase-balance-state"><TablerIcon src={icon} /><span>{status}</span></p>
+    <div class="purchase-balance-amount"><strong>{formatSignedEuro(balance.difference)}</strong><span>{formatSignedPercent(balance.percent)}</span></div>
+    <p class="purchase-balance-description">{description}</p>
+  </> : compact ? <p class="purchase-balance-description">Precio pagado o actual pendiente. Se conservan las referencias disponibles.</p> : <>
+    <strong class="purchase-balance-empty-title">Sin comparación disponible</strong>
+    <p class="purchase-balance-description">Se necesitan el precio pagado y el actual de los mismos productos. Los importes desconocidos no son 0 €.</p>
+  </>}
+</section>

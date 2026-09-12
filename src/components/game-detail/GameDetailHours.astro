@@ -5,6 +5,7 @@ import '../../styles/game-detail/edit.css';
 import { formatHoursDuration, type GameValueMetrics } from '../../lib/game-finance';
 import FormCheckbox from '../FormCheckbox.astro';
 import GameDetailHoursGoal from './GameDetailHoursGoal.astro';
+import GameDetailUsageBreakdown from './GameDetailUsageBreakdown.astro';
 import TablerIcon from '../TablerIcon.astro';
 import calendarIcon from '@tabler/icons/outline/calendar-event.svg?url';
 import clockIcon from '@tabler/icons/outline/clock.svg?url';
@@ -130,6 +131,7 @@ const hltbState = !metrics.showHltbTarget
       </dl>
     )}
   </div>
+  <GameDetailUsageBreakdown {metrics} />
 </article>
 
 <dialog class="edit-dialog" id="hours-edit-dialog">

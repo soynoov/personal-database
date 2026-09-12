@@ -1,4 +1,4 @@
-import { getPaidUnitPrice, getPurchasedUnits, type LocalGame } from './local-games';
+import { getPurchasedUnits, type LocalGame } from './local-games';
 import { normalizeStatus } from './game-status';
 import { hasGameTag } from './game-tags';
 import {
@@ -10,7 +10,7 @@ import {
 const round = (value: number, digits = 2) => Number(value.toFixed(digits));
 
 const finiteNonNegative = (value: unknown): number | null => {
-  if (value === null || value === undefined || value === '') return null;
+  if ((typeof value !== 'number' && typeof value !== 'string') || (typeof value === 'string' && !value.trim())) return null;
   const parsed = Number(value);
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
 };
@@ -21,7 +21,7 @@ export const isAcquiredDlc = (
 
 export function getRecordedBaseSpend(game: LocalGame): number | null {
   if (hasGameTag(game.tags, 'free-to-play')) return 0;
-  const unitPrice = getPaidUnitPrice(game);
+  const unitPrice = finiteNonNegative(game.precio_pagado);
   if (unitPrice === null || unitPrice < 0) return null;
   return round(unitPrice * getPurchasedUnits(game));
 }
@@ -80,6 +80,9 @@ export type GameValueMetrics = {
   microtransactionSpend: number;
   recordedSpend: number;
   dataComplete: boolean;
+  usageProvisional: boolean;
+  canCalculateUsage: boolean;
+  missingDlcSpendCount: number;
   incompleteReasons: string[];
   acquiredDlcCount: number;
   realHours: number | null;
@@ -120,6 +123,9 @@ export function getGameValueMetrics(game: LocalGame): GameValueMetrics {
 
   const dataComplete = incompleteReasons.length === 0;
   const recordedSpend = round((baseSpend ?? 0) + dlcs.spend + microtransactionSpend);
+  // A positive known cost supports a provisional goal. Unknown costs never
+  // establish a free acquisition or a completed zero-cost goal.
+  const canCalculateUsage = dataComplete || recordedSpend > 0;
   const parsedHours = finiteNonNegative(game.horas);
   const realHours = game.horas === null || game.horas === undefined ? null : parsedHours;
 
@@ -136,8 +142,8 @@ export function getGameValueMetrics(game: LocalGame): GameValueMetrics {
   const scoreMultiplier = getScoreMultiplier(personalScore);
   const scoreBonusPercent = round((scoreMultiplier - 1) * 100, 1);
   const weightedHours = realHours === null ? null : round(realHours * scoreMultiplier, 2);
-  const economicTargetHours = dataComplete ? recordedSpend : null;
-  const economicTargetRealHours = dataComplete && recordedSpend > 0
+  const economicTargetHours = canCalculateUsage ? recordedSpend : null;
+  const economicTargetRealHours = canCalculateUsage && recordedSpend > 0
     ? round(recordedSpend / scoreMultiplier, 2)
     : null;
 
@@ -146,7 +152,7 @@ export function getGameValueMetrics(game: LocalGame): GameValueMetrics {
   let economicMultiple: number | null = null;
   let economicSurplusHours: number | null = null;
 
-  if (dataComplete && realHours !== null) {
+  if (canCalculateUsage && realHours !== null) {
     if (recordedSpend === 0) {
       economicProgressPercent = 100;
       economicRemainingHours = 0;
@@ -164,10 +170,10 @@ export function getGameValueMetrics(game: LocalGame): GameValueMetrics {
     }
   }
 
-  const costPerRealHour = dataComplete && realHours !== null && realHours > 0
+  const costPerRealHour = canCalculateUsage && realHours !== null && realHours > 0
     ? round(recordedSpend / realHours, 2)
     : null;
-  const adjustedCostPerHour = dataComplete && weightedHours !== null && weightedHours > 0
+  const adjustedCostPerHour = canCalculateUsage && weightedHours !== null && weightedHours > 0
     ? round(recordedSpend / weightedHours, 2)
     : null;
 
@@ -199,6 +205,9 @@ export function getGameValueMetrics(game: LocalGame): GameValueMetrics {
     microtransactionSpend,
     recordedSpend,
     dataComplete,
+    usageProvisional: !dataComplete,
+    canCalculateUsage,
+    missingDlcSpendCount: dlcs.incomplete.length,
     incompleteReasons,
     acquiredDlcCount: dlcs.acquired.length,
     realHours,

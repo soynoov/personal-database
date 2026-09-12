@@ -2,177 +2,62 @@
 import '../../styles/game-detail/shared.css';
 import '../../styles/game-detail/finance.css';
 import '../../styles/game-detail/edit.css';
-import '../../styles/game-detail/market.css';
 import GameDetailMarket from './GameDetailMarket.astro';
+import GameDetailFinanceNotice from './GameDetailFinanceNotice.astro';
+import PurchaseBalance from './PurchaseBalance.astro';
+import MetricCard from '../MetricCard.astro';
 import type { GameMarketView } from '../../lib/game-market-view';
-import {
-  formatEuro,
-  formatHoursDuration,
-  type GameValueMetrics,
-} from '../../lib/game-finance';
+import { formatEuro, type GameValueMetrics } from '../../lib/game-finance';
 import { getPurchaseStoreOptions, normalizePurchaseStores } from '../../lib/purchase-stores';
 import FormCheckbox from '../FormCheckbox.astro';
 import TablerIcon from '../TablerIcon.astro';
-import coinsIcon from '@tabler/icons/outline/coins.svg?url';
 import editIcon from '@tabler/icons/outline/edit.svg?url';
-import targetIcon from '@tabler/icons/outline/target-arrow.svg?url';
-
-interface MoneyEditValues {
-  precio_pagado: number | null;
-  unidades_compradas: number;
-  tiendas_compra: string[];
-  plataforma: string | null;
-  gasto_microtransacciones: number | null;
-  tags: string[];
-}
+import infoIcon from '@tabler/icons/outline/info-circle.svg?url';
 
 interface Props {
   slug: string;
   metrics: GameValueMetrics;
-  paidUnitPrice: number | null;
   market: GameMarketView;
-  hasDlcs: boolean;
-  editValues: MoneyEditValues;
+  editValues: {
+    precio_pagado: number | null;
+    unidades_compradas: number;
+    tiendas_compra: string[];
+    plataforma: string | null;
+    gasto_microtransacciones: number | null;
+    tags: string[];
+  };
 }
-
-const {
-  slug,
-  metrics,
-  paidUnitPrice,
-  market,
-  hasDlcs,
-  editValues,
-} = Astro.props;
-const isFreeToPlay = editValues.tags.includes('free-to-play');
+const { slug, metrics, market, editValues } = Astro.props;
+const isFreeToPlay = metrics.isFreeToPlay;
 const purchaseStoreOptions = getPurchaseStoreOptions(editValues.plataforma);
-const selectedPurchaseStores = normalizePurchaseStores(editValues.tiendas_compra);
-const selectedPurchaseStore = selectedPurchaseStores[0] ?? '';
-const progress = Math.max(0, Math.min(100, metrics.economicProgressPercent ?? 0));
-const isAmortized = metrics.dataComplete && metrics.realHours !== null && (metrics.economicRemainingHours ?? 0) === 0;
-const economicState = !metrics.dataComplete
-  ? 'Datos incompletos'
-  : metrics.realHours === null
-    ? 'Sin horas registradas'
-    : (metrics.economicRemainingHours ?? 0) > 0
-      ? `Faltan ${formatHoursDuration(metrics.economicRemainingHours)}`
-      : metrics.recordedSpend === 0
-        ? 'Sin coste que amortizar'
-        : 'Amortizado';
-const economicMultipleLabel = !metrics.dataComplete || metrics.realHours === null
-  ? '—'
-  : metrics.recordedSpend === 0
-    ? 'Sin coste'
-    : `${metrics.economicMultiple?.toLocaleString('es-ES', { maximumFractionDigits: 2 }) ?? '0'}×`;
-const economicProgressLabel = !metrics.dataComplete
-  ? 'Datos incompletos'
-  : metrics.recordedSpend === 0
-    ? 'Sin meta económica'
-    : metrics.economicProgressPercent === null
-      ? 'Sin progreso calculable'
-      : `${formatHoursDuration(metrics.weightedHours)} / ${formatHoursDuration(metrics.economicTargetHours)}`;
-const baseBreakdown = metrics.baseSpend === null
-  ? 'Pendiente'
-  : metrics.isFreeToPlay
-    ? formatEuro(0)
-    : formatEuro(metrics.baseSpend);
-const showBaseBreakdown = !metrics.isFreeToPlay;
-const showDlcBreakdown = hasDlcs || metrics.acquiredDlcCount > 0;
-const showMicroBreakdown = metrics.isFreeToPlay || metrics.microtransactionSpend > 0 || editValues.gasto_microtransacciones !== null;
-const breakdownSourceCount = [showBaseBreakdown, showDlcBreakdown, showMicroBreakdown].filter(Boolean).length;
-const showTotalBreakdown = breakdownSourceCount > 1;
-const incompleteHeadline = metrics.incompleteReasons[0]?.replace(/\.$/, '') ?? 'Completa los datos de compra';
-const incompleteDetail = metrics.incompleteReasons.slice(1).join(' ');
-const incompleteActionLabel = metrics.baseSpend === null ? 'Registrar precio' : 'Completar gasto';
+const selectedPurchaseStore = normalizePurchaseStores(editValues.tiendas_compra)[0] ?? '';
+const { purchaseBalance: purchases } = market;
 ---
 
+<GameDetailFinanceNotice {market} />
 <article class="analysis-panel analysis-panel-money" id="finance">
   <div class="section-title-row analysis-head">
-    <div>
-      <span class="section-eyebrow">Rentabilidad</span>
-      <h2>Dinero</h2>
-    </div>
+    <div><span class="section-eyebrow">Calidad de compra</span><h2>Dinero</h2></div>
     <button class="game-edit-trigger game-edit-trigger-sm" id="money-edit-trigger" type="button" aria-label="Editar gasto registrado" aria-controls="money-edit-dialog" data-money-edit-trigger>
       <TablerIcon src={editIcon} />
     </button>
   </div>
 
-  {metrics.dataComplete ? (
-    <div class="finance-priority-grid">
-      <article class:list={["finance-progress-card", isAmortized && "is-complete"]}>
-        <div class="finance-progress-head">
-          <span>Rentabilidad</span>
-          <small>{economicProgressLabel}</small>
-        </div>
-        <strong class="finance-progress-multiple">{economicMultipleLabel}</strong>
-        <span class="finance-progress-status">{economicState}</span>
-        {metrics.economicProgressPercent !== null && metrics.recordedSpend > 0 && (
-          <div class="value-progress" role="progressbar" aria-label="Progreso de la meta económica" aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(progress)}>
-            <span style={`--value-progress:${progress}%`}></span>
-          </div>
-        )}
-      </article>
-
-      <article class:list={["finance-goal-card", isAmortized && "is-complete"]}>
-        <div class="finance-goal-primary">
-          <div class="finance-goal-icon"><TablerIcon src={targetIcon} /></div>
-          <div class="finance-goal-copy">
-            <span>Meta económica</span>
-            <strong>{formatHoursDuration(metrics.economicTargetHours)}</strong>
-            <small>{economicState}</small>
-          </div>
-        </div>
-        <div class="finance-goal-cost">
-          <span>Gasto registrado</span>
-          <strong>{formatEuro(metrics.recordedSpend)}</strong>
-        </div>
-      </article>
-    </div>
-  ) : (
-    <section class="finance-incomplete-state" aria-labelledby="finance-incomplete-title">
-      <div class="finance-goal-icon"><TablerIcon src={targetIcon} /></div>
-      <div class="finance-incomplete-copy">
-        <span>Rentabilidad pendiente</span>
-        <strong id="finance-incomplete-title">{incompleteHeadline}</strong>
-        {incompleteDetail && <small>{incompleteDetail}</small>}
-        <small>La rentabilidad necesita el gasto completo; los importes sin registrar no se consideran cero.</small>
-      </div>
-      <button class="finance-incomplete-action" type="button" aria-controls="money-edit-dialog" data-money-edit-trigger>{incompleteActionLabel}</button>
-    </section>
-  )}
-
-  <div class="finance-kpi-grid">
-    {metrics.costPerRealHour !== null && <article><span>Coste/h real</span><strong>{formatEuro(metrics.costPerRealHour)}/h</strong></article>}
-    {metrics.adjustedCostPerHour !== null && <article><span>Coste/h ponderada</span><strong>{formatEuro(metrics.adjustedCostPerHour)}/h</strong></article>}
-    {metrics.weightedHours !== null && <article><span>Horas ponderadas</span><strong>{formatHoursDuration(metrics.weightedHours)}</strong></article>}
-    <article class:list={[!metrics.scoreComplete && "is-null"]}>
-      <span>Bonus My Score</span>
-      <strong>{metrics.scoreBonusPercent > 0 ? `+${metrics.scoreBonusPercent.toLocaleString('es-ES')}%` : 'Sin bonus'}</strong>
-      <small>{metrics.scoreComplete ? `×${metrics.scoreMultiplier.toFixed(2).replace('.', ',')}` : 'Crítica incompleta'}</small>
-    </article>
-    {isAmortized && metrics.recordedSpend > 0 && (
-      <article><span>Excedente</span><strong>{formatHoursDuration(metrics.economicSurplusHours)}</strong></article>
-    )}
+  <div class="purchase-overview" data-purchase-state={purchases.balance.state} data-purchase-partial={purchases.partial}>
+    <PurchaseBalance label="Balance de compra" balance={purchases.balance} partial={purchases.partial} />
+    {purchases.paidTotal !== null && <>
+      <MetricCard label="Pagué" value={formatEuro(purchases.paidTotal)} context="Por lo comparable" />
+      <MetricCard label="Precio de referencia" value={formatEuro(purchases.currentTotal)} context="Los mismos productos" />
+    </>}
   </div>
+  <p class="purchase-scope">{purchases.cohortLabel} · últimos precios registrados</p>
 
-  <section class:list={["finance-breakdown", breakdownSourceCount === 1 && "is-single-source"]} aria-labelledby="finance-breakdown-title">
-    <div class="finance-breakdown-head">
-      <span class="finance-breakdown-icon"><TablerIcon src={coinsIcon} /></span>
-      <h3 id="finance-breakdown-title">Gasto registrado</h3>
-    </div>
-    <dl>
-      {showBaseBreakdown && <div>
-        <dt>Juego base</dt>
-        <dd>{baseBreakdown}</dd>
-        <dd class="finance-breakdown-note">{paidUnitPrice === null ? 'Sin precio pagado' : `${formatEuro(paidUnitPrice)} × ${metrics.purchasedUnits}`}</dd>
-      </div>}
-      {showDlcBreakdown && <div><dt>DLC adquiridos</dt><dd>{formatEuro(metrics.dlcSpend)}</dd><dd class="finance-breakdown-note">{metrics.acquiredDlcCount} registrados</dd></div>}
-      {showMicroBreakdown && <div class:list={[breakdownSourceCount === 1 && "finance-breakdown-featured"]}><dt>Micropagos</dt><dd>{formatEuro(metrics.microtransactionSpend)}</dd><dd class="finance-breakdown-note">Gasto dentro del juego</dd></div>}
-      {showTotalBreakdown && <div class="finance-breakdown-total"><dt>Total</dt><dd>{metrics.dataComplete ? formatEuro(metrics.recordedSpend) : 'Incompleto'}</dd><dd class="finance-breakdown-note">1 € = 1 h ponderada</dd></div>}
-    </dl>
-  </section>
+  <GameDetailMarket {slug} {market} purchasedUnits={metrics.purchasedUnits} />
 
-  <GameDetailMarket slug={slug} market={market} purchasedUnits={metrics.purchasedUnits} />
-
+  {metrics.microtransactionSpend > 0 && <p class="purchase-footnote">
+    <TablerIcon src={infoIcon} />
+    <span>Micropagos: {formatEuro(metrics.microtransactionSpend)} incluidos en <a href="#hours">Horas</a>, fuera de esta comparación.</span>
+  </p>}
 </article>
 
 <dialog class="edit-dialog" id="money-edit-dialog">

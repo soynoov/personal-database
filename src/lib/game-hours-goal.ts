@@ -7,6 +7,7 @@ export type HoursGoal = {
   targetHours: number | null;
   remainingHours: number | null;
   progressPercent: number | null;
+  provisional: boolean;
 };
 
 /** Present the existing economic formula as one goal, never as two independent bars. */
@@ -17,8 +18,9 @@ export function getEconomicHoursGoal(metrics: GameValueMetrics): HoursGoal {
     targetHours: metrics.economicTargetRealHours,
     remainingHours: null,
     progressPercent: null,
+    provisional: metrics.usageProvisional,
   };
-  if (!metrics.dataComplete) return goal;
+  if (!metrics.canCalculateUsage) return goal;
   if (metrics.recordedSpend === 0) return { ...goal, state: 'no-cost', targetHours: null };
   if (goal.targetHours === null || !Number.isFinite(goal.targetHours) || goal.targetHours <= 0) return goal;
   if (goal.actualHours === null) return { ...goal, state: 'missing-hours' };

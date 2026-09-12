@@ -229,9 +229,7 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
       <GameDetailFinance
         slug={slug}
         metrics={valueMetrics}
-        paidUnitPrice={paidUnitPrice}
         market={market}
-        hasDlcs={dlcTotal > 0 || dlcItems.length > 0}
         editValues={{
           precio_pagado: paidUnitPrice,
           unidades_compradas: valueMetrics.purchasedUnits,

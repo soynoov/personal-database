@@ -1,0 +1,28 @@
+---
+import '../../styles/game-detail/usage-breakdown.css';
+import { formatEuro, formatHoursDuration, type GameValueMetrics } from '../../lib/game-finance';
+import MetricCard from '../MetricCard.astro';
+import TablerIcon from '../TablerIcon.astro';
+import chevronIcon from '@tabler/icons/outline/chevron-right.svg?url';
+interface Props { metrics: GameValueMetrics }
+const { metrics } = Astro.props;
+const costLabel = metrics.costPerRealHour === null ? 'Sin calcular' : `${formatEuro(metrics.costPerRealHour)} / h`;
+---
+<details class="usage-breakdown" id="usage-calculation">
+  <summary><TablerIcon src={chevronIcon} /><span>Cómo se calcula la amortización</span><strong>{costLabel}</strong></summary>
+  <div class="usage-breakdown-content">
+    <div class="usage-metrics-grid">
+      <MetricCard label="Gasto conocido" value={formatEuro(metrics.recordedSpend)} context={metrics.usageProvisional ? 'Provisional · faltan importes' : 'Todos los importes registrados'} />
+      <MetricCard label="Coste por hora real" value={costLabel} context={metrics.realHours === null || metrics.realHours === 0 ? 'Necesita horas mayores que cero' : 'Gasto conocido ÷ horas jugadas'} />
+      <MetricCard label="Uso frente a la meta" value={metrics.economicMultiple === null ? 'No calculable' : `${metrics.economicMultiple.toLocaleString('es-ES', { maximumFractionDigits: 2 })}×`} context="Horas ponderadas ÷ gasto conocido" />
+    </div>
+    <dl class="usage-spending">
+      <div><dt>Juego base · {metrics.purchasedUnits} {metrics.purchasedUnits === 1 ? 'copia' : 'copias'}</dt><dd>{formatEuro(metrics.baseSpend, 'Sin registrar')}</dd></div>
+      {metrics.acquiredDlcCount > 0 && <div><dt>DLC adquiridos{metrics.missingDlcSpendCount > 0 && ` · ${metrics.missingDlcSpendCount} importes pendientes`}</dt><dd>{formatEuro(metrics.dlcSpend)}{metrics.missingDlcSpendCount > 0 && ' registrados'}</dd></div>}
+      <div><dt>Micropagos registrados</dt><dd>{formatEuro(metrics.microtransactionSpend)}</dd></div>
+    </dl>
+    <p>Meta: 1 € de gasto por hora ponderada. Horas ponderadas = horas jugadas × {metrics.scoreMultiplier.toLocaleString('es-ES', { maximumFractionDigits: 4 })}.</p>
+    {metrics.scoreBonusPercent > 0 ? <p>Bonus My Score: +{metrics.scoreBonusPercent.toLocaleString('es-ES')}%. {formatHoursDuration(metrics.weightedHours)} ponderadas · coste ajustado {formatEuro(metrics.adjustedCostPerHour, 'Sin calcular')}{metrics.adjustedCostPerHour !== null && ' / h ponderada'}.</p> : <p>Sin bonus My Score: las horas ponderadas coinciden con las horas reales.</p>}
+    <p>No se suma el balance de precios a la amortización: aquí solo cuenta el gasto y el uso. {metrics.usageProvisional && 'Resultado provisional; los importes pendientes no se tratan como cero.'}</p>
+  </div>
+</details>

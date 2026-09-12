@@ -2,31 +2,28 @@
 import type { GameMarketView } from '../../lib/game-market-view';
 import { formatEuro } from '../../lib/game-finance';
 import GameDetailDlcBalance from './GameDetailDlcBalance.astro';
-import TablerIcon from '../TablerIcon.astro';
-import chartIcon from '@tabler/icons/outline/chart-line.svg?url';
+import PurchaseBalance from './PurchaseBalance.astro';
 interface Props { slug: string; market: GameMarketView; purchasedUnits: number }
 const { slug, market, purchasedUnits } = Astro.props;
-const { dlcs, purchaseComparison: saving } = market;
-const showBase = !market.isFreeToPlay && (market.points.length > 0 || market.historicLow !== null);
-const payload = { type: 'price-references', points: market.points, historicLow: market.historicLow };
+const { dlcs } = market;
+const showBase = !market.isFreeToPlay && (market.baseApplicable || market.points.length > 0 || market.historicLow !== null);
+const payload = { type: 'price-references', points: market.points, historicLow: market.historicLow, purchaseState: market.baseUnitBalance.state };
 ---
-{(showBase || market.hasDlcs) && (<details class="value-secondary-details finance-market-details" open>
-  <summary><TablerIcon src={chartIcon} /><span>Mercado</span></summary>
-  <div class:list={["finance-market-grid", !showBase && "is-dlc-only", market.points.length < 2 && "is-summary-only"]}>
-    {showBase && market.points.length >= 2 && <section class="chart-visual-card chart-visual-card-money" aria-labelledby="money-chart-title">
-      <div class="chart-header"><strong id="money-chart-title">Precio del juego base</strong><span class="chart-badge">€ / copia</span></div>
-      <div class="chart-canvas-wrap chart-canvas-wrap-money"><canvas id="money-detail-chart" role="img" aria-label={`Referencias de precio por copia: ${market.points.map(point => `${point.label}: ${formatEuro(point.value)}`).join('; ')}`} data-chart={JSON.stringify(payload)}></canvas></div>
-      <p class="chart-note">La línea une referencias conocidas; no representa un historial ni fechas de compra.</p>
-      {market.historicLow !== null && <p class="market-low-caption">Línea discontinua: mínimo histórico · {formatEuro(market.historicLow)}</p>}
-    </section>}
-    {showBase && <dl class="finance-market-values">
-      <div class="finance-purchase-card"><dt><span class="purchase-point" aria-hidden="true"></span>Mi compra</dt><dd>{formatEuro(market.paid, 'Sin registrar')}</dd><dd class="finance-market-note">{`Precio pagado por copia · ${purchasedUnits} ${purchasedUnits === 1 ? 'copia' : 'copias'}`}</dd>
-        {saving && <dd class="finance-purchase-saving">{saving.direction === 'discount' ? `${saving.percent.toLocaleString('es-ES')}% menos que de salida` : saving.direction === 'premium' ? `${saving.percent.toLocaleString('es-ES')}% más que de salida` : 'Mismo precio que de salida'}</dd>}
-      </div>
-      <div><dt>Precio de salida</dt><dd>{formatEuro(market.launch)}</dd></div>
-      <div><dt>Precio actual</dt><dd>{formatEuro(market.current)}</dd></div>
-      <div><dt>Mínimo histórico</dt><dd>{formatEuro(market.historicLow)}</dd></div>
-    </dl>}
-    {market.hasDlcs && <GameDetailDlcBalance {slug} {dlcs} />}
+
+{showBase && <section class="base-purchase-bento" id="base-price-reference" aria-label="Compra del juego base">
+  <div class="base-purchase-result">
+    <PurchaseBalance label="Compra del juego base" balance={market.baseBalance} compact />
+    {purchasedUnits > 1 && <p class="purchase-scope">Balance de las {purchasedUnits} copias compradas.</p>}
   </div>
-</details>)}
+  <div class="base-purchase-reference">
+    {market.points.length >= 2 ? <>
+      <div class="base-purchase-chart"><canvas id="money-detail-chart" role="img" aria-label={`Referencias de precio por copia: ${market.points.map(point => `${point.label}: ${formatEuro(point.value)}`).join('; ')}`} data-chart={JSON.stringify(payload)}></canvas></div>
+      <p class="purchase-chart-note">Referencias registradas por copia; no es un historial.</p>
+    </> : <dl class="base-purchase-prices">
+      <div><dt>Mi compra</dt><dd>{formatEuro(market.paid, 'Sin registrar')}</dd></div>
+      <div><dt>Precio actual</dt><dd>{formatEuro(market.current, 'Sin registrar')}</dd></div>
+    </dl>}
+    {market.historicLow !== null && <p class="purchase-chart-note">{market.points.length >= 2 ? 'Línea discontinua: mínimo histórico' : 'Mínimo histórico'} · {formatEuro(market.historicLow)}</p>}
+  </div>
+</section>}
+{market.hasDlcs && <GameDetailDlcBalance {slug} {dlcs} />}

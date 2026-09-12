@@ -12,7 +12,7 @@ try {
   const before = structuredClone(metrics);
   assert.deepEqual(getEconomicHoursGoal(metrics), {
     state: 'in-progress', actualHours: 50, targetHours: 90.91,
-    remainingHours: 40.91, progressPercent: 55,
+    remainingHours: 40.91, progressPercent: 55, provisional: false,
   });
   assert.deepEqual(metrics, before, 'Goal presentation never mutates the financial calculation');
   const goal = patch => getEconomicHoursGoal(getGameValueMetrics({ ...game, ...patch }));
@@ -38,8 +38,9 @@ try {
   assert.equal(f2p.state, 'in-progress', 'Free-to-play purchases still need amortization');
   assert.equal(f2p.targetHours, 181.82);
   const missingDlc = goal({ dlcs: { items: [{ titulo: 'DLC', fecha_adquisicion: '2026-01-01', precio_pagado: null }] } });
-  assert.equal(missingDlc.state, 'incomplete');
-  assert.equal(missingDlc.targetHours, null);
+  assert.equal(missingDlc.state, 'in-progress');
+  assert.equal(missingDlc.targetHours, 90.91);
+  assert.equal(missingDlc.provisional, true);
   assert.equal(goal({ horas_estimadas: true }).progressPercent, 55);
   const item = (state, value = '-') => ({ label: 'Dato', value, state });
   assert.equal(getDetailGroupLayout([]).state, 'not-applicable');

@@ -2,10 +2,24 @@
 
 @layer brand {
   .dlc-balance { --balance-accent: var(--muted); }
-  .game-page-rich .finance-market-grid .dlc-balance {
-    display: grid; gap: var(--space-4); padding: var(--space-4);
-    background: var(--panel-inner); border-radius: var(--radius-3);
+  .game-page-rich #finance .dlc-balance {
+    display: block; min-width: 0; padding: 0;
+    border: 1px solid var(--panel-line);
+    background: var(--panel-inner); border-radius: var(--radius-2);
   }
+  .dlc-balance-summary { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4) var(--space-6); cursor: pointer; list-style: none; min-height: 76px; }
+  .dlc-balance-summary::-webkit-details-marker { display: none; }
+  .dlc-balance-summary:hover { background: color-mix(in srgb, var(--theme-purple) 4%, transparent); border-radius: inherit; }
+  .dlc-balance-summary .dlc-balance-chevron { flex: 0 0 18px; width: 18px; height: 18px; color: var(--theme-purple); }
+  .dlc-balance[open] > summary .dlc-balance-chevron { transform: rotate(90deg); }
+  .dlc-balance-summary-copy { display: grid; gap: var(--space-1); min-width: 0; }
+  .dlc-balance-summary-copy strong { color: var(--text); font: 650 var(--type-body)/1.4 var(--font-body); }
+  .dlc-balance-summary-copy > span { color: var(--muted); font: 400 var(--type-label)/1.5 var(--font-body); }
+  .dlc-balance-summary-result { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: flex-end; gap: var(--space-2) var(--space-4); margin-left: auto; color: var(--balance-accent); font: 550 var(--type-ui)/1.4 var(--font-body); font-variant-numeric: tabular-nums; }
+  .dlc-balance-summary-result strong { font: 650 clamp(1.25rem, 2vw, 1.75rem)/1.2 var(--font-body); }
+  .dlc-balance-content { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); padding: var(--space-6); border-top: 1px solid var(--panel-line); }
+  .dlc-balance-content > * { min-width: 0; }
+  .dlc-balance:not([open]) > .dlc-balance-content { display: none; }
   .dlc-balance[data-balance='loss'] { --balance-accent: var(--danger); }
   .dlc-balance[data-balance='gain'] { --balance-accent: var(--success); }
   .dlc-balance > *, .dlc-balance-grid > * { min-width: 0; }
@@ -40,6 +54,7 @@
   .dlc-balance-empty { padding: var(--space-4); border: 1px solid var(--panel-line); border-radius: var(--radius-4); background: var(--control-bg); }
   .dlc-balance-empty strong { color: var(--text); font-size: var(--type-ui); }
   .dlc-balance-empty p { margin: var(--space-2) 0 0; color: var(--muted); font: 400 var(--type-label)/1.6 var(--font-body); }
+  .dlc-balance :is(.dlc-balance-result, .dlc-balance-prices > div, .dlc-balance-empty) { border-radius: var(--radius-2); }
   .market-dlc-breakdown { color: var(--text); font-size: var(--type-label); }
   .market-dlc-breakdown > summary { display: list-item; min-height: var(--control-height); align-content: center; cursor: pointer; color: var(--theme-purple); }
   .market-table-scroll { overflow-x: auto; max-width: 100%; }
@@ -53,7 +68,9 @@
   .dlc-balance :is(summary, a, .market-table-scroll):focus-visible { outline: 2px solid var(--theme-purple); outline-offset: 2px; }
   @media (max-width: 760px) {
     .dlc-balance-grid { grid-template-columns: minmax(0, 1fr); }
-    .game-page-rich .finance-market-grid .dlc-balance { padding: var(--space-3); }
+    .dlc-balance-summary { display: grid; grid-template-columns: auto minmax(0, 1fr); padding: var(--space-4); }
+    .dlc-balance-summary-result { grid-column: 2; margin-left: 0; justify-content: flex-start; }
+    .dlc-balance-content { padding: var(--space-4); }
     .dlc-balance-prices > div { padding: var(--space-3); }
   }
 }

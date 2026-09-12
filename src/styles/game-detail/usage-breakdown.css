@@ -1,0 +1,26 @@
+@import '../theme.css';
+@layer brand {
+  .usage-breakdown { min-width: 0; border: 1px solid var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); }
+  .usage-breakdown > summary { display: flex; align-items: center; gap: var(--space-3); min-height: var(--control-height); padding: var(--space-4); cursor: pointer; list-style: none; color: var(--text); font: 500 var(--type-ui)/1.5 var(--font-body); }
+  .usage-breakdown > summary::-webkit-details-marker { display: none; }
+  .usage-breakdown > summary > .tabler-icon { width: 18px; height: 18px; flex: 0 0 18px; color: var(--theme-purple); }
+  .usage-breakdown[open] > summary > .tabler-icon { transform: rotate(90deg); }
+  .usage-breakdown > summary > strong { margin-left: auto; color: var(--muted); font: 500 var(--type-ui)/1.4 var(--font-body); white-space: nowrap; }
+  .usage-breakdown > summary:focus-visible { outline: 2px solid var(--theme-purple); outline-offset: 2px; }
+  .usage-breakdown-content { display: grid; gap: var(--space-3); border-top: 1px solid var(--panel-line); padding: var(--space-4); }
+  .usage-breakdown:not([open]) > .usage-breakdown-content { display: none; }
+  .usage-metrics-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
+  .game-page-rich .usage-metrics-grid > .metric-card { min-width: 0; border-radius: var(--radius-2); padding: var(--space-4); background: var(--control-bg); box-shadow: none; }
+  .game-page-rich .usage-metrics-grid .metric-card > strong { font: 650 clamp(1.1rem, 2vw, 1.5rem)/1.3 var(--font-body); overflow-wrap: anywhere; }
+  .usage-spending { display: grid; gap: var(--space-2); margin: 0; }
+  .usage-spending > div { display: flex; justify-content: space-between; gap: var(--space-3); font: 400 var(--type-ui)/1.5 var(--font-body); }
+  .usage-spending dt { color: var(--muted); }
+  .usage-spending dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+  .usage-breakdown-content p { margin: 0; color: var(--muted); font: 400 var(--type-label)/1.6 var(--font-body); }
+  @media (max-width: 600px) {
+    .usage-breakdown > summary { flex-wrap: wrap; }
+    .usage-breakdown > summary > span { flex: 1; }
+    .usage-breakdown > summary > strong { flex-basis: 100%; padding-left: 30px; }
+    .usage-metrics-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+}

@@ -1,4 +1,57 @@
-# Design QA — Correcciones de ficha y pastillas · 2026-09-12
+# Design QA — Opción 1: balance de compra y uso · 2026-09-12
+
+## Resultado actual
+
+final result: passed
+
+Sin hallazgos P0/P1/P2 pendientes en el alcance implementado. Product Design guió la comparación con la composición elegida; los componentes y tokens operativos prevalecen sobre las medidas o fuentes aproximadas de la imagen. No se modifica el fondo Golden.
+
+### Fuente, estado y normalización
+
+- Fuente visual: `docs/design-standardization/assets/48-purchase-balance-proposed.png` (1586 × 992 px), copia de `C:/Users/heroy/.codex/generated_images/01a0765a-e9e2-70d3-80f3-355a09b42efc/exec-b5e59735-7794-49e5-acf3-8f843d33d379.png`.
+- Implementación: `http://127.0.0.1:4321/games/dead-by-daylight/`, captura de aviso + Dinero `.codex-qa/purchase-finance-complete-1440.png` (1128 × 903 px). Viewport 1440 × 1024 CSS px; deviceScaleFactor 1.
+- Comparación conjunta abierta e inspeccionada: `.codex-qa/purchase-source-vs-implementation.png` (2200 × 1300 px). Ambas imágenes se muestran a 1064 px de ancho conservando proporción. No se estiran para ocultar diferencias de altura.
+- Comparación enfocada de jerarquía, cifras, tipografía y color: `.codex-qa/purchase-source-vs-implementation-focus.png` (2200 × 400 px).
+- Estado coincidente: DBD, pérdida global parcial, ganancia del juego base, 18 de 22 DLC comparables, desglose cerrado. Diferencia declarada: el fichero local conserva precios actuales de DLC distintos a la propuesta (46,72 € frente a 69,92 €). No se comparan las cifras como si procedieran de la misma instantánea; el ejemplo aprobado se valida con un fixture independiente.
+- Capturas de widgets sin navegación superpuesta: los elementos sticky/fijos del shell se ocultan **solo durante la captura**, sin cambiar geometría ni CSS de producción. Los controles y anchors se prueban con el shell visible.
+
+### Historial de correcciones y evidencia posterior
+
+1. [P2 resuelto] La regla móvil heredada reducía a 16 px el padding de Dinero. Selector acotado a `#finance.analysis-panel`; padding comprobado de 24 px en los cuatro viewports. Evidencia posterior: `.codex-qa/purchase-money-390.png`.
+2. [P2 resuelto] Al abrir la tabla de DLC, el ancho mínimo de la retícula extendía el contenido interior y el panel lo recortaba. `minmax(0, 1fr)` y mínimos a cero en los hijos de `.dlc-balance-content`; solo `.market-table-scroll` desplaza la tabla. Evidencia posterior: `.codex-qa/purchase-dlc-open-390.png`; aserción adicional contra desbordamiento interior, no solo del documento.
+3. [P2 resuelto] El estado sin comparación repetía el mismo titular y explicación en resumen y juego base. La variante compacta conserva una nota breve y las referencias disponibles, sin otra cifra ni otro titular dominante. Evidencia posterior: `.codex-qa/purchase-state-miside.png`.
+4. Ajustes de fidelidad: CTA de pendientes con violeta operativo, cabecera sin margen heredado, cifra de horas limitada también al token métrico de 44 px y radios de 16 px en las celdas expandidas de DLC. Se volvió a capturar y comparar después de estos cambios.
+
+### Superficies visuales revisadas
+
+| Superficie | Resultado |
+|---|---|
+| Tipografía | Elms Sans cargada, Stack Sans Text en `GamePill`; títulos de ficha y pesos actuales. Saldo principal 36 px en 1440 y 44 px en ultrawide; cifras móviles legibles, sin elipsis. No se activa Geist/Caacupe. |
+| Espaciado y composición | Resumen `6/3/3` medido; hasta 1100 px el saldo precede a los dos importes. Radio exterior 32 px, interior 16 px, gaps 12 px y padding exterior 24 px. Chart y acciones se apilan en móvil. |
+| Color y tokens | Verde/rosa con texto e iconos que explican el resultado; ámbar solo en aviso. Mi compra resalta con el mismo estado que el saldo base. Fondos cálidos/oscuros y violeta de interacción existentes. |
+| Imagen e iconos | No se añaden imágenes decorativas a la interfaz. Tabler existente, no dibujos sustitutivos; portada y Golden sin cambios. La imagen generada es documentación de propuesta, nunca una interfaz rasterizada. |
+| Contenido | Compra y uso no se suman entre sí. «Últimos precios registrados» y cohorte explícitos; la línea no inventa historial. Pendientes no significan cero; free-to-play no inventa una compra. |
+
+### Pruebas
+
+- Playwright + Chromium autorizado por el usuario, headless, contextos independientes: 1440 × 1024, 820 × 1180, 390 × 844 y 3440 × 1440. Evidencia `.codex-qa/purchase-{money,notice,hours,dlc-open,usage}-{ancho}.png`; mediciones en `.codex-qa/purchase-browser-report.json`.
+- DLC y cálculo de uso cerrados inicialmente; Enter/Espacio abren y cierran, foco visible, tabla navegable y sin ampliar el documento. Una sola barra de amortización; ninguna en Dinero. Edición compacta de 44 × 44 px con icono de 16 px.
+- Editores de dinero, horas y DLC abiertos y cancelados en todos los viewports. Avisos enlazan a los editores existentes; enlace de precio actual del juego lleva a sus referencias, ya que no existe un editor manual de ese campo en el contrato actual.
+- Navegación a Dinero con títulos libres del header y tabs sticky; catálogo renderizado. MiSide, Stray, Ori and the Blind Forest, Marvel Rivals y A Plague Tale: Requiem comprueban estados reales sin comparación, compra gratuita, free-to-play y datos ausentes. Sin excepciones JavaScript ni overlay de error en estas rutas.
+- Actualización de DLC comprobada con respuestas **interceptadas**: error 503, botón recuperado y reintento correcto sin cambios. Ninguna petición de escritura alcanza las APIs durante las pruebas.
+- `npm run test:finance`, `npm run test:catalog`, `npm run test:detail`: pasan. Cubren DBD (−24,58 € y 119,49 €), ganancias/pérdidas/empate, copias, cero, desconocidos, bonus, horas ausentes y clasificación conservada del catálogo. Los nuevos tests quedan integrados en estos comandos.
+- `npm run build`: pasa. Fue necesario desactivar telemetría y autorizar la ejecución fuera del sandbox por restricciones de lectura de dependencias de Windows; no hubo que modificar dependencias ni configuración del proyecto.
+- Cambios locales ajenos preservados: hashes SHA-256 de `AGENTS.md` y `games.json` idénticos al inicio. No se concilia Blob ni se guardan precios o fechas desde el navegador.
+
+### Límites y diferencias intencionales
+
+- El mock usa una gráfica más esquemática y otra densidad. Se conserva Chart.js con ejes, valores, referencias y datos reales, según el plan; no se copia el mock como un historial ficticio.
+- Sin escritura real de prueba en producción ni prueba de integración con Steam: las acciones existentes se verifican con intercepción, los modelos y editores con tests. Safari y Firefox no forman parte de esta validación.
+- Las capturas y scripts de QA quedan en `.codex-qa/`, ignorado por Git; la propuesta aprobada sí está versionada con la auditoría.
+
+---
+
+# Histórico — Correcciones de ficha y pastillas · 2026-09-12
 
 ## Resultado de la revisión actual
 

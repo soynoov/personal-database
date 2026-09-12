@@ -1,5 +1,5 @@
 import { CategoryScale, Chart, Filler, LinearScale, LineController, LineElement, PointElement, Tooltip, type Plugin } from 'chart.js';
-import { readChartTheme } from './chart-theme';
+import { readChartTheme, readCssColors } from './chart-theme';
 import type { PriceReference } from '../lib/game-market-view';
 
 Chart.register(LineController, LineElement, PointElement, CategoryScale, LinearScale, Filler, Tooltip);
@@ -17,6 +17,8 @@ export function renderMarketComparison(canvasId: string) {
   if (points.length < 2) return;
   const historicLow = typeof payload.historicLow === 'number' && Number.isFinite(payload.historicLow) && payload.historicLow >= 0 ? payload.historicLow : null;
   const theme = readChartTheme(canvas);
+  const [gain, loss] = readCssColors(canvas, ['--success', '--danger']);
+  const purchaseColor = payload.purchaseState === 'gain' ? gain : payload.purchaseState === 'loss' ? loss : theme.primary;
   charts.get(canvasId)?.destroy();
   const valueLabels: Plugin<'line'> = {
     id: 'price-reference-values',
@@ -26,7 +28,7 @@ export function renderMarketComparison(canvasId: string) {
       ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       chart.getDatasetMeta(0).data.forEach((point, index) => {
         const purchase = points[index].kind === 'purchase';
-        ctx.fillStyle = purchase ? theme.primary : theme.text;
+        ctx.fillStyle = purchase ? purchaseColor : theme.text;
         ctx.font = `${purchase ? 700 : 500} ${purchase ? 13 : 11}px ${theme.font}`;
         ctx.fillText(currency.format(points[index].value), point.x, point.y - (purchase ? 16 : 12));
       });
@@ -42,7 +44,7 @@ export function renderMarketComparison(canvasId: string) {
       pointHoverRadius: points.map(point => point.kind === 'purchase' ? 10 : 6),
       pointBorderWidth: points.map(point => point.kind === 'purchase' ? 3 : 2),
       pointBorderColor: points.map(point => point.kind === 'purchase' ? theme.text : theme.primary),
-      pointBackgroundColor: points.map(point => point.kind === 'purchase' ? theme.primary : theme.panel),
+      pointBackgroundColor: points.map(point => point.kind === 'purchase' ? purchaseColor : theme.panel),
       pointHitRadius: 16, fill: true,
       backgroundColor: context => {
         const area = context.chart.chartArea;
@@ -67,7 +69,7 @@ export function renderMarketComparison(canvasId: string) {
       } },
       scales: {
         x: { offset: true, border: { display: false }, grid: { display: false }, ticks: {
-          color: context => points[context.index]?.kind === 'purchase' ? theme.primary : theme.muted,
+          color: context => points[context.index]?.kind === 'purchase' ? purchaseColor : theme.muted,
           font: context => ({ family: theme.font, size: 11, weight: points[context.index]?.kind === 'purchase' ? 700 : 400 }), maxRotation: 0,
         } },
         y: { beginAtZero: true, suggestedMax: Math.max(...points.map(point => point.value), historicLow ?? 0, 1) * 1.15, border: { display: false }, grid: { color: theme.line }, ticks: { color: theme.muted, maxTicksLimit: 5, font: { family: theme.font, size: 11 }, callback: value => `${value} €` } },

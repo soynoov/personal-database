@@ -8,6 +8,7 @@ import TablerIcon from '../TablerIcon.astro';
 import downIcon from '@tabler/icons/outline/trending-down.svg?url';
 import upIcon from '@tabler/icons/outline/trending-up.svg?url';
 import equalIcon from '@tabler/icons/outline/equal.svg?url';
+import chevronIcon from '@tabler/icons/outline/chevron-right.svg?url';
 
 interface Props { slug: string; dlcs: GameMarketView['dlcs'] }
 const { slug, dlcs } = Astro.props;
@@ -18,9 +19,17 @@ const icon = balance.state === 'loss' ? downIcon : balance.state === 'gain' ? up
 const rows = [...dlcs.rows].sort((a, b) => (a.balance.difference ?? 0) - (b.balance.difference ?? 0));
 ---
 
-<section class="chart-visual-card chart-visual-card-dlc dlc-balance" data-balance={balance.state} aria-labelledby="dlc-chart-title">
+<details class="dlc-balance" id="dlc-price-balance" data-balance={balance.state}>
+  <summary class="dlc-balance-summary">
+    <TablerIcon src={chevronIcon} class="dlc-balance-chevron" />
+    <span class="dlc-balance-summary-copy"><strong>Balance de mis DLC</strong><span>{rows.length} de {dlcs.acquiredCount} adquiridos comparables{dlcs.excludedCount > 0 && ' · Parcial'}</span></span>
+    <span class="dlc-balance-summary-result">
+      {rows.length > 0 ? <><strong>{formatSignedEuro(balance.difference)}</strong><span>{formatSignedPercent(balance.percent)}</span></> : <span>Sin comparación</span>}
+    </span>
+  </summary>
+  <div class="dlc-balance-content">
   <div class="dlc-balance-header">
-    <div><h3 id="dlc-chart-title">Balance de mis DLC</h3><p class="market-scope">{rows.length} de {dlcs.acquiredCount} DLC adquiridos con ambos precios registrados.</p></div>
+    <p class="market-scope">Últimos precios registrados de los mismos DLC adquiridos.</p>
     <button type="button" class="dlc-sync-prices-btn" id="dlc-sync-prices-btn" data-slug={slug}>Actualizar precios</button>
   </div>
   <span class="dlc-sync-prices-status" id="dlc-sync-prices-status" aria-live="polite"></span>
@@ -34,7 +43,7 @@ const rows = [...dlcs.rows].sort((a, b) => (a.balance.difference ?? 0) - (b.bala
       </div>
       <dl class="dlc-balance-prices">
         <div><dt>Invertido</dt><dd>{formatEuro(dlcs.paidTotal)}</dd><dd class="dlc-balance-price-note">Lo que pagaste</dd></div>
-        <div><dt>Comprar hoy</dt><dd>{formatEuro(dlcs.currentTotal)}</dd><dd class="dlc-balance-price-note">Los mismos DLC</dd></div>
+        <div><dt>Precio de referencia</dt><dd>{formatEuro(dlcs.currentTotal)}</dd><dd class="dlc-balance-price-note">Los mismos DLC</dd></div>
       </dl>
     </div>
     <p class="dlc-balance-method">Diferencia de precios registrados, no valor de reventa. La amortización por uso está en <a href="#hours">Horas</a>.</p>
@@ -43,7 +52,7 @@ const rows = [...dlcs.rows].sort((a, b) => (a.balance.difference ?? 0) - (b.bala
       <div class="market-table-scroll" tabindex="0" role="region" aria-label="Balance por DLC; desplaza horizontalmente si es necesario">
         <table>
           <caption>De menor a mayor balance · precio actual menos precio pagado</caption>
-          <thead><tr><th scope="col">DLC</th><th scope="col">Pagué</th><th scope="col">Hoy</th><th scope="col">Balance</th><th scope="col">Variación</th></tr></thead>
+          <thead><tr><th scope="col">DLC</th><th scope="col">Pagué</th><th scope="col">Referencia</th><th scope="col">Balance</th><th scope="col">Variación</th></tr></thead>
           <tbody>{rows.map(row => <tr><th scope="row">{row.title}</th><td>{formatEuro(row.paid)}</td><td>{formatEuro(row.current)}</td><td data-balance={row.balance.state}>{formatSignedEuro(row.balance.difference)}</td><td data-balance={row.balance.state}>{formatSignedPercent(row.balance.percent)}</td></tr>)}</tbody>
         </table>
       </div>
@@ -54,4 +63,5 @@ const rows = [...dlcs.rows].sort((a, b) => (a.balance.difference ?? 0) - (b.bala
     {dlcs.excludedCount > 0 && <p><strong>{dlcs.excludedCount} sin comparar</strong><span>Falta precio pagado o actual; no se incluyen en el balance.</span><a href="#dlcs">Revisar DLC</a></p>}
     {dlcs.pendingCount > 0 && <details class="market-dlc-pending"><summary><GamePill value={`${dlcs.pendingCount} sin adquirir`} /><span>Fuera del balance</span></summary><p>{dlcs.pendingKnownCount > 0 ? `${formatEuro(dlcs.pendingTotal)} para comprar los ${dlcs.pendingKnownCount} con precio registrado.` : 'Sin precios actuales registrados.'} No forman parte de tu inversión.</p></details>}
   </div>}
-</section>
+  </div>
+</details>

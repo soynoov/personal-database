@@ -1,0 +1,36 @@
+---
+import type { GameMarketView } from '../../lib/game-market-view';
+import TablerIcon from '../TablerIcon.astro';
+import warningIcon from '@tabler/icons/outline/alert-triangle.svg?url';
+interface Props { market: GameMarketView }
+const { market } = Astro.props;
+const paidBaseMissing = market.baseApplicable && market.paid === null;
+const currentBaseMissing = market.baseApplicable && market.current === null;
+const { missingPaidCount, missingCurrentCount } = market.dlcs;
+const hasMissingPrices = paidBaseMissing || currentBaseMissing || missingPaidCount > 0 || missingCurrentCount > 0;
+---
+{hasMissingPrices && <aside class="finance-data-notice" aria-labelledby="finance-data-notice-title" id="finance-data-notice">
+  <TablerIcon src={warningIcon} />
+  <div class="finance-data-notice-copy">
+    <h2 id="finance-data-notice-title">Datos económicos pendientes</h2>
+    <ul>
+      {paidBaseMissing && <li>Falta el precio pagado del juego base.</li>}
+      {missingPaidCount > 0 && <li>{missingPaidCount} DLC adquirido{missingPaidCount === 1 ? '' : 's'} sin precio pagado.</li>}
+      {currentBaseMissing && <li>Falta el precio actual del juego base.</li>}
+      {missingCurrentCount > 0 && <li>{missingCurrentCount} DLC adquirido{missingCurrentCount === 1 ? '' : 's'} sin precio actual.</li>}
+    </ul>
+    <p>Calculamos con los datos conocidos. Los importes pendientes no se consideran cero.</p>
+  </div>
+  <div class="finance-data-notice-actions">
+    {paidBaseMissing && <button class="brand-button" type="button" data-edit-target="money-edit-trigger" aria-controls="money-edit-dialog">Completar precio del juego</button>}
+    {missingPaidCount > 0 && <button class="brand-button" type="button" data-edit-target="dlcs-edit-trigger" aria-controls="dlcs-edit-dialog">Completar precios de DLC</button>}
+    {currentBaseMissing && <a class="brand-button" href="#base-price-reference">Ver referencias del juego</a>}
+    {missingCurrentCount > 0 && <a class="brand-button" href="#dlc-sync-prices-btn" data-open-dlc-balance>Revisar precios de DLC</a>}
+  </div>
+</aside>}
+<script>
+  document.querySelectorAll('[data-open-dlc-balance]').forEach(link => link.addEventListener('click', () => {
+    const details = document.getElementById('dlc-price-balance');
+    if (details instanceof HTMLDetailsElement) details.open = true;
+  }));
+</script>

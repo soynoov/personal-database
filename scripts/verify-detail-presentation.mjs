@@ -75,7 +75,8 @@ try {
   assert.equal(getGameMarketView({...base,precio_pagado:null}).points.some(p=>p.kind==='purchase'),false);
   assert.equal(getGameMarketView({...base,precio_pagado:0}).points[1].value,0);
   const incomplete = getGameValueMetrics({...base,dlcs:{items:fixtures}});
-  assert.equal(incomplete.dataComplete,false); assert.equal(incomplete.economicTargetRealHours,null);
+  assert.equal(incomplete.dataComplete,false); assert.equal(incomplete.economicTargetRealHours,39.99);
+  assert.equal(incomplete.usageProvisional,true);
   const complete = getGameValueMetrics({...base,precio_pagado:100,horas:100,nota:10});
   assert.equal(complete.scoreMultiplier,1.1); assert.equal(complete.economicTargetRealHours,90.91);
   assert.match(getGamePill('status','  COMPLETADO ').className,/badge-status-completed/);

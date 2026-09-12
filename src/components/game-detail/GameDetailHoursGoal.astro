@@ -3,6 +3,7 @@ import '../../styles/game-detail/hours-goal.css';
 import { formatHoursDuration, type GameValueMetrics } from '../../lib/game-finance';
 import { getEconomicHoursGoal } from '../../lib/game-hours-goal';
 import TablerIcon from '../TablerIcon.astro';
+import GamePill from '../GamePill.astro';
 import targetIcon from '@tabler/icons/outline/target-arrow.svg?url';
 import checkIcon from '@tabler/icons/outline/check.svg?url';
 
@@ -22,11 +23,11 @@ const bonusNote = metrics.scoreBonusPercent > 0
 const progressDescription = `${headline}. ${estimated ? 'Horas estimadas' : 'Horas jugadas'}: ${actualLabel}. Meta: ${formatHoursDuration(goal.targetHours)}.`;
 ---
 
-<section class="hours-goal-card" data-hours-goal={goal.state} aria-labelledby="hours-goal-title">
+<section class="hours-goal-card" data-hours-goal={goal.state} data-usage-provisional={goal.provisional} aria-labelledby="hours-goal-title">
   <div class="hours-goal-heading">
     <span class="hours-goal-icon"><TablerIcon src={goal.state === 'achieved' ? checkIcon : targetIcon} /></span>
     <div>
-      <span class="hours-goal-eyebrow">Meta de amortización</span>
+      <div class="hours-goal-label"><span class="hours-goal-eyebrow">Meta de amortización</span>{goal.provisional && <GamePill value="Provisional" />}</div>
       <h3 id="hours-goal-title">{headline}</h3>
     </div>
     {goal.progressPercent !== null && <strong class="hours-goal-percent">{goal.progressPercent}%</strong>}
@@ -45,6 +46,7 @@ const progressDescription = `${headline}. ${estimated ? 'Horas estimadas' : 'Hor
         </div>
       )}
       <p class="hours-goal-note">Meta en horas de juego: 1 € por hora ponderada. {bonusNote}{estimated && ' Progreso orientativo: las horas son estimadas.'}</p>
+      {goal.provisional && <p class="hours-goal-note">Con el gasto conocido; la meta puede cambiar al <a href="#finance-data-notice">completar los importes pendientes</a>.</p>}
     </div>
   )}
 

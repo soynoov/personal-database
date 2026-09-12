@@ -9,9 +9,9 @@
     "sync:steam-capsules": "node scripts/sync-steam-library-capsules.mjs",
     "dev": "astro dev",
     "build": "astro build",
-    "test:finance": "node scripts/verify-game-finance.mjs",
+    "test:finance": "node scripts/verify-game-finance.mjs && node scripts/verify-purchase-balance.mjs",
     "test:catalog": "node scripts/verify-catalog-filters.mjs",
-    "test:detail": "node scripts/verify-game-detail.mjs",
+    "test:detail": "node scripts/verify-game-detail.mjs && node scripts/verify-detail-presentation.mjs",
     "preview": "astro preview"
   },
   "dependencies": {
