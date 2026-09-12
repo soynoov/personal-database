@@ -7534,5 +7534,641 @@
     "precio_salida": null,
     "tags": [],
     "steam_store_name": "Sid Meier's Civilization VII"
+  },
+  {
+    "titulo": "DOOM",
+    "creado_en": "2026-09-12T22:03:16Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 1993,
+    "lanzamiento_nota": "Juego original de 1993 para MS-DOS, no el reinicio de 2016.",
+    "modos": [
+      "solitario",
+      "cooperativo",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://upload.wikimedia.org/wikipedia/en/5/57/Doom_cover_art.jpg",
+    "steam_appid": null,
+    "generos": [
+      "Acción",
+      "FPS"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "id Software"
+    ],
+    "editoras": [
+      "id Software"
+    ],
+    "fuentes_datos": [
+      "https://en.wikipedia.org/wiki/Doom_(1993_video_game)",
+      "https://doom.bethesda.net/en-US/doom_doomii"
+    ]
+  },
+  {
+    "titulo": "Minecraft",
+    "creado_en": "2026-09-12T22:03:16Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2011,
+    "lanzamiento_nota": "Versión completa de 2011; primera versión pública en 2009.",
+    "modos": [
+      "solitario",
+      "cooperativo",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/key-art/About-Minecraft_Featured-Image-0_570x321.jpg",
+    "steam_appid": null,
+    "generos": [
+      "Aventura",
+      "Sandbox",
+      "Supervivencia"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Mojang"
+    ],
+    "editoras": [
+      "Mojang"
+    ],
+    "fuentes_datos": [
+      "https://www.minecraft.net/en-us/about-minecraft"
+    ]
+  },
+  {
+    "titulo": "Clash of Clans",
+    "creado_en": "2026-09-12T22:03:16Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "mobile",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2012,
+    "modos": [
+      "solitario",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://supercell.com/images/4c0ab0c1fb2958e72103f81632fee096/og_clashofclans.f3149338.jpg",
+    "steam_appid": null,
+    "generos": [
+      "Estrategia"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Supercell"
+    ],
+    "editoras": [
+      "Supercell"
+    ],
+    "fuentes_datos": [
+      "https://supercell.com/en/games/clashofclans/",
+      "https://supercell.com/en/news/it-takes-a-village-to-build-clash-of-clans/"
+    ]
+  },
+  {
+    "titulo": "Clash Royale",
+    "creado_en": "2026-09-12T22:03:16Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "mobile",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2016,
+    "modos": [
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://supercell.com/images/8654bffbaa77efb91243d3706b739c25/og_clashroyale.d235f90b.jpg",
+    "steam_appid": null,
+    "generos": [
+      "Estrategia",
+      "Cartas"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Supercell"
+    ],
+    "editoras": [
+      "Supercell"
+    ],
+    "fuentes_datos": [
+      "https://supercell.com/en/games/clashroyale/",
+      "https://supercell.com/en/games/clashroyale/blog/news/clash-royales-2nd-birthday/"
+    ]
+  },
+  {
+    "titulo": "Call of Duty: Black Ops",
+    "creado_en": "2026-09-12T22:03:16Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2010,
+    "modos": [
+      "solitario",
+      "cooperativo",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/42700/header.jpg?t=1780962720",
+    "steam_appid": 42700,
+    "generos": [
+      "Acción",
+      "FPS"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Treyarch"
+    ],
+    "editoras": [
+      "Activision"
+    ],
+    "fuentes_datos": [
+      "https://store.steampowered.com/app/42700/"
+    ]
+  },
+  {
+    "titulo": "Assassin's Creed",
+    "creado_en": "2026-09-12T22:03:16Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PS3 / Xbox 360",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2007,
+    "lanzamiento_nota": "Entrega original de 2007 en consolas; Director's Cut llegó a PC en 2008.",
+    "modos": [
+      "solitario"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/15100/8adfb8878166fc0acbb676d63e8fd355a5422266/capsule_616x353.jpg?t=1788371675",
+    "steam_appid": null,
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Ubisoft Montreal"
+    ],
+    "editoras": [
+      "Ubisoft"
+    ],
+    "fuentes_datos": [
+      "https://montreal.ubisoft.com/en/the-evolution-of-assassins-creed/",
+      "https://news.ubisoft.com/en-ca/article/6ceMaQ0MpYMPeN1mJxXlLF/how-to-play-the-assassins-creed-games-in-order"
+    ]
+  },
+  {
+    "titulo": "Marvel's Spider-Man",
+    "creado_en": "2026-09-12T22:03:16Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PS4",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2018,
+    "lanzamiento_nota": "Lanzamiento original en PS4; no la edición Remastered de PC.",
+    "modos": [
+      "solitario"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://blog.playstation.com/tachyon/2018/09/Sep-7-Marvels-Spider-Man-Launch-Post-featured-image.jpg",
+    "steam_appid": null,
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Insomniac Games"
+    ],
+    "editoras": [
+      "Sony Interactive Entertainment"
+    ],
+    "fuentes_datos": [
+      "https://blog.playstation.com/2018/09/07/marvels-spider-man-swings-into-stores/"
+    ]
+  },
+  {
+    "titulo": "Marvel's Spider-Man: Miles Morales",
+    "creado_en": "2026-09-12T22:03:16Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PS4 / PS5",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2020,
+    "lanzamiento_nota": "Lanzamiento original de 2020 en PlayStation; la versión de PC es posterior.",
+    "modos": [
+      "solitario"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://image.api.playstation.com/vulcan/ap/rnd/202008/1020/T45iRN1bhiWcJUzST6UFGBvO.png",
+    "steam_appid": null,
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Insomniac Games"
+    ],
+    "editoras": [
+      "Sony Interactive Entertainment"
+    ],
+    "fuentes_datos": [
+      "https://www.playstation.com/en-us/games/marvels-spider-man-miles-morales/",
+      "https://blog.playstation.com/2020/11/09/be-a-superstar-super-hero-in-marvels-spider-man-miles-morales/"
+    ]
+  },
+  {
+    "titulo": "Marvel's Spider-Man 2",
+    "creado_en": "2026-09-12T22:03:16Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PS5",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2023,
+    "lanzamiento_nota": "Lanzamiento original de 2023 en PS5; la versión de PC es posterior.",
+    "modos": [
+      "solitario"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://image.api.playstation.com/vulcan/ap/rnd/202306/1219/1c7b75d8ed9271516546560d219ad0b22ee0a263b4537bd8.png",
+    "steam_appid": null,
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Insomniac Games"
+    ],
+    "editoras": [
+      "Sony Interactive Entertainment"
+    ],
+    "fuentes_datos": [
+      "https://www.playstation.com/en-us/games/marvels-spider-man-2/",
+      "https://blog.playstation.com/2023/06/08/marvels-spider-man-2-arrives-only-on-ps5-october-20-collectors-digital-deluxe-editions-detailed/"
+    ]
+  },
+  {
+    "titulo": "Mario Kart World",
+    "creado_en": "2026-09-12T22:03:16Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "Switch 2",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2025,
+    "modos": [
+      "solitario",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/store/software/switch2/70010000095431/0485f410193ca12f92a2f615ea608bb437540f321bd05e464593c33fefa09bf2",
+    "steam_appid": null,
+    "generos": [
+      "Carreras"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Nintendo"
+    ],
+    "editoras": [
+      "Nintendo"
+    ],
+    "fuentes_datos": [
+      "https://www.nintendo.com/us/store/products/mario-kart-world-switch-2/"
+    ]
+  },
+  {
+    "titulo": "Mario Kart 8",
+    "creado_en": "2026-09-12T22:03:16Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "Wii U",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2014,
+    "lanzamiento_nota": "Versión original de Wii U, no Mario Kart 8 Deluxe de Switch.",
+    "modos": [
+      "solitario",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://www.nintendo.com/eu/media/images/10_share_images/games_15/wiiu_14/SI_WiiU_MarioKart8_image1280w.jpg",
+    "steam_appid": null,
+    "generos": [
+      "Carreras"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Nintendo"
+    ],
+    "editoras": [
+      "Nintendo"
+    ],
+    "fuentes_datos": [
+      "https://www.nintendo.com/en-gb/Games/Wii-U-games/Mario-Kart-8-765384.html"
+    ]
+  },
+  {
+    "titulo": "Mario Kart DS",
+    "creado_en": "2026-09-12T22:03:16Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "DS",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2005,
+    "modos": [
+      "solitario",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_ds_22/SI_NDS_MarioKartDS.jpg",
+    "steam_appid": null,
+    "generos": [
+      "Carreras"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Nintendo"
+    ],
+    "editoras": [
+      "Nintendo"
+    ],
+    "fuentes_datos": [
+      "https://www.nintendo.com/en-gb/Games/Nintendo-DS/Mario-Kart-DS-271518.html"
+    ]
+  },
+  {
+    "titulo": "Animal Crossing: New Horizons",
+    "creado_en": "2026-09-12T22:03:16Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "Switch",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2020,
+    "modos": [
+      "solitario",
+      "cooperativo",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_switch_4/H2x1_NSwitch_AnimalCrossingNewHorizons_image1280w.jpg",
+    "steam_appid": null,
+    "generos": [
+      "Simulación"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Nintendo"
+    ],
+    "editoras": [
+      "Nintendo"
+    ],
+    "fuentes_datos": [
+      "https://www.nintendo.com/en-gb/Games/Nintendo-Switch-games/Animal-Crossing-New-Horizons-1438623.html"
+    ]
+  },
+  {
+    "titulo": "Animal Crossing: Wild World",
+    "creado_en": "2026-09-12T22:03:16Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "DS",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2005,
+    "lanzamiento_nota": "Estreno original en Japón en 2005; llegó a Europa en 2006.",
+    "modos": [
+      "solitario",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_ds_22/SI_NDS_AnimalCrossingWildWorld.jpg",
+    "steam_appid": null,
+    "generos": [
+      "Simulación"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Nintendo"
+    ],
+    "editoras": [
+      "Nintendo"
+    ],
+    "fuentes_datos": [
+      "https://www.nintendo.com/en-gb/Games/Nintendo-DS/Animal-Crossing-Wild-World-270011.html",
+      "https://www.nintendo.co.jp/ds/admj/index.html"
+    ]
+  },
+  {
+    "titulo": "Pokémon Espada",
+    "creado_en": "2026-09-12T22:03:16Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "Switch",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2019,
+    "modos": [
+      "solitario",
+      "cooperativo",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_switch_4/H2x1_NSwitch_PokemonSword_esES_image1280w.jpg",
+    "steam_appid": null,
+    "generos": [
+      "Rol",
+      "Aventura"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "GAME FREAK"
+    ],
+    "editoras": [
+      "Nintendo"
+    ],
+    "fuentes_datos": [
+      "https://www.nintendo.com/es-es/Juegos/Juegos-de-Nintendo-Switch/Pokemon-Espada-1522111.html",
+      "https://www.nintendo.com/ph/switch/sword_shield/index.html"
+    ]
+  },
+  {
+    "titulo": "Pokémon Escarlata",
+    "creado_en": "2026-09-12T22:03:16Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "Switch",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2022,
+    "modos": [
+      "solitario",
+      "cooperativo",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_switch_4/2x1_NSwitch_PokemonScarletViolet_Scarlet_esES_image1280w.jpg",
+    "steam_appid": null,
+    "generos": [
+      "Rol",
+      "Aventura"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "GAME FREAK"
+    ],
+    "editoras": [
+      "Nintendo"
+    ],
+    "fuentes_datos": [
+      "https://www.nintendo.com/es-es/Juegos/Juegos-de-Nintendo-Switch/Pokemon-Escarlata-2179556.html"
+    ]
   }
 ]

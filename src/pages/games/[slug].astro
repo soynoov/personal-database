@@ -166,7 +166,7 @@ const metadataGroups = [
       { label: 'Géneros', value: genres, state: genres === '-' ? 'empty' as const : 'default' as const },
       { label: 'Etiquetas', value: tagsLabel === 'Sin etiquetas' ? '-' : tagsLabel, values: tagBadges.map(tag => tag.value), state: tagsLabel === 'Sin etiquetas' ? 'empty' as const : 'default' as const },
       { label: 'Modos', value: modesLabel, values: gameModes.map(getGameModeLabel), className: 'detail-item-modes', state: modesLabel === 'Sin registrar' ? 'empty' as const : 'default' as const },
-      { label: 'Lanzamiento', value: formatValue(game.lanzamiento), state: game.lanzamiento ? 'default' as const : 'empty' as const },
+      { label: 'Lanzamiento', value: formatValue(game.lanzamiento), className: 'detail-item-release', note: game.lanzamiento_nota ?? '', state: game.lanzamiento ? 'default' as const : 'empty' as const },
     ],
   },
   {
@@ -245,6 +245,7 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
     {isCompetitive && <GameDetailCompetitive slug={slug} peakRank={game.rango_maximo ?? null} />}
     <GameDetailStats
       slug={slug}
+      credits={game}
       metadataGroups={metadataGroups}
       systemItems={systemItems}
       isSteam={isSteam}

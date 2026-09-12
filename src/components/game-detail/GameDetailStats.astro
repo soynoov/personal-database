@@ -4,6 +4,7 @@ import '../../styles/game-detail/edit.css';
 import FormCheckbox from '../FormCheckbox.astro';
 import GamePill from '../GamePill.astro';
 import GameCredits from './GameCredits.astro';
+import type { GameCreditMetadata } from '../../lib/game-credits';
 import TablerIcon from '../TablerIcon.astro';
 import { GAME_MODES } from '../../lib/game-modes';
 import { PUBLIC_GAME_TAGS } from '../../lib/game-tags';
@@ -20,6 +21,7 @@ import chevronDownIcon from '@tabler/icons/outline/chevron-down.svg?url';
 
 interface Props {
   slug: string;
+  credits: GameCreditMetadata;
   metadataGroups: DetailGroup[];
   systemItems: DetailItem[];
   isSteam: boolean;
@@ -38,7 +40,7 @@ interface Props {
   };
 }
 
-const { slug, metadataGroups, systemItems, isSteam, editValues } = Astro.props;
+const { slug, credits, metadataGroups, systemItems, isSteam, editValues } = Astro.props;
 const groupIcons: Record<string, string> = {
   Progreso: trophyIcon,
   'Datos del juego': categoryIcon,
@@ -107,7 +109,7 @@ const progressIcons: Record<ProgressKind, string> = {
                 )}
               </div>
             ))}
-            {group.className === 'data-group-catalog' && <GameCredits slug={slug} appId={editValues.steam_appid} />}
+            {group.className === 'data-group-catalog' && <GameCredits slug={slug} game={credits} />}
           </dl>
           {groupState === 'empty' && group.className === 'data-group-progress' && (
             <button class="detail-empty-action" type="button" data-detail-edit>Registrar mi progreso</button>

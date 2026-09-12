@@ -63,6 +63,12 @@ export type LocalGame = {
   critica?: GameCritique | null;
   comentarios?: string | null;
   lanzamiento?: number | null;
+  /** Contexto del lanzamiento original, sin confundirlo con ports o reediciones. */
+  lanzamiento_nota?: string | null;
+  desarrolladoras?: string[] | null;
+  editoras?: string[] | null;
+  /** Referencias públicas para los metadatos registrados, no datos de la compra personal. */
+  fuentes_datos?: string[] | null;
   modos?: string[] | null;
   solo?: boolean | null;
   cover_source?: string | null;
