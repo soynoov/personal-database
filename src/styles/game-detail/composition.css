@@ -1,0 +1,85 @@
+@import '../theme.css';
+
+/* One rhythm for first-level panels, independent of their legacy wrappers.
+   Internal cells keep the brand's 16/8px nesting; content determines height. */
+@layer brand {
+  .app-shell .brand-page.game-page-rich { gap: var(--detail-section-gap); }
+  .game-page-rich .hero-analysis-grid { gap: var(--detail-section-gap); }
+  .game-page-rich > :is(.game-page-section, .game-metacritic, .detail-comments) { margin-block: 0; }
+  .game-page-rich :is(#game-header, .game-sections-nav-shell, #hours, #finance-data-notice, #finance, #technical, #competitive, #dlcs, #metacritica, #comentario) {
+    border-radius: var(--detail-section-radius);
+    scroll-margin-top: calc(var(--app-header-height) + 62px + var(--detail-section-gap));
+  }
+  .game-page-rich :is(#hours, #finance, #technical, #competitive, #dlcs, #metacritica, #comentario) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    min-height: 0;
+    gap: var(--detail-bento-gap);
+    padding: var(--space-6);
+  }
+  .game-page-rich :is(#hours, #finance, #technical, #competitive, #dlcs, #metacritica, #comentario) > :is(.section-title-row, .game-metacritic-head, .detail-comments-head) {
+    align-items: flex-start;
+    margin: 0;
+  }
+  .game-page-rich :is(.section-title-row, .game-metacritic-head, .detail-comments-head) .game-edit-trigger {
+    flex: 0 0 var(--control-height);
+    width: var(--control-height); height: var(--control-height);
+    min-width: var(--control-height); min-height: var(--control-height);
+    padding: 0;
+  }
+  .game-page-rich :is(.section-title-row, .game-metacritic-head, .detail-comments-head) .game-edit-trigger .tabler-icon { width: 16px; height: 16px; }
+
+  /* Keep the poster intact, with less padding and no artificial banner height. */
+  .game-page-rich .game-overview-card.game-overview-card-cinematic {
+    min-height: 0; padding: var(--space-6); column-gap: var(--space-6);
+    grid-template-columns: 112px minmax(0, 1fr);
+  }
+  .game-page-rich .game-overview-card.game-overview-card-cinematic .game-overview-media { width: 100%; }
+
+  .game-page-rich #hours .value-kpi { min-height: 112px; padding: var(--space-4); gap: var(--space-3); }
+  .game-page-rich #hours .hours-info-card { min-height: 64px; padding: var(--space-3); }
+  .game-page-rich #hours .hours-goal-card { padding: var(--space-4); gap: var(--space-3); }
+  .game-page-rich #hours .hours-breakdown-grid > div { padding: var(--space-3); }
+  .game-page-rich #hours .hours-goal-measure { gap: var(--space-2); }
+  .game-page-rich #hours .hours-goal-track { height: var(--space-3); }
+  .game-page-rich #hours .usage-breakdown > summary { padding: var(--space-3) var(--space-4); }
+  .game-page-rich .usage-metrics-grid > .metric-card { min-height: 0; gap: var(--space-2); border-radius: var(--radius-3); }
+
+  /* Compress supporting metadata, retaining visible bento groups and progress. */
+  .game-page-rich #technical .data-group-card { padding: var(--space-3); }
+  .game-page-rich #technical .data-group-head { margin-bottom: var(--space-3); }
+  .game-page-rich #technical .data-group-card .detail-item {
+    min-height: 64px; padding: var(--space-3); border-radius: var(--radius-3);
+  }
+  .game-page-rich #technical .data-group-progress .data-group-grid { grid-template-rows: auto auto; }
+  .game-page-rich #technical .data-group-progress .progress-card-achievements { min-height: 120px; }
+  .game-page-rich #technical .progress-card-achievements .detail-item-value { font-size: var(--type-metric); }
+  .game-page-rich #technical .data-group-progress .detail-item-empty { min-height: 64px; }
+  .game-page-rich #technical .system-data-details > summary { min-height: 56px; padding: var(--space-2) var(--space-4); }
+  .game-page-rich #metacritica .metacritic-score-grid .metacritic-score-card { min-height: 0; padding: var(--space-4); }
+  .game-page-rich #competitive .competitive-rank-card {
+    min-height: 0; padding: var(--space-4); gap: var(--space-3);
+    flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  }
+  .game-page-rich #competitive .competitive-rank-card strong { font-size: var(--type-section); }
+  .game-page-rich #comentario .detail-comments-text { min-height: 0; margin: 0; }
+  .game-page-rich #comentario.detail-comments-empty .detail-comments-text { padding: 0; border: 0; background: transparent; }
+
+  @media (min-width: 1101px) {
+    .game-page-rich #hours .hours-priority-grid[data-hltb='false'] .value-kpi-primary { grid-column: span 6; grid-row: auto; }
+    .game-page-rich #hours .hours-priority-grid[data-hltb='false'] .hours-info-card { grid-column: span 2; }
+    .game-page-rich #hours .hours-priority-grid[data-hltb='false'][data-recurring='true'] .hours-info-card { grid-column: span 3; }
+  }
+  @media (min-width: 601px) and (max-width: 1100px) {
+    .game-page-rich #hours .hours-priority-grid[data-hltb='false'] .value-kpi-primary { grid-column: 1 / -1; grid-row: auto; }
+    .game-page-rich #hours .hours-priority-grid[data-hltb='false'] .hours-info-card { grid-column: span 4; }
+    .game-page-rich #hours .hours-priority-grid[data-hltb='false'][data-recurring='true'] .hours-info-card { grid-column: span 6; }
+  }
+  @media (max-width: 700px) {
+    .game-page-rich :is(#hours, #finance, #technical, #competitive, #dlcs, #metacritica, #comentario, #finance-data-notice) { padding: var(--space-4); }
+    .game-page-rich .game-overview-card.game-overview-card-cinematic { grid-template-columns: 88px minmax(0, 1fr); padding: var(--space-4); gap: var(--space-4); }
+    .game-page-rich #technical .data-group-progress .detail-item { padding-top: var(--space-12); }
+    .game-page-rich #technical .data-group-progress .progress-card-achievements { padding-top: var(--space-4); }
+  }
+}

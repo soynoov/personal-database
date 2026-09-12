@@ -12,7 +12,7 @@ const costLabel = metrics.costPerRealHour === null ? 'Sin calcular' : `${formatE
   <summary><TablerIcon src={chevronIcon} /><span>Cómo se calcula la amortización</span><strong>{costLabel}</strong></summary>
   <div class="usage-breakdown-content">
     <div class="usage-metrics-grid">
-      <MetricCard label="Gasto conocido" value={formatEuro(metrics.recordedSpend)} context={metrics.usageProvisional ? 'Provisional · faltan importes' : 'Todos los importes registrados'} />
+      <MetricCard label="Gasto conocido total" value={formatEuro(metrics.recordedSpend)} context={`Juego + DLC + micropagos${metrics.usageProvisional ? ' · Provisional' : ''}`} />
       <MetricCard label="Coste por hora real" value={costLabel} context={metrics.realHours === null || metrics.realHours === 0 ? 'Necesita horas mayores que cero' : 'Gasto conocido ÷ horas jugadas'} />
       <MetricCard label="Uso frente a la meta" value={metrics.economicMultiple === null ? 'No calculable' : `${metrics.economicMultiple.toLocaleString('es-ES', { maximumFractionDigits: 2 })}×`} context="Horas ponderadas ÷ gasto conocido" />
     </div>

@@ -204,6 +204,8 @@
   --detail-bento-emphasis: color-mix(in srgb, var(--detail-bento-card) 94%, var(--theme-purple));
   --detail-bento-line: color-mix(in srgb, var(--theme-white) 12%, transparent);
   --detail-bento-gap: 0.75rem;
+  --detail-section-gap: var(--space-4);
+  --detail-section-radius: var(--radius-1);
   --detail-golden-line: color-mix(in srgb, var(--card-foil-gold) 42%, transparent);
   --detail-golden-surface: color-mix(in srgb, var(--detail-bento-surface) 82%, transparent);
   --detail-golden-opacity: 0.82;

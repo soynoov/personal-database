@@ -72,6 +72,26 @@ Esta revisión sustituye las primeras propuestas de Dinero que reunían amortiza
 
 Validación local: escritorio `1440 × 1024`, tablet `820 × 1180`, móvil `390 × 844` y ultrawide `3440 × 1440`; detalle de resultados e iteraciones en [design-qa.md](design-qa.md).
 
+### Revisión de densidad y geometría de la ficha · 12 de septiembre de 2026
+
+- Todas las superficies de primer nivel —banner, navegación de secciones, Horas, aviso económico, Dinero, Rango, Detalles, DLC, Valoración y Comentario— comparten `--detail-section-radius` (`--radius-1`, 32 px).
+- `--detail-section-gap` (`--space-4`, 16 px) es la única separación entre ellas. El contenedor general y el grupo Horas/Dinero usan el mismo gap; las secciones no añaden márgenes propios. Las celdas mantienen 12 px de separación y radios anidados 16/8 px.
+- Se conserva el padding exterior de 24 px en escritorio y se unifica a 16 px hasta 700 px. Las cabeceras dejan de acumular margen inferior y gap; los botones siguen teniendo un área pulsable de 44 × 44 px.
+- Horas sin HLTB presenta la cifra y sus fechas en una fila cuando hay espacio. Las alturas dependen del contenido; la fórmula ya disponible en el desplegable no se repite junto a la barra. Portada, progreso, notas, rango y métricas secundarias reducen espacio sobrante sin ocultar sus datos.
+- «Pagué» pasa a **«Pagado comparable»**, con «Solo compras con ambos precios». Cuando no coincide con el gasto total conocido, una línea junto al resumen explica los sumandos: compras comparables + compras pagadas sin referencia actual + micropagos. Los importes desconocidos siguen sin representar cero.
+- En Horas se identifica **«Gasto conocido total»** como juego + DLC + micropagos. Para DBD: `114,49 € comparables + 5,00 € de micropagos = 119,49 € conocidos`. No se cambian las fórmulas de balance/amortización, el catálogo, las APIs, el almacenamiento ni el fondo Golden.
+
+Medición sobre el mismo DBD local y viewport, con desplegables cerrados:
+
+| Ancho | Altura antes → después | Reducción |
+|---|---|---|
+| 1440 px | 4129 → 3626 px | 12,2% |
+| 820 px | 5155 → 4638 px | 10,0% |
+| 390 px | 6270 → 5894 px | 6,0% |
+| 3440 px | 4027 → 3524 px | 12,5% |
+
+La cifra no promete una reducción idéntica para todos los juegos: la composición se adapta a datos, horas, HLTB, estados vacíos, Golden y secciones opcionales. Auditoría visual, pruebas de geometría y límites de verificación: [design-qa.md](design-qa.md).
+
 ## 1. Veredicto ejecutivo
 
 NooVDB ya tiene una identidad reconocible —lienzo oscuro, blanco cálido, violeta y tipografía condensada—, pero no funciona todavía como un sistema único. La desviación principal no es estética: cada ruta recompone por su cuenta el shell, la cabecera, los paneles, los radios, los breakpoints y parte de la paleta. El resultado se percibe como varias interfaces compatibles, no como una sola aplicación.

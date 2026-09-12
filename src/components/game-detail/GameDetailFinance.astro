@@ -8,6 +8,7 @@ import PurchaseBalance from './PurchaseBalance.astro';
 import MetricCard from '../MetricCard.astro';
 import type { GameMarketView } from '../../lib/game-market-view';
 import { formatEuro, type GameValueMetrics } from '../../lib/game-finance';
+import { getGameSpendScope } from '../../lib/game-spend-scope';
 import { getPurchaseStoreOptions, normalizePurchaseStores } from '../../lib/purchase-stores';
 import FormCheckbox from '../FormCheckbox.astro';
 import TablerIcon from '../TablerIcon.astro';
@@ -32,6 +33,7 @@ const isFreeToPlay = metrics.isFreeToPlay;
 const purchaseStoreOptions = getPurchaseStoreOptions(editValues.plataforma);
 const selectedPurchaseStore = normalizePurchaseStores(editValues.tiendas_compra)[0] ?? '';
 const { purchaseBalance: purchases } = market;
+const spendScope = getGameSpendScope(metrics, market);
 ---
 
 <GameDetailFinanceNotice {market} />
@@ -46,18 +48,23 @@ const { purchaseBalance: purchases } = market;
   <div class="purchase-overview" data-purchase-state={purchases.balance.state} data-purchase-partial={purchases.partial}>
     <PurchaseBalance label="Balance de compra" balance={purchases.balance} partial={purchases.partial} />
     {purchases.paidTotal !== null && <>
-      <MetricCard label="Pagué" value={formatEuro(purchases.paidTotal)} context="Por lo comparable" />
+      <MetricCard label="Pagado comparable" value={formatEuro(purchases.paidTotal)} context="Solo compras con ambos precios" />
       <MetricCard label="Precio de referencia" value={formatEuro(purchases.currentTotal)} context="Los mismos productos" />
     </>}
   </div>
   <p class="purchase-scope">{purchases.cohortLabel} · últimos precios registrados</p>
+  {spendScope.differs && <p class="purchase-footnote" data-spend-reconciliation>
+    <TablerIcon src={infoIcon} />
+    <span>
+      Gasto conocido total: <strong>{formatEuro(spendScope.total)}</strong> =
+      {spendScope.comparable !== null && <> {formatEuro(spendScope.comparable)} comparables</>}
+      {spendScope.unpaired > 0 && <> {spendScope.comparable !== null && '+ '}{formatEuro(spendScope.unpaired)} en compras sin precio de referencia</>}
+      {spendScope.microtransactions > 0 && <> {(spendScope.comparable !== null || spendScope.unpaired > 0) && '+ '}{formatEuro(spendScope.microtransactions)} en micropagos</>}.
+      {' '}Se usa para <a href="#hours">amortizar en Horas</a>{spendScope.provisional && ' (provisional)'}.
+    </span>
+  </p>}
 
   <GameDetailMarket {slug} {market} purchasedUnits={metrics.purchasedUnits} />
-
-  {metrics.microtransactionSpend > 0 && <p class="purchase-footnote">
-    <TablerIcon src={infoIcon} />
-    <span>Micropagos: {formatEuro(metrics.microtransactionSpend)} incluidos en <a href="#hours">Horas</a>, fuera de esta comparación.</span>
-  </p>}
 </article>
 
 <dialog class="edit-dialog" id="money-edit-dialog">

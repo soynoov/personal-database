@@ -17,9 +17,6 @@ const headline = goal.state === 'achieved' ? 'Meta alcanzada'
   : 'Falta completar el gasto';
 const actualLabel = goal.actualHours === null ? 'Sin registrar'
   : `${estimated ? '≈' : ''}${formatHoursDuration(goal.actualHours)}`;
-const bonusNote = metrics.scoreBonusPercent > 0
-  ? `Bonus My Score +${metrics.scoreBonusPercent.toLocaleString('es-ES')}% aplicado a la meta.`
-  : 'Sin bonus de nota.';
 const progressDescription = `${headline}. ${estimated ? 'Horas estimadas' : 'Horas jugadas'}: ${actualLabel}. Meta: ${formatHoursDuration(goal.targetHours)}.`;
 ---
 
@@ -45,7 +42,7 @@ const progressDescription = `${headline}. ${estimated ? 'Horas estimadas' : 'Hor
           <span style={`--hours-goal-progress:${goal.progressPercent}%`}></span>
         </div>
       )}
-      <p class="hours-goal-note">Meta en horas de juego: 1 € por hora ponderada. {bonusNote}{estimated && ' Progreso orientativo: las horas son estimadas.'}</p>
+      {estimated && <p class="hours-goal-note">Progreso orientativo: las horas son estimadas.</p>}
       {goal.provisional && <p class="hours-goal-note">Con el gasto conocido; la meta puede cambiar al <a href="#finance-data-notice">completar los importes pendientes</a>.</p>}
     </div>
   )}

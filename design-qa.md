@@ -4,6 +4,27 @@
 
 final result: passed
 
+## Revisión 2026-09-12 · densidad, espacios y alcance económico
+
+Auditoría acotada de la ficha y corrección sobre sus componentes reales. Capturas nuevas de esta ejecución, no reutilizadas de auditorías anteriores. Las comparaciones usan el mismo juego, viewport y desplegables cerrados. No es una auditoría formal de conformidad WCAG.
+
+1. **Geometría — corregida.** Antes: huecos de 16/24/40/43,2 px y nav de radio 16 px frente a secciones de 32 px. Después: 16 px entre cada superficie de primer nivel y radio común de 32 px. Evidencia: `.codex-qa/density-before-top-1440.png`, `.codex-qa/density-final-top-1440.png` y mediciones `density-verification.json`.
+2. **Horas — compactadas.** El panel de DBD pasa de 659,16 a 493,97 px en escritorio. Se conservan cifra, fechas, estado provisional, barra y editor; la explicación completa permanece plegada. Evidencia: `density-before-hours-1440.png`, `density-final-hours-1440.png`, `density-final-hours-390.png`, `density-usage-1440.png`.
+3. **Dinero — aclarado.** La comparación de productos estaba rotulada simplemente «Pagué». Se identifica como «Pagado comparable» y se explica la diferencia con el gasto de uso al lado del resumen. DBD: 114,49 + 5 = 119,49 €. Las referencias actuales locales difieren de las de producción; no se cambió ninguna. Gráfica de compra y DLC plegados conservados. Evidencia: `density-before-finance-1440.png`, `density-final-finance-1440.png`, `density-final-finance-390.png`.
+4. **Detalles y apoyos — compactados.** Menos altura mínima, padding anidado y huecos dobles; radios de celdas 16/8 px. Se conservan logros, cromos, modos, catalogación, copia, información técnica y editores. Portada completa más pequeña; rango y valoración sin altura fija; comentario vacío sin otra caja interior. Evidencia: `density-before-technical-1440.png`, `density-final-technical-1440.png`, `density-final-technical-390.png` y capturas de variantes `density-*.png`.
+
+Todas las rutas de evidencia citadas se encuentran en `.codex-qa/` (recursos locales de QA, no assets de producción). Informe de captura: `density-final-report.json`. Reproductor: `density-capture.mjs`; comprobaciones de interacción: `density-verify.mjs`.
+
+Validaciones:
+
+- DBD en 1440, 820, 390 y 3440 px; Marvel Rivals, Friday the 13th, Blasphemous 2 y Far Cry 3 en 1440/390 px: 12 casos sin desbordamiento horizontal ni errores de JavaScript.
+- Todos los radios exteriores son 32 px y todos los huecos entre secciones son exactamente 16 px, también con secciones opcionales ausentes.
+- Desplegables de amortización, DLC e información técnica abren con Enter y cierran con Espacio. Navegación activa y títulos visibles por debajo del nav sticky. Editores de Horas, Dinero, Detalles y Comentario abiertos y cancelados; ninguna escritura de datos enviada.
+- `npm run test:finance`, `npm run test:detail`, `npm run test:catalog` y `npm run build`: correctos. Casos nuevos: diferencia por micropagos, gasto sin referencia actual, varias copias, coste cero, horas ausentes y free-to-play.
+- La auditoría preserva tipografía, color, bento y fondo Golden. Los controles editables mantienen 44 × 44 px. Contraste formal y prueba con lector de pantalla no forman parte de esta revisión.
+
+Resultado de la revisión de densidad: **correcto en local**.
+
 Sin hallazgos P0/P1/P2 pendientes en el alcance implementado. Product Design guió la comparación con la composición elegida; los componentes y tokens operativos prevalecen sobre las medidas o fuentes aproximadas de la imagen. No se modifica el fondo Golden.
 
 ### Fuente, estado y normalización

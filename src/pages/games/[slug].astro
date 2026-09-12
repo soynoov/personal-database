@@ -32,6 +32,7 @@ import '../../styles/game-detail/hero-reference.css';
 import '../../styles/game-detail/flat-blocks.css';
 import '../../styles/game-detail/progress.css';
 import '../../styles/game-detail/brand.css';
+import '../../styles/game-detail/composition.css';
 
 const game = findGameBySlug(await readGames(), Astro.params.slug ?? '');
 if (!game) return Astro.redirect('/');

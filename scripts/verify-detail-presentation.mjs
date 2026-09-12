@@ -8,6 +8,7 @@ try {
   const { applyManualDlcPatch } = await server.ssrLoadModule('/src/lib/manual-dlc-edit.ts');
   const { getGamePill } = await server.ssrLoadModule('/src/lib/game-pill.ts');
   const { getGameValueMetrics } = await server.ssrLoadModule('/src/lib/game-finance.ts');
+  const { getGameSpendScope } = await server.ssrLoadModule('/src/lib/game-spend-scope.ts');
   const fixtures = [
     { titulo: 'Known', precio_pagado: 10, precio_actual: 5 },
     { titulo: 'Free', precio_pagado: 0, precio_actual: 3 },
@@ -79,6 +80,21 @@ try {
   assert.equal(incomplete.usageProvisional,true);
   const complete = getGameValueMetrics({...base,precio_pagado:100,horas:100,nota:10});
   assert.equal(complete.scoreMultiplier,1.1); assert.equal(complete.economicTargetRealHours,90.91);
+  // Explain why purchase comparison and amortization may use different totals.
+  const spendScope = game => getGameSpendScope(getGameValueMetrics(game), getGameMarketView(game));
+  const scopeBase = { ...base, precio_pagado: 9.99, precio_actual: 19.99, gasto_microtransacciones: 5,
+    dlcs: { items: [{ titulo: 'DLC conocidos', precio_pagado: 104.5, precio_actual: 69.92 },
+      { titulo: 'Pendiente', fecha_adquisicion: '2020-01-01', precio_pagado: null, precio_actual: 3 }] } };
+  assert.deepEqual(spendScope(scopeBase), { total: 119.49, comparable: 114.49, unpaired: 0, microtransactions: 5, differs: true, provisional: true });
+  assert.deepEqual(spendScope({ ...base, precio_pagado: 10, precio_actual: null, gasto_microtransacciones: 0 }),
+    { total: 10, comparable: null, unpaired: 10, microtransactions: 0, differs: true, provisional: false });
+  const missingReference = spendScope({ ...scopeBase, unidades_compradas: 2, dlcs: { items: [{ titulo: 'Sin referencia', precio_pagado: 20, precio_actual: null }] } });
+  assert.equal(missingReference.comparable, 19.98); assert.equal(missingReference.unpaired, 20); assert.equal(missingReference.total, 44.98);
+  assert.equal(spendScope({ ...base, precio_pagado: 0, precio_actual: 10, gasto_microtransacciones: 0 }).differs, false);
+  assert.equal(spendScope({ ...base, precio_pagado: null, precio_actual: null }).comparable, null);
+  assert.equal(spendScope({ ...scopeBase, horas: null }).total, 119.49);
+  const freeWithMicro = spendScope({ ...base, tags: ['free-to-play'], precio_pagado: null, gasto_microtransacciones: 5 });
+  assert.equal(freeWithMicro.comparable, null); assert.equal(freeWithMicro.unpaired, 0); assert.equal(freeWithMicro.total, 5);
   assert.match(getGamePill('status','  COMPLETADO ').className,/badge-status-completed/);
   assert.match(getGamePill('tag','free to play').className,/badge-tag-free/);
   assert.equal(getGamePill('tag','free-to-play').label,'Free to Play');
