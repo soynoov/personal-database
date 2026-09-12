@@ -1,0 +1,61 @@
+---
+import { isSteamAppId } from '../../lib/steam-game-credits';
+
+interface Props { slug: string; appId: number | null; }
+const { slug, appId } = Astro.props;
+const hasSource = isSteamAppId(appId);
+const fields = [
+  { key: 'developers', label: 'Desarrolladora' },
+  { key: 'publishers', label: 'Editora / distribuidora' },
+];
+---
+
+{fields.map(({ key, label }) => (
+  <div class="detail-item compact-detail-card game-credit" data-state="empty">
+    <dt>{label}</dt>
+    <dd class="detail-item-value" data-game-credit={key} data-credits-slug={hasSource ? slug : undefined} aria-live="polite">No disponible</dd>
+    {key === 'publishers' && hasSource && (
+      <dd class="detail-item-note"><a href={`https://store.steampowered.com/app/${appId}/`} target="_blank" rel="noopener noreferrer">Fuente: ficha actual de Steam</a></dd>
+    )}
+  </div>
+))}
+
+<script>
+  const fields = Array.from(document.querySelectorAll<HTMLElement>('[data-game-credit][data-credits-slug]'));
+  const group = fields[0]?.closest<HTMLElement>('article');
+  let requested = false;
+
+  async function loadCredits() {
+    if (requested || !fields.length) return;
+    requested = true;
+    fields.forEach(field => { field.textContent = 'Consultando Steam…'; field.setAttribute('aria-busy', 'true'); });
+    try {
+      const response = await fetch(`/api/games/${encodeURIComponent(fields[0].dataset.creditsSlug ?? '')}/info`, {
+        signal: AbortSignal.timeout(8000),
+      });
+      if (!response.ok) throw new Error('Credits unavailable');
+      const data = await response.json();
+      fields.forEach(field => {
+        const value: unknown = data[field.dataset.gameCredit ?? ''];
+        const names = Array.isArray(value) ? value.filter((name): name is string => typeof name === 'string' && Boolean(name.trim())) : [];
+        field.textContent = names.join(' · ') || 'No disponible';
+        if (names.length && field.parentElement) field.parentElement.dataset.state = 'default';
+      });
+    } catch {
+      fields.forEach(field => { field.textContent = 'No disponible'; });
+    } finally {
+      fields.forEach(field => field.removeAttribute('aria-busy'));
+    }
+  }
+
+  if (group) {
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(entries => {
+        if (entries.some(entry => entry.isIntersecting)) { observer.disconnect(); void loadCredits(); }
+      }, { rootMargin: '200px' });
+      observer.observe(group);
+    } else {
+      void loadCredits();
+    }
+  }
+</script>

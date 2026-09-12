@@ -3,6 +3,7 @@ import '../../styles/game-detail/stats.css';
 import '../../styles/game-detail/edit.css';
 import FormCheckbox from '../FormCheckbox.astro';
 import GamePill from '../GamePill.astro';
+import GameCredits from './GameCredits.astro';
 import TablerIcon from '../TablerIcon.astro';
 import { GAME_MODES } from '../../lib/game-modes';
 import { PUBLIC_GAME_TAGS } from '../../lib/game-tags';
@@ -40,7 +41,7 @@ interface Props {
 const { slug, metadataGroups, systemItems, isSteam, editValues } = Astro.props;
 const groupIcons: Record<string, string> = {
   Progreso: trophyIcon,
-  'Catalogación': categoryIcon,
+  'Datos del juego': categoryIcon,
   'Mi copia': copyIcon,
 };
 const progressIcons: Record<ProgressKind, string> = {
@@ -63,7 +64,13 @@ const progressIcons: Record<ProgressKind, string> = {
       const { visibleItems, state: groupState } = getDetailGroupLayout(group.items);
       if (groupState === 'not-applicable') return null;
       return (
-        <article class:list={["data-group-card", group.className]} data-state={groupState}>
+        <article
+          class:list={["data-group-card", group.className]}
+          data-state={groupState}
+          id={group.className === 'data-group-catalog' ? 'game-info' : undefined}
+          tabindex={group.className === 'data-group-catalog' ? '-1' : undefined}
+          aria-label={group.title}
+        >
           <div class="data-group-head">
             <span class="data-group-icon"><TablerIcon src={groupIcons[group.title] ?? settingsIcon} /></span>
             <h3>{group.title}</h3>
@@ -100,6 +107,7 @@ const progressIcons: Record<ProgressKind, string> = {
                 )}
               </div>
             ))}
+            {group.className === 'data-group-catalog' && <GameCredits slug={slug} appId={editValues.steam_appid} />}
           </dl>
           {groupState === 'empty' && group.className === 'data-group-progress' && (
             <button class="detail-empty-action" type="button" data-detail-edit>Registrar mi progreso</button>

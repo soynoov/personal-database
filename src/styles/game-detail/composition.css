@@ -49,6 +49,16 @@
   /* Compress supporting metadata, retaining visible bento groups and progress. */
   .game-page-rich #technical .data-group-card { padding: var(--space-3); }
   .game-page-rich #technical .data-group-head { margin-bottom: var(--space-3); }
+  .game-page-rich #game-info {
+    scroll-margin-top: calc(var(--app-header-height) + 62px + var(--detail-section-gap));
+  }
+  .game-page-rich #game-info:focus-visible { outline: 2px solid var(--theme-purple); outline-offset: 3px; }
+  .game-page-rich #game-info .data-group-grid .detail-item { grid-column: auto; }
+  .game-page-rich #game-info .game-credit { overflow-wrap: anywhere; }
+  .game-page-rich #game-info .game-credit :is(.detail-item-value, .detail-item-note) {
+    display: block; -webkit-line-clamp: unset; white-space: normal; overflow: visible; text-overflow: clip;
+  }
+  .game-page-rich #game-info .game-credit .detail-item-note a { color: var(--theme-purple); }
   .game-page-rich #technical .data-group-card .detail-item {
     min-height: 64px; padding: var(--space-3); border-radius: var(--radius-3);
   }

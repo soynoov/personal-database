@@ -5,6 +5,7 @@ import TablerIcon from '../../components/TablerIcon.astro';
 import chevronDownIcon from '@tabler/icons/outline/chevron-down.svg?url';
 import circleMinusIcon from '@tabler/icons/outline/circle-minus.svg?url';
 import clockIcon from '@tabler/icons/outline/clock.svg?url';
+import calendarIcon from '@tabler/icons/outline/calendar.svg?url';
 import diceIcon from '@tabler/icons/outline/dice-5.svg?url';
 import gamepadIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
 import infoCircleIcon from '@tabler/icons/outline/info-circle.svg?url';
@@ -170,6 +171,10 @@ const defaultSlugs = rouletteGames
           <span class='roulette-kicker'>Resultado</span>
           <h2 id='roulette-result-title'>La ruleta ha elegido</h2>
           <h3 id='roulette-winner-title'></h3>
+          <p class='roulette-winner-release'>
+            <TablerIcon src={calendarIcon} />
+            <span id='roulette-winner-year'></span>
+          </p>
         </div>
 
         <div class='roulette-winner'>

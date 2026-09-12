@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "test:reviews": "node scripts/verify-reviews.mjs",
+    "test:roulette": "node scripts/verify-roulette.mjs",
     "migrate:reviews": "node scripts/migrate-reviews-v2.mjs",
     "sync:games": "node scripts/sync-games.mjs --apply",
     "sync:games:check": "node scripts/sync-games.mjs",

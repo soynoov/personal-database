@@ -36,6 +36,12 @@
   .roulette-result-heading h2 { color: var(--muted); font: 600 var(--type-ui)/1.5 var(--font-body); }
   .roulette-result-heading h3 { font: 400 clamp(2rem, 4vw, 4rem)/1.1 var(--font-display); color: var(--text); -webkit-text-stroke: 0; text-shadow: none; }
   .roulette-winner { width: 100%; max-width: 780px; }
+  .roulette-winner-release {
+    display: flex; align-items: center; gap: var(--space-2);
+    margin: var(--space-3) 0 0; color: var(--muted);
+    font-size: var(--type-ui); line-height: var(--leading-body);
+  }
+  .roulette-winner-release .tabler-icon { color: var(--theme-purple); width: 18px; height: 18px; }
   .roulette-winner-cover { border-color: var(--panel-line); border-radius: var(--radius-2); box-shadow: none; background: var(--panel-inner); }
   .roulette-winner-copy { border: 1px solid var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); }
   .roulette-winner-copy > p, .roulette-winner-meta dd { color: var(--muted); }

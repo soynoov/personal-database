@@ -418,6 +418,10 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
     winnerCover.src = gameHeroUrl(winner);
     winnerCover.alt = `Portada de ${winner.titulo}`;
     getElement<HTMLElement>('roulette-winner-title').textContent = winner.titulo;
+    getElement<HTMLElement>('roulette-winner-year').textContent =
+      Number.isInteger(winner.lanzamiento) && Number(winner.lanzamiento) > 0
+        ? `Lanzamiento · ${winner.lanzamiento}`
+        : 'Año de lanzamiento sin dato';
     const status = getElement<HTMLElement>('roulette-winner-status');
     status.textContent = winner.estado || 'Sin estado';
     status.dataset.status = normalizeStatus(winner.estado);
@@ -425,7 +429,7 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
     getElement<HTMLElement>('roulette-winner-launcher').textContent = winner.launcher || 'Sin launcher';
     getElement<HTMLElement>('roulette-winner-hltb').textContent = formatHltb(winner.hltb);
     const winnerLink = getElement<HTMLAnchorElement>('roulette-winner-link');
-    winnerLink.href = `/games/${winner.slug}/`;
+    winnerLink.href = `/games/${winner.slug}/#game-info`;
     populateParticipants(participants);
 
     resultWheel.dataset.drawToken = String(drawToken);

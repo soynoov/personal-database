@@ -16,6 +16,7 @@ export type RouletteGame = Pick<
   | 'solo'
   | 'steam_appid'
   | 'cover_url'
+  | 'lanzamiento'
 > & {
   slug: string;
 };
@@ -35,5 +36,6 @@ export function toRouletteGame(game: LocalGame): RouletteGame {
     solo: game.solo,
     steam_appid: game.steam_appid,
     cover_url: game.cover_url,
+    lanzamiento: game.lanzamiento,
   };
 }
