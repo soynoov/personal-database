@@ -1,4 +1,41 @@
-# Design QA — Opción 1: balance de compra y uso · 2026-09-12
+# Design QA — Valoración / NooV Score v2 · 2026-09-12
+
+final result: passed
+
+Alcance actual: solo Valoración de la propuesta 3, formulario por pasos, cálculo y migración. Se conserva debajo el informe histórico de Dinero/densidad. No se ha alterado el fondo Golden ni rediseñado otras secciones.
+
+## Fuente y comparación conjunta
+
+- Fuente seleccionada: `C:/Users/heroy/.codex/visualizations/2026/09/06/01a0765a-e9e2-70d3-80f3-355a09b42efc/detail-rethink/revision-bento.png`, únicamente el bloque inferior Valoración.
+- Capturas de implementación: `.codex-qa/review-v2/complete-fixture-1440.png`, `migrated-1440.png`, `migrated-390.png`, `wizard-1440.png`, `wizard-390.png` y `error-390.png`. Se han abierto la fuente y las capturas juntas en el mismo pase de inspección.
+- Las capturas `complete-fixture-*` usan datos sintéticos claramente identificados en `/__review-qa`, una ruta que solo existe en la configuración local aislada. No se han escrito esos valores en el catálogo ni en Blob.
+- Diferencias intencionales: ocho áreas en lugar de seis, Originalidad como insignia, cifras principales <=44 px, nota anterior identificada durante la migración, pendientes no dibujados como ceros y cálculo plegado. No se replica el contenido ni las notas antiguas de la imagen.
+
+## Resultado por superficie
+
+| Superficie | Resultado comprobado |
+|---|---|
+| Composición | Nota dominante + User score/Metascore compactos a la izquierda; radar y lista a la derecha. Se corrigió el margen inferior nativo del h2 y el hueco duplicado antes del desplegable. |
+| Marca | Tokens reales oscuros/cálidos/violeta; MetricCard, GamePill y Tabler existentes. Sin imágenes o iconos simulados, dependencias nuevas ni efecto Golden modificado. |
+| Tipografía y contenido | Escalas descritas, denominadores /3 y /5 explícitos, radar normalizado a /10 y pesos en el cálculo. Distinción visible de nota anterior, ausencia y No aplica. |
+| Responsive | 1440×1024, 820×1180, 390×844 y 3440×1024 sin desbordamiento de página/diálogo. En móvil, scroll interno del cuestionario y acciones accesibles al pie. |
+| Interacción | Pasos, anterior/siguiente, selección, reapertura, borrador recuperado, cierre con Escape y retorno de foco verificados. Sin comentarios que escribir. |
+| Guardado | Payload v2, revisión concurrente 409, error 500, autenticación cancelada, reintento, respuesta de éxito y confirmación tras recarga. Los POST de QA se interceptan; la lógica y los datos se prueban además en memoria. |
+| Accesibilidad | Radios/checkbox nativos, fieldsets/legends, foco visible, controles de 44 px, desplegable con Enter, selección con Espacio, datos del radar en lista y texto al 200%. Sin animación necesaria. No es una auditoría formal WCAG ni una prueba con lector de pantalla. |
+
+Reproductores: `.codex-qa/review-v2-browser.mjs`, `.codex-qa/review-v2-save-browser.mjs`. Reporte de viewports: `.codex-qa/review-v2/results.json`. Sin errores de JavaScript en los recorridos; los HTTP 401/409/500 son respuestas de prueba intencionales.
+
+Pruebas: `test:reviews`, `test:finance`, `test:catalog`, `test:detail` y los 21 casos de `test:games-sync` correctos. Compilación Astro completa usando `.codex-qa/review-v2-build.config.mjs`: mismas rutas y adaptador, sin el hook de sincronización de datos. El compilador TypeScript independiente no está instalado en el proyecto; no se atribuye a esta validación un `tsc` exitoso.
+
+Migración: 2 valoraciones locales y 19 en Blob migradas con respaldos separados, invariantes de datos ajenos y del multiplicador de amortización. Escritura remota aplicada tras el despliegue compatible `bc2a801`; nueva comprobación de ambas fuentes: cero migraciones pendientes. Se conservan 159 juegos en cada fuente, sin copiar la biblioteca local sobre la remota.
+
+Producción: DBD y Valoraciones comprobados con Chromium a 1440, 390 y 3440 px, HTTP 200, 19 notas anteriores visibles, nuevas áreas pendientes y formulario operativo, sin desbordamientos ni errores JavaScript. POST bloqueados en este recorrido: no se guardaron valoraciones ficticias. Reproductor `review-v2-production.mjs`, resultados `review-v2/production-results.json` y capturas `review-v2/production-dbd-*.png`, todo bajo `.codex-qa/`. El despliegue de implementación llegó a READY y la consulta de errores de runtime no devolvió errores en el intervalo seleccionado.
+
+No hay fallos bloqueantes de diseño o interacción abiertos dentro de este alcance. Los pesos y los textos se consideran una primera versión que necesita calibración de uso, no evidencia de que el reparto final de notas sea el deseado. El stage de `games.json` se generó exclusivamente con la migración sobre HEAD: los cambios locales ajenos de sincronización Steam permanecen sin incluir, igual que `AGENTS.md` y los artefactos anteriores.
+
+---
+
+# QA histórica — Opción 1: balance de compra y uso · 2026-09-12
 
 ## Resultado actual
 
