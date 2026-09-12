@@ -8291,5 +8291,87 @@
     "fuentes_datos": [
       "https://store.steampowered.com/app/1364780/"
     ]
+  },
+  {
+    "titulo": "Need for Speed Unbound",
+    "creado_en": "2026-09-12T23:47:21Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2022,
+    "modos": [
+      "solitario",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1846380/eacea0635efb7af9054f6b299060fee32404ace7/header.jpg?t=1777394467",
+    "steam_appid": 1846380,
+    "generos": [
+      "Acción",
+      "Carreras"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Criterion Games"
+    ],
+    "editoras": [
+      "Electronic Arts"
+    ],
+    "fuentes_datos": [
+      "https://news.ea.com/press-releases/press-releases-details/2022/Race-to-the-Top-in-Need-for-Speed-Unbound-theNext-Generation-Street-Racing-Fantasy-Releasing-December-2/",
+      "https://store.steampowered.com/app/1846380/"
+    ]
+  },
+  {
+    "titulo": "Red Dead Redemption 2",
+    "creado_en": "2026-09-12T23:47:21Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2018,
+    "lanzamiento_nota": "Lanzamiento original de 2018 en consolas; la versión de PC llegó en 2019.",
+    "modos": [
+      "solitario",
+      "cooperativo",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg?t=1759502961",
+    "steam_appid": 1174180,
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Rockstar Games"
+    ],
+    "editoras": [
+      "Rockstar Games"
+    ],
+    "fuentes_datos": [
+      "https://store.rockstargames.com/game/buy-red-dead-redemption-2?drm=PlayStation",
+      "https://store.steampowered.com/app/1174180/"
+    ]
   }
 ]
