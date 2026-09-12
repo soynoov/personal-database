@@ -7,6 +7,8 @@
  * Las funciones de formato vienen de GameDetailDLCs.astro.
  */
 
+import GamePill from '../GamePill.astro';
+
 interface DLCItem {
   titulo: string;
   fecha_adquisicion?: string | null;
@@ -61,7 +63,7 @@ const { dlc, formatDate, formatValue, formatCurrency } = Astro.props;
     </div>
     {
       !dlc.fecha_adquisicion && (
-        <span class='dlc-showcase-unowned-badge'>No adquirido</span>
+        <GamePill class="dlc-showcase-unowned-badge" value="No adquirido" />
       )
     }
   </div>
@@ -175,16 +177,6 @@ const { dlc, formatDate, formatValue, formatCurrency } = Astro.props;
     position: absolute;
     right: 0.75rem;
     top: 0.75rem;
-    display: inline-flex;
-    align-items: center;
-    min-height: 26px;
-    padding: 0.24rem 0.6rem;
-    border-radius: var(--radius-pill);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: rgba(15, 17, 22, 0.82);
-    font-family: var(--font-body);
-    font-size: 0.7rem;
-    color: #d6c8cc;
   }
 
   /* ── Card no adquirida ──────────────────────────────────────────── */
@@ -308,9 +300,6 @@ const { dlc, formatDate, formatValue, formatCurrency } = Astro.props;
     .dlc-showcase-unowned-badge {
       top: 0.5rem;
       right: 0.5rem;
-      min-height: 23px;
-      padding: 0.2rem 0.45rem;
-      font-size: 0.62rem;
     }
   }
 

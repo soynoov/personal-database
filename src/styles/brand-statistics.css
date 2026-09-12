@@ -36,7 +36,7 @@
   .chart-data-table :is(th, td) { padding: var(--space-2); border-bottom: 1px solid var(--panel-line); }
   .chart-data-table caption { text-align: left; padding-block: var(--space-3); }
   .chart-data-table tr > :last-child { text-align: right; }
-  .recap-completados-row { padding: var(--space-3) 0; border-color: var(--panel-line); color: var(--muted); }
+  .recap-completados-row { padding: var(--space-3) var(--space-4); gap: var(--space-3); border-color: var(--panel-line); color: var(--muted); }
   .recap-completed-icon { background: var(--control-bg); border: 1px solid var(--panel-line); border-radius: var(--radius-3); color: var(--theme-purple); }
   .recap-completed-copy strong { font: 600 var(--type-ui)/1.4 var(--font-body); color: var(--text); }
   .recap-completed-copy small, .recap-completados-row time { font-size: var(--type-label); color: var(--muted); }

@@ -5,13 +5,13 @@
   .card-foil, .game-golden-field {
     --golden-bands: repeating-linear-gradient(
       var(--foil-angle, 130deg),
-      transparent 0%, var(--card-foil-bronze) 4%,
-      var(--card-foil-amber) 7%, var(--card-foil-gold) 9%,
-      var(--card-foil-glint) 10%, var(--card-foil-gold) 11%,
-      var(--card-foil-bronze) 14%, transparent 17%,
-      transparent 18%, var(--card-foil-glint) 18.5%, transparent 19.2%,
-      transparent 21%, var(--card-foil-gold) 21.4%, transparent 22%,
-      transparent 30%
+      transparent calc(var(--foil-band-unit, 1%) * 0), var(--card-foil-bronze) calc(var(--foil-band-unit, 1%) * 4),
+      var(--card-foil-amber) calc(var(--foil-band-unit, 1%) * 7), var(--card-foil-gold) calc(var(--foil-band-unit, 1%) * 9),
+      var(--card-foil-glint) calc(var(--foil-band-unit, 1%) * 10), var(--card-foil-gold) calc(var(--foil-band-unit, 1%) * 11),
+      var(--card-foil-bronze) calc(var(--foil-band-unit, 1%) * 14), transparent calc(var(--foil-band-unit, 1%) * 17),
+      transparent calc(var(--foil-band-unit, 1%) * 18), var(--card-foil-glint) calc(var(--foil-band-unit, 1%) * 18.5), transparent calc(var(--foil-band-unit, 1%) * 19.2),
+      transparent calc(var(--foil-band-unit, 1%) * 21), var(--card-foil-gold) calc(var(--foil-band-unit, 1%) * 21.4), transparent calc(var(--foil-band-unit, 1%) * 22),
+      transparent calc(var(--foil-band-unit, 1%) * 30)
     );
     --golden-grain: repeating-linear-gradient(130deg, transparent 0 3px,
       color-mix(in srgb, var(--card-foil-glint) 6%, transparent) 3.2px, transparent 4px);

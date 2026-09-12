@@ -19,13 +19,14 @@
       radial-gradient(ellipse at 100% 78%, color-mix(in srgb, var(--card-foil-gold) 12%, transparent), transparent 42%);
   }
 
-  /* A bounded patch of the same material as a card, not a viewport-stretched wash. */
+  /* Expand the halo's reach, preserving band density, opacity and interaction. */
   .game-golden-field {
+    --foil-band-unit: 36.5px;
     position: absolute;
     left: var(--golden-x);
     top: var(--golden-y);
-    width: min(var(--detail-golden-width), calc(100vw + 240px));
-    height: min(var(--detail-golden-height), calc(100vh + 220px));
+    width: max(var(--detail-golden-width), 200vw);
+    height: max(var(--detail-golden-height), 200vh);
     transform: translate(-50%, -50%);
     opacity: 0;
     pointer-events: none;
@@ -41,7 +42,9 @@
   }
   .game-golden-field::before {
     background-image: var(--golden-bands);
-    background-size: 250% 250%;
+    /* Fixed physical band density and travel, without visible tile boundaries. */
+    background-size: calc(100% + var(--detail-golden-width) * 1.5) calc(100% + var(--detail-golden-height) * 1.5);
+    background-repeat: no-repeat;
     background-position: var(--foil-field-x) var(--foil-field-y);
     transition: background-position 84ms ease-out;
   }

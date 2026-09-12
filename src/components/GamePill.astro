@@ -1,0 +1,13 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { getGamePill, type GamePillKind } from '../lib/game-pill';
+import '../styles/game-pill.css';
+interface Props extends HTMLAttributes<'span'> {
+  kind?: GamePillKind;
+  value?: unknown;
+  label?: string;
+}
+const { kind = 'neutral', value, label, class: extraClass, ...attributes } = Astro.props;
+const pill = getGamePill(kind, value, label);
+---
+<span {...attributes} class:list={[pill.className, extraClass]} data-game-pill={kind}><slot /><Fragment set:html={pill.content} /></span>

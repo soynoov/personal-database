@@ -5,6 +5,7 @@
  * Datos: todos computados en [slug].astro y recibidos como props.
  */
 import '../../styles/game-detail/hero.css';
+import GamePill from '../GamePill.astro';
 import TablerIcon from '../TablerIcon.astro';
 import trophyIcon from '@tabler/icons/outline/trophy.svg?url';
 
@@ -12,9 +13,9 @@ interface Props {
   title: string;
   coverUrl: string;
   heroCoverStyle: string;
-  statusBadge: { class: string; label: string };
-  launcherBadge: { class: string; label: string; icon?: string };
-  platformBadge: { class: string; label: string };
+  status: string;
+  launcher: string;
+  platform: string;
   tagBadges: Array<{ value: string; label: string }>;
   goldenCompletionLabel?: string | null;
 }
@@ -23,20 +24,13 @@ const {
   title,
   coverUrl,
   heroCoverStyle,
-  statusBadge,
-  launcherBadge,
-  platformBadge,
+  status,
+  launcher,
+  platform,
   tagBadges,
   goldenCompletionLabel = null,
 } = Astro.props;
 
-const tagBadgeClasses: Record<string, string> = {
-  "free-to-play": "badge-tag-free",
-  competitivo: "badge-tag-competitive",
-  "early-access": "badge-tag-early",
-  indie: "badge-tag-indie",
-  modpacks: "badge-tag-modpacks",
-};
 ---
 
 <section class="game-hero-rich game-hero-cinematic" id="game-header" style={heroCoverStyle}>
@@ -55,20 +49,16 @@ const tagBadgeClasses: Record<string, string> = {
     <div class="game-overview-copy">
       <h1>{title}</h1>
       <div class="badges game-page-badges">
-        <span class={`badge ${statusBadge.class}`}>{statusBadge.label}</span>
-        <span class={`badge ${launcherBadge.class}`}>
-          {launcherBadge.icon && <TablerIcon src={launcherBadge.icon} />}
-          <span>{launcherBadge.label}</span>
-        </span>
-        <span class={`badge ${platformBadge.class}`}>{platformBadge.label}</span>
+        <GamePill kind="status" value={status} />
+        <GamePill kind="launcher" value={launcher} />
+        <GamePill kind="platform" value={platform} />
         {goldenCompletionLabel && (
-          <span class='badge badge-achievement-platinum'>
+          <GamePill kind="achievement" value={goldenCompletionLabel}>
             <TablerIcon src={trophyIcon} />
-            <span>{goldenCompletionLabel}</span>
-          </span>
+          </GamePill>
         )}
         {tagBadges.map((tag) => (
-          <span class:list={["badge", tagBadgeClasses[tag.value]]}>{tag.label}</span>
+          <GamePill kind="tag" value={tag.value} label={tag.label} />
         ))}
       </div>
     </div>

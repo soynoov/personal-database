@@ -27,9 +27,13 @@ Se aplica el sistema operativo aprobado a todas las rutas: catálogo, ficha de j
 ### Adaptaciones respecto a las propuestas iniciales
 
 - **Bento protagonista en toda la web:** se aplica la aclaración posterior del usuario, incluso donde las primeras hojas mostraban filas más planas.
-- **Golden:** prevalece la iteración posterior aceptada por el usuario: material diagonal dorado que responde al ratón, hover de la card completa a `1.10`, portada sin zoom propio y fondo de ficha con campo localizado que sigue al puntero. No se retrocede a las inclinaciones, tamaño o foil de la primera auditoría.
+- **Golden:** prevalece la iteración posterior aceptada por el usuario: material diagonal dorado que responde al ratón, hover de la card completa a `1.10` y portada sin zoom propio. El halo de la ficha ahora alcanza toda la ventana, también en ultrawide; conserva intensidad, tiempos, fallbacks y seguimiento. Las bandas mantienen una densidad física constante sin costuras al ampliar el campo.
 - **Géneros:** barras en lugar de donut porque un juego puede pertenecer a varias categorías. No cambia ningún recuento ni porcentaje.
-- **Mercado:** barras desde cero para comparar referencias de precio, evitando presentar categorías como una serie temporal. Se mantienen valores y cálculos económicos.
+- **Mercado:** por preferencia posterior del usuario, línea y área tenue entre Salida, Mi compra y Actual; la compra tiene marcador y celda destacados. Se indica que son referencias por copia, no un historial ni fechas de compra. El mínimo histórico se mantiene separado como referencia discontinua.
+- **DLC:** comparación «Lo que pagué / Comprarlos hoy» sobre los mismos DLC adquiridos con ambos precios registrados. Desglose accesible por título, exclusiones y pendientes separados; no se comparan sumas de muestras distintas.
+- **Rentabilidad visible:** Dinero compara horas reales con la meta económica expresada en horas reales, aplicando el bonus de la fórmula existente. Si falta gasto, se explica por qué no se puede dibujar una meta fiable. No se sustituyen importes desconocidos por cero.
+- **Pastillas:** `GamePill.astro` y su adaptador cliente comparten presentación, iconos y `game-pill.css`; se usa en SSR, cards filtradas, tabla, cabecera, metadatos y DLC. Altura mínima de 26 px, Stack Sans Text y fondos sutiles. Los controles interactivos de filtrado conservan su tamaño táctil y semántica de botón.
+- **Espaciado:** hero de altura automática con portada completa; filtros y filas de completados con padding interior; pastillas móviles en filas adaptables y valores económicos sin elipsis.
 - **Horas mensuales:** la nota visible aclara que son horas totales atribuidas al mes de inicio, no sesiones registradas por mes. Se conserva el método existente.
 - **Datos reales:** cero, vacío, estimaciones, Steam/no Steam, compras, DLC, micropagos y puntuaciones parciales siguen diferenciados. Las cifras ficticias de las propuestas no se copian a la base de datos.
 

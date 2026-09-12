@@ -123,12 +123,8 @@
   }
   .game-page-rich #technical .detail-value-list li {
     max-width: 100%;
-    padding: 0.25rem 0.55rem;
-    border: 1px solid var(--detail-bento-line);
-    border-radius: var(--radius-pill);
-    background: color-mix(in srgb, var(--theme-white) 3%, transparent);
-    color: var(--muted);
-    font: 500 0.75rem/1.4 var(--font-badge);
+    display: flex;
+    padding: 0;
   }
 
   .game-page-rich #technical .data-group-progress .data-group-grid {

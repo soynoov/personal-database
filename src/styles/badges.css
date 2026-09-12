@@ -210,21 +210,3 @@
     color: #c6e0d7;
   }
 } /* end @layer badges */
-
-@layer badges {
-  @media (max-width: 720px) {
-    .game-page-rich .game-page-badges {
-      gap: 0.3rem;
-      max-height: 54px;
-    }
-
-    .game-page-rich .game-page-badges .badge {
-      box-sizing: border-box;
-      height: 24px;
-      min-height: 24px;
-      padding: 0 0.38rem;
-      font-size: 0.56rem;
-      line-height: 1;
-    }
-  }
-}

@@ -1,4 +1,49 @@
-# Design QA — Rediseño de marca en toda la web · 2026-09-12
+# Design QA — Correcciones de ficha y pastillas · 2026-09-12
+
+## Resultado de la revisión actual
+
+final result: passed
+
+Sin diferencias P0/P1/P2 pendientes en las superficies comprobadas. Se corrigen las cinco incidencias señaladas por el usuario sin cambiar registros, APIs, sincronización o fórmulas de rentabilidad. La fecha de compra del juego base no existe en el modelo actual: la línea muestra referencias, no una cronología inventada.
+
+### Fuente visual y comparación
+
+- Incidencias: adjuntos `codex-clipboard-74786080-496a-473a-b426-53746599c401.png`, `e876b4fc-5718-489f-88b0-b845410573c2`, `5eeddeb3-89ec-4305-b452-81167fc1234b`, `3158cc8f-8b53-42d0-9a8b-73830dee4319` y `11b9f256-467b-42a8-bdff-709d9cbe255a` en `C:/Users/heroy/AppData/Local/Temp/`. Son capturas de defectos, no propuestas que reproducir literalmente.
+- Norma: `DESIGN-STANDARDIZATION-AUDIT.md`, `src/styles/theme.css` y `docs/design-standardization/assets/47-game-detail-bento-data-states-proposed.png`.
+- Capturas iniciales: `.codex-qa/corrections-{hero,filters,completed,finance}-before.png`, tomadas en Chromium a 1440 × 1024, 1×.
+- Comparaciones abiertas e inspeccionadas: `.codex-qa/comparison-spacing-pills.png` (1600 px de ancho), `comparison-market.png` (1600 px) y `comparison-golden-range.png` (1600 px). Componen fuentes y correcciones en el mismo lienzo, reducidas proporcionalmente sin estirar.
+- Capturas finales: `.codex-qa/compare-{hero,market,mobile,value}-final.png`, `compare-card-mobile-final.png`, `correct-hero-{1440,820,390,320}.png`, `correct-golden-{left,center,right}.png`. Hero inicial 1128 × 182, final 1128 × 255 a viewport 1440; móvil 358 px de ancho a viewport 390. Las capturas se producen a densidad 1×: 1 píxel CSS = 1 píxel de imagen. Las composiciones no son capturas de una única página.
+- En las capturas focales de secciones altas se oculta temporalmente el chrome fijo para no superponerlo sobre el widget; las pruebas de navegación y screenshots completos mantienen el chrome real.
+
+### Hallazgos y correcciones
+
+1. **P2 · Portada y márgenes:** el hero fijo de 180 px recortaba una portada más alta; filtros y filas tenían padding lateral nulo. Hero automático, portada 2:3 completa, padding de marca y verificación geométrica de contención.
+2. **P2 · Pastillas duplicadas:** variantes e iconos se reconstruían en catálogo SSR, JS y hero. `GamePill` comparte un modelo escapado y una sola hoja de presentación; la versión cliente usa el mismo contenido y clases. Altura mínima 26 px, padding 4 × 10 px, Stack Sans Text 10/12 px y 500, borde 1 px, fondos 4% neutrales/8% semánticos. No se alteran los botones de filtros.
+3. **P2 · Compra indistinguible:** sustituida la barra por una línea categórica con área tenue, compra de radio 8 px frente a 4 px y celda violeta destacada. Mínimo histórico fuera de la secuencia. Precios y referencias accesibles también fuera del canvas.
+4. **P2 · DLC ambiguos:** los totales previos admitían coberturas diferentes. Ahora ambos importes usan las mismas filas con precio pagado y actual válidos; se muestran títulos, recuento, diferencia, exclusiones y pendientes. Ejemplo local verificado: 18 de 22 adquiridos comparables; cuatro excluidos. Las cifras de producción pueden diferir por su precio actual.
+5. **P2 · Amortización ausente sin explicación:** gráfico explícito en Dinero cuando gasto y horas permiten fijar la meta, usando horas reales en ambas barras. Para gasto incompleto, se explica por qué falta la gráfica; cero, F2P y horas sin registrar siguen siendo estados distintos.
+6. **P2 · Alcance Golden:** campo ampliado a al menos 200vw × 200vh, centrado en el puntero. No cambian el controlador, opacidad 0,82, retorno 260 ms, inclinación/zoom de cards ni fallbacks. La densidad del material de fondo se desacopla de la amplitud para que siga siendo visible en ultrawide.
+
+### Historial de comparación
+
+- Primera pasada: se corrigen estructura, componentes y datos; las capturas revelan pastillas móviles aún comprimidas por la cuadrícula anterior, texto de horas con elipsis y costuras del foil al repetir un mosaico de tamaño fijo.
+- Segunda pasada: metadatos móviles envuelven en filas completas; se eliminan pseudo-elementos y estilos móviles alternativos; valores financieros envuelven sin truncarse. El gradiente repite internamente bandas de longitud física constante sobre una sola superficie, sin límites de mosaico.
+- Comparación posterior: portada y pastillas contenidas; márgenes interiores visibles; compra inequívoca; DLC con la misma población; fondo continuo a izquierda/centro/derecha sin tocar la opacidad de celdas. Las composiciones indicadas arriba son evidencia final, no propuestas.
+
+### Fidelidad y validación
+
+- **Tipografía:** se conservan las tres familias de marca; pastillas idénticas en ficha y catálogo por estilos computados, importe de compra dominante, cifras completas en móvil.
+- **Composición:** bento existente, radios y gaps de tokens; hero crece para envolver metadatos; no clipping de portada ni pastillas. Catálogo móvil gana altura para mostrar las cápsulas compartidas sin comprimirlas.
+- **Color:** negro/blanco cálido/violeta operativo, semántica de Golden intacta, tintes sutiles de cápsulas y compra destacada. Celdas de datos mantienen fondos opacos bajo el foil.
+- **Assets:** portadas, logos e iconos existentes reutilizados; ningún raster o ilustración generado. Los iconos de launcher se extraen del catálogo al módulo compartido.
+- **Contenido:** no se inventan fechas ni series históricas; euros por copia y horas reales explicitados; ninguna ausencia se cuenta como cero. La hora estimada permanece rotulada como estimada.
+- **Interacción:** Golden/filtros/búsqueda/orden/cards-tabla/vacío/limpiar, Ctrl+K, sidebar, navegación, ruleta y criterios pasan la regresión. Edición probada con dos respuestas 503/401 interceptadas: ninguna escritura real.
+- **Responsive:** 320, 390, 820 y 1440 px en las superficies corregidas; 3440 y 5120 px para halo, movimiento, ausencia de overflow y reduced motion; táctil sin foil dinámico. Regresión de menús y filtros también a 960, 961 y 1100 px.
+- **Comandos:** `npm run build`, `npm run test:finance`, `npm run test:catalog`, `npm run test:detail`, `node scripts/verify-detail-presentation.mjs`; todos pasan. No se declara un typecheck independiente: el proyecto no tiene TypeScript instalado como comprobador.
+- **Navegador:** `.codex-qa/verify-detail-corrections.mjs`, `verify-brand-site.mjs` y `compare-detail-corrections.mjs`. Cero errores JS observados en estos recorridos. Chromium local mediante Playwright, autorizado previamente por el usuario.
+- **Límites:** comprobación con Chromium, no Safari/Firefox ni auditoría formal WCAG. La biblioteca local tiene cambios previos ajenos a esta entrega; no se incluyen en el commit.
+
+## Historial — Rediseño de marca anterior en toda la web
 
 ## Findings
 

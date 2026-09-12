@@ -3,8 +3,10 @@ import type { CatalogGame } from '../lib/catalog-game';
 import { getGoldenCompletionKind } from '../lib/game-achievements';
 import { buildGameCoverUrl } from '../lib/game-cover-url';
 import { normalizeStatus } from '../lib/game-status';
+import { hasGameTag } from '../lib/game-tags';
 import trophyIcon from '@tabler/icons/outline/trophy.svg?url';
 import TablerIcon from './TablerIcon.astro';
+import GamePill from './GamePill.astro';
 
 interface Props {
   game: CatalogGame;
@@ -13,63 +15,16 @@ interface Props {
 
 const { game, eager = false } = Astro.props;
 
-const statusClasses: Record<string, string> = {
-  pendiente: 'badge-status-pending',
-  jugando: 'badge-status-playing',
-  terminado: 'badge-status-completed',
-  completado: 'badge-status-completed',
-  recurrente: 'badge-status-recurring',
-  wishlist: 'badge-status-wishlist',
-  pausado: 'badge-status-paused',
-  abandonado: 'badge-status-abandoned',
-  retirado: 'badge-status-abandoned',
-};
-
-const launcherClasses: Record<string, string> = {
-  steam: 'badge-launcher-steam',
-  'epic games': 'badge-launcher-epic',
-  epic: 'badge-launcher-epic',
-  nintendo: 'badge-launcher-nintendo',
-  switch: 'badge-launcher-nintendo',
-  'nintendo switch': 'badge-launcher-nintendo',
-  'nintendo eshop': 'badge-launcher-eshop',
-  eshop: 'badge-launcher-eshop',
-  pirata: 'badge-launcher-pirata',
-  gamepass: 'badge-launcher-gamepass',
-  'xbox game pass': 'badge-launcher-gamepass',
-  'riot games': 'badge-launcher-riot',
-  hoyoverse: 'badge-launcher-hoyoplay',
-  hoyoplay: 'badge-launcher-hoyoplay',
-  'ea app': 'badge-launcher-ea',
-  ubisoft: 'badge-launcher-ubisoft',
-  'ubisoft connect': 'badge-launcher-ubisoft',
-  gog: 'badge-launcher-gog',
-  itch: 'badge-launcher-itch',
-  'itch.io': 'badge-launcher-itch',
-};
-
-const platformClasses: Record<string, string> = {
-  pc: 'badge-platform-pc',
-  mobile: 'badge-platform-mobile',
-  móvil: 'badge-platform-mobile',
-  android: 'badge-platform-mobile',
-  ios: 'badge-platform-mobile',
-  switch: 'badge-platform-switch',
-  'nintendo switch': 'badge-platform-switch',
-  nintendo: 'badge-platform-switch',
-};
-
-const normalizedStatus = normalizeStatus(game.estado);
 const goldenCompletionKind = getGoldenCompletionKind(game);
 const hasPlatinum = goldenCompletionKind !== null;
 const goldenAriaLabel = goldenCompletionKind === 'game'
   ? 'Juego completado al 100%'
   : '100% de logros completados';
-const isFreeToPlay = game.tags?.some((tag) => normalizeStatus(tag) === 'free-to-play') ?? false;
-const isEarlyAccess = game.generos?.some((genre) => {
+const isFreeToPlay = hasGameTag(game.tags, 'free-to-play');
+const isEarlyAccess = hasGameTag(game.tags, 'early-access') || (game.generos?.some((genre) => {
   const normalized = normalizeStatus(genre);
   return normalized === 'acceso anticipado' || normalized === 'early access';
-}) ?? false;
+}) ?? false);
 const support = [game.lanzamiento, game.generos?.slice(0, 2).join(', ')].filter(Boolean);
 ---
 
@@ -96,22 +51,18 @@ const support = [game.lanzamiento, game.generos?.slice(0, 2).join(', ')].filter(
           <h2>{game.titulo}</h2>
           <div class='card-platform-badges'>
             {game.plataforma && (
-              <span class:list={['badge', platformClasses[normalizeStatus(game.plataforma)] ?? 'badge-platform-default']}>
-                {game.plataforma}
-              </span>
+              <GamePill kind="platform" value={game.plataforma} />
             )}
             {game.launcher && (
-              <span class:list={['badge', launcherClasses[normalizeStatus(game.launcher)] ?? 'badge-launcher-default']}>
-                {game.launcher}
-              </span>
+              <GamePill kind="launcher" value={game.launcher} />
             )}
           </div>
         </div>
       </div>
       <div class='badges'>
-        <span class:list={['badge', statusClasses[normalizedStatus] ?? 'badge-status-default']}>{game.estado ?? '-'}</span>
-        {isFreeToPlay && <span class='badge badge-tag-free'>Free to play</span>}
-        {isEarlyAccess && <span class='badge badge-tag-early'>Early Access</span>}
+        <GamePill kind="status" value={game.estado} />
+        {isFreeToPlay && <GamePill kind="tag" value="free-to-play" />}
+        {isEarlyAccess && <GamePill kind="tag" value="early-access" />}
       </div>
       <dl class='meta'>
         <div>

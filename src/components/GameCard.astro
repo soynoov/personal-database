@@ -3,6 +3,7 @@
 // No recibe props — el contenido lo rellena catalog.ts en el cliente.
 import trophyIcon from '@tabler/icons/outline/trophy.svg?url';
 import TablerIcon from './TablerIcon.astro';
+import GamePill from './GamePill.astro';
 ---
 
 <!-- Card template -->
@@ -22,7 +23,7 @@ import TablerIcon from './TablerIcon.astro';
           </div>
         </div>
         <div class='badges'>
-          <span class='badge' data-estado></span>
+          <GamePill kind="status" data-estado />
         </div>
         <dl class='meta'>
           <div>
@@ -52,13 +53,13 @@ import TablerIcon from './TablerIcon.astro';
       </div>
     </div>
     <div class='inventory-cell'>
-      <span class='badge' data-row-estado></span>
+      <GamePill kind="status" data-row-estado />
     </div>
     <div class='inventory-cell'>
-      <span class='badge' data-row-launcher></span>
+      <GamePill kind="launcher" data-row-launcher />
     </div>
     <div class='inventory-cell'>
-      <span class='badge' data-row-plataforma></span>
+      <GamePill kind="platform" data-row-plataforma />
     </div>
     <div class='inventory-cell' data-row-horas></div>
     <div class='inventory-cell' data-row-precio></div>

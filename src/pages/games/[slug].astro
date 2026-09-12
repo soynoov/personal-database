@@ -16,10 +16,9 @@ import { buildGameCoverUrl, buildGameHeroUrl } from '../../lib/game-cover-url';
 import { getFullCompletionRuns, getGoldenCompletionKind } from '../../lib/game-achievements';
 import {
   formatEuro,
-  getPurchasePriceComparison,
   getGameValueMetrics,
-  isAcquiredDlc,
 } from '../../lib/game-finance';
+import { getGameMarketView } from '../../lib/game-market-view';
 import { normalizeStatus } from '../../lib/game-status';
 import { formatGameModes, getGameModes, getGameModeLabel } from '../../lib/game-modes';
 import { getGameGenres } from '../../lib/game-genres';
@@ -27,7 +26,6 @@ import { isCommunityCriterionApplicable } from '../../lib/game-reviews';
 import { getGameTagLabel, hasGameTag, normalizeGameTag } from '../../lib/game-tags';
 import { findGameBySlug, readGames } from '../../lib/local-games';
 import { normalizePurchaseStores } from '../../lib/purchase-stores';
-import gamepadIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
 import '../../styles/detail.css';
 import '../../styles/game-page.css';
 import '../../styles/game-detail/experience.css';
@@ -68,38 +66,7 @@ const formatCompactDate = (value: unknown) => {
   return `${String(date.getDate()).padStart(2, '0')} ${months[date.getMonth()]} ${date.getFullYear()}`;
 };
 
-const statusClasses: Record<string, string> = {
-  pendiente: 'badge-status-pending',
-  jugando: 'badge-status-playing',
-  terminado: 'badge-status-completed',
-  completado: 'badge-status-completed',
-  recurrente: 'badge-status-recurring',
-  wishlist: 'badge-status-wishlist',
-  pausado: 'badge-status-paused',
-  abandonado: 'badge-status-abandoned',
-  retirado: 'badge-status-abandoned',
-};
-const launcherClasses: Record<string, string> = {
-  steam: 'badge-launcher-steam',
-  'epic games': 'badge-launcher-epic',
-  epic: 'badge-launcher-epic',
-  nintendo: 'badge-launcher-nintendo',
-  'nintendo eshop': 'badge-launcher-nintendo',
-  pirata: 'badge-launcher-pirata',
-  gamepass: 'badge-launcher-gamepass',
-  'xbox game pass': 'badge-launcher-gamepass',
-  'riot games': 'badge-launcher-riot',
-  hoyoplay: 'badge-launcher-hoyoplay',
-  'ea app': 'badge-launcher-ea',
-  ubisoft: 'badge-launcher-ubisoft',
-  'ubisoft connect': 'badge-launcher-ubisoft',
-  gog: 'badge-launcher-gog',
-  'itch.io': 'badge-launcher-itch',
-};
-const statusClass = statusClasses[normalizeStatus(game.estado)] ?? 'badge-status-default';
 const isRecurring = normalizeStatus(game.estado) === 'recurrente';
-const launcherClass = launcherClasses[normalizeStatus(game.launcher)] ?? 'badge-launcher-default';
-const platformClass = normalizeStatus(game.plataforma) === 'pc' ? 'badge-platform-pc' : 'badge-platform-default';
 const isSteam = normalizeStatus(game.launcher) === 'steam';
 
 const gameModes = getGameModes(game);
@@ -144,63 +111,8 @@ const steamCardsProgress = game.steam_cromos?.actual !== null && game.steam_crom
 
 const dlcItems = game.dlcs?.items ?? [];
 const dlcTotal = Number(game.dlcs?.total ?? dlcItems.length);
-const acquiredDlcs = dlcItems.filter(isAcquiredDlc);
-const pendingDlcs = dlcItems.filter((dlc) => !isAcquiredDlc(dlc));
-const sumKnown = (items: typeof dlcItems, key: 'precio_pagado' | 'precio_actual' | 'precio_salida') =>
-  items.reduce((total, item) => {
-    const parsed = item[key] === null || item[key] === undefined ? null : Number(item[key]);
-    return total + (parsed !== null && Number.isFinite(parsed) ? parsed : 0);
-  }, 0);
-const countKnown = (items: typeof dlcItems, key: 'precio_pagado' | 'precio_actual' | 'precio_salida') =>
-  items.filter((item) => item[key] !== null && item[key] !== undefined && Number.isFinite(Number(item[key]))).length;
-const dlcMarketPoints = [
-  { label: 'Salida', value: sumKnown(acquiredDlcs, 'precio_salida'), count: countKnown(acquiredDlcs, 'precio_salida'), color: '#7f758d' },
-  { label: 'Pagado', value: sumKnown(acquiredDlcs, 'precio_pagado'), count: countKnown(acquiredDlcs, 'precio_pagado'), color: '#b792e5' },
-  { label: 'Actual', value: sumKnown(acquiredDlcs, 'precio_actual'), count: countKnown(acquiredDlcs, 'precio_actual'), color: '#8b85a2' },
-].filter((point) => point.count > 0).map(({ label, value, color }) => ({ label, value: Number(value.toFixed(2)), color }));
-const dlcChartPayload = dlcMarketPoints.length >= 2
-  ? { type: 'market-comparison', points: dlcMarketPoints, seriesLabel: 'Contenido adicional', metric: 'currency' }
-  : null;
-
-const paidUnitPrice = game.precio_pagado === null || game.precio_pagado === undefined ? null : Number(game.precio_pagado);
-const currentPrice = game.precio_actual === null || game.precio_actual === undefined ? null : Number(game.precio_actual);
-const launchPrice = game.precio_salida === null || game.precio_salida === undefined ? null : Number(game.precio_salida);
-const historicLow = game.precio_minimo_historico === null || game.precio_minimo_historico === undefined
-  ? null
-  : Number(game.precio_minimo_historico);
-const purchasePriceComparison = getPurchasePriceComparison(paidUnitPrice, launchPrice);
-const priceComparisonCard = purchasePriceComparison
-  ? {
-      label: 'Rebaja conseguida',
-      value: purchasePriceComparison.direction === 'discount'
-        ? `${purchasePriceComparison.percent.toLocaleString('es-ES', { maximumFractionDigits: 1 })}% más barato`
-        : purchasePriceComparison.direction === 'premium'
-          ? `${purchasePriceComparison.percent.toLocaleString('es-ES', { maximumFractionDigits: 1 })}% por encima`
-          : 'Sin rebaja',
-      note: purchasePriceComparison.direction === 'discount'
-        ? `vs. precio de salida · ${formatCurrency(purchasePriceComparison.amountPerUnit)} por copia`
-        : purchasePriceComparison.direction === 'premium'
-          ? `vs. precio de salida · ${formatCurrency(purchasePriceComparison.amountPerUnit)} extra por copia`
-          : 'Mismo precio de salida',
-      className: purchasePriceComparison.direction === 'discount' ? 'is-saving' : '',
-    }
-  : null;
-const moneyChartPoints = [
-  { label: 'Salida', value: launchPrice, color: '#7f758d' },
-  { label: 'Compra', value: paidUnitPrice, color: '#b792e5' },
-  { label: 'Mín. histórico', value: historicLow, color: '#8da081' },
-  { label: 'Actual', value: currentPrice, color: '#8b85a2' },
-].filter((point): point is { label: string; value: number; color: string } => point.value !== null && Number.isFinite(point.value));
-const moneyChartPayload = { type: 'market-comparison', points: moneyChartPoints, seriesLabel: 'Precio', metric: 'currency' };
-const pendingDlcMarketValue = sumKnown(pendingDlcs, 'precio_actual');
-const marketCards = [
-  ...(priceComparisonCard ? [priceComparisonCard] : []),
-  { label: 'Pagado / copia', value: formatCurrency(paidUnitPrice, '—') },
-  { label: 'Precio actual', value: formatCurrency(currentPrice, '—') },
-  { label: 'Precio de salida', value: formatCurrency(launchPrice, '—') },
-  { label: 'Mínimo histórico', value: formatCurrency(historicLow, '—') },
-  { label: 'DLC pendientes', value: pendingDlcMarketValue > 0 ? formatCurrency(pendingDlcMarketValue, '—') : '—' },
-];
+const market = getGameMarketView(game);
+const paidUnitPrice = market.paid;
 
 const hltbBreakdown = {
   main: game.hltb_breakdown?.main == null ? null : Number(game.hltb_breakdown.main),
@@ -285,7 +197,7 @@ const metadataGroups = [
     className: 'data-group-catalog',
     items: [
       { label: 'Géneros', value: genres, state: genres === '-' ? 'empty' as const : 'default' as const },
-      { label: 'Etiquetas', value: tagsLabel === 'Sin etiquetas' ? '-' : tagsLabel, state: tagsLabel === 'Sin etiquetas' ? 'empty' as const : 'default' as const },
+      { label: 'Etiquetas', value: tagsLabel === 'Sin etiquetas' ? '-' : tagsLabel, values: tagBadges.map(tag => tag.value), state: tagsLabel === 'Sin etiquetas' ? 'empty' as const : 'default' as const },
       { label: 'Modos', value: modesLabel, values: gameModes.map(getGameModeLabel), className: 'detail-item-modes', state: modesLabel === 'Sin registrar' ? 'empty' as const : 'default' as const },
       { label: 'Lanzamiento', value: formatValue(game.lanzamiento), state: game.lanzamiento ? 'default' as const : 'empty' as const },
     ],
@@ -326,9 +238,9 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
       title={game.titulo}
       coverUrl={coverUrl}
       heroCoverStyle={heroCoverStyle}
-      statusBadge={{ class: statusClass, label: formatValue(game.estado) }}
-      launcherBadge={{ class: launcherClass, label: formatValue(game.launcher, 'Sin launcher'), icon: gamepadIcon }}
-      platformBadge={{ class: platformClass, label: formatValue(game.plataforma) }}
+      status={formatValue(game.estado)}
+      launcher={formatValue(game.launcher, 'Sin launcher')}
+      platform={formatValue(game.plataforma)}
       tagBadges={heroBadges}
       goldenCompletionLabel={goldenCompletionLabel}
     />
@@ -354,12 +266,9 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
         slug={slug}
         metrics={valueMetrics}
         paidUnitPrice={paidUnitPrice}
-        moneyChartPayload={moneyChartPayload}
-        moneyChartPoints={moneyChartPoints}
-        dlcChartPayload={dlcChartPayload}
-        dlcChartPoints={dlcMarketPoints}
-        hasDlcs={dlcTotal > 0}
-        marketCards={marketCards}
+        market={market}
+        hasDlcs={dlcTotal > 0 || dlcItems.length > 0}
+        estimatedHours={game.horas_estimadas === true}
         editValues={{
           precio_pagado: paidUnitPrice,
           unidades_compradas: valueMetrics.purchasedUnits,

@@ -1,0 +1,49 @@
+---
+import type { GameMarketView } from '../../lib/game-market-view';
+import { formatEuro } from '../../lib/game-finance';
+import GamePill from '../GamePill.astro';
+import TablerIcon from '../TablerIcon.astro';
+import chartIcon from '@tabler/icons/outline/chart-line.svg?url';
+interface Props { slug: string; market: GameMarketView; purchasedUnits: number }
+const { slug, market, purchasedUnits } = Astro.props;
+const { dlcs, purchaseComparison: saving } = market;
+const showBase = !market.isFreeToPlay && (market.points.length > 0 || market.historicLow !== null);
+const dlcScale = Math.max(dlcs.paidTotal ?? 0, dlcs.currentTotal ?? 0, 1);
+const payload = { type: 'price-references', points: market.points, historicLow: market.historicLow };
+---
+{(showBase || market.hasDlcs) && (<details class="value-secondary-details finance-market-details" open>
+  <summary><TablerIcon src={chartIcon} /><span>Mercado</span></summary>
+  <div class:list={["finance-market-grid", !showBase && "is-dlc-only", market.points.length < 2 && "is-summary-only"]}>
+    {showBase && market.points.length >= 2 && <section class="chart-visual-card chart-visual-card-money" aria-labelledby="money-chart-title">
+      <div class="chart-header"><strong id="money-chart-title">Precio del juego base</strong><span class="chart-badge">€ / copia</span></div>
+      <div class="chart-canvas-wrap chart-canvas-wrap-money"><canvas id="money-detail-chart" role="img" aria-label={`Referencias de precio por copia: ${market.points.map(point => `${point.label}: ${formatEuro(point.value)}`).join('; ')}`} data-chart={JSON.stringify(payload)}></canvas></div>
+      <p class="chart-note">La línea une referencias conocidas; no representa un historial ni fechas de compra.</p>
+      {market.historicLow !== null && <p class="market-low-caption">Línea discontinua: mínimo histórico · {formatEuro(market.historicLow)}</p>}
+    </section>}
+    {showBase && <dl class="finance-market-values">
+      <div class="finance-purchase-card"><dt><span class="purchase-point" aria-hidden="true"></span>Mi compra</dt><dd>{formatEuro(market.paid, 'Sin registrar')}</dd><dd class="finance-market-note">{`Precio pagado por copia · ${purchasedUnits} ${purchasedUnits === 1 ? 'copia' : 'copias'}`}</dd>
+        {saving && <dd class="finance-purchase-saving">{saving.direction === 'discount' ? `${saving.percent.toLocaleString('es-ES')}% menos que de salida` : saving.direction === 'premium' ? `${saving.percent.toLocaleString('es-ES')}% más que de salida` : 'Mismo precio que de salida'}</dd>}
+      </div>
+      <div><dt>Precio de salida</dt><dd>{formatEuro(market.launch)}</dd></div>
+      <div><dt>Precio actual</dt><dd>{formatEuro(market.current)}</dd></div>
+      <div><dt>Mínimo histórico</dt><dd>{formatEuro(market.historicLow)}</dd></div>
+    </dl>}
+    {market.hasDlcs && <section class="chart-visual-card chart-visual-card-dlc" aria-labelledby="dlc-chart-title">
+      <div class="chart-header finance-market-dlc-head">
+        <div><strong id="dlc-chart-title">Mis DLC · pagado frente a hoy</strong><p class="market-scope">Los mismos {dlcs.rows.length} DLC adquiridos con ambos precios registrados.</p></div>
+        <button type="button" class="dlc-sync-prices-btn" id="dlc-sync-prices-btn" data-slug={slug}>Actualizar</button>
+      </div>
+      <span class="dlc-sync-prices-status" id="dlc-sync-prices-status" aria-live="polite"></span>
+      {dlcs.rows.length > 0 ? <>
+        <dl class="dlc-price-bars">
+          <div><dt>Lo que pagué</dt><dd><strong>{formatEuro(dlcs.paidTotal)}</strong><span class="dlc-price-track" aria-hidden="true"><span style={`width:${((dlcs.paidTotal ?? 0) / dlcScale) * 100}%`}></span></span></dd></div>
+          <div class="dlc-price-current"><dt>Comprarlos hoy</dt><dd><strong>{formatEuro(dlcs.currentTotal)}</strong><span class="dlc-price-track" aria-hidden="true"><span style={`width:${((dlcs.currentTotal ?? 0) / dlcScale) * 100}%`}></span></span></dd></div>
+        </dl>
+        <p class="dlc-price-difference">{dlcs.difference === 0 ? 'Hoy costarían lo mismo.' : `Hoy costarían ${formatEuro(Math.abs(dlcs.difference ?? 0))} ${dlcs.difference! > 0 ? 'más' : 'menos'} que lo que pagué por esos DLC.`}</p>
+        <details class="market-dlc-breakdown"><summary>Ver los {dlcs.rows.length} DLC comparados</summary><div class="market-table-scroll"><table><caption>Comparación por DLC adquirido · euros</caption><thead><tr><th scope="col">DLC</th><th scope="col">Pagué</th><th scope="col">Hoy</th></tr></thead><tbody>{dlcs.rows.map(row => <tr><th scope="row">{row.title}</th><td>{formatEuro(row.paid)}</td><td>{formatEuro(row.current)}</td></tr>)}</tbody></table></div></details>
+      </> : <p class="chart-note">No hay DLC adquiridos con los dos precios registrados para compararlos.</p>}
+      {dlcs.excludedCount > 0 && <p class="market-coverage-note">{dlcs.excludedCount} de {dlcs.acquiredCount} DLC adquiridos quedan fuera: falta el precio pagado o el actual. No se cuentan como 0 €.</p>}
+      {dlcs.pendingCount > 0 && <div class="market-pending-dlcs"><GamePill value={`${dlcs.pendingCount} sin adquirir`} /><span>Fuera de esta comparación · {dlcs.pendingKnownCount > 0 ? `${formatEuro(dlcs.pendingTotal)} en ${dlcs.pendingKnownCount} con precio actual` : 'Sin precios actuales registrados'}.</span></div>}
+    </section>}
+  </div>
+</details>)}

@@ -13,6 +13,13 @@
   .game-page-rich .game-hero-cinematic { border-radius: var(--radius-1); overflow: hidden; border-color: var(--panel-line); }
   .game-page-rich .game-hero-cinematic::before { height: 100%; clip-path: none; }
   .game-page-rich .game-overview-copy h1 { color: var(--text); }
+  .game-page-rich .game-overview-card.game-overview-card-cinematic { height: auto; min-height: 216px; padding: var(--space-6) var(--space-8); gap: var(--space-8); align-items: center; }
+  .game-page-rich .game-overview-card.game-overview-card-cinematic .game-overview-media { align-self: center; height: auto; aspect-ratio: 2 / 3; }
+  .game-page-rich .game-overview-copy { min-width: 0; gap: var(--space-4); }
+  @media (max-width: 760px) {
+    .game-page-rich .game-overview-card.game-overview-card-cinematic { width: 100%; margin: 0; min-height: 0; padding: var(--space-4); gap: var(--space-4); }
+    .game-page-rich .game-overview-copy h1 { overflow-wrap: anywhere; }
+  }
   .game-page-rich .game-sections-nav-shell { --nav-surface: var(--panel-bg); position: sticky; z-index: 50; top: var(--app-header-height); margin: 0; border-color: var(--panel-line); border-radius: var(--radius-2); background: var(--panel-bg); box-shadow: none; }
   .game-page-rich .game-sections-nav-shell .game-sections-nav { padding: var(--space-2) var(--space-6); gap: var(--space-6); scroll-padding-inline: var(--space-6); }
   .game-page-rich .game-sections-nav-shell .game-sections-nav a { min-height: var(--control-height); color: var(--muted); font-size: var(--type-ui); }
@@ -44,6 +51,7 @@
   .game-page-rich .finance-kpi-grid article { padding: var(--space-4); gap: var(--space-2); }
   .game-page-rich .finance-kpi-grid :is(article:first-child, article.is-null) { padding: var(--space-4); opacity: 1; filter: none; border-color: var(--panel-line); }
   .game-page-rich .finance-kpi-grid strong { color: var(--text); font-size: 1.25rem; }
+  .game-page-rich .finance-kpi-grid article strong { min-width: 0; white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; }
   .game-page-rich .finance-kpi-grid small { color: var(--muted); }
   .game-page-rich .finance-breakdown { padding: var(--space-4); }
   .game-page-rich .finance-breakdown-head { margin-bottom: var(--space-4); }

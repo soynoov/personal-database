@@ -7,6 +7,7 @@
  * Los datos llegan serializados desde index.astro via atributo data-games.
  */
 
+import { createGamePill, updateGamePill } from './game-pill';
 import { buildGameCoverUrl } from "../lib/game-cover-url";
 import { getGoldenCompletionKind, matchesGoldenFilter } from "../lib/game-achievements";
 import type { CatalogGame } from "../lib/catalog-game";
@@ -41,90 +42,6 @@ const matchesModeFilter = (game: CatalogGame, filter: string): boolean =>
   !filter || gameHasMode(game, filter);
 
 const getCoverUrl = (game: CatalogGame): string => buildGameCoverUrl(game);
-
-// ─── Iconos y clases de badges ────────────────────────────────────────────────
-
-const LAUNCHER_ICONS: Record<string, string> = {
-  steam: '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M.329 10.333A8.01 8.01 0 0 0 7.99 16C12.414 16 16 12.418 16 8s-3.586-8-8.009-8A8.006 8.006 0 0 0 0 7.468l.003.006 4.304 1.769A2.2 2.2 0 0 1 5.62 8.88l1.96-2.844-.001-.04a3.046 3.046 0 0 1 3.042-3.043 3.046 3.046 0 0 1 3.042 3.043 3.047 3.047 0 0 1-3.111 3.044l-2.804 2a2.223 2.223 0 0 1-3.075 2.11 2.22 2.22 0 0 1-1.312-1.568L.33 10.333Z"/><path fill="currentColor" d="M4.868 12.683a1.715 1.715 0 0 0 1.318-3.165 1.7 1.7 0 0 0-1.263-.02l1.023.424a1.261 1.261 0 1 1-.97 2.33l-.99-.41a1.7 1.7 0 0 0 .882.84Zm3.726-6.687a2.03 2.03 0 0 0 2.027 2.029 2.03 2.03 0 0 0 2.027-2.029 2.03 2.03 0 0 0-2.027-2.027 2.03 2.03 0 0 0-2.027 2.027m2.03-1.527a1.524 1.524 0 1 1-.002 3.048 1.524 1.524 0 0 1 .002-3.048"/></svg>',
-  'epic games': '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M4.719 0c-1.833 0-2.505.677-2.505 2.505v22.083c0 .209.011.401.027.579.047.401.047.792.421 1.229.036.052.412.328.412.328.203.099.343.172.572.265l11.115 4.656c.573.261.819.371 1.235.355h.005c.421.016.667-.093 1.24-.355l11.109-4.656c.235-.093.369-.167.577-.265 0 0 .376-.287.412-.328.375-.437.375-.828.421-1.229.016-.177.027-.369.027-.573v-22.088c0-1.828-.677-2.505-2.505-2.505zM22.527 4.145h.905c1.511 0 2.251.735 2.251 2.267v2.505H23.85v-2.407c0-.489-.224-.713-.699-.713h-.312c-.489 0-.713.224-.713.713v7.749c0 .489.224.713.713.713h.349c.468 0 .692-.224.692-.713v-2.771h1.833v2.86c0 1.525-.749 2.276-2.265 2.276h-.921c-1.521 0-2.267-.756-2.267-2.276v-7.923c0-1.525.745-2.281 2.267-2.281zM6.276 4.251h4.151v1.703H8.14v3.468h2.204v1.699H8.14v3.697h2.319v1.704H6.276zM11.364 4.251h2.928c1.515 0 2.265.755 2.265 2.28v3.261c0 1.525-.751 2.276-2.265 2.276h-1.057v4.453h-1.871zM17.401 4.251h1.864v12.271h-1.864zM13.229 5.901v4.52H14c.469 0 .693-.228.693-.719v-3.083c0-.489-.224-.719-.693-.719zM10.683 27.615h10.681l-5.452 1.797z"/></svg>',
-  'riot games': '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.534 21.77l-1.09-2.81 10.52.54-.451 4.5zM15.06 0 .307 6.969 2.59 17.471H5.6l-.52-7.512.461-.144 1.81 7.656h3.126l-.116-9.15.462-.144 1.582 9.294h3.31l.78-11.053.462-.144.82 11.197h4.376l1.54-15.37Z"/></svg>',
-  hoyoverse: '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m25.9053 34.0474c5.0425-1.4728 6.8196-1.2987 8.3484-1.2948 1.1339.0029 2.2586-.203 3.2921-.6696l.1333-.0602c4.4766-2.0212 6.1813-7.5024 3.6311-11.7001-3.846-6.3305-9.1608-14.0172-11.9794-13.4193-4.7401 1.0056-4.7399 7.1219-4.7399 7.1219s-1.272-.278-4.3376.6715c-3.0947.8498-4.0171 1.7687-4.0171 1.7687s-3.2918-5.1549-7.828-3.4511c-2.6973 1.0131-3.0393 10.3521-2.8734 17.7574.11 4.9105 4.497 8.6125 9.3577 7.9064l.1448-.021c1.1221-.163 2.1809-.5948 3.135-1.2076 1.2864-.8262 2.6904-1.9294 7.7329-3.4022Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m15.9995 38.4489c1.512 3.1381 3.7374 3.1593 5.2644 1.9013 1.527-1.2579 1.6407-4.0191-.0229-6.5644" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m24.4791 30.8374c2.4295-.7096 10.227-.6596 7.9688-6.3871-2.2582-5.7274-5.8688-5.8637-11.1735-4.5849-5.159 1.7775-8.1286 3.8356-6.9491 9.8781 1.1795 6.0425 7.7243 1.8035 10.1538 1.0938Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m19.853 28.218-.9563-3.2738" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m26.9681 26.1398-.9562-3.2738" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m34.7079 32.7399c2.2729 3.9724 2.2263 6.963 2.2263 6.963" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m32.8535 32.7494c-1.4937 4.2834-7.2554 6.9536-12.6733 3.4721" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>',
-  hoyoplay: '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m25.9053 34.0474c5.0425-1.4728 6.8196-1.2987 8.3484-1.2948 1.1339.0029 2.2586-.203 3.2921-.6696l.1333-.0602c4.4766-2.0212 6.1813-7.5024 3.6311-11.7001-3.846-6.3305-9.1608-14.0172-11.9794-13.4193-4.7401 1.0056-4.7399 7.1219-4.7399 7.1219s-1.272-.278-4.3376.6715c-3.0947.8498-4.0171 1.7687-4.0171 1.7687s-3.2918-5.1549-7.828-3.4511c-2.6973 1.0131-3.0393 10.3521-2.8734 17.7574.11 4.9105 4.497 8.6125 9.3577 7.9064l.1448-.021c1.1221-.163 2.1809-.5948 3.135-1.2076 1.2864-.8262 2.6904-1.9294 7.7329-3.4022Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m15.9995 38.4489c1.512 3.1381 3.7374 3.1593 5.2644 1.9013 1.527-1.2579 1.6407-4.0191-.0229-6.5644" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m24.4791 30.8374c2.4295-.7096 10.227-.6596 7.9688-6.3871-2.2582-5.7274-5.8688-5.8637-11.1735-4.5849-5.159 1.7775-8.1286 3.8356-6.9491 9.8781 1.1795 6.0425 7.7243 1.8035 10.1538 1.0938Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m19.853 28.218-.9563-3.2738" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m26.9681 26.1398-.9562-3.2738" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m34.7079 32.7399c2.2729 3.9724 2.2263 6.963 2.2263 6.963" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m32.8535 32.7494c-1.4937 4.2834-7.2554 6.9536-12.6733 3.4721" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>',
-  'ea app': '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.7 3.4 7.65v8.7L12 21.3l8.6-4.95v-8.7L12 2.7Zm0 1.98 6.8 3.92v6.8L12 19.32 5.2 15.4V8.6L12 4.68Zm-3.3 4.06h5.43v1.48h-3.55v1.23h3.2v1.42h-3.2v1.92H8.7V8.74Zm6.16 0h.94c1.5 0 2.5 1 2.5 2.48 0 1.55-.97 2.57-2.57 2.57h-.87V8.74Zm.93 1.44v2.18h.14c.6 0 .97-.38.97-1.09 0-.72-.37-1.1-.97-1.1h-.14Z"/></svg>',
-  nintendo: '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M18.901 32h4.901c4.5 0 8.198-3.698 8.198-8.198v-15.604c0-4.5-3.698-8.198-8.198-8.198h-5c-0.099 0-0.203 0.099-0.203 0.198v31.604c0 0.099 0.099 0.198 0.302 0.198zM25 14.401c1.802 0 3.198 1.5 3.198 3.198 0 1.802-1.5 3.198-3.198 3.198-1.802 0-3.198-1.396-3.198-3.198-0.104-1.797 1.396-3.198 3.198-3.198zM15.198 0h-7c-4.5 0-8.198 3.698-8.198 8.198v15.604c0 4.5 3.698 8.198 8.198 8.198h7c0.099 0 0.203-0.099 0.203-0.198v-31.604c0-0.099-0.099-0.198-0.203-0.198zM12.901 29.401h-4.703c-3.099 0-5.599-2.5-5.599-5.599v-15.604c0-3.099 2.5-5.599 5.599-5.599h4.604zM5 9.599c0 1.698 1.302 3 3 3s3-1.302 3-3c0-1.698-1.302-3-3-3s-3 1.302-3 3z"/></svg>',
-  switch: '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M18.901 32h4.901c4.5 0 8.198-3.698 8.198-8.198v-15.604c0-4.5-3.698-8.198-8.198-8.198h-5c-0.099 0-0.203 0.099-0.203 0.198v31.604c0 0.099 0.099 0.198 0.302 0.198zM25 14.401c1.802 0 3.198 1.5 3.198 3.198 0 1.802-1.5 3.198-3.198 3.198-1.802 0-3.198-1.396-3.198-3.198-0.104-1.797 1.396-3.198 3.198-3.198zM15.198 0h-7c-4.5 0-8.198 3.698-8.198 8.198v15.604c0 4.5 3.698 8.198 8.198 8.198h7c0.099 0 0.203-0.099 0.203-0.198v-31.604c0-0.099-0.099-0.198-0.203-0.198zM12.901 29.401h-4.703c-3.099 0-5.599-2.5-5.599-5.599v-15.604c0-3.099 2.5-5.599 5.599-5.599h4.604zM5 9.599c0 1.698 1.302 3 3 3s3-1.302 3-3c0-1.698-1.302-3-3-3s-3 1.302-3 3z"/></svg>',
-  'nintendo switch': '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M18.901 32h4.901c4.5 0 8.198-3.698 8.198-8.198v-15.604c0-4.5-3.698-8.198-8.198-8.198h-5c-0.099 0-0.203 0.099-0.203 0.198v31.604c0 0.099 0.099 0.198 0.302 0.198zM25 14.401c1.802 0 3.198 1.5 3.198 3.198 0 1.802-1.5 3.198-3.198 3.198-1.802 0-3.198-1.396-3.198-3.198-0.104-1.797 1.396-3.198 3.198-3.198zM15.198 0h-7c-4.5 0-8.198 3.698-8.198 8.198v15.604c0 4.5 3.698 8.198 8.198 8.198h7c0.099 0 0.203-0.099 0.203-0.198v-31.604c0-0.099-0.099-0.198-0.203-0.198zM12.901 29.401h-4.703c-3.099 0-5.599-2.5-5.599-5.599v-15.604c0-3.099 2.5-5.599 5.599-5.599h4.604zM5 9.599c0 1.698 1.302 3 3 3s3-1.302 3-3c0-1.698-1.302-3-3-3s-3 1.302-3 3z"/></svg>',
-};
-
-const LAUNCHER_CLASS_MAP: Record<string, string> = {
-  steam: 'badge-launcher-steam',
-  'epic games': 'badge-launcher-epic',
-  epic: 'badge-launcher-epic',
-  nintendo: 'badge-launcher-nintendo',
-  switch: 'badge-launcher-nintendo',
-  'nintendo switch': 'badge-launcher-nintendo',
-  'nintendo eshop': 'badge-launcher-eshop',
-  eshop: 'badge-launcher-eshop',
-  pirata: 'badge-launcher-pirata',
-  gamepass: 'badge-launcher-gamepass',
-  'xbox game pass': 'badge-launcher-gamepass',
-  'riot games': 'badge-launcher-riot',
-  hoyoverse: 'badge-launcher-hoyoplay',
-  hoyoplay: 'badge-launcher-hoyoplay',
-  'ea app': 'badge-launcher-ea',
-  ubisoft: 'badge-launcher-ubisoft',
-  'ubisoft connect': 'badge-launcher-ubisoft',
-  gog: 'badge-launcher-gog',
-  itch: 'badge-launcher-itch',
-  'itch.io': 'badge-launcher-itch',
-};
-
-const STATUS_CLASS_MAP: Record<string, string> = {
-  pendiente: 'badge-status-pending',
-  jugando: 'badge-status-playing',
-  terminado: 'badge-status-completed',
-  completado: 'badge-status-completed',
-  recurrente: 'badge-status-recurring',
-  wishlist: 'badge-status-wishlist',
-  pausado: 'badge-status-paused',
-  abandonado: 'badge-status-abandoned',
-  retirado: 'badge-status-abandoned',
-};
-
-const PLATFORM_CLASS_MAP: Record<string, string> = {
-  pc: 'badge-platform-pc',
-  mobile: 'badge-platform-mobile',
-  móvil: 'badge-platform-mobile',
-  android: 'badge-platform-mobile',
-  ios: 'badge-platform-mobile',
-  switch: 'badge-platform-switch',
-  'nintendo switch': 'badge-platform-switch',
-  nintendo: 'badge-platform-switch',
-};
-
-const PLATFORMS_WITH_ICON = new Set(['switch', 'nintendo switch', 'nintendo']);
-
-const launcherInlineIcon = (value: string): string => {
-  const normalized = value.trim().toLowerCase();
-  const svg = LAUNCHER_ICONS[normalized];
-  if (!svg) return '';
-  return `<span class="launcher-inline-icon" aria-hidden="true">${svg}</span>`;
-};
-
-const launcherBadgeContent = (value: unknown): string => {
-  const label = formatValue(value, 'Sin launcher');
-  const icon = launcherInlineIcon(String(value ?? ''));
-  return `${icon}<span>${escapeHtml(label)}</span>`;
-};
-
-const statusClassName = (value: unknown): string =>
-  STATUS_CLASS_MAP[normalizeStatus(value)] ?? 'badge-status-default';
-
-const launcherClassName = (value: unknown): string =>
-  LAUNCHER_CLASS_MAP[normalizeStatus(value)] ?? 'badge-launcher-default';
-
-const platformClassName = (value: unknown): string =>
-  PLATFORM_CLASS_MAP[normalizeStatus(value)] ?? 'badge-platform-default';
 
 // ─── Lógica de precios y tags ─────────────────────────────────────────────────
 
@@ -212,13 +129,6 @@ const compareCatalogGames = (a: CatalogGame, b: CatalogGame, sort: string): numb
 };
 
 // ─── Constructores de DOM ─────────────────────────────────────────────────────
-
-const createBadge = (text: string, className: string): HTMLElement => {
-  const badge = document.createElement('span');
-  badge.className = `badge ${className}`;
-  badge.textContent = formatValue(text);
-  return badge;
-};
 
 // ─── initCatalog ──────────────────────────────────────────────────────────────
 
@@ -570,25 +480,8 @@ export function initCatalog(allGames: CatalogGame[]): void {
         const kickerLauncher = formatValue(game.launcher, '');
         const platformBadgesEl = node.querySelector('[data-platform-badges]')!;
 
-        if (kickerPlatform) {
-          const normalizedPlatform = normalizeStatus(game.plataforma);
-          const platBadge = document.createElement('span');
-          platBadge.className = `badge ${platformClassName(game.plataforma)}`;
-          const capPlatform = kickerPlatform.replace(/\b\w/g, (c) => c.toUpperCase());
-          if (PLATFORMS_WITH_ICON.has(normalizedPlatform)) {
-            platBadge.innerHTML = `${launcherInlineIcon(normalizedPlatform)}<span>${escapeHtml(capPlatform)}</span>`;
-          } else {
-            platBadge.textContent = capPlatform;
-          }
-          platformBadgesEl.appendChild(platBadge);
-        }
-
-        if (kickerLauncher) {
-          const launchBadge = document.createElement('span');
-          launchBadge.className = `badge ${launcherClassName(game.launcher)}`;
-          launchBadge.innerHTML = launcherBadgeContent(game.launcher);
-          platformBadgesEl.appendChild(launchBadge);
-        }
+        if (kickerPlatform) platformBadgesEl.appendChild(createGamePill('platform', game.plataforma));
+        if (kickerLauncher) platformBadgesEl.appendChild(createGamePill('launcher', game.launcher));
 
         const supportParts: string[] = [];
         if (game.lanzamiento != null && game.lanzamiento !== '')
@@ -602,10 +495,9 @@ export function initCatalog(allGames: CatalogGame[]): void {
         cover.innerHTML = `<img src="${escapeHtml(getCoverUrl(game))}" alt="" aria-hidden="true" loading="lazy" decoding="async" />`;
 
         const statusBadge = node.querySelector('[data-estado]') as HTMLElement;
-        statusBadge.textContent = formatValue(game.estado);
-        statusBadge.classList.add(statusClassName(game.estado));
-        if (hasFreeToPlayTag(game)) node.querySelector('.badges')!.appendChild(createBadge('Free to play', 'badge-tag-free'));
-        if (hasEarlyAccess(game)) node.querySelector('.badges')!.appendChild(createBadge('Early Access', 'badge-tag-early'));
+        updateGamePill(statusBadge, 'status', game.estado);
+        if (hasFreeToPlayTag(game)) node.querySelector('.badges')!.appendChild(createGamePill('tag', 'free-to-play'));
+        if (hasEarlyAccess(game)) node.querySelector('.badges')!.appendChild(createGamePill('tag', 'early-access'));
 
         (node.querySelector('[data-horas]') as HTMLElement).textContent =
           game.horas == null
@@ -640,16 +532,9 @@ export function initCatalog(allGames: CatalogGame[]): void {
       rowCover.innerHTML = `<img src="${escapeHtml(getCoverUrl(game))}" alt="" aria-hidden="true" loading="lazy" decoding="async" />`;
 
       const rowStatus = rowNode.querySelector('[data-row-estado]') as HTMLElement;
-      rowStatus.textContent = formatValue(game.estado);
-      rowStatus.classList.add(statusClassName(game.estado));
-
-      const rowLauncher = rowNode.querySelector('[data-row-launcher]') as HTMLElement;
-      rowLauncher.innerHTML = launcherBadgeContent(game.launcher);
-      rowLauncher.classList.add(launcherClassName(game.launcher));
-
-      const rowPlatform = rowNode.querySelector('[data-row-plataforma]') as HTMLElement;
-      rowPlatform.textContent = formatValue(game.plataforma);
-      rowPlatform.classList.add(platformClassName(game.plataforma));
+      updateGamePill(rowStatus, 'status', game.estado);
+      updateGamePill(rowNode.querySelector('[data-row-launcher]') as HTMLElement, 'launcher', game.launcher, formatValue(game.launcher, 'Sin launcher'));
+      updateGamePill(rowNode.querySelector('[data-row-plataforma]') as HTMLElement, 'platform', game.plataforma);
 
       (rowNode.querySelector('[data-row-horas]') as HTMLElement).textContent =
         game.horas == null

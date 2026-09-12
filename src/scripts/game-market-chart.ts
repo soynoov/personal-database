@@ -1,57 +1,76 @@
-import { BarController, BarElement, CategoryScale, Chart, LinearScale, Tooltip, type Plugin } from 'chart.js';
+import { CategoryScale, Chart, Filler, LinearScale, LineController, LineElement, PointElement, Tooltip, type Plugin } from 'chart.js';
 import { readChartTheme } from './chart-theme';
+import type { PriceReference } from '../lib/game-market-view';
 
-Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip);
+Chart.register(LineController, LineElement, PointElement, CategoryScale, LinearScale, Filler, Tooltip);
 const charts = new Map<string, Chart>();
-const currency = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 });
-type MarketPoint = { label: string; value: number };
+const currency = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' });
 
-/** Price references are categories, not a chronological price history. */
+/** Ordered reference prices, not a fabricated history or purchase timeline. */
 export function renderMarketComparison(canvasId: string) {
   const canvas = document.getElementById(canvasId);
-  if (!(canvas instanceof HTMLCanvasElement)) return;
+  if (!(canvas instanceof HTMLCanvasElement) || !canvas.getBoundingClientRect().width) return;
   const payload = JSON.parse(canvas.dataset.chart ?? 'null');
-  if (payload?.type !== 'market-comparison') return;
-  const points: MarketPoint[] = (Array.isArray(payload.points) ? payload.points : [])
-    .filter((point: MarketPoint) => point.label && point.value !== null && Number.isFinite(Number(point.value)))
-    .map((point: MarketPoint) => ({ label: String(point.label), value: Number(point.value) }));
+  if (payload?.type !== 'price-references') return;
+  const points: PriceReference[] = (Array.isArray(payload.points) ? payload.points : [])
+    .filter((point: PriceReference) => point.label && typeof point.value === 'number' && Number.isFinite(point.value) && point.value >= 0);
   if (points.length < 2) return;
+  const historicLow = typeof payload.historicLow === 'number' && Number.isFinite(payload.historicLow) && payload.historicLow >= 0 ? payload.historicLow : null;
   const theme = readChartTheme(canvas);
   charts.get(canvasId)?.destroy();
-  const valueLabels: Plugin<'bar'> = {
-    id: 'market-values',
+  const valueLabels: Plugin<'line'> = {
+    id: 'price-reference-values',
     afterDatasetsDraw(chart) {
       const { ctx } = chart;
       ctx.save();
-      ctx.fillStyle = theme.text;
-      ctx.font = `600 11px ${theme.font}`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      chart.getDatasetMeta(0).data.forEach((bar, index) => {
-        ctx.fillText(currency.format(points[index].value), bar.x, bar.y - 7);
+      ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+      chart.getDatasetMeta(0).data.forEach((point, index) => {
+        const purchase = points[index].kind === 'purchase';
+        ctx.fillStyle = purchase ? theme.primary : theme.text;
+        ctx.font = `${purchase ? 700 : 500} ${purchase ? 13 : 11}px ${theme.font}`;
+        ctx.fillText(currency.format(points[index].value), point.x, point.y - (purchase ? 16 : 12));
       });
       ctx.restore();
     },
   };
   const chart = new Chart(canvas, {
-    type: 'bar', plugins: [valueLabels],
-    data: { labels: points.map(point => point.label === 'Mín. histórico' ? ['Mín.', 'histórico'] : point.label), datasets: [{
-      label: String(payload.seriesLabel ?? 'Precio'), data: points.map(point => point.value),
-      backgroundColor: points.map(point => /Compra|Pagado/i.test(point.label) ? theme.primary : theme.secondary),
-      borderWidth: 0, borderRadius: 4, maxBarThickness: 48,
-    }] },
+    type: 'line', plugins: [valueLabels],
+    data: { labels: points.map(point => point.label), datasets: [{
+      label: 'Precio por copia', data: points.map(point => point.value),
+      borderColor: theme.primary, borderWidth: 2, tension: 0,
+      pointRadius: points.map(point => point.kind === 'purchase' ? 8 : 4),
+      pointHoverRadius: points.map(point => point.kind === 'purchase' ? 10 : 6),
+      pointBorderWidth: points.map(point => point.kind === 'purchase' ? 3 : 2),
+      pointBorderColor: points.map(point => point.kind === 'purchase' ? theme.text : theme.primary),
+      pointBackgroundColor: points.map(point => point.kind === 'purchase' ? theme.primary : theme.panel),
+      pointHitRadius: 16, fill: true,
+      backgroundColor: context => {
+        const area = context.chart.chartArea;
+        if (!area) return theme.fill;
+        const gradient = context.chart.ctx.createLinearGradient(0, area.top, 0, area.bottom);
+        gradient.addColorStop(0, theme.fill); gradient.addColorStop(1, theme.fillEnd);
+        return gradient;
+      },
+    }, ...(historicLow === null ? [] : [{
+      label: 'Mínimo histórico', data: points.map(() => historicLow),
+      borderColor: theme.muted, borderDash: [5, 5], borderWidth: 1, pointRadius: 0, pointHitRadius: 0, fill: false,
+    }])] },
     options: {
       animation: false, responsive: true, maintainAspectRatio: false,
-      layout: { padding: { top: 26, right: 6 } },
+      layout: { padding: { top: 34, right: 14, left: 4 } },
       plugins: { legend: { display: false }, tooltip: {
+        filter: item => item.datasetIndex === 0,
         displayColors: false, backgroundColor: theme.panel, borderColor: theme.line, borderWidth: 1,
         titleColor: theme.text, bodyColor: theme.text, padding: 12,
         titleFont: { family: theme.font }, bodyFont: { family: theme.font },
-        callbacks: { title: items => points[items[0]?.dataIndex]?.label ?? '', label: ctx => currency.format(Number(ctx.parsed.y)) },
+        callbacks: { title: items => points[items[0]?.dataIndex]?.label ?? '', label: ctx => `${currency.format(Number(ctx.parsed.y))} / copia` },
       } },
       scales: {
-        x: { border: { display: false }, grid: { display: false }, ticks: { color: theme.muted, font: { family: theme.font, size: 11 }, maxRotation: 0 } },
-        y: { beginAtZero: true, border: { display: false }, grid: { color: theme.line }, ticks: { color: theme.muted, maxTicksLimit: 5, font: { family: theme.font, size: 11 }, callback: value => `${value} €` } },
+        x: { offset: true, border: { display: false }, grid: { display: false }, ticks: {
+          color: context => points[context.index]?.kind === 'purchase' ? theme.primary : theme.muted,
+          font: context => ({ family: theme.font, size: 11, weight: points[context.index]?.kind === 'purchase' ? 700 : 400 }), maxRotation: 0,
+        } },
+        y: { beginAtZero: true, suggestedMax: Math.max(...points.map(point => point.value), historicLow ?? 0, 1) * 1.15, border: { display: false }, grid: { color: theme.line }, ticks: { color: theme.muted, maxTicksLimit: 5, font: { family: theme.font, size: 11 }, callback: value => `${value} €` } },
       },
     },
   });

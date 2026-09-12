@@ -2,6 +2,7 @@
 import '../../styles/game-detail/stats.css';
 import '../../styles/game-detail/edit.css';
 import FormCheckbox from '../FormCheckbox.astro';
+import GamePill from '../GamePill.astro';
 import TablerIcon from '../TablerIcon.astro';
 import { GAME_MODES } from '../../lib/game-modes';
 import { PUBLIC_GAME_TAGS } from '../../lib/game-tags';
@@ -85,7 +86,9 @@ const progressIcons: Record<ProgressKind, string> = {
                 <dt>{label}</dt>
                 {kind && <dd class="progress-card-icon" aria-hidden="true"><TablerIcon src={progressIcons[kind]} /></dd>}
                 <dd class="detail-item-value">
-                  {values?.length ? <ul class="detail-value-list" role="list">{values.map((entry) => <li>{entry}</li>)}</ul> : value}
+                  {values?.length ? <ul class="detail-value-list" role="list">{values.map((entry) => <li><GamePill value={entry} kind={label === 'Etiquetas' ? 'tag' : 'neutral'} /></li>)}</ul>
+                    : state !== 'empty' && label === 'Launcher' ? <GamePill kind="launcher" value={value} />
+                    : state !== 'empty' && label === 'Plataforma' ? <GamePill kind="platform" value={value} /> : value}
                 </dd>
                 {note && <dd class="detail-item-note">{note}</dd>}
                 {progress !== null && (
