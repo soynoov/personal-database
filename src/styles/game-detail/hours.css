@@ -36,7 +36,7 @@
     border-radius: 0;
     overflow: visible;
   }
-  .game-page-rich #hours :is(.value-kpi, .hours-info-card, .hours-chart-card, .hours-breakdown-grid > div) {
+  .game-page-rich #hours :is(.value-kpi, .hours-info-card, .hours-breakdown-grid > div) {
     min-width: 0;
     border: 1px solid var(--detail-bento-line);
     border-radius: var(--radius-2);
@@ -72,7 +72,7 @@
   .game-page-rich #hours :is(.value-kpi-icon, .hours-info-icon) .tabler-icon { width: 17px; height: 17px; }
   .game-page-rich #hours .value-kpi-primary .value-kpi-icon { width: 44px; height: 44px; }
   .game-page-rich #hours .value-kpi-copy { display: grid; flex: 1; min-width: 0; gap: 0.4rem; }
-  .game-page-rich #hours :is(.value-kpi-copy > span, .hours-info-card > div > span, .hours-chart-heading > div > span, .hours-breakdown-grid dt) {
+  .game-page-rich #hours :is(.value-kpi-copy > span, .hours-info-card > div > span, .hours-breakdown-grid dt) {
     color: var(--muted);
     font-size: 0.65rem;
     font-weight: 550;
@@ -133,37 +133,7 @@
     gap: var(--detail-bento-gap);
     padding: 0;
   }
-  .game-page-rich #hours .hours-secondary-grid.is-chart-only { grid-template-columns: minmax(0, 1fr); }
-  .game-page-rich #hours .hours-chart-card {
-    display: grid;
-    grid-template-rows: auto 1fr;
-    gap: 0.75rem;
-    padding: 1rem;
-  }
-  .game-page-rich #hours .hours-chart-heading {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 0.55rem;
-  }
-  .game-page-rich #hours .hours-chart-heading > div { display: grid; gap: 0.2rem; }
-  .game-page-rich #hours .hours-chart-heading h3 { margin: 0; color: var(--text); font: 650 0.95rem/1.4 var(--font-body); }
-  .game-page-rich #hours .chart-badge {
-    padding: 0.3rem 0.6rem;
-    color: var(--muted);
-    border: 1px solid var(--detail-bento-line);
-    border-radius: var(--radius-pill);
-    background: transparent;
-    font-size: 0.65rem;
-  }
-  .game-page-rich #hours .chart-canvas-wrap-hours {
-    position: relative;
-    width: 100%;
-    height: var(--hours-chart-height, 240px);
-    min-height: 0;
-    max-height: none;
-    padding: 0;
-  }
+  .game-page-rich #hours .hours-secondary-grid.is-goal-only { grid-template-columns: minmax(0, 1fr); }
   .game-page-rich #hours .hours-breakdown-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -197,8 +167,6 @@
     .game-page-rich #hours .value-kpi-copy > strong { font-size: clamp(1.9rem, 8.5vw, 2.5rem); }
     .game-page-rich #hours .hours-info-card { grid-column: span 6; padding: 0.85rem; flex-direction: column; align-items: flex-start; }
     .game-page-rich #hours .hours-priority-grid[data-recurring='true'] .hours-period-summary { grid-column: span 6; }
-    .game-page-rich #hours .hours-chart-card { padding: 0.8rem; }
-    .game-page-rich #hours .hours-chart-heading { grid-template-columns: auto minmax(0, 1fr); }
     .game-page-rich #hours .chart-badge { display: none; }
     .game-page-rich #hours .hours-breakdown-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .game-page-rich #hours .hours-breakdown-grid > div:last-child:nth-child(odd) { grid-column: 1 / -1; }

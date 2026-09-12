@@ -104,13 +104,11 @@
   .game-page-rich .chart-note { margin: var(--space-4) 0 0; color: var(--muted); font: 400 var(--type-label)/1.5 var(--font-body); }
   .game-page-rich .dlc-sync-prices-btn { min-height: var(--control-height); padding: var(--space-2) var(--space-3); border: 1px solid var(--selection-line); border-radius: var(--radius-4); background: var(--selection-bg); color: var(--theme-purple); }
   .game-page-rich .competitive-rank-grid { grid-template-columns: minmax(0, 1fr); }
-  .game-page-rich .competitive-rank-grid:has(.competitive-rank-card-current) { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
   .game-page-rich .competitive-rank-card { min-height: 144px; justify-content: center; gap: var(--space-4); padding: var(--space-6); }
   .game-page-rich .competitive-rank-card-peak { border-color: var(--selection-line); background: var(--panel-emphasis); }
   .game-page-rich .competitive-rank-label { position: static; color: var(--muted); letter-spacing: 0.04em; font-size: var(--type-label); }
   .game-page-rich .competitive-rank-label .tabler-icon { color: var(--theme-purple); }
   .game-page-rich .competitive-rank-card strong { color: var(--text); font: 650 var(--type-metric)/1.1 var(--font-body); white-space: normal; overflow-wrap: anywhere; }
-  .game-page-rich .competitive-rank-card-current strong { font-size: 1.75rem; }
   .game-page-rich .competitive-rank-card.is-empty strong { color: var(--muted); font-size: 1.25rem; }
   .game-page-rich .competitive-rank-card .brand-button { align-self: start; padding-inline: var(--space-4); }
   .game-page-rich .metacritic-score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-3); }
@@ -165,7 +163,6 @@
     .game-page-rich .finance-kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .game-page-rich .finance-breakdown dl { grid-template-columns: minmax(0, 1fr); }
     .game-page-rich .finance-market-values { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .game-page-rich .competitive-rank-grid:has(.competitive-rank-card-current) { grid-template-columns: minmax(0, 1fr); }
     .game-page-rich .competitive-rank-card { padding: var(--space-4); }
     .game-page-rich .metacritic-score-grid { grid-template-columns: minmax(0, 1fr); }
     .game-page-rich .metacritic-score-card { min-height: 100px; }

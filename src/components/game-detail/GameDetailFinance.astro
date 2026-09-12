@@ -4,7 +4,6 @@ import '../../styles/game-detail/finance.css';
 import '../../styles/game-detail/edit.css';
 import '../../styles/game-detail/market.css';
 import GameDetailMarket from './GameDetailMarket.astro';
-import GameDetailValueChart from './GameDetailValueChart.astro';
 import type { GameMarketView } from '../../lib/game-market-view';
 import {
   formatEuro,
@@ -33,7 +32,6 @@ interface Props {
   paidUnitPrice: number | null;
   market: GameMarketView;
   hasDlcs: boolean;
-  estimatedHours?: boolean;
   editValues: MoneyEditValues;
 }
 
@@ -43,7 +41,6 @@ const {
   paidUnitPrice,
   market,
   hasDlcs,
-  estimatedHours = false,
   editValues,
 } = Astro.props;
 const isFreeToPlay = editValues.tags.includes('free-to-play');
@@ -137,13 +134,11 @@ const incompleteActionLabel = metrics.baseSpend === null ? 'Registrar precio' : 
         <span>Rentabilidad pendiente</span>
         <strong id="finance-incomplete-title">{incompleteHeadline}</strong>
         {incompleteDetail && <small>{incompleteDetail}</small>}
-        <small>La gráfica de amortización necesita el gasto completo; los importes sin registrar no se consideran cero.</small>
+        <small>La rentabilidad necesita el gasto completo; los importes sin registrar no se consideran cero.</small>
       </div>
       <button class="finance-incomplete-action" type="button" aria-controls="money-edit-dialog" data-money-edit-trigger>{incompleteActionLabel}</button>
     </section>
   )}
-
-  <GameDetailValueChart metrics={metrics} estimated={estimatedHours} />
 
   <div class="finance-kpi-grid">
     {metrics.costPerRealHour !== null && <article><span>Coste/h real</span><strong>{formatEuro(metrics.costPerRealHour)}/h</strong></article>}

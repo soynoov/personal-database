@@ -4,8 +4,8 @@ import '../../styles/game-detail/hours.css';
 import '../../styles/game-detail/edit.css';
 import { formatHoursDuration, type GameValueMetrics } from '../../lib/game-finance';
 import FormCheckbox from '../FormCheckbox.astro';
+import GameDetailHoursGoal from './GameDetailHoursGoal.astro';
 import TablerIcon from '../TablerIcon.astro';
-import chartIcon from '@tabler/icons/outline/chart-bar.svg?url';
 import calendarIcon from '@tabler/icons/outline/calendar-event.svg?url';
 import clockIcon from '@tabler/icons/outline/clock.svg?url';
 import editIcon from '@tabler/icons/outline/edit.svg?url';
@@ -16,29 +16,20 @@ import targetIcon from '@tabler/icons/outline/target-arrow.svg?url';
 interface Props {
   slug: string;
   metrics: GameValueMetrics;
-  hoursChartPayload: object;
-  hoursChartPoints: Array<{ label: string; value: number; color?: string }>;
   hltbBreakdown: { main: number | null; mainPlus: number | null; completionist: number | null };
   period: { startLabel: string; endLabel: string; elapsedDays: number | null };
   editValues: { horas: number | null; horas_estimadas: boolean; fecha_inicio: string | null; fecha_fin: string | null };
   isRecurring?: boolean;
 }
 
-const { slug, metrics, hoursChartPayload, hoursChartPoints, hltbBreakdown, period, editValues, isRecurring = false } = Astro.props;
+const { slug, metrics, hltbBreakdown, period, editValues, isRecurring = false } = Astro.props;
 const progress = Math.max(0, Math.min(100, metrics.hltbProgressPercent ?? 0));
-const chartValueCount = hoursChartPoints.length + (metrics.realHours === null ? 0 : 1);
 const hltbReferences = metrics.showHltbTarget ? [
   { label: 'Historia', value: hltbBreakdown.main },
   { label: 'Historia+', value: hltbBreakdown.mainPlus },
   { label: '100%', value: hltbBreakdown.completionist },
 ].filter((entry): entry is { label: string; value: number } => entry.value !== null && Number.isFinite(entry.value)) : [];
 const hasHltbBreakdown = hltbReferences.length > 0;
-const chartA11yLabel = [
-  ...hoursChartPoints.map((point) => `${point.label}: ${formatHoursDuration(point.value)}`),
-  ...(metrics.realHours === null
-    ? []
-    : [`${editValues.horas_estimadas ? 'Horas estimadas' : 'Mis horas'}: ${formatHoursDuration(metrics.realHours)}`]),
-].join('. ');
 const hasStartDate = Boolean(editValues.fecha_inicio);
 const hasEndDate = !isRecurring && Boolean(editValues.fecha_fin);
 const hasPeriodData = hasStartDate || hasEndDate;
@@ -131,28 +122,14 @@ const hltbState = !metrics.showHltbTarget
 
   </div>
 
-  {hoursChartPoints.length > 0 && (
-    <div class:list={["hours-secondary-grid", !hasHltbBreakdown && "is-chart-only"]}>
-      <section class="hours-chart-card" aria-labelledby="hours-chart-title">
-        <div class="hours-chart-heading">
-          <span class="hours-info-icon"><TablerIcon src={chartIcon} /></span>
-          <div>
-            <span>Horas y referencias</span>
-            <h3 id="hours-chart-title">Comparativa de tiempo</h3>
-          </div>
-          <span class="chart-badge">{chartValueCount} valores</span>
-        </div>
-        <div class="chart-canvas-wrap chart-canvas-wrap-hours" style={`--hours-chart-height:${Math.max(180, chartValueCount * 48 + 48)}px`}>
-          <canvas id="hours-detail-chart" data-chart={JSON.stringify(hoursChartPayload)} role="img" aria-label={chartA11yLabel}></canvas>
-        </div>
-      </section>
-      {hasHltbBreakdown && (
-        <dl class="hours-breakdown-grid" aria-label="Desglose HLTB" style={`--hltb-count:${hltbReferences.length}`}>
-          {hltbReferences.map(({ label, value }) => <div><dt>{label}</dt><dd>{formatHoursDuration(value)}</dd></div>)}
-        </dl>
-      )}
-    </div>
-  )}
+  <div class:list={["hours-secondary-grid", !hasHltbBreakdown && "is-goal-only"]}>
+    <GameDetailHoursGoal metrics={metrics} estimated={editValues.horas_estimadas} />
+    {hasHltbBreakdown && (
+      <dl class="hours-breakdown-grid" aria-label="Desglose HLTB" style={`--hltb-count:${hltbReferences.length}`}>
+        {hltbReferences.map(({ label, value }) => <div><dt>{label}</dt><dd>{formatHoursDuration(value)}</dd></div>)}
+      </dl>
+    )}
+  </div>
 </article>
 
 <dialog class="edit-dialog" id="hours-edit-dialog">

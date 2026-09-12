@@ -5,14 +5,42 @@ const server = await createServer({ appType: 'custom', server: { middlewareMode:
 try {
   const { getDetailGroupLayout } = await server.ssrLoadModule('/src/lib/game-detail-layout.ts');
   const { getGoldenCompletionKind } = await server.ssrLoadModule('/src/lib/game-achievements.ts');
-  const { getHoursComparisonPoints } = await server.ssrLoadModule('/src/lib/game-hours-view.ts');
-  assert.deepEqual(getHoursComparisonPoints({ myHours: null }), []);
-  assert.deepEqual(getHoursComparisonPoints({ myHours: 0 }), [{ label: 'Mis horas', value: 0, kind: 'personal' }]);
-  const hoursPayload = { myHours: 800.6, benchmarkBars: [{ label: 'Amortización', value: 134.42 }] };
-  assert.deepEqual(getHoursComparisonPoints(hoursPayload).map(point => point.value), [800.6, 134.42]);
-  assert.equal(hoursPayload.benchmarkBars.length, 1, 'Comparison does not mutate stored references');
-  assert.equal(getHoursComparisonPoints({ myHours: 4.6, myHoursLabel: 'Horas estimadas' })[0].label, 'Horas estimadas');
-  assert.deepEqual(getHoursComparisonPoints({ benchmarkBars: [{ label: 'Nulo', value: null }, { label: 'Inválido', value: NaN }, { label: 'Negativo', value: -1 }] }), []);
+  const { getEconomicHoursGoal } = await server.ssrLoadModule('/src/lib/game-hours-goal.ts');
+  const { getGameValueMetrics } = await server.ssrLoadModule('/src/lib/game-finance.ts');
+  const game = { titulo: 'Goal fixture', precio_pagado: 100, horas: 50, nota: 10 };
+  const metrics = getGameValueMetrics(game);
+  const before = structuredClone(metrics);
+  assert.deepEqual(getEconomicHoursGoal(metrics), {
+    state: 'in-progress', actualHours: 50, targetHours: 90.91,
+    remainingHours: 40.91, progressPercent: 55,
+  });
+  assert.deepEqual(metrics, before, 'Goal presentation never mutates the financial calculation');
+  const goal = patch => getEconomicHoursGoal(getGameValueMetrics({ ...game, ...patch }));
+  assert.equal(goal({ horas: 0 }).progressPercent, 0, 'Recorded zero is genuine progress');
+  assert.equal(goal({ horas: 0 }).state, 'in-progress');
+  assert.equal(goal({ horas: 800.6 }).progressPercent, 100, 'Extra hours do not enlarge the scale');
+  assert.equal(goal({ horas: 800.6 }).state, 'achieved');
+  assert.equal(goal({ horas: 100, nota: null }).state, 'achieved', 'Exact target is reached');
+  assert.equal(goal({ horas: 99.96, nota: null }).state, 'in-progress');
+  assert.equal(goal({ horas: 99.96, nota: null }).progressPercent, 99, 'No premature 100% through rounding');
+  for (const horas of [null, undefined, '', NaN, Infinity, -1]) {
+    assert.equal(goal({ horas }).state, 'missing-hours');
+    assert.equal(goal({ horas }).progressPercent, null);
+  }
+  for (const precio_pagado of [null, undefined, -1]) {
+    assert.equal(goal({ precio_pagado }).state, 'incomplete');
+    assert.equal(goal({ precio_pagado }).progressPercent, null);
+  }
+  assert.equal(goal({ precio_pagado: 0 }).state, 'no-cost');
+  assert.equal(goal({ precio_pagado: 0 }).progressPercent, null, 'No artificial bar when there is no expense');
+  assert.equal(goal({ precio_pagado: 0, horas: null }).state, 'no-cost');
+  const f2p = goal({ tags: ['free-to-play'], gasto_microtransacciones: 200 });
+  assert.equal(f2p.state, 'in-progress', 'Free-to-play purchases still need amortization');
+  assert.equal(f2p.targetHours, 181.82);
+  const missingDlc = goal({ dlcs: { items: [{ titulo: 'DLC', fecha_adquisicion: '2026-01-01', precio_pagado: null }] } });
+  assert.equal(missingDlc.state, 'incomplete');
+  assert.equal(missingDlc.targetHours, null);
+  assert.equal(goal({ horas_estimadas: true }).progressPercent, 55);
   const item = (state, value = '-') => ({ label: 'Dato', value, state });
   assert.equal(getDetailGroupLayout([]).state, 'not-applicable');
   assert.equal(getDetailGroupLayout([item('not-applicable')]).visibleItems.length, 0);

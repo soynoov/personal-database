@@ -112,13 +112,15 @@ try {
   assert.equal(marvel.economicMultiple, 6.55);
 
   const manualEdit = applyManualGamePatch(
-    game({ estado: 'Pendiente', horas: 4, comentarios: 'Se conserva' }),
+    game({ estado: 'Pendiente', horas: 4, comentarios: 'Se conserva', rango_actual: 'Platino 3', rango_maximo: 'Diamante 1' }),
     { estado: 'Terminado', horas: 6.5, fecha_fin: '2026-08-26' },
   );
   assert.equal(manualEdit.ok, true);
   assert.equal(manualEdit.game.estado, 'Terminado');
   assert.equal(manualEdit.game.horas, 6.5);
   assert.equal(manualEdit.game.comentarios, 'Se conserva');
+  assert.equal(manualEdit.game.rango_actual, 'Platino 3', 'Hidden historical rank survives an hours update');
+  assert.equal(manualEdit.game.rango_maximo, 'Diamante 1');
   assert.match(manualEdit.game.actualizado_en, /^\d{4}-\d{2}-\d{2}T/);
 
   const technicalEdit = applyManualGamePatch(game(), {

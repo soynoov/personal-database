@@ -1,20 +1,14 @@
 @import '../theme.css';
 
 @layer brand {
-  .game-page-rich .finance-hours-chart { display: grid; gap: var(--space-6); padding: var(--space-6); border: 1px solid var(--panel-line); border-radius: var(--radius-2); background: var(--panel-inner); }
-  .finance-hours-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); }
-  .finance-hours-heading h3 { margin: var(--space-2) 0 0; color: var(--text); font: 600 var(--type-body)/1.4 var(--font-body); }
-  .finance-hours-state { color: var(--muted); font: 550 var(--type-label)/1.5 var(--font-body); }
-  .finance-hours-state.is-complete { color: var(--success); }
-  .finance-hours-bars, .dlc-price-bars { display: grid; gap: var(--space-6); margin: 0; }
-  .finance-hours-bars > div, .dlc-price-bars > div { display: grid; grid-template-columns: 160px minmax(0, 1fr); align-items: center; gap: var(--space-4); }
-  .finance-hours-bars dt, .dlc-price-bars dt { color: var(--text); font: 500 var(--type-ui)/1.5 var(--font-body); }
-  .finance-hours-bars dd, .dlc-price-bars dd { display: grid; grid-template-columns: minmax(0, 1fr) 120px; gap: var(--space-4); align-items: center; margin: 0; }
-  .finance-hours-bars dd strong, .dlc-price-bars dd strong { grid-column: 2; grid-row: 1; color: var(--text); text-align: right; font: 600 var(--type-ui)/1.4 var(--font-body); font-variant-numeric: tabular-nums; }
-  .finance-hours-track, .dlc-price-track { display: block; grid-column: 1; grid-row: 1; height: 12px; border-radius: var(--radius-pill); background: var(--chart-track); overflow: hidden; }
-  .finance-hours-track > span, .dlc-price-track > span { display: block; height: 100%; border-radius: inherit; background: var(--chart-primary); }
-  .finance-hours-target .finance-hours-track > span, .dlc-price-current .dlc-price-track > span { background: var(--chart-secondary); }
-  .game-page-rich .finance-hours-chart .chart-note { margin: 0; }
+  .dlc-price-bars { display: grid; gap: var(--space-6); margin: 0; }
+  .dlc-price-bars > div { display: grid; grid-template-columns: 160px minmax(0, 1fr); align-items: center; gap: var(--space-4); }
+  .dlc-price-bars dt { color: var(--text); font: 500 var(--type-ui)/1.5 var(--font-body); }
+  .dlc-price-bars dd { display: grid; grid-template-columns: minmax(0, 1fr) 120px; gap: var(--space-4); align-items: center; margin: 0; }
+  .dlc-price-bars dd strong { grid-column: 2; grid-row: 1; color: var(--text); text-align: right; font: 600 var(--type-ui)/1.4 var(--font-body); font-variant-numeric: tabular-nums; }
+  .dlc-price-track { display: block; grid-column: 1; grid-row: 1; height: 12px; border-radius: var(--radius-pill); background: var(--chart-track); overflow: hidden; }
+  .dlc-price-track > span { display: block; height: 100%; border-radius: inherit; background: var(--chart-primary); }
+  .dlc-price-current .dlc-price-track > span { background: var(--chart-secondary); }
   .game-page-rich .finance-market-grid .finance-market-values > .finance-purchase-card { grid-column: 1 / -1; display: grid; gap: var(--space-2); padding: var(--space-6); border-color: var(--selection-line); background: var(--selection-bg); align-content: center; }
   .game-page-rich .finance-purchase-card dt { display: flex; align-items: center; gap: var(--space-2); color: var(--theme-purple); font-weight: 600; }
   .game-page-rich .finance-purchase-card > dd:not(.finance-market-note, .finance-purchase-saving) { color: var(--text); font: 650 clamp(1.8rem, 3vw, 2.5rem)/1.2 var(--font-body); }
@@ -40,9 +34,9 @@
   .market-dlc-breakdown td, .market-dlc-breakdown thead th:not(:first-child) { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
   .market-dlc-breakdown tbody th { font-weight: 450; }
   @media (max-width: 700px) {
-    .game-page-rich .finance-hours-chart, .game-page-rich .chart-visual-card-dlc, .game-page-rich .finance-market-grid .finance-purchase-card { padding: var(--space-4); }
-    .finance-hours-bars > div, .dlc-price-bars > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
-    .finance-hours-bars dd, .dlc-price-bars dd { grid-template-columns: minmax(0, 1fr) 105px; gap: var(--space-3); }
+    .game-page-rich .chart-visual-card-dlc, .game-page-rich .finance-market-grid .finance-purchase-card { padding: var(--space-4); }
+    .dlc-price-bars > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+    .dlc-price-bars dd { grid-template-columns: minmax(0, 1fr) 105px; gap: var(--space-3); }
     .game-page-rich .finance-market-grid { padding: 0 var(--space-3) var(--space-3); }
     .game-page-rich .finance-market-values { order: -1; }
   }
