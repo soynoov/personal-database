@@ -3,8 +3,6 @@
 
 @layer global {
   .game-page-rich.is-golden > .game-golden-atmosphere {
-    --golden-x: 50vw;
-    --golden-y: 40vh;
     --foil-field-x: 50%;
     --foil-field-y: 50%;
     --foil-angle: 130deg;
@@ -19,20 +17,19 @@
       radial-gradient(ellipse at 100% 78%, color-mix(in srgb, var(--card-foil-gold) 12%, transparent), transparent 42%);
   }
 
-  /* Expand the halo's reach, preserving band density, opacity and interaction. */
+  /* Always visible from first paint and fixed to the viewport while scrolling. */
   .game-golden-field {
     --foil-band-unit: 36.5px;
     position: absolute;
-    left: var(--golden-x);
-    top: var(--golden-y);
+    left: 50%;
+    top: 40%;
     width: max(var(--detail-golden-width), 200vw);
     height: max(var(--detail-golden-height), 200vh);
     transform: translate(-50%, -50%);
-    opacity: 0;
+    opacity: var(--detail-golden-opacity);
     pointer-events: none;
     mix-blend-mode: screen;
     mask-image: radial-gradient(ellipse 66% 60% at center, black 8%, rgba(0, 0, 0, 0.85) 35%, transparent 78%);
-    transition: opacity var(--detail-golden-settle) ease-out;
   }
   .game-golden-field::before, .game-golden-field::after {
     content: '';
@@ -42,11 +39,10 @@
   }
   .game-golden-field::before {
     background-image: var(--golden-bands);
-    /* Fixed physical band density and travel, without visible tile boundaries. */
+    /* Keep the same physical band density without visible tile boundaries. */
     background-size: calc(100% + var(--detail-golden-width) * 1.5) calc(100% + var(--detail-golden-height) * 1.5);
     background-repeat: no-repeat;
     background-position: var(--foil-field-x) var(--foil-field-y);
-    transition: background-position 84ms ease-out;
   }
   .game-golden-field::after {
     background-image:
@@ -56,12 +52,6 @@
     background-position: center, calc(100% - var(--foil-field-x)) calc(100% - var(--foil-field-y));
   }
 
-  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-    .game-golden-atmosphere.is-lit .game-golden-field {
-      opacity: var(--detail-golden-active);
-      transition-duration: 120ms;
-    }
-  }
   .game-page-rich.is-golden :is(.game-hero-cinematic, #hours, #technical) {
     border-color: var(--detail-golden-line);
   }
@@ -72,7 +62,5 @@
   .game-page-rich.is-golden .game-overview-card.game-overview-card-cinematic .game-overview-media {
     border-color: var(--card-foil-gold);
   }
-  @media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) {
-    .game-golden-field { display: none; }
-  }
+  /* The material is static, so touch and reduced-motion keep the same finish. */
 }
