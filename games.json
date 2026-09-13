@@ -8817,5 +8817,195 @@
       "https://www.playstation.com/en-us/games/the-last-of-us-part-ii/",
       "https://blog.playstation.com/2019/10/24/the-last-of-us-part-ii-comes-to-ps4-in-may/"
     ]
+  },
+  {
+    "titulo": "Five Nights at Freddy's",
+    "creado_en": "2026-09-13T00:40:38Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2014,
+    "modos": [
+      "solitario"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/319510/header.jpg?t=1666889251",
+    "steam_appid": 319510,
+    "generos": [
+      "Terror",
+      "Supervivencia"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Scott Cawthon"
+    ],
+    "editoras": [
+      "Scott Cawthon"
+    ],
+    "fuentes_datos": [
+      "https://store.steampowered.com/app/319510/"
+    ]
+  },
+  {
+    "titulo": "Five Nights at Freddy's 2",
+    "creado_en": "2026-09-13T00:40:38Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2014,
+    "modos": [
+      "solitario"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/332800/header.jpg?t=1579635993",
+    "steam_appid": 332800,
+    "generos": [
+      "Terror",
+      "Supervivencia"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Scott Cawthon"
+    ],
+    "editoras": [
+      "Scott Cawthon"
+    ],
+    "fuentes_datos": [
+      "https://store.steampowered.com/app/332800/"
+    ]
+  },
+  {
+    "titulo": "Five Nights at Freddy's 3",
+    "creado_en": "2026-09-13T00:40:38Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2015,
+    "modos": [
+      "solitario"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/354140/header.jpg?t=1579635991",
+    "steam_appid": 354140,
+    "generos": [
+      "Terror",
+      "Supervivencia"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Scott Cawthon"
+    ],
+    "editoras": [
+      "Scott Cawthon"
+    ],
+    "fuentes_datos": [
+      "https://store.steampowered.com/app/354140/"
+    ]
+  },
+  {
+    "titulo": "Five Nights at Freddy's 4",
+    "creado_en": "2026-09-13T00:40:38Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2015,
+    "modos": [
+      "solitario"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/388090/header.jpg?t=1579635988",
+    "steam_appid": 388090,
+    "generos": [
+      "Terror",
+      "Supervivencia"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Scott Cawthon"
+    ],
+    "editoras": [
+      "Scott Cawthon"
+    ],
+    "fuentes_datos": [
+      "https://store.steampowered.com/app/388090/"
+    ]
+  },
+  {
+    "titulo": "Five Nights at Freddy's: Sister Location",
+    "creado_en": "2026-09-13T00:40:38Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2016,
+    "modos": [
+      "solitario"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/506610/header.jpg?t=1579635985",
+    "steam_appid": 506610,
+    "generos": [
+      "Terror",
+      "Supervivencia"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Scott Cawthon"
+    ],
+    "editoras": [
+      "Scott Cawthon"
+    ],
+    "fuentes_datos": [
+      "https://store.steampowered.com/app/506610/"
+    ]
   }
 ]
