@@ -8963,5 +8963,46 @@
     "fuentes_datos": [
       "https://store.steampowered.com/app/506610/"
     ]
+  },
+  {
+    "titulo": "SMITE 2",
+    "creado_en": "2026-09-13T09:40:53Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2024,
+    "lanzamiento_nota": "Acceso anticipado en Steam desde el 27 de agosto de 2024.",
+    "modos": [
+      "cooperativo",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2437170/84111f742bdabda563ce1fdf30185aae66494492/header_alt_assets_26.jpg?t=1788550124",
+    "steam_appid": 2437170,
+    "generos": [
+      "Acción",
+      "Estrategia",
+      "MOBA"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Titan Forge Games"
+    ],
+    "editoras": [
+      "Hi-Rez Studios"
+    ],
+    "fuentes_datos": [
+      "https://store.steampowered.com/app/2437170/SMITE_2/"
+    ]
   }
 ]
