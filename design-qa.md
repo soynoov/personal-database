@@ -452,4 +452,20 @@ La hoja propuesta se usa como verdad visual del foil, no como especificación de
 
 - P3 opcional: ajustar unos pocos grados o píxeles el recorrido tras probarlo con la velocidad real de ratón del usuario; no existe ahora una desviación estructural respecto a la propuesta.
 
+## 2026-09-13 — Meta de amortización compacta
+
+- Fuente: `C:/Users/heroy/.codex/generated_images/01a0765a-e9e2-70d3-80f3-355a09b42efc/exec-92bf966c-426c-458c-a4fb-8c667bc5327e.png`, con la aclaración aprobada: conservar el icono principal y eliminar únicamente los de Jugadas/Meta.
+- Implementación: `.codex-qa/compact-goal/reference-state.png`; capturas reales por juego y viewport en esa misma carpeta.
+- Comparación conjunta de fuente y componente: fuente 1942×809 con lienzo exterior; componente de referencia 722×175, densidad 1, viewport 820×1024. Se comparó el contenido del widget, no los márgenes editoriales del mock. Fixture visual de 42%, 11 h 48 min / 28 h 19 min, sin guardar datos; conserva el check del juego usado como base, mientras el componente real selecciona target/check según estado.
+- Tipografía: Elms Sans y escala real de marca, titular hasta 26 px, apoyos hasta 20 px. No se reproducen las grandes dimensiones de presentación del bitmap.
+- Espaciado: grid 2/1, padding 16 px, gaps 12 px, radios 16/8 px; apoyos apilados en escritorio y juntos bajo la barra con menos de 480 px de ancho disponible.
+- Color: tokens vigentes, violeta en progreso y verde al completar; sin cambios al fondo Golden.
+- Assets: único icono Tabler existente, integrado en el título; sin iconos laterales ni assets raster necesarios.
+- Contenido: una barra accesible, porcentaje junto a ella, encabezado dinámico y avisos estimados/provisionales conservados.
+- Evidencia focal: las capturas son del componente completo y todos sus textos resultan legibles; no se necesita un recorte adicional.
+- Pruebas: 1440, 820, 390 y 2560 px; DBD, Marvel Rivals y SMITE 2. Sin overflow de página/componente ni errores de ejecución. Editor de horas abre y cierra con Escape en los 12 casos.
+- Pruebas de ficha y financieras, incluidos datos ausentes/cero/provisionales, y build: pasan. La fórmula no se modifica.
+- Hallazgos: sin P0/P1/P2 visuales; una pasada visual, sin correcciones derivadas de ella. Las diferencias de escala del mock se consideran intencionadas para respetar la marca y compactar.
+- Checklist: icono principal integrado; apoyos sin iconos; barra única; responsive; cálculo y edición conservados.
+
 final result: passed

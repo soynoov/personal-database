@@ -42,7 +42,6 @@
   .game-page-rich #hours .hours-goal-card { padding: var(--space-4); gap: var(--space-3); }
   .game-page-rich #hours .hours-breakdown-grid > div { padding: var(--space-3); }
   .game-page-rich #hours .hours-goal-measure { gap: var(--space-2); }
-  .game-page-rich #hours .hours-goal-track { height: var(--space-3); }
   .game-page-rich #hours .usage-breakdown > summary { padding: var(--space-3) var(--space-4); }
   .game-page-rich .usage-metrics-grid > .metric-card { min-height: 0; gap: var(--space-2); border-radius: var(--radius-3); }
 

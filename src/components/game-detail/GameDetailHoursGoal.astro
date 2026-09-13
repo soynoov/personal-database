@@ -21,30 +21,38 @@ const progressDescription = `${headline}. ${estimated ? 'Horas estimadas' : 'Hor
 ---
 
 <section class="hours-goal-card" data-hours-goal={goal.state} data-usage-provisional={goal.provisional} aria-labelledby="hours-goal-title">
-  <div class="hours-goal-heading">
-    <span class="hours-goal-icon"><TablerIcon src={goal.state === 'achieved' ? checkIcon : targetIcon} /></span>
-    <div>
-      <div class="hours-goal-label"><span class="hours-goal-eyebrow">Meta de amortización</span>{goal.provisional && <GamePill value="Provisional" />}</div>
-      <h3 id="hours-goal-title">{headline}</h3>
+  <div class:list={['hours-goal-layout', { 'has-values': goal.targetHours !== null }]}>
+    <div class="hours-goal-main">
+      <div class="hours-goal-heading">
+        <div class="hours-goal-label">
+          <span class="hours-goal-eyebrow"><span class="hours-goal-icon"><TablerIcon src={goal.state === 'achieved' ? checkIcon : targetIcon} /></span>Meta de amortización</span>
+          {goal.provisional && <GamePill value="Provisional" />}
+        </div>
+        <h3 id="hours-goal-title">{headline}</h3>
+      </div>
+      {goal.progressPercent !== null && (
+        <div class="hours-goal-measure">
+          <strong class="hours-goal-percent">{goal.progressPercent}% completado</strong>
+          <div class="hours-goal-track" role="progressbar" aria-label="Progreso hacia la meta de amortización"
+            aria-valuemin="0" aria-valuemax="100" aria-valuenow={goal.progressPercent} aria-valuetext={progressDescription}>
+            <span style={`--hours-goal-progress:${goal.progressPercent}%`}></span>
+          </div>
+        </div>
+      )}
     </div>
-    {goal.progressPercent !== null && <strong class="hours-goal-percent">{goal.progressPercent}%</strong>}
+    {goal.targetHours !== null && (
+      <dl class="hours-goal-values">
+        <div><dt>{estimated ? 'Horas estimadas' : 'Jugadas'}</dt><dd>{actualLabel}</dd></div>
+        <div><dt>Meta</dt><dd>{formatHoursDuration(goal.targetHours)}</dd></div>
+      </dl>
+    )}
   </div>
 
   {goal.targetHours !== null && (
-    <div class="hours-goal-measure">
-      <dl class="hours-goal-values">
-        <div><dt>{estimated ? 'Tus horas estimadas' : 'Tus horas jugadas'}</dt><dd>{actualLabel}</dd></div>
-        <div><dt>Meta</dt><dd>{formatHoursDuration(goal.targetHours)}</dd></div>
-      </dl>
-      {goal.progressPercent !== null && (
-        <div class="hours-goal-track" role="progressbar" aria-label="Progreso hacia la meta de amortización"
-          aria-valuemin="0" aria-valuemax="100" aria-valuenow={goal.progressPercent} aria-valuetext={progressDescription}>
-          <span style={`--hours-goal-progress:${goal.progressPercent}%`}></span>
-        </div>
-      )}
+    <>
       {estimated && <p class="hours-goal-note">Progreso orientativo: las horas son estimadas.</p>}
       {goal.provisional && <p class="hours-goal-note">Con el gasto conocido; la meta puede cambiar al <a href="#finance-data-notice">completar los importes pendientes</a>.</p>}
-    </div>
+    </>
   )}
 
   {goal.state === 'missing-hours' && (
