@@ -29,7 +29,7 @@ const rouletteGames = games
 const estados = getUniqueValues(games, 'estado');
 const launchers = getUniqueValues(games, 'launcher');
 const plataformas = getUniqueValues(games, 'plataforma');
-const generos = [...new Set(games.flatMap((game) => game.generos ?? []))]
+const generos = [...new Set(rouletteGames.flatMap((game) => game.generos ?? []))]
   .filter(Boolean)
   .sort((a, b) => a.localeCompare(b, 'es'));
 

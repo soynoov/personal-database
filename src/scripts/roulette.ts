@@ -3,6 +3,7 @@ import { buildGameCoverUrl, buildGameHeroUrl } from '../lib/game-cover-url';
 import { gameHasMode } from '../lib/game-modes';
 import { normalizeStatus } from '../lib/game-status';
 import { hasGameTag } from '../lib/game-tags';
+import { getGameGenres } from '../lib/game-genres';
 import type { RouletteGame } from '../lib/roulette-game';
 import gamepadIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
 
@@ -253,7 +254,8 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
     try {
       const values = JSON.parse(raw) as Record<string, unknown>;
       Object.entries(filterSelects).forEach(([key, select]) => {
-        const candidate = typeof values[key] === 'string' ? String(values[key]) : '';
+        const stored = typeof values[key] === 'string' ? String(values[key]) : '';
+        const candidate = key === 'genre' ? getGameGenres([stored])[0] ?? '' : stored;
         const isValid = Array.from(select.options).some((option) => option.value === candidate);
         if (isValid) select.value = candidate;
       });

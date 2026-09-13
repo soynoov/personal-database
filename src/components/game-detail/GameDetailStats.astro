@@ -42,9 +42,8 @@ interface Props {
 
 const { slug, credits, metadataGroups, systemItems, isSteam, editValues } = Astro.props;
 const groupIcons: Record<string, string> = {
-  Progreso: trophyIcon,
   'Datos del juego': categoryIcon,
-  'Mi copia': copyIcon,
+  'Mis datos': copyIcon,
 };
 const progressIcons: Record<ProgressKind, string> = {
   difficulty: difficultyIcon,
@@ -56,7 +55,7 @@ const progressIcons: Record<ProgressKind, string> = {
 <section class="game-page-section" id="technical">
   <div class="section-title-row">
     <div><span class="section-eyebrow">Biblioteca personal</span><h2>Detalles</h2></div>
-    <button class="game-edit-trigger game-edit-trigger-sm" id="data-edit-trigger" type="button" aria-label="Editar mis datos del juego">
+    <button class="game-edit-trigger game-edit-trigger-sm" id="data-edit-trigger" type="button" aria-label="Editar detalles del juego">
       <TablerIcon src={editIcon} />
     </button>
   </div>
@@ -69,7 +68,7 @@ const progressIcons: Record<ProgressKind, string> = {
         <article
           class:list={["data-group-card", group.className]}
           data-state={groupState}
-          id={group.className === 'data-group-catalog' ? 'game-info' : undefined}
+          id={group.className === 'data-group-catalog' ? 'game-info' : 'my-game-data'}
           tabindex={group.className === 'data-group-catalog' ? '-1' : undefined}
           aria-label={group.title}
         >
@@ -111,7 +110,7 @@ const progressIcons: Record<ProgressKind, string> = {
             ))}
             {group.className === 'data-group-catalog' && <GameCredits slug={slug} game={credits} />}
           </dl>
-          {groupState === 'empty' && group.className === 'data-group-progress' && (
+          {group.className === 'data-group-personal' && visibleItems.filter(item => item.kind).every(item => item.state === 'empty') && (
             <button class="detail-empty-action" type="button" data-detail-edit>Registrar mi progreso</button>
           )}
         </article>
@@ -148,7 +147,7 @@ const progressIcons: Record<ProgressKind, string> = {
 <dialog class="edit-dialog edit-dialog-wide" id="data-edit-dialog">
   <div class="edit-dialog-body">
     <div class="edit-dialog-head">
-      <div><h2>Editar mis datos</h2><p class="edit-dialog-sub">Tu copia, tu progreso y cómo organizas el juego.</p></div>
+      <div><h2>Editar detalles</h2><p class="edit-dialog-sub">Tu copia y progreso personal; después, los modos y etiquetas del juego.</p></div>
       <button class="edit-dialog-close" id="data-edit-close" type="button" aria-label="Cerrar">×</button>
     </div>
     <p class="edit-dialog-error" id="data-edit-error" hidden></p>

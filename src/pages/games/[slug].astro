@@ -57,7 +57,12 @@ const isRecurring = normalizeStatus(game.estado) === 'recurrente';
 const isSteam = normalizeStatus(game.launcher) === 'steam';
 
 const gameModes = getGameModes(game);
-const modesLabel = formatGameModes(gameModes);
+const publicModes = gameModes.filter(mode => mode !== 'transmision');
+const modesLabel = formatGameModes(publicModes);
+const personalPreferences = [
+  ...(gameModes.includes('transmision') ? ['Transmisión'] : []),
+  ...(hasGameTag(game.tags, 'cooperativo-privado') ? ['Cooperativo privado'] : []),
+];
 const genresList = getGameGenres(game.generos);
 const genres = genresList.length > 0 ? genresList.join(', ') : '-';
 const rawTags = Array.isArray(game.tags) ? game.tags : [];
@@ -134,8 +139,18 @@ const formatCreationDate = (value: string | null | undefined) => {
 };
 const metadataGroups = [
   {
-    title: 'Progreso',
-    className: 'data-group-progress',
+    title: 'Datos del juego',
+    className: 'data-group-catalog',
+    items: [
+      { label: 'Géneros', value: genres, values: genresList, className: 'detail-item-genres', state: genres === '-' ? 'empty' as const : 'default' as const },
+      { label: 'Lanzamiento', value: formatValue(game.lanzamiento), className: 'detail-item-release', note: game.lanzamiento_nota ?? '', state: game.lanzamiento ? 'default' as const : 'empty' as const },
+      { label: 'Modos', value: modesLabel, values: publicModes.map(getGameModeLabel), className: 'detail-item-modes', state: modesLabel === 'Sin registrar' ? 'empty' as const : 'default' as const },
+      { label: 'Etiquetas', value: tagsLabel === 'Sin etiquetas' ? '-' : tagsLabel, values: tagBadges.map(tag => tag.value), state: tagsLabel === 'Sin etiquetas' ? 'empty' as const : 'default' as const },
+    ],
+  },
+  {
+    title: 'Mis datos',
+    className: 'data-group-personal',
     items: [
       {
         label: fullCompletionRuns > 0 && achievementProgress === null ? 'Completitud' : 'Logros',
@@ -157,24 +172,9 @@ const metadataGroups = [
         className: 'detail-item-steam-cards', progress: steamCardsProgress, kind: 'cards' as const,
         state: isSteam ? (steamCardsProgress === null ? 'empty' as const : steamCardsProgress >= 100 ? 'complete' as const : 'default' as const) : 'not-applicable' as const,
       },
-    ],
-  },
-  {
-    title: 'Datos del juego',
-    className: 'data-group-catalog',
-    items: [
-      { label: 'Géneros', value: genres, state: genres === '-' ? 'empty' as const : 'default' as const },
-      { label: 'Etiquetas', value: tagsLabel === 'Sin etiquetas' ? '-' : tagsLabel, values: tagBadges.map(tag => tag.value), state: tagsLabel === 'Sin etiquetas' ? 'empty' as const : 'default' as const },
-      { label: 'Modos', value: modesLabel, values: gameModes.map(getGameModeLabel), className: 'detail-item-modes', state: modesLabel === 'Sin registrar' ? 'empty' as const : 'default' as const },
-      { label: 'Lanzamiento', value: formatValue(game.lanzamiento), className: 'detail-item-release', note: game.lanzamiento_nota ?? '', state: game.lanzamiento ? 'default' as const : 'empty' as const },
-    ],
-  },
-  {
-    title: 'Mi copia',
-    className: 'data-group-copy',
-    items: [
       { label: 'Launcher', value: formatValue(game.launcher, 'Sin launcher'), state: game.launcher ? 'default' as const : 'empty' as const },
       { label: 'Plataforma', value: formatValue(game.plataforma), state: game.plataforma ? 'default' as const : 'empty' as const },
+      ...(personalPreferences.length ? [{ label: 'Mis preferencias', value: personalPreferences.join(', '), values: personalPreferences, className: 'detail-item-preferences' }] : []),
     ],
   },
 ];

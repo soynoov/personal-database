@@ -10,6 +10,13 @@
 
 ## Estado de implementación · 12 de septiembre de 2026
 
+### Detalles y pistas de la ruleta · 13 de septiembre de 2026
+
+- Dentro de la misma sección hay dos bento de igual nivel: **Datos del juego** (géneros, lanzamiento, modos, etiquetas y créditos) y **Mis datos** (logros/completitud, dificultad, cromos Steam y mi copia). Transmisión y cooperativo privado se presentan como preferencias personales, no como características públicas.
+- Datos del juego aparece primero en el DOM y conserva el destino `#game-info` de «Más información» en la ruleta. La información técnica de mantenimiento sigue plegada. El editor común permanece en la cabecera de Detalles.
+- Dos columnas 6/6 en escritorio; hasta 960 px se apilan, conservando celdas compactas. Sin span vertical de dos filas ni alturas ligadas al bloque vecino. Logros conserva su protagonismo y los estados vacíos no se agrandan. Radios 32/16/8 px, espacios y `GamePill` existentes. Sin cambios en Horas, Dinero, Valoración ni fondo Golden.
+- Los géneros se guardan en la biblioteca compartida y se normalizan igual en ficha, catálogo, estadísticas y ruleta. Las categorías específicas preceden a Acción/Aventura. Free to Play y Early Access son etiquetas; Indie no es una mecánica de juego. Criterio y fuentes en [Géneros de la biblioteca](docs/game-genres.md).
+
 ### Valoración elegida · NooV Score v2
 
 La última decisión del usuario conserva **solo el bloque Valoración de la propuesta 3**; no autoriza a recomponer otra vez Horas, Dinero, Detalles ni el fondo Golden. Se implementa una columna de nota personal con User score/Metascore compactos y un perfil radar con lista numérica al lado. El cálculo queda plegado. Paneles 32/16 px, separación de celdas 12 px, tipografía y colores de `theme.css`; máximo de 44 px en la cifra personal. En tablet se redistribuyen los grupos; en móvil se apilan sin reducir los controles por debajo de 44 px.

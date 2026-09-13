@@ -1,6 +1,6 @@
 @import '../theme.css';
 
-/* Detalles: protagonista 7/12 y apoyos 5/12; el DOM conserva el orden de lectura. */
+/* Detalles: información pública y personal al mismo nivel, sin estirar el progreso. */
 @layer global {
   .game-page-rich #technical {
     gap: 1rem;
@@ -13,13 +13,14 @@
     grid-template-columns: repeat(12, minmax(0, 1fr));
     grid-auto-flow: row;
     gap: var(--detail-bento-gap);
-    align-items: stretch;
+    align-items: start;
   }
 
   .game-page-rich #technical .data-group-card {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto;
+    align-content: start;
     min-width: 0;
     min-height: 0;
     padding: 1rem;
@@ -29,14 +30,9 @@
     box-shadow: none;
   }
 
-  .game-page-rich #technical .data-group-progress {
-    grid-column: span 7;
-    grid-row: span 2;
-    border-color: color-mix(in srgb, var(--theme-purple) 22%, transparent);
-  }
-
-  .game-page-rich #technical :is(.data-group-catalog, .data-group-copy) { grid-column: span 5; }
+  .game-page-rich #technical :is(.data-group-catalog, .data-group-personal) { grid-column: span 6; grid-row: auto; }
   .game-page-rich #technical .data-group-head { gap: 0.55rem; margin: 0 0 0.85rem; }
+  .game-page-rich #technical .detail-item-preferences { grid-column: 1 / -1; }
 
   .game-page-rich #technical :is(.data-group-icon, .progress-card-icon, .system-data-summary-icon) {
     display: grid;
@@ -127,24 +123,15 @@
     padding: 0;
   }
 
-  .game-page-rich #technical .data-group-progress .data-group-grid {
-    grid-template-rows: minmax(150px, 1fr) auto;
-  }
-
-  .game-page-rich #technical .data-group-progress .detail-item {
-    min-height: 94px;
-    align-content: center;
-  }
-
-  .game-page-rich #technical .data-group-progress .progress-card-achievements {
+  .game-page-rich #technical .data-group-personal .progress-card-achievements {
     grid-column: 1 / -1;
-    min-height: 150px;
-    padding: clamp(1rem, 2vw, 1.5rem);
+    min-height: 120px;
+    padding: var(--space-3);
     border-color: color-mix(in srgb, var(--theme-purple) 22%, transparent);
     background: var(--detail-bento-emphasis);
   }
 
-  .game-page-rich #technical .data-group-progress .data-group-grid[data-count='2'] .progress-card-difficulty {
+  .game-page-rich #technical .data-group-personal .data-group-grid:not(:has(.progress-card-cards)) .progress-card-difficulty {
     grid-column: 1 / -1;
     min-height: 72px;
   }
@@ -156,10 +143,10 @@
     margin: 0;
   }
 
-  .game-page-rich #technical .data-group-progress .detail-item dt { max-width: calc(100% - 40px); }
-  .game-page-rich #technical .data-group-progress .detail-item-value {
+  .game-page-rich #technical .data-group-personal .detail-item:has(.progress-card-icon) dt { max-width: calc(100% - 40px); }
+  .game-page-rich #technical .data-group-personal .detail-item:has(.progress-card-icon) .detail-item-value {
     padding-right: 2rem;
-    font-size: 1.12rem;
+    font-size: 0.95rem;
     line-height: 1.2;
   }
 
@@ -177,7 +164,7 @@
   }
 
   .game-page-rich #technical .data-progress-track > span { background: var(--theme-purple); }
-  .game-page-rich #technical .data-group-progress .detail-item-complete {
+  .game-page-rich #technical .data-group-personal .detail-item-complete {
     border-color: var(--detail-golden-line);
     background: color-mix(in srgb, var(--card-foil-amber) 8%, var(--bg-deep));
     box-shadow: none;
@@ -203,9 +190,8 @@
     color: var(--muted);
   }
 
-  .game-page-rich #technical .data-group-progress[data-state='empty'] { grid-template-rows: auto 1fr auto; }
-  .game-page-rich #technical .data-group-progress[data-state='empty'] .data-group-grid { grid-template-rows: minmax(100px, 1fr) auto; }
-  .game-page-rich #technical .data-group-progress[data-state='empty'] .progress-card-achievements { min-height: 100px; }
+  .game-page-rich #technical .data-group-personal .progress-card-achievements[data-state='empty'] { min-height: 72px; }
+  .game-page-rich #technical .data-group-personal .progress-card-achievements[data-state='empty'] .detail-item-value { font-size: 1rem; }
 
   .game-page-rich #technical .detail-empty-action {
     justify-self: start;
@@ -329,24 +315,18 @@
   .steam-cards-edit-row { padding-top: 0.75rem; border-top: 1px solid var(--detail-bento-line); }
 
   @media (max-width: 960px) {
-    .game-page-rich #technical .data-group-progress { grid-column: 1 / -1; grid-row: auto; }
-    .game-page-rich #technical .data-group-catalog { grid-column: span 7; }
-    .game-page-rich #technical .data-group-copy { grid-column: span 5; }
-    .game-page-rich #technical .data-group-copy .data-group-grid { grid-template-columns: minmax(0, 1fr); }
+    .game-page-rich #technical :is(.data-group-personal, .data-group-catalog) { grid-column: 1 / -1; }
     .game-page-rich #technical .system-data-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 720px) {
-    .game-page-rich #technical :is(.data-group-progress, .data-group-catalog, .data-group-copy) { grid-column: 1 / -1; grid-row: auto; }
     .game-page-rich #technical .data-group-card { padding: 0.8rem; }
     .game-page-rich #technical .data-group-card .data-group-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .game-page-rich #technical .data-group-card .detail-item { padding: 0.75rem; }
-    .game-page-rich #technical .data-group-progress .detail-item { padding-top: 3rem; }
-    .game-page-rich #technical .data-group-progress .progress-card-achievements { padding-top: 1.5rem; }
-    .game-page-rich #technical .data-group-progress .detail-item dt { max-width: 100%; }
+    .game-page-rich #technical .data-group-personal .detail-item:has(.progress-card-icon) { padding-top: 3rem; }
+    .game-page-rich #technical .data-group-personal .progress-card-achievements { padding-top: 1rem; }
+    .game-page-rich #technical .data-group-personal .detail-item dt { max-width: 100%; }
     .game-page-rich #technical .progress-card-achievements .detail-item-value { font-size: 2.3rem; }
-    .game-page-rich #technical .data-group-progress .detail-item-value { padding-right: 0; }
-    .game-page-rich #technical .data-group-catalog .detail-item:first-child,
-    .game-page-rich #technical .data-group-catalog .detail-item:last-child { grid-column: 1 / -1; }
+    .game-page-rich #technical .data-group-personal .detail-item-value { padding-right: 0; }
     .game-page-rich #technical .system-data-grid { grid-template-columns: minmax(0, 1fr); }
   }
   @media (prefers-reduced-motion: reduce) {

@@ -26,7 +26,11 @@
     "precio_actual": null,
     "precio_salida": null,
     "cover_url": null,
-    "steam_store_name": "Friday the 13th: The Game"
+    "steam_store_name": "Friday the 13th: The Game",
+    "generos": [
+      "Terror",
+      "Supervivencia"
+    ]
   },
   {
     "titulo": "MiSide",
@@ -48,10 +52,8 @@
     "cover_url": "https://howlongtobeat.com/games/131878_MiSide.jpg",
     "steam_appid": 2527500,
     "generos": [
-      "Aventura",
-      "Indie",
-      "Rol",
-      "Simuladores"
+      "Terror",
+      "Aventura"
     ],
     "precio_pagado": null,
     "precio_actual": 14.79,
@@ -115,7 +117,7 @@
     "cover_url": "https://howlongtobeat.com/games/79790_Stray_(2021).jpg",
     "steam_appid": 1332010,
     "generos": [
-      "Acción",
+      "Puzles",
       "Aventura"
     ],
     "precio_pagado": 0,
@@ -157,7 +159,9 @@
     "hltb": 4.1,
     "cover_url": "https://howlongtobeat.com/games/Firewatch_maxresdefault.jpg",
     "steam_appid": 383870,
-    "generos": null,
+    "generos": [
+      "Aventura narrativa"
+    ],
     "precio_pagado": 0,
     "precio_actual": 39.99,
     "precio_salida": 39.99,
@@ -197,7 +201,10 @@
     "hltb": 8.2,
     "cover_url": "https://howlongtobeat.com/games/Ori_and_the_Blind_Forest_Logo.jpg",
     "steam_appid": 387290,
-    "generos": null,
+    "generos": [
+      "Plataformas",
+      "Metroidvania"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -236,7 +243,10 @@
     "hltb": 12,
     "cover_url": "https://howlongtobeat.com/games/46428_Ori_and_the_Will_of_the_Wisps.jpg",
     "steam_appid": 1057090,
-    "generos": null,
+    "generos": [
+      "Plataformas",
+      "Metroidvania"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -317,7 +327,7 @@
     "cover_url": "https://howlongtobeat.com/games/65080_A_Plague_Tale_Innocence.jpeg",
     "steam_appid": 752590,
     "generos": [
-      "Acción",
+      "Sigilo",
       "Aventura"
     ],
     "precio_pagado": 0,
@@ -355,7 +365,10 @@
     "hltb": 17,
     "cover_url": "https://howlongtobeat.com/games/93945_A_Plague_Tale_Requiem.jpg",
     "steam_appid": 1182900,
-    "generos": null,
+    "generos": [
+      "Sigilo",
+      "Aventura"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -395,7 +408,10 @@
     "hltb": null,
     "cover_url": "https://howlongtobeat.com/games/169336_Resonance_A_Plague_Tale_Legacy.jpg",
     "steam_appid": null,
-    "generos": null,
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -425,7 +441,10 @@
     "solo": true,
     "cover_url": "https://howlongtobeat.com/games/149627_Oddsparks_An_Automation_Adventure.jpg",
     "steam_appid": null,
-    "generos": null,
+    "generos": [
+      "Automatización",
+      "Estrategia"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -458,13 +477,15 @@
     "cover_url": "https://howlongtobeat.com/games/71509_Paralives.jpg",
     "steam_appid": 1118520,
     "generos": [
-      "Simuladores",
-      "Acceso anticipado"
+      "Simulación",
+      "Construcción"
     ],
     "precio_pagado": null,
     "precio_actual": 38.99,
     "precio_salida": 38.99,
-    "tags": [],
+    "tags": [
+      "early-access"
+    ],
     "hltb": 7.8,
     "hltb_breakdown": {
       "main": 7.8,
@@ -498,9 +519,8 @@
     "cover_url": "https://howlongtobeat.com/games/68033_Baldurs_Gate_3.jpg",
     "steam_appid": 1086940,
     "generos": [
-      "Aventura",
       "Rol",
-      "Estrategia"
+      "Por turnos"
     ],
     "precio_pagado": null,
     "precio_actual": 59.99,
@@ -542,10 +562,8 @@
     "cover_url": "https://howlongtobeat.com/games/97313_Cult_of_the_Lamb.jpg",
     "steam_appid": 1313140,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Indie",
-      "Estrategia"
+      "Roguelike",
+      "Gestión"
     ],
     "precio_pagado": null,
     "precio_actual": 11.49,
@@ -587,8 +605,8 @@
     "cover_url": "https://howlongtobeat.com/games/cuphead-250.jpg",
     "steam_appid": 268910,
     "generos": [
-      "Acción",
-      "Indie"
+      "Plataformas",
+      "Shooter"
     ],
     "precio_pagado": null,
     "precio_actual": 11.99,
@@ -642,11 +660,8 @@
     "cover_url": "https://howlongtobeat.com/games/160618_Dispatch.jpg",
     "steam_appid": 2592160,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Casual",
-      "Indie",
-      "Estrategia"
+      "Aventura narrativa",
+      "Gestión"
     ],
     "precio_pagado": 28.99,
     "precio_actual": 23.19,
@@ -691,7 +706,8 @@
     "cover_url": null,
     "steam_appid": 787860,
     "generos": [
-      "Simuladores"
+      "Simulación",
+      "Gestión"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -731,7 +747,8 @@
     "cover_url": "https://howlongtobeat.com/games/100591_Farming_Simulator_22.jpg",
     "steam_appid": 1248130,
     "generos": [
-      "Simuladores"
+      "Simulación",
+      "Gestión"
     ],
     "precio_pagado": null,
     "precio_actual": 19.99,
@@ -772,10 +789,8 @@
     "cover_url": "https://howlongtobeat.com/games/62412_Forager.jpg",
     "steam_appid": 751780,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Indie",
-      "Simuladores"
+      "Supervivencia",
+      "Sandbox"
     ],
     "precio_pagado": null,
     "precio_actual": 19.99,
@@ -817,9 +832,9 @@
     "cover_url": "https://howlongtobeat.com/games/4064_Grand_Theft_Auto_V.jpg",
     "steam_appid": 3240220,
     "generos": [
+      "Mundo abierto",
       "Acción",
-      "Aventura",
-      "Carreras"
+      "Aventura"
     ],
     "precio_pagado": null,
     "precio_actual": 29.99,
@@ -861,8 +876,8 @@
     "cover_url": "https://howlongtobeat.com/games/147712_Marvel_Rivals.jpg",
     "steam_appid": 2767030,
     "generos": [
-      "Acción",
-      "Free to Play"
+      "Shooter",
+      "Acción"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -955,9 +970,8 @@
     "cover_url": "https://howlongtobeat.com/games/66633_Muse_Dash.jpg",
     "steam_appid": 774171,
     "generos": [
-      "Acción",
-      "Casual",
-      "Indie"
+      "Ritmo",
+      "Plataformas"
     ],
     "precio_pagado": null,
     "precio_actual": 3.49,
@@ -999,14 +1013,15 @@
     "cover_url": "https://howlongtobeat.com/games/83704_Phasmophobia.jpg",
     "steam_appid": 739630,
     "generos": [
-      "Acción",
-      "Indie",
-      "Acceso anticipado"
+      "Terror",
+      "Investigación"
     ],
     "precio_pagado": 8.69,
     "precio_actual": 18.99,
     "precio_salida": 18.99,
-    "tags": [],
+    "tags": [
+      "early-access"
+    ],
     "hltb_breakdown": {
       "main": 20.1,
       "main_plus": 41.5,
@@ -1042,14 +1057,16 @@
     "cover_url": "https://howlongtobeat.com/games/164698_repo.jpg",
     "steam_appid": 3241660,
     "generos": [
-      "Acción",
-      "Acceso anticipado"
+      "Terror",
+      "Supervivencia"
     ],
     "precio_pagado": 6.33,
     "unidades_compradas": 3,
     "precio_actual": 6.64,
     "precio_salida": 9.49,
-    "tags": [],
+    "tags": [
+      "early-access"
+    ],
     "hltb_breakdown": {
       "main": 9.8,
       "main_plus": 9.9,
@@ -1082,10 +1099,8 @@
     "cover_url": "https://howlongtobeat.com/games/65835_Satisfactory.png",
     "steam_appid": 526870,
     "generos": [
-      "Aventura",
-      "Indie",
-      "Simuladores",
-      "Estrategia"
+      "Automatización",
+      "Gestión"
     ],
     "precio_pagado": null,
     "precio_actual": 38.99,
@@ -1127,16 +1142,15 @@
     "cover_url": "https://howlongtobeat.com/games/165767_Schedule_I.jpg",
     "steam_appid": 3164500,
     "generos": [
-      "Acción",
-      "Indie",
-      "Simuladores",
-      "Estrategia",
-      "Acceso anticipado"
+      "Gestión",
+      "Simulación"
     ],
     "precio_pagado": 19.5,
     "precio_actual": 19.5,
     "precio_salida": 19.5,
-    "tags": [],
+    "tags": [
+      "early-access"
+    ],
     "hltb_breakdown": {
       "main": 16.6,
       "main_plus": 37.5,
@@ -1169,16 +1183,15 @@
     "cover_url": "https://howlongtobeat.com/games/152044_Star_Birds.jpg",
     "steam_appid": 2719750,
     "generos": [
-      "Casual",
-      "Indie",
-      "Simuladores",
-      "Estrategia",
-      "Acceso anticipado"
+      "Automatización",
+      "Gestión"
     ],
     "precio_pagado": null,
     "precio_actual": 19.99,
     "precio_salida": 19.99,
-    "tags": [],
+    "tags": [
+      "early-access"
+    ],
     "hltb_breakdown": {
       "main": null,
       "main_plus": 9.9,
@@ -1209,7 +1222,10 @@
     "hltb": 10.3,
     "cover_url": "https://howlongtobeat.com/games/5947_Metro_Last_Light.jpg",
     "steam_appid": 287390,
-    "generos": null,
+    "generos": [
+      "Shooter",
+      "Terror"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -1249,10 +1265,8 @@
     "cover_url": "https://howlongtobeat.com/games/151136_Mini_Airways.jpg",
     "steam_appid": 2289650,
     "generos": [
-      "Casual",
-      "Indie",
-      "Simuladores",
-      "Estrategia"
+      "Simulación",
+      "Gestión"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -1284,8 +1298,7 @@
     "cover_url": "https://howlongtobeat.com/games/70788_Mini_Motorways.jpg",
     "steam_appid": 1127500,
     "generos": [
-      "Casual",
-      "Simuladores",
+      "Gestión",
       "Estrategia"
     ],
     "precio_pagado": null,
@@ -1328,6 +1341,7 @@
     "cover_url": "https://howlongtobeat.com/games/52493_Monster_Hunter_World.jpg",
     "steam_appid": 582010,
     "generos": [
+      "Rol",
       "Acción"
     ],
     "precio_pagado": null,
@@ -1368,7 +1382,10 @@
     "hltb": 6.5,
     "cover_url": "https://howlongtobeat.com/games/100706_MultiVersus.jpg",
     "steam_appid": 1818750,
-    "generos": null,
+    "generos": [
+      "Lucha",
+      "Plataformas"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -1409,9 +1426,8 @@
     "cover_url": "https://howlongtobeat.com/games/Outlast_cover.jpg",
     "steam_appid": 238320,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Indie"
+      "Terror",
+      "Supervivencia"
     ],
     "precio_pagado": null,
     "precio_actual": 14.79,
@@ -1453,8 +1469,9 @@
     "cover_url": "https://howlongtobeat.com/games/12649_Payday_2.jpg",
     "steam_appid": 218620,
     "generos": [
+      "Shooter",
       "Acción",
-      "Rol"
+      "Aventura"
     ],
     "precio_pagado": null,
     "precio_actual": 9.49,
@@ -1496,10 +1513,8 @@
     "cover_url": "https://howlongtobeat.com/games/Plague_Inc_Evolved.jpg",
     "steam_appid": 246620,
     "generos": [
-      "Casual",
-      "Indie",
-      "Simuladores",
-      "Estrategia"
+      "Estrategia",
+      "Simulación"
     ],
     "precio_pagado": null,
     "precio_actual": 14.79,
@@ -1541,8 +1556,8 @@
     "cover_url": "https://howlongtobeat.com/games/Portal2cover.jpg",
     "steam_appid": 620,
     "generos": [
-      "Acción",
-      "Aventura"
+      "Puzles",
+      "Plataformas"
     ],
     "precio_pagado": null,
     "precio_actual": 9.75,
@@ -1584,8 +1599,8 @@
     "cover_url": "https://howlongtobeat.com/games/92845_Potion_Craft_Alchemist_Simulator.jpg",
     "steam_appid": 1210320,
     "generos": [
-      "Indie",
-      "Simuladores"
+      "Simulación",
+      "Gestión"
     ],
     "precio_pagado": null,
     "precio_actual": 19.5,
@@ -1627,9 +1642,8 @@
     "cover_url": "https://howlongtobeat.com/games/56668_Raft.jpg",
     "steam_appid": 648800,
     "generos": [
-      "Aventura",
-      "Indie",
-      "Simuladores"
+      "Supervivencia",
+      "Sandbox"
     ],
     "precio_pagado": null,
     "precio_actual": 20.49,
@@ -1670,9 +1684,8 @@
     "cover_url": "https://howlongtobeat.com/games/51322_Reigns_Her_Majesty.jpg",
     "steam_appid": 717640,
     "generos": [
-      "Casual",
-      "Indie",
-      "Simuladores"
+      "Cartas",
+      "Gestión"
     ],
     "precio_pagado": null,
     "precio_actual": 0.98,
@@ -1714,7 +1727,10 @@
     "hltb": 4.7,
     "cover_url": "https://howlongtobeat.com/games/Rocket_League_header.jpg",
     "steam_appid": 252950,
-    "generos": null,
+    "generos": [
+      "Deportes",
+      "Carreras"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -1848,7 +1864,8 @@
     "cover_url": "https://howlongtobeat.com/games/37867_Sid_Meiers_Civilization_VI.jpg",
     "steam_appid": 289070,
     "generos": [
-      "Estrategia"
+      "Estrategia",
+      "Por turnos"
     ],
     "precio_pagado": null,
     "precio_actual": 59.99,
@@ -1889,11 +1906,8 @@
     "cover_url": "https://howlongtobeat.com/games/94769_Slime_Rancher_2.jpg",
     "steam_appid": 1657630,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Casual",
-      "Indie",
-      "Simuladores"
+      "Simulación",
+      "Aventura"
     ],
     "precio_pagado": null,
     "precio_actual": 28.49,
@@ -1934,10 +1948,8 @@
     "cover_url": "https://howlongtobeat.com/games/53770_SoulWorker.jpg",
     "steam_appid": 1377580,
     "generos": [
-      "Acción",
-      "Multijugador masivo",
       "Rol",
-      "Free to Play"
+      "Acción"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -1959,7 +1971,10 @@
     "steam_last_sync_at": "2026-08-20T11:24:23.937Z",
     "critica": {
       "userscore": 5.8
-    }
+    },
+    "modos": [
+      "multijugador"
+    ]
   },
   {
     "titulo": "Stacklands",
@@ -1981,9 +1996,8 @@
     "cover_url": "https://howlongtobeat.com/games/106758_Stacklands.jpg",
     "steam_appid": 1948280,
     "generos": [
-      "Casual",
-      "Indie",
-      "Simuladores"
+      "Cartas",
+      "Gestión"
     ],
     "precio_pagado": null,
     "precio_actual": 7.99,
@@ -2025,9 +2039,8 @@
     "cover_url": "https://howlongtobeat.com/games/34716_Stardew_Valley.jpg",
     "steam_appid": 413150,
     "generos": [
-      "Indie",
-      "Rol",
-      "Simuladores"
+      "Simulación",
+      "Rol"
     ],
     "precio_pagado": 8.39,
     "precio_actual": 13.99,
@@ -2069,8 +2082,8 @@
     "cover_url": null,
     "steam_appid": 264710,
     "generos": [
-      "Aventura",
-      "Indie"
+      "Supervivencia",
+      "Aventura"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -2111,8 +2124,9 @@
     "cover_url": "https://howlongtobeat.com/games/45951_Surviving_Mars.jpg",
     "steam_appid": 464920,
     "generos": [
-      "Simuladores",
-      "Estrategia"
+      "Construcción",
+      "Gestión",
+      "Simulación"
     ],
     "precio_pagado": null,
     "precio_actual": 39.99,
@@ -2154,10 +2168,8 @@
     "cover_url": "https://howlongtobeat.com/games/9705_Terraria.jpg",
     "steam_appid": 105600,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Indie",
-      "Rol"
+      "Supervivencia",
+      "Sandbox"
     ],
     "precio_pagado": null,
     "precio_actual": 9.75,
@@ -2199,6 +2211,7 @@
     "cover_url": "https://howlongtobeat.com/games/TheBindingofIsaacRebirth.jpg",
     "steam_appid": 250900,
     "generos": [
+      "Roguelike",
       "Acción"
     ],
     "precio_pagado": null,
@@ -2240,7 +2253,8 @@
     "cover_url": "https://howlongtobeat.com/games/9859_The_Elder_Scrolls_V_Skyrim.jpg",
     "steam_appid": 489830,
     "generos": [
-      "Rol"
+      "Rol",
+      "Mundo abierto"
     ],
     "precio_pagado": null,
     "precio_actual": 39.99,
@@ -2281,11 +2295,8 @@
     "cover_url": "https://howlongtobeat.com/games/TheEscapistsheader.jpg",
     "steam_appid": 298630,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Indie",
-      "Simuladores",
-      "Estrategia"
+      "Estrategia",
+      "Simulación"
     ],
     "precio_pagado": null,
     "precio_actual": 2.99,
@@ -2327,7 +2338,7 @@
     "cover_url": "https://howlongtobeat.com/games/69341_The_Walking_Dead_The_Telltale_Definitive_Series.jpg",
     "steam_appid": 1449690,
     "generos": [
-      "Aventura"
+      "Aventura narrativa"
     ],
     "precio_pagado": null,
     "precio_actual": 48.99,
@@ -2368,7 +2379,8 @@
     "cover_url": "https://howlongtobeat.com/games/10270_The_Witcher_3_Wild_Hunt.jpg",
     "steam_appid": 292030,
     "generos": [
-      "Rol"
+      "Rol",
+      "Mundo abierto"
     ],
     "precio_pagado": null,
     "precio_actual": 29.99,
@@ -2412,8 +2424,7 @@
     "cover_url": "https://howlongtobeat.com/games/250px-The_witness_poster.jpg",
     "steam_appid": 210970,
     "generos": [
-      "Aventura",
-      "Indie"
+      "Puzles"
     ],
     "precio_pagado": null,
     "precio_actual": 36.99,
@@ -2455,8 +2466,8 @@
     "cover_url": "https://howlongtobeat.com/games/Rainbow_Six_siege_photo_2014-06-14_17-51.jpg",
     "steam_appid": 359550,
     "generos": [
-      "Acción",
-      "Free to Play"
+      "Shooter",
+      "Acción"
     ],
     "precio_pagado": 7.99,
     "precio_actual": null,
@@ -2543,9 +2554,8 @@
     "cover_url": "https://howlongtobeat.com/games/80672_Townscaper.jpg",
     "steam_appid": 1291340,
     "generos": [
-      "Casual",
-      "Indie",
-      "Simuladores"
+      "Construcción",
+      "Sandbox"
     ],
     "precio_pagado": null,
     "precio_actual": 5.99,
@@ -2587,7 +2597,6 @@
     "cover_url": "https://howlongtobeat.com/games/30385_Undertale.png",
     "steam_appid": 391540,
     "generos": [
-      "Indie",
       "Rol"
     ],
     "precio_pagado": 9.99,
@@ -2630,9 +2639,7 @@
     "cover_url": "https://howlongtobeat.com/games/69666_Unpacking_(2021).jpg",
     "steam_appid": 1135690,
     "generos": [
-      "Casual",
-      "Indie",
-      "Simuladores"
+      "Puzles"
     ],
     "precio_pagado": null,
     "precio_actual": 19.99,
@@ -2673,12 +2680,8 @@
     "cover_url": "https://howlongtobeat.com/games/57112_Urban_Rivals.jpg",
     "steam_appid": 715310,
     "generos": [
-      "Acción",
-      "Indie",
-      "Multijugador masivo",
-      "Rol",
-      "Estrategia",
-      "Free to Play"
+      "Cartas",
+      "Estrategia"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -2722,7 +2725,8 @@
     "cover_url": "https://howlongtobeat.com/games/XCOM_2_2015.jpg",
     "steam_appid": 268500,
     "generos": [
-      "Estrategia"
+      "Estrategia",
+      "Por turnos"
     ],
     "precio_pagado": 6.9,
     "precio_actual": 19.99,
@@ -2763,11 +2767,8 @@
     "cover_url": "https://howlongtobeat.com/games/69373_60_Seconds_Reatomized.jpg",
     "steam_appid": 1012880,
     "generos": [
-      "Aventura",
-      "Casual",
-      "Indie",
-      "Simuladores",
-      "Estrategia"
+      "Supervivencia",
+      "Gestión"
     ],
     "precio_pagado": null,
     "precio_actual": 9.75,
@@ -2808,9 +2809,8 @@
     "cover_url": "https://howlongtobeat.com/games/440_Amnesia_The_Dark_Descent.jpg",
     "steam_appid": 57300,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Indie"
+      "Terror",
+      "Supervivencia"
     ],
     "precio_pagado": null,
     "precio_actual": 19.5,
@@ -2852,7 +2852,7 @@
     "cover_url": "https://howlongtobeat.com/games/74207_Among_Us.jpg",
     "steam_appid": 945360,
     "generos": [
-      "Casual"
+      "Deducción social"
     ],
     "precio_pagado": 3.99,
     "precio_actual": 4.49,
@@ -2893,9 +2893,8 @@
     "cover_url": "https://howlongtobeat.com/games/64753_Apex_Legends.jpg",
     "steam_appid": 1172470,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Free to Play"
+      "Shooter",
+      "Battle royale"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -2939,9 +2938,9 @@
     "cover_url": "https://howlongtobeat.com/games/56297_Atomic_Heart.jpg",
     "steam_appid": 668580,
     "generos": [
+      "Shooter",
       "Acción",
-      "Aventura",
-      "Rol"
+      "Aventura"
     ],
     "precio_pagado": 19.8,
     "precio_actual": 59.99,
@@ -2984,7 +2983,7 @@
     "steam_appid": 1759380,
     "generos": [
       "Rol",
-      "Simuladores"
+      "Simulación"
     ],
     "precio_pagado": null,
     "precio_actual": 24.99,
@@ -3026,8 +3025,7 @@
     "cover_url": "https://howlongtobeat.com/games/1023_Beyond_Two_Souls.jpg",
     "steam_appid": 960990,
     "generos": [
-      "Acción",
-      "Aventura"
+      "Aventura narrativa"
     ],
     "precio_pagado": null,
     "precio_actual": 19.99,
@@ -3069,7 +3067,7 @@
     "cover_url": "https://howlongtobeat.com/games/Borderlands2boxart3.jpg",
     "steam_appid": 49520,
     "generos": [
-      "Acción",
+      "Shooter",
       "Rol"
     ],
     "precio_pagado": null,
@@ -3112,7 +3110,8 @@
     "cover_url": "https://howlongtobeat.com/games/250px-Catherine_Cover_Art.png",
     "steam_appid": 893180,
     "generos": [
-      "Aventura"
+      "Puzles",
+      "Plataformas"
     ],
     "precio_pagado": null,
     "precio_actual": 19.99,
@@ -3153,9 +3152,8 @@
     "cover_url": "https://howlongtobeat.com/games/42818_Celeste.jpg",
     "steam_appid": 504230,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Indie"
+      "Plataformas",
+      "Aventura"
     ],
     "precio_pagado": null,
     "precio_actual": 18.99,
@@ -3197,8 +3195,8 @@
     "cover_url": "https://howlongtobeat.com/games/1957_Counter-Strike_2.jpg",
     "steam_appid": 730,
     "generos": [
-      "Acción",
-      "Free to Play"
+      "Shooter",
+      "Acción"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -3279,7 +3277,8 @@
     "hltb": 26,
     "steam_appid": 1091500,
     "generos": [
-      "Rol"
+      "Rol",
+      "Mundo abierto"
     ],
     "precio_pagado": null,
     "precio_actual": 59.99,
@@ -3319,7 +3318,8 @@
     "solo": false,
     "hltb": 78.6,
     "generos": [
-      "Acción"
+      "Terror",
+      "Supervivencia"
     ],
     "precio_pagado": 9.99,
     "precio_actual": 19.99,
@@ -3869,9 +3869,8 @@
     "cover_url": "https://howlongtobeat.com/games/43894_Destiny_2.png",
     "steam_appid": 1085660,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Free to Play"
+      "Shooter",
+      "Rol"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -3915,8 +3914,7 @@
     "cover_url": "https://howlongtobeat.com/games/31388_Detroit_Become_Human.jpg",
     "steam_appid": 1222140,
     "generos": [
-      "Acción",
-      "Aventura"
+      "Aventura narrativa"
     ],
     "precio_pagado": null,
     "precio_actual": 39.99,
@@ -3958,12 +3956,8 @@
     "cover_url": "https://howlongtobeat.com/games/23828_Dont_Starve_Together.jpg",
     "steam_appid": 322330,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Indie",
-      "Rol",
-      "Simuladores",
-      "Estrategia"
+      "Supervivencia",
+      "Sandbox"
     ],
     "precio_pagado": 9.74,
     "precio_actual": 1.49,
@@ -4005,8 +3999,9 @@
     "cover_url": "https://howlongtobeat.com/games/256px-Dying_Light_cover.jpg",
     "steam_appid": 239140,
     "generos": [
-      "Acción",
-      "Rol"
+      "Supervivencia",
+      "Terror",
+      "Acción"
     ],
     "precio_pagado": null,
     "precio_actual": 24.99,
@@ -4047,9 +4042,9 @@
     "cover_url": "https://howlongtobeat.com/games/50597_Eternal_Return.jpg",
     "steam_appid": 1049590,
     "generos": [
-      "Indie",
-      "Estrategia",
-      "Free to Play"
+      "Battle royale",
+      "MOBA",
+      "Supervivencia"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -4090,8 +4085,7 @@
     "cover_url": "https://howlongtobeat.com/games/Euro_Truck_Simulator_2_cover.jpg",
     "steam_appid": 227300,
     "generos": [
-      "Indie",
-      "Simuladores"
+      "Simulación"
     ],
     "precio_pagado": null,
     "precio_actual": 19.99,
@@ -4133,7 +4127,8 @@
     "cover_url": "https://howlongtobeat.com/games/Fallout_4.jpg",
     "steam_appid": 377160,
     "generos": [
-      "Rol"
+      "Rol",
+      "Mundo abierto"
     ],
     "precio_pagado": null,
     "precio_actual": 19.99,
@@ -4174,9 +4169,8 @@
     "cover_url": "https://howlongtobeat.com/games/Fallout_Shelter_Icon.jpeg",
     "steam_appid": 588430,
     "generos": [
-      "Rol",
-      "Simuladores",
-      "Free to Play"
+      "Gestión",
+      "Simulación"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -4220,9 +4214,7 @@
     "cover_url": "https://howlongtobeat.com/games/GarrysMod_292x136.jpg",
     "steam_appid": 4000,
     "generos": [
-      "Casual",
-      "Indie",
-      "Simuladores"
+      "Sandbox"
     ],
     "precio_pagado": 9.99,
     "precio_actual": 4.99,
@@ -4263,6 +4255,7 @@
     "cover_url": "https://howlongtobeat.com/games/51225_Ghost_of_Tsushima.jpg",
     "steam_appid": 2215430,
     "generos": [
+      "Mundo abierto",
       "Acción",
       "Aventura"
     ],
@@ -4306,9 +4299,8 @@
     "cover_url": "https://howlongtobeat.com/games/82068_Gotham_Knights.jpg",
     "steam_appid": 1496790,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Rol"
+      "Rol",
+      "Acción"
     ],
     "precio_pagado": null,
     "precio_actual": 59.99,
@@ -4350,10 +4342,7 @@
     "cover_url": "https://howlongtobeat.com/games/35858_Governor_of_Poker_3.jpg",
     "steam_appid": 436150,
     "generos": [
-      "Casual",
-      "Multijugador masivo",
-      "Simuladores",
-      "Free to Play"
+      "Cartas"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -4374,7 +4363,10 @@
     "steam_last_sync_at": "2026-08-20T11:24:47.284Z",
     "critica": {
       "userscore": 3.3
-    }
+    },
+    "modos": [
+      "multijugador"
+    ]
   },
   {
     "titulo": "Grand Theft Auto IV: The Complete Edition",
@@ -4396,6 +4388,7 @@
     "cover_url": "https://howlongtobeat.com/games/14831_Grand_Theft_Auto_IV_The_Complete_Edition.jpg",
     "steam_appid": 12210,
     "generos": [
+      "Mundo abierto",
       "Acción",
       "Aventura"
     ],
@@ -4434,7 +4427,11 @@
     "comentarios": null,
     "solo": true,
     "steam_appid": 271590,
-    "generos": null,
+    "generos": [
+      "Mundo abierto",
+      "Acción",
+      "Aventura"
+    ],
     "precio_pagado": 14.99,
     "precio_actual": null,
     "precio_salida": null,
@@ -4477,8 +4474,8 @@
     "cover_url": "https://howlongtobeat.com/games/62257_Gris.jpg",
     "steam_appid": 683320,
     "generos": [
-      "Aventura",
-      "Indie"
+      "Plataformas",
+      "Aventura"
     ],
     "precio_pagado": null,
     "precio_actual": 2.95,
@@ -4520,9 +4517,8 @@
     "cover_url": "https://howlongtobeat.com/games/62941_Hades.jpg",
     "steam_appid": 1145360,
     "generos": [
-      "Acción",
-      "Indie",
-      "Rol"
+      "Roguelike",
+      "Acción"
     ],
     "precio_pagado": null,
     "precio_actual": 24.5,
@@ -4563,9 +4559,8 @@
     "cover_url": "https://howlongtobeat.com/games/180772_Heartopia.jpg",
     "steam_appid": 4025700,
     "generos": [
-      "Casual",
-      "Simuladores",
-      "Free to Play"
+      "Simulación",
+      "Construcción"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -4609,9 +4604,8 @@
     "cover_url": "https://howlongtobeat.com/games/83145_Hogwarts_Legacy.jpg",
     "steam_appid": 990080,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Rol"
+      "Rol",
+      "Mundo abierto"
     ],
     "precio_pagado": 59.99,
     "precio_actual": 59.99,
@@ -4653,9 +4647,8 @@
     "cover_url": "https://howlongtobeat.com/games/26286_Hollow_Knight.jpg",
     "steam_appid": 367520,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Indie"
+      "Plataformas",
+      "Metroidvania"
     ],
     "precio_pagado": null,
     "precio_actual": 14.79,
@@ -4700,7 +4693,7 @@
     "cover_url": "https://howlongtobeat.com/games/80199_It_Takes_Two.jpg",
     "steam_appid": 1426210,
     "generos": [
-      "Acción",
+      "Plataformas",
       "Aventura"
     ],
     "precio_pagado": null,
@@ -4743,8 +4736,9 @@
     "cover_url": "https://howlongtobeat.com/games/Just_Cause_3_cover_art.jpg",
     "steam_appid": 225540,
     "generos": [
-      "Acción",
-      "Aventura"
+      "Shooter",
+      "Mundo abierto",
+      "Acción"
     ],
     "precio_pagado": 2.99,
     "precio_actual": 19.99,
@@ -4786,7 +4780,8 @@
     "cover_url": "https://howlongtobeat.com/games/250px-Left4Dead2.jpg",
     "steam_appid": 550,
     "generos": [
-      "Acción"
+      "Shooter",
+      "Terror"
     ],
     "precio_pagado": 1.99,
     "precio_actual": 9.75,
@@ -4827,7 +4822,9 @@
     "cover_url": "https://howlongtobeat.com/games/39417_Little_Nightmares.jpg",
     "steam_appid": 424840,
     "generos": [
-      "Aventura"
+      "Terror",
+      "Plataformas",
+      "Puzles"
     ],
     "precio_pagado": null,
     "precio_actual": 19.99,
@@ -4867,9 +4864,8 @@
     "cover_url": "https://howlongtobeat.com/games/108501_Marvel_SNAP.jpg",
     "steam_appid": 1997040,
     "generos": [
-      "Casual",
-      "Estrategia",
-      "Free to Play"
+      "Cartas",
+      "Estrategia"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -4954,7 +4950,10 @@
     "hltb": 1.8,
     "cover_url": "https://howlongtobeat.com/games/163358_A_Game_About_Digging_A_Hole.jpg",
     "steam_appid": 3244220,
-    "generos": null,
+    "generos": [
+      "Simulación",
+      "Exploración"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -4995,9 +4994,8 @@
     "cover_url": "https://howlongtobeat.com/games/129956_Metaphor_ReFantazio.jpg",
     "steam_appid": 2679460,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Rol"
+      "Rol",
+      "Por turnos"
     ],
     "precio_pagado": null,
     "precio_actual": 69.99,
@@ -5039,7 +5037,8 @@
     "cover_url": "https://howlongtobeat.com/games/5946_Metro_2033.jpg",
     "steam_appid": 286690,
     "generos": [
-      "Acción"
+      "Shooter",
+      "Terror"
     ],
     "precio_pagado": null,
     "precio_actual": 19.99,
@@ -5080,7 +5079,10 @@
     "hltb": 106.4,
     "cover_url": "https://howlongtobeat.com/games/76906_Valorant.jpg",
     "steam_appid": null,
-    "generos": null,
+    "generos": [
+      "Shooter",
+      "Acción"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -5118,7 +5120,10 @@
     "hltb": 1163.3,
     "cover_url": "https://howlongtobeat.com/games/5203_League_of_Legends.jpg",
     "steam_appid": null,
-    "generos": null,
+    "generos": [
+      "MOBA",
+      "Estrategia"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -5163,7 +5168,10 @@
     "hltb": 45.6,
     "cover_url": "https://howlongtobeat.com/games/68778_Teamfight_Tactics.jpg",
     "steam_appid": null,
-    "generos": null,
+    "generos": [
+      "Auto battler",
+      "Estrategia"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -5199,7 +5207,10 @@
     "hltb": 21,
     "cover_url": "https://howlongtobeat.com/games/86110_League_of_Legends_Wild_Rift.jpg",
     "steam_appid": null,
-    "generos": null,
+    "generos": [
+      "MOBA",
+      "Estrategia"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -5233,7 +5244,10 @@
     "hltb": 39.2,
     "cover_url": "https://howlongtobeat.com/games/71303_Legends_of_Runeterra.jpg",
     "steam_appid": null,
-    "generos": null,
+    "generos": [
+      "Cartas",
+      "Estrategia"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -5269,7 +5283,9 @@
     "hltb": 4.4,
     "cover_url": "https://howlongtobeat.com/games/145926_2XKO.png",
     "steam_appid": null,
-    "generos": null,
+    "generos": [
+      "Lucha"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -5306,11 +5322,8 @@
     "cover_url": "https://howlongtobeat.com/games/169141_Sea_of_Remnants.jpg",
     "steam_appid": 3633680,
     "generos": [
-      "Aventura",
-      "Casual",
       "Rol",
-      "Estrategia",
-      "Free to Play"
+      "Aventura"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -5354,10 +5367,7 @@
     "cover_url": "https://howlongtobeat.com/games/152293_Goblin_Cleanup.jpg",
     "steam_appid": 2748340,
     "generos": [
-      "Aventura",
-      "Casual",
-      "Indie",
-      "Simuladores"
+      "Simulación"
     ],
     "precio_pagado": 10.29,
     "unidades_compradas": 2,
@@ -5402,7 +5412,10 @@
     "hltb": 69.2,
     "cover_url": "https://howlongtobeat.com/games/68133_Genshin_Impact.jpg",
     "steam_appid": null,
-    "generos": null,
+    "generos": [
+      "Rol",
+      "Mundo abierto"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -5438,7 +5451,10 @@
     "hltb": 114.2,
     "cover_url": "https://howlongtobeat.com/games/54968_Honkai_Impact_3rd.jpg",
     "steam_appid": null,
-    "generos": null,
+    "generos": [
+      "Rol",
+      "Acción"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -5473,7 +5489,10 @@
     "hltb": 25.6,
     "cover_url": "https://howlongtobeat.com/games/109100_Honkai_Star_Rail.png",
     "steam_appid": null,
-    "generos": null,
+    "generos": [
+      "Rol",
+      "Por turnos"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -5508,7 +5527,10 @@
     "solo": null,
     "cover_url": "https://howlongtobeat.com/games/96272_Tears_of_Themis.jpg",
     "steam_appid": null,
-    "generos": null,
+    "generos": [
+      "Aventura narrativa",
+      "Investigación"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -5544,7 +5566,10 @@
     "hltb": 50.5,
     "cover_url": "https://howlongtobeat.com/games/109101_Zenless_Zone_Zero.png",
     "steam_appid": 4162040,
-    "generos": null,
+    "generos": [
+      "Rol",
+      "Acción"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -5586,7 +5611,10 @@
     "hltb": null,
     "cover_url": null,
     "steam_appid": 2185060,
-    "generos": null,
+    "generos": [
+      "Simulación",
+      "Gestión"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -5626,7 +5654,9 @@
     "hltb": null,
     "cover_url": null,
     "steam_appid": 3916290,
-    "generos": null,
+    "generos": [
+      "Simulación"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -5659,7 +5689,9 @@
     "hltb": null,
     "cover_url": null,
     "steam_appid": 2923300,
-    "generos": null,
+    "generos": [
+      "Incremental"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -5698,7 +5730,10 @@
     "hltb": null,
     "cover_url": null,
     "steam_appid": 291550,
-    "generos": null,
+    "generos": [
+      "Lucha",
+      "Plataformas"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -5780,7 +5815,10 @@
     "hltb": null,
     "cover_url": null,
     "steam_appid": 444090,
-    "generos": null,
+    "generos": [
+      "Shooter",
+      "Acción"
+    ],
     "precio_pagado": null,
     "precio_actual": null,
     "precio_salida": null,
@@ -5821,6 +5859,7 @@
     "cover_url": null,
     "steam_appid": 1049320,
     "generos": [
+      "Beat 'em up",
       "Acción"
     ],
     "precio_pagado": 0,
@@ -5862,9 +5901,8 @@
     "cover_url": null,
     "steam_appid": 1920480,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Rol"
+      "Beat 'em up",
+      "Acción"
     ],
     "precio_pagado": 0,
     "precio_actual": 39.99,
@@ -5906,6 +5944,7 @@
     "cover_url": null,
     "steam_appid": 2842040,
     "generos": [
+      "Mundo abierto",
       "Acción",
       "Aventura"
     ],
@@ -5949,8 +5988,7 @@
     "cover_url": null,
     "steam_appid": 386940,
     "generos": [
-      "Acción",
-      "Casual"
+      "Plataformas"
     ],
     "precio_pagado": 6.24,
     "precio_actual": 4.54,
@@ -5993,8 +6031,7 @@
     "steam_appid": 297130,
     "generos": [
       "Acción",
-      "Aventura",
-      "Indie"
+      "Aventura"
     ],
     "precio_pagado": null,
     "precio_actual": 1.47,
@@ -6036,9 +6073,8 @@
     "cover_url": null,
     "steam_appid": 599140,
     "generos": [
-      "Simuladores",
-      "Rol",
-      "Indie"
+      "Simulación",
+      "Rol"
     ],
     "precio_pagado": null,
     "precio_actual": 3.9,
@@ -6080,8 +6116,8 @@
     "cover_url": null,
     "steam_appid": 278360,
     "generos": [
-      "Aventura",
-      "Indie"
+      "Plataformas",
+      "Aventura"
     ],
     "precio_pagado": null,
     "precio_actual": 2.99,
@@ -6123,7 +6159,7 @@
     "cover_url": null,
     "steam_appid": 236870,
     "generos": [
-      "Acción",
+      "Sigilo",
       "Aventura"
     ],
     "precio_pagado": null,
@@ -6165,6 +6201,7 @@
     "cover_url": null,
     "steam_appid": 50300,
     "generos": [
+      "Shooter",
       "Acción"
     ],
     "precio_pagado": null,
@@ -6207,8 +6244,8 @@
     "cover_url": null,
     "steam_appid": 252410,
     "generos": [
-      "Aventura",
-      "Indie"
+      "Plataformas",
+      "Metroidvania"
     ],
     "precio_pagado": null,
     "precio_actual": 1.49,
@@ -6250,7 +6287,8 @@
     "cover_url": null,
     "steam_appid": 231430,
     "generos": [
-      "Estrategia"
+      "Estrategia",
+      "Tiempo real"
     ],
     "precio_pagado": null,
     "precio_actual": 4.62,
@@ -6291,9 +6329,7 @@
     "cover_url": null,
     "steam_appid": 3669740,
     "generos": [
-      "Casual",
-      "Indie",
-      "Estrategia"
+      "Preguntas y respuestas"
     ],
     "precio_pagado": 9.99,
     "precio_actual": 5.99,
@@ -6331,8 +6367,8 @@
     "cover_url": null,
     "steam_appid": 1651960,
     "generos": [
-      "Acción",
-      "Indie"
+      "Ritmo",
+      "Plataformas"
     ],
     "precio_pagado": 8.99,
     "precio_actual": 2.24,
@@ -6374,8 +6410,7 @@
     "cover_url": null,
     "steam_appid": 431960,
     "generos": [
-      "Casual",
-      "Indie"
+      "Software"
     ],
     "precio_pagado": 3.99,
     "precio_actual": 3.99,
@@ -6413,9 +6448,7 @@
     "cover_url": null,
     "steam_appid": 998930,
     "generos": [
-      "Acción",
-      "Casual",
-      "Indie"
+      "Casual"
     ],
     "precio_pagado": 0.63,
     "precio_actual": null,
@@ -6453,8 +6486,7 @@
     "cover_url": null,
     "steam_appid": 1149660,
     "generos": [
-      "Casual",
-      "Indie"
+      "Puzles"
     ],
     "precio_pagado": 0.63,
     "precio_actual": null,
@@ -6492,12 +6524,7 @@
     "cover_url": null,
     "steam_appid": 1191210,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Casual",
-      "Indie",
-      "Rol",
-      "Estrategia"
+      "Puzles"
     ],
     "precio_pagado": 0.63,
     "precio_actual": null,
@@ -6535,6 +6562,7 @@
     "cover_url": null,
     "steam_appid": 12120,
     "generos": [
+      "Mundo abierto",
       "Acción",
       "Aventura"
     ],
@@ -6577,15 +6605,15 @@
     "cover_url": null,
     "steam_appid": 3314340,
     "generos": [
-      "Casual",
-      "Indie",
-      "Simuladores",
-      "Acceso anticipado"
+      "Simulación",
+      "Incremental"
     ],
     "precio_pagado": 4.89,
     "precio_actual": 6.99,
     "precio_salida": 6.99,
-    "tags": [],
+    "tags": [
+      "early-access"
+    ],
     "hltb_breakdown": {
       "main": null,
       "main_plus": null,
@@ -6618,9 +6646,7 @@
     "cover_url": null,
     "steam_appid": 3370870,
     "generos": [
-      "Aventura",
-      "Casual",
-      "Indie"
+      "Incremental"
     ],
     "precio_pagado": null,
     "precio_actual": 7.79,
@@ -6659,10 +6685,9 @@
     "cover_url": null,
     "steam_appid": 2060160,
     "generos": [
-      "Casual",
-      "Indie",
-      "Simuladores",
-      "Estrategia"
+      "Programación",
+      "Automatización",
+      "Puzles"
     ],
     "precio_pagado": null,
     "precio_actual": 9.99,
@@ -6707,8 +6732,8 @@
     "cover_url": null,
     "steam_appid": 2138710,
     "generos": [
-      "Acción",
-      "Indie"
+      "Beat 'em up",
+      "Acción"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -6756,6 +6781,7 @@
     "cover_url": null,
     "steam_appid": 201810,
     "generos": [
+      "Shooter",
       "Acción"
     ],
     "precio_pagado": null,
@@ -6800,8 +6826,8 @@
     "cover_url": null,
     "steam_appid": 1382070,
     "generos": [
-      "Aventura",
-      "Indie"
+      "Puzles",
+      "Plataformas"
     ],
     "precio_pagado": null,
     "precio_actual": 24.99,
@@ -6850,8 +6876,7 @@
     "cover_url": null,
     "steam_appid": 1286680,
     "generos": [
-      "Acción",
-      "Aventura",
+      "Shooter",
       "Rol"
     ],
     "precio_pagado": null,
@@ -6897,8 +6922,9 @@
     "cover_url": null,
     "steam_appid": 368260,
     "generos": [
-      "Rol",
-      "Estrategia"
+      "Estrategia",
+      "Cartas",
+      "Rol"
     ],
     "precio_pagado": null,
     "precio_actual": 59.99,
@@ -6943,6 +6969,7 @@
     "cover_url": null,
     "steam_appid": 1088850,
     "generos": [
+      "Shooter",
       "Acción",
       "Aventura"
     ],
@@ -6989,9 +7016,8 @@
     "cover_url": null,
     "steam_appid": 250620,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Indie"
+      "Terror",
+      "Aventura"
     ],
     "precio_pagado": null,
     "precio_actual": 3.39,
@@ -7036,9 +7062,7 @@
     "cover_url": null,
     "steam_appid": 221260,
     "generos": [
-      "Aventura",
-      "Casual",
-      "Indie"
+      "Puzles"
     ],
     "precio_pagado": null,
     "precio_actual": 14.79,
@@ -7082,10 +7106,8 @@
     "cover_url": null,
     "steam_appid": 1097150,
     "generos": [
-      "Acción",
-      "Casual",
-      "Deportes",
-      "Multijugador masivo"
+      "Plataformas",
+      "Battle royale"
     ],
     "precio_pagado": null,
     "precio_actual": 0,
@@ -7131,8 +7153,8 @@
     "cover_url": null,
     "steam_appid": 645630,
     "generos": [
-      "Carreras",
-      "Simulación"
+      "Simulación",
+      "Gestión"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -7172,9 +7194,9 @@
     "cover_url": null,
     "steam_appid": 233450,
     "generos": [
-      "Indie",
-      "Simulación",
-      "Estrategia"
+      "Construcción",
+      "Gestión",
+      "Simulación"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -7215,8 +7237,9 @@
     "cover_url": null,
     "steam_appid": 648350,
     "generos": [
-      "Simulación",
-      "Estrategia"
+      "Construcción",
+      "Gestión",
+      "Simulación"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -7256,8 +7279,9 @@
     "cover_url": null,
     "steam_appid": 255710,
     "generos": [
-      "Simulación",
-      "Estrategia"
+      "Construcción",
+      "Gestión",
+      "Simulación"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -7297,10 +7321,8 @@
     "cover_url": null,
     "steam_appid": 433340,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Indie",
-      "Simulación"
+      "Simulación",
+      "Aventura"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -7344,10 +7366,8 @@
     "cover_url": null,
     "steam_appid": 1623730,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Indie",
-      "Rol"
+      "Supervivencia",
+      "Sandbox"
     ],
     "precio_pagado": 0,
     "precio_actual": 20.29,
@@ -7395,8 +7415,9 @@
     "cover_url": null,
     "steam_appid": 220240,
     "generos": [
-      "Acción",
-      "Aventura"
+      "Shooter",
+      "Mundo abierto",
+      "Acción"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -7438,9 +7459,8 @@
     "cover_url": null,
     "steam_appid": 2114740,
     "generos": [
-      "Acción",
-      "Aventura",
-      "Indie"
+      "Plataformas",
+      "Metroidvania"
     ],
     "precio_pagado": 0,
     "precio_actual": null,
@@ -7483,7 +7503,8 @@
     "cover_url": null,
     "steam_appid": 1295660,
     "generos": [
-      "Estrategia"
+      "Estrategia",
+      "Por turnos"
     ],
     "precio_pagado": 0,
     "precio_actual": null,
@@ -7515,8 +7536,8 @@
     "cover_url": "https://upload.wikimedia.org/wikipedia/en/5/57/Doom_cover_art.jpg",
     "steam_appid": null,
     "generos": [
-      "Acción",
-      "FPS"
+      "Shooter",
+      "Acción"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -7557,9 +7578,8 @@
     "cover_url": "https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/key-art/About-Minecraft_Featured-Image-0_570x321.jpg",
     "steam_appid": null,
     "generos": [
-      "Aventura",
-      "Sandbox",
-      "Supervivencia"
+      "Supervivencia",
+      "Sandbox"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -7597,7 +7617,8 @@
     "cover_url": "https://supercell.com/images/4c0ab0c1fb2958e72103f81632fee096/og_clashofclans.f3149338.jpg",
     "steam_appid": null,
     "generos": [
-      "Estrategia"
+      "Estrategia",
+      "Tiempo real"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -7635,8 +7656,8 @@
     "cover_url": "https://supercell.com/images/8654bffbaa77efb91243d3706b739c25/og_clashroyale.d235f90b.jpg",
     "steam_appid": null,
     "generos": [
-      "Estrategia",
-      "Cartas"
+      "Cartas",
+      "Estrategia"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -7676,8 +7697,8 @@
     "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/42700/header.jpg?t=1780962720",
     "steam_appid": 42700,
     "generos": [
-      "Acción",
-      "FPS"
+      "Shooter",
+      "Acción"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -8070,7 +8091,7 @@
     "steam_appid": null,
     "generos": [
       "Rol",
-      "Aventura"
+      "Por turnos"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -8111,7 +8132,7 @@
     "steam_appid": null,
     "generos": [
       "Rol",
-      "Aventura"
+      "Por turnos"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -8149,8 +8170,7 @@
     "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/627270/header.jpg?t=1745536404",
     "steam_appid": 627270,
     "generos": [
-      "Lucha",
-      "Acción"
+      "Lucha"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -8189,8 +8209,7 @@
     "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/307780/header.jpg?t=1761846088",
     "steam_appid": 307780,
     "generos": [
-      "Lucha",
-      "Acción"
+      "Lucha"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -8230,9 +8249,7 @@
     "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1364780/header.jpg?t=1785737403",
     "steam_appid": 1364780,
     "generos": [
-      "Lucha",
-      "Acción",
-      "Aventura"
+      "Lucha"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -8270,7 +8287,6 @@
     "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1846380/eacea0635efb7af9054f6b299060fee32404ace7/header.jpg?t=1777394467",
     "steam_appid": 1846380,
     "generos": [
-      "Acción",
       "Carreras"
     ],
     "precio_pagado": null,
@@ -8312,6 +8328,7 @@
     "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg?t=1759502961",
     "steam_appid": 1174180,
     "generos": [
+      "Mundo abierto",
       "Acción",
       "Aventura"
     ],
@@ -8393,6 +8410,7 @@
     "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/870780/ec621653454cdad232187af4eb79f23c05aceca5/header.jpg?t=1781607969",
     "steam_appid": 870780,
     "generos": [
+      "Shooter",
       "Acción",
       "Aventura"
     ],
@@ -8433,7 +8451,8 @@
     "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1222670/header.jpg?t=1787850077",
     "steam_appid": 1222670,
     "generos": [
-      "Simulación"
+      "Simulación",
+      "Construcción"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -8471,8 +8490,8 @@
     "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/220/header.jpg?t=1745368545",
     "steam_appid": 220,
     "generos": [
-      "Acción",
-      "Disparos"
+      "Shooter",
+      "Acción"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -8633,9 +8652,8 @@
     "cover_url": "https://image.api.playstation.com/vulcan/ap/rnd/202608/2000/2c7ee56fbf89ace584ee82e74ec198d061a3e035d9f8ee7f.png",
     "steam_appid": null,
     "generos": [
-      "Acción",
-      "Disparos",
-      "Battle Royale"
+      "Shooter",
+      "Battle royale"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -8714,9 +8732,9 @@
     "cover_url": "https://blog.playstation.com/tachyon/2013/06/LEAD_TLOU.jpg",
     "steam_appid": null,
     "generos": [
+      "Supervivencia",
       "Acción",
-      "Aventura",
-      "Supervivencia"
+      "Aventura"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -8755,9 +8773,9 @@
     "cover_url": "https://image.api.playstation.com/vulcan/img/rnd/202010/2618/w48z6bzefZPrRcJHc7L8SO66.png",
     "steam_appid": null,
     "generos": [
+      "Supervivencia",
       "Acción",
-      "Aventura",
-      "Supervivencia"
+      "Aventura"
     ],
     "precio_pagado": null,
     "precio_actual": null,
@@ -8987,9 +9005,8 @@
     "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2437170/84111f742bdabda563ce1fdf30185aae66494492/header_alt_assets_26.jpg?t=1788550124",
     "steam_appid": 2437170,
     "generos": [
-      "Acción",
-      "Estrategia",
-      "MOBA"
+      "MOBA",
+      "Estrategia"
     ],
     "precio_pagado": null,
     "precio_actual": null,
