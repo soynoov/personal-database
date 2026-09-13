@@ -12,5 +12,8 @@ export function getGameSpendScope(metrics: GameValueMetrics, market: GameMarketV
     microtransactions: metrics.microtransactionSpend,
     differs: unpaired > 0 || metrics.microtransactionSpend > 0,
     provisional: metrics.usageProvisional,
+    onlyMicrotransactions: metrics.microtransactionSpend > 0
+      && market.purchaseBalance.balance.state === 'unavailable'
+      && unpaired === 0 && (comparable === null || comparable === 0),
   };
 }

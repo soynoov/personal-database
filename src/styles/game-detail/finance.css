@@ -19,6 +19,23 @@
     gap: var(--space-3);
   }
   .purchase-overview > * { min-width: 0; }
+  .microtransaction-overview { display: grid; gap: var(--space-3); min-width: 0; }
+  .game-page-rich #finance .microtransaction-overview > .metric-card {
+    display: grid; gap: var(--space-2); min-height: 0;
+    padding: var(--space-4); border-radius: var(--radius-2);
+    border: 1px solid var(--panel-line); background: var(--panel-inner); box-shadow: none;
+  }
+  .game-page-rich #finance .microtransaction-overview .metric-card-head {
+    color: var(--muted); font: 550 var(--type-ui)/1.4 var(--font-body); text-transform: none; letter-spacing: 0;
+  }
+  .game-page-rich #finance .microtransaction-overview .metric-card > strong {
+    color: var(--text); font: 650 clamp(2rem, 4vw, 2.75rem)/1.15 var(--font-body);
+    font-variant-numeric: tabular-nums; overflow-wrap: anywhere;
+  }
+  .game-page-rich #finance .microtransaction-overview .metric-card > small {
+    color: var(--muted); font: 450 var(--type-ui)/1.4 var(--font-body);
+  }
+  .microtransaction-overview .purchase-footnote { display: block; }
   .purchase-overview > .purchase-balance:only-child { grid-column: 1 / -1; }
   .purchase-balance {
     --purchase-accent: var(--muted);

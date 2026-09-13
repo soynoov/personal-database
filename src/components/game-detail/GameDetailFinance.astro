@@ -39,12 +39,19 @@ const spendScope = getGameSpendScope(metrics, market);
 <GameDetailFinanceNotice {market} />
 <article class="analysis-panel analysis-panel-money" id="finance">
   <div class="section-title-row analysis-head">
-    <div><span class="section-eyebrow">Calidad de compra</span><h2>Dinero</h2></div>
+    <div><span class="section-eyebrow">{spendScope.onlyMicrotransactions ? 'Gasto registrado' : 'Calidad de compra'}</span><h2>Dinero</h2></div>
     <button class="game-edit-trigger game-edit-trigger-sm" id="money-edit-trigger" type="button" aria-label="Editar gasto registrado" aria-controls="money-edit-dialog" data-money-edit-trigger>
       <TablerIcon src={editIcon} />
     </button>
   </div>
 
+  {spendScope.onlyMicrotransactions ? (
+    <div class="microtransaction-overview" data-microtransaction-summary>
+      <MetricCard primary label={spendScope.provisional ? 'Total gastado conocido' : 'Total gastado'}
+        value={formatEuro(spendScope.total)} context={spendScope.provisional ? 'En micropagos · Provisional: faltan importes por registrar' : 'En micropagos'} />
+      <p class="purchase-footnote">Los micropagos no tienen un precio de referencia comparable. Este gasto cuenta para <a href="#hours">amortizar en Horas</a>.</p>
+    </div>
+  ) : <>
   <div class="purchase-overview" data-purchase-state={purchases.balance.state} data-purchase-partial={purchases.partial}>
     <PurchaseBalance label="Balance de compra" balance={purchases.balance} partial={purchases.partial} />
     {purchases.paidTotal !== null && <>
@@ -63,6 +70,7 @@ const spendScope = getGameSpendScope(metrics, market);
       {' '}Se usa para <a href="#hours">amortizar en Horas</a>{spendScope.provisional && ' (provisional)'}.
     </span>
   </p>}
+  </>}
 
   <GameDetailMarket {slug} {market} purchasedUnits={metrics.purchasedUnits} />
 </article>
