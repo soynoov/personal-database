@@ -8373,5 +8373,449 @@
       "https://store.rockstargames.com/game/buy-red-dead-redemption-2?drm=PlayStation",
       "https://store.steampowered.com/app/1174180/"
     ]
+  },
+  {
+    "titulo": "God of War (2018)",
+    "creado_en": "2026-09-13T00:35:52Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2018,
+    "lanzamiento_nota": "Lanzamiento original en PS4 en 2018; la versión de PC llegó en 2022. Los créditos corresponden al juego original.",
+    "modos": [
+      "solitario"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/header.jpg?t=1763059412",
+    "steam_appid": 1593500,
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Santa Monica Studio"
+    ],
+    "editoras": [
+      "Sony Interactive Entertainment"
+    ],
+    "fuentes_datos": [
+      "https://www.playstation.com/es-es/games/god-of-war/",
+      "https://blog.playstation.com/archive/2018/01/23/god-of-war-release-date-announced-special-editions-revealed-new-trailer-debuts",
+      "https://store.steampowered.com/app/1593500/"
+    ]
+  },
+  {
+    "titulo": "Control",
+    "creado_en": "2026-09-13T00:35:52Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2019,
+    "lanzamiento_nota": "El juego original se publicó en 2019 con 505 Games; Control Ultimate Edition llegó a Steam en 2020. La editora indicada es la del lanzamiento original.",
+    "modos": [
+      "solitario"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/870780/ec621653454cdad232187af4eb79f23c05aceca5/header.jpg?t=1781607969",
+    "steam_appid": 870780,
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Remedy Entertainment"
+    ],
+    "editoras": [
+      "505 Games"
+    ],
+    "fuentes_datos": [
+      "https://investors.remedygames.com/announcements/505-games-remedy-entertainments-critically-acclaimed-control-launches-today-on-pc-ps4-xbox-one/",
+      "https://store.steampowered.com/app/870780/"
+    ]
+  },
+  {
+    "titulo": "Los Sims 4",
+    "creado_en": "2026-09-13T00:35:52Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2014,
+    "lanzamiento_nota": "Lanzamiento original en PC en 2014; su distribución en Steam comenzó en 2020.",
+    "modos": [
+      "solitario"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1222670/header.jpg?t=1787850077",
+    "steam_appid": 1222670,
+    "generos": [
+      "Simulación"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Maxis"
+    ],
+    "editoras": [
+      "Electronic Arts"
+    ],
+    "fuentes_datos": [
+      "https://news.ea.com/press-releases/press-releases-details/2014/The-Sims-4-Available-September-2-2014/default.aspx",
+      "https://store.steampowered.com/app/1222670/"
+    ]
+  },
+  {
+    "titulo": "Half-Life 2",
+    "creado_en": "2026-09-13T00:35:52Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2004,
+    "modos": [
+      "solitario"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/220/header.jpg?t=1745368545",
+    "steam_appid": 220,
+    "generos": [
+      "Acción",
+      "Disparos"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Valve"
+    ],
+    "editoras": [
+      "Valve"
+    ],
+    "fuentes_datos": [
+      "https://store.steampowered.com/app/220/"
+    ]
+  },
+  {
+    "titulo": "Mario & Sonic en los Juegos Olímpicos London 2012",
+    "creado_en": "2026-09-13T00:35:52Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "Wii",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2011,
+    "lanzamiento_nota": "La entrega de Wii salió en 2011; la versión de Nintendo 3DS llegó en 2012. SEGA publicó el juego en Europa y Norteamérica; Nintendo, en Japón.",
+    "modos": [
+      "solitario",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://www.nintendo.com/eu/media/images/10_share_images/games_15/wii_24/SI_Wii_MarioandSonicAtTheLondon2012OlympicGames_esES.jpg",
+    "steam_appid": null,
+    "generos": [
+      "Deportes"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "SEGA"
+    ],
+    "editoras": [
+      "SEGA"
+    ],
+    "fuentes_datos": [
+      "https://www.nintendo.com/es-es/Juegos/Wii/Mario-Sonic-en-los-Juegos-Olimpicos-London-2012--281903.html",
+      "https://www.nintendo.com/es-es/Noticias/2011/-Mario-y-Sonic-viajan-a-Londres--253271.html",
+      "https://www.nintendo.com/en-gb/Games/Nintendo-3DS-games/Mario-Sonic-at-the-London-2012-Olympic-Games--274391.html"
+    ]
+  },
+  {
+    "titulo": "Death Stranding",
+    "creado_en": "2026-09-13T00:35:52Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2019,
+    "lanzamiento_nota": "Lanzamiento original en PS4 en 2019 con Sony Interactive Entertainment; la versión de PC llegó en 2020 publicada por 505 Games. No es la edición Director's Cut.",
+    "modos": [
+      "solitario"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1190460/header.jpg?t=1766014863",
+    "steam_appid": 1190460,
+    "generos": [
+      "Acción",
+      "Aventura"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Kojima Productions"
+    ],
+    "editoras": [
+      "Sony Interactive Entertainment"
+    ],
+    "fuentes_datos": [
+      "https://blog.es.playstation.com/2019/05/29/death-stranding-fecha-de-lanzamiento-y-nuevo-trailer/",
+      "https://store.steampowered.com/app/1190460/"
+    ]
+  },
+  {
+    "titulo": "Super Smash Bros. Brawl",
+    "creado_en": "2026-09-13T00:35:52Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "Wii",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2008,
+    "modos": [
+      "solitario",
+      "cooperativo",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://www.nintendo.com/eu/media/images/10_share_images/games_15/wii_24/SI_Wii_SuperSmashBrosBrawl.jpg",
+    "steam_appid": null,
+    "generos": [
+      "Lucha",
+      "Plataformas"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Sora Ltd.",
+      "Game Arts"
+    ],
+    "editoras": [
+      "Nintendo"
+    ],
+    "fuentes_datos": [
+      "https://www.nintendo.com/en-gb/Games/Wii/Super-Smash-Bros-Brawl-283366.html",
+      "https://sourcegaming.info/2015/05/02/im-making-smash-sakurais-famitsu-article-on-brawl/"
+    ]
+  },
+  {
+    "titulo": "Fortnite",
+    "creado_en": "2026-09-13T00:35:52Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PC",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2017,
+    "modos": [
+      "cooperativo",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://image.api.playstation.com/vulcan/ap/rnd/202608/2000/2c7ee56fbf89ace584ee82e74ec198d061a3e035d9f8ee7f.png",
+    "steam_appid": null,
+    "generos": [
+      "Acción",
+      "Disparos",
+      "Battle Royale"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Epic Games"
+    ],
+    "editoras": [
+      "Epic Games"
+    ],
+    "fuentes_datos": [
+      "https://www.fortnite.com/news/announcing-fortnite-battle-royale?lang=en-US",
+      "https://www.playstation.com/en-us/games/fortnite/"
+    ]
+  },
+  {
+    "titulo": "MARVEL Tōkon: Fighting Souls",
+    "creado_en": "2026-09-13T00:35:52Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PS5",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2026,
+    "modos": [
+      "solitario",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://image.api.playstation.com/vulcan/ap/rnd/202606/0407/ace9ff730b9916b1c491de681758cdbbdcdce172e0f36147.png",
+    "steam_appid": null,
+    "generos": [
+      "Lucha"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Arc System Works"
+    ],
+    "editoras": [
+      "Sony Interactive Entertainment"
+    ],
+    "fuentes_datos": [
+      "https://www.playstation.com/en-us/games/marvel-tokon-fighting-souls/",
+      "https://blog.es.playstation.com/2026/02/13/marvel-tokon-fighting-souls-llega-a-ps5-y-pc-el-6-de-agosto/"
+    ]
+  },
+  {
+    "titulo": "The Last of Us",
+    "creado_en": "2026-09-13T00:35:52Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PS3",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2013,
+    "lanzamiento_nota": "Entrega original de PS3 de 2013; no es The Last of Us Remastered (2014) ni el remake The Last of Us Part I (2022).",
+    "modos": [
+      "solitario",
+      "multijugador"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://blog.playstation.com/tachyon/2013/06/LEAD_TLOU.jpg",
+    "steam_appid": null,
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Supervivencia"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Naughty Dog"
+    ],
+    "editoras": [
+      "Sony Computer Entertainment"
+    ],
+    "fuentes_datos": [
+      "https://blog.playstation.com/2013/06/04/the-last-of-us-multiplayer-revealed/",
+      "https://www.prnewswire.com/news-releases/award-winning-developer-naughty-dog-launches-new-ip-the-last-of-us-exclusively-for-playstation3-211525641.html"
+    ]
+  },
+  {
+    "titulo": "The Last of Us Part II",
+    "creado_en": "2026-09-13T00:35:52Z",
+    "estado": null,
+    "launcher": null,
+    "plataforma": "PS4",
+    "horas": null,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": null,
+    "nota": null,
+    "comentarios": null,
+    "lanzamiento": 2020,
+    "lanzamiento_nota": "Entrega original de PS4 de 2020; no es The Last of Us Part II Remastered.",
+    "modos": [
+      "solitario"
+    ],
+    "solo": null,
+    "hltb": null,
+    "cover_url": "https://image.api.playstation.com/vulcan/img/rnd/202010/2618/w48z6bzefZPrRcJHc7L8SO66.png",
+    "steam_appid": null,
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Supervivencia"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Naughty Dog"
+    ],
+    "editoras": [
+      "Sony Interactive Entertainment"
+    ],
+    "fuentes_datos": [
+      "https://www.playstation.com/en-us/games/the-last-of-us-part-ii/",
+      "https://blog.playstation.com/2019/10/24/the-last-of-us-part-ii-comes-to-ps4-in-may/"
+    ]
   }
 ]
