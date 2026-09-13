@@ -4,7 +4,7 @@ import '../../styles/game-detail/edit.css';
 import FormCheckbox from '../FormCheckbox.astro';
 import GamePill from '../GamePill.astro';
 import GameCredits from './GameCredits.astro';
-import type { GameCreditMetadata } from '../../lib/game-credits';
+import { getGameCreditLinks, type GameCreditMetadata } from '../../lib/game-credits';
 import TablerIcon from '../TablerIcon.astro';
 import { GAME_MODES } from '../../lib/game-modes';
 import { PUBLIC_GAME_TAGS } from '../../lib/game-tags';
@@ -18,6 +18,7 @@ import difficultyIcon from '@tabler/icons/outline/barbell.svg?url';
 import copyIcon from '@tabler/icons/outline/device-gamepad-2.svg?url';
 import databaseIcon from '@tabler/icons/outline/database-cog.svg?url';
 import chevronDownIcon from '@tabler/icons/outline/chevron-down.svg?url';
+import externalLinkIcon from '@tabler/icons/outline/external-link.svg?url';
 
 interface Props {
   slug: string;
@@ -41,6 +42,7 @@ interface Props {
 }
 
 const { slug, credits, metadataGroups, systemItems, isSteam, editValues } = Astro.props;
+const creditLinks = getGameCreditLinks(credits);
 const groupIcons: Record<string, string> = {
   'Datos del juego': categoryIcon,
   'Mis datos': copyIcon,
@@ -73,46 +75,59 @@ const progressIcons: Record<ProgressKind, string> = {
           aria-label={group.title}
         >
           <div class="data-group-head">
-            <span class="data-group-icon"><TablerIcon src={groupIcons[group.title] ?? settingsIcon} /></span>
-            <h3>{group.title}</h3>
-          </div>
-          <dl class="detail-grid data-group-grid" data-count={visibleItems.length}>
-            {visibleItems.map(({ label, value, values, className = '', note = '', progress = null, kind, state = 'default' }) => (
-              <div
-                title={note || undefined}
-                data-state={state}
-                class:list={[
-                  "detail-item",
-                  "compact-detail-card",
-                  className,
-                  kind && `progress-card-${kind}`,
-                  state === 'empty' && 'detail-item-empty',
-                  state === 'complete' && 'detail-item-complete',
-                  progress !== null && 'detail-item-progress',
-                ]}
-              >
-                <dt>{label}</dt>
-                {kind && <dd class="progress-card-icon" aria-hidden="true"><TablerIcon src={progressIcons[kind]} /></dd>}
-                <dd class="detail-item-value">
-                  {values?.length ? <ul class="detail-value-list" role="list">{values.map((entry) => <li><GamePill value={entry} kind={label === 'Etiquetas' ? 'tag' : 'neutral'} /></li>)}</ul>
-                    : state !== 'empty' && label === 'Launcher' ? <GamePill kind="launcher" value={value} />
-                    : state !== 'empty' && label === 'Plataforma' ? <GamePill kind="platform" value={value} /> : value}
-                </dd>
-                {note && <dd class="detail-item-note">{note}</dd>}
-                {progress !== null && (
-                  <dd class="data-progress-slot">
-                    <span class="data-progress-track" role="progressbar" aria-label={`Progreso de ${label}`} aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(progress)}>
-                      <span style={`--data-progress:${progress}%`}></span>
-                    </span>
-                  </dd>
-                )}
+            <div class="data-group-heading">
+              <span class="data-group-icon"><TablerIcon src={groupIcons[group.title] ?? settingsIcon} /></span>
+              <h3>{group.title}</h3>
+            </div>
+            {group.className === 'data-group-catalog' && creditLinks.length > 0 && (
+              <div class="game-source-links">
+                {creditLinks.map(({ href, label }) => (
+                  <a class="game-source-button" href={href} target="_blank" rel="noopener noreferrer">
+                    <span>{label}</span><TablerIcon src={externalLinkIcon} />
+                  </a>
+                ))}
               </div>
-            ))}
-            {group.className === 'data-group-catalog' && <GameCredits slug={slug} game={credits} />}
-          </dl>
-          {group.className === 'data-group-personal' && visibleItems.filter(item => item.kind).every(item => item.state === 'empty') && (
-            <button class="detail-empty-action" type="button" data-detail-edit>Registrar mi progreso</button>
-          )}
+            )}
+          </div>
+          <div class="data-group-content">
+            <dl class="detail-grid data-group-grid" data-count={visibleItems.length}>
+              {visibleItems.map(({ label, value, values, className = '', note = '', progress = null, kind, state = 'default' }) => (
+                <div
+                  title={note || undefined}
+                  data-state={state}
+                  class:list={[
+                    "detail-item",
+                    "compact-detail-card",
+                    className,
+                    kind && `progress-card-${kind}`,
+                    state === 'empty' && 'detail-item-empty',
+                    state === 'complete' && 'detail-item-complete',
+                    progress !== null && 'detail-item-progress',
+                  ]}
+                >
+                  <dt>{label}</dt>
+                  {kind && <dd class="progress-card-icon" aria-hidden="true"><TablerIcon src={progressIcons[kind]} /></dd>}
+                  <dd class="detail-item-value">
+                    {values?.length ? <ul class="detail-value-list" role="list">{values.map((entry) => <li><GamePill value={entry} kind={label === 'Etiquetas' ? 'tag' : 'neutral'} /></li>)}</ul>
+                      : state !== 'empty' && label === 'Launcher' ? <GamePill kind="launcher" value={value} />
+                      : state !== 'empty' && label === 'Plataforma' ? <GamePill kind="platform" value={value} /> : value}
+                  </dd>
+                  {note && <dd class="detail-item-note">{note}</dd>}
+                  {progress !== null && (
+                    <dd class="data-progress-slot">
+                      <span class="data-progress-track" role="progressbar" aria-label={`Progreso de ${label}`} aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(progress)}>
+                        <span style={`--data-progress:${progress}%`}></span>
+                      </span>
+                    </dd>
+                  )}
+                </div>
+              ))}
+              {group.className === 'data-group-catalog' && <GameCredits slug={slug} game={credits} />}
+            </dl>
+            {group.className === 'data-group-personal' && visibleItems.filter(item => item.kind).every(item => item.state === 'empty') && (
+              <button class="detail-empty-action" type="button" data-detail-edit>Registrar mi progreso</button>
+            )}
+          </div>
         </article>
       );
     })}

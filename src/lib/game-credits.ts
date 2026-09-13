@@ -35,3 +35,22 @@ export function getGameCreditSource(game: GameCreditMetadata, field: keyof Steam
   }
   return isSteamAppId(game.steam_appid) ? `https://store.steampowered.com/app/${game.steam_appid}/` : null;
 }
+
+/** Store navigation is separate from attribution of saved original-release credits. */
+export function getGameCreditLinks(game: GameCreditMetadata): { href: string; label: string }[] {
+  const steamUrl = isSteamAppId(game.steam_appid) ? `https://store.steampowered.com/app/${game.steam_appid}/` : null;
+  const sources = [...new Set([
+    getGameCreditSource(game, 'developers'),
+    getGameCreditSource(game, 'publishers'),
+  ])].filter((href): href is string => {
+    if (!href) return false;
+    const url = new URL(href);
+    // Named store slugs and tracking parameters still refer to the same app.
+    return !steamUrl || url.origin !== 'https://store.steampowered.com'
+      || !new RegExp(`^/app/${game.steam_appid}(?:/|$)`).test(url.pathname);
+  });
+  return [
+    ...(steamUrl ? [{ href: steamUrl, label: 'Ficha de Steam' }] : []),
+    ...sources.map((href, index) => ({ href, label: sources.length > 1 ? `Fuente de datos ${index + 1}` : 'Fuente de datos' })),
+  ];
+}

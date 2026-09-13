@@ -14,7 +14,8 @@
 
 - Dentro de la misma sección hay dos bento de igual nivel: **Datos del juego** (géneros, lanzamiento, modos, etiquetas y créditos) y **Mis datos** (logros/completitud, dificultad, cromos Steam y mi copia). Transmisión y cooperativo privado se presentan como preferencias personales, no como características públicas.
 - Datos del juego aparece primero en el DOM y conserva el destino `#game-info` de «Más información» en la ruleta. La información técnica de mantenimiento sigue plegada. El editor común permanece en la cabecera de Detalles.
-- Dos columnas 6/6 en escritorio; hasta 960 px se apilan, conservando celdas compactas. Sin span vertical de dos filas ni alturas ligadas al bloque vecino. Logros conserva su protagonismo y los estados vacíos no se agrandan. Radios 32/16/8 px, espacios y `GamePill` existentes. Sin cambios en Horas, Dinero, Valoración ni fondo Golden.
+- Dos columnas 6/6 en escritorio con bordes superior e inferior alineados. Las celdas reparten el espacio disponible sin alturas fijas ni huecos bajo un panel. Hasta 960 px se apilan y cada grupo recupera su altura natural. Logros conserva su protagonismo. Radios 32/16/8 px, espacios y `GamePill` existentes. Sin cambios en Horas, Dinero, Valoración ni fondo Golden.
+- «Ficha de Steam» es un botón independiente en la cabecera de Datos del juego, no una nota dentro de Editora. Si los créditos guardados proceden de otra fuente, se conserva su enlace aparte; no se atribuyen los datos del lanzamiento original a la ficha de un port. Acciones de 44 px y reflujo en móvil.
 - Los géneros se guardan en la biblioteca compartida y se normalizan igual en ficha, catálogo, estadísticas y ruleta. Las categorías específicas preceden a Acción/Aventura. Free to Play y Early Access son etiquetas; Indie no es una mecánica de juego. Criterio y fuentes en [Géneros de la biblioteca](docs/game-genres.md).
 
 ### Valoración elegida · NooV Score v2

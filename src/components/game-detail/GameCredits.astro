@@ -1,6 +1,6 @@
 ---
 import { isSteamAppId } from '../../lib/steam-game-credits';
-import { getSavedGameCredits, getGameCreditSource, type GameCreditMetadata } from '../../lib/game-credits';
+import { getSavedGameCredits, type GameCreditMetadata } from '../../lib/game-credits';
 
 interface Props { slug: string; game: GameCreditMetadata; }
 const { slug, game } = Astro.props;
@@ -14,14 +14,10 @@ const fields = [
 
 {fields.map(({ key, label }) => {
   const value = saved[key].join(' · ');
-  const source = getGameCreditSource(game, key);
   return (
     <div class="detail-item compact-detail-card game-credit" data-state={value ? 'default' : 'empty'}>
       <dt>{label}</dt>
       <dd class="detail-item-value" data-game-credit={key} data-credits-slug={!value && hasSteam ? slug : undefined} aria-live="polite">{value || 'No disponible'}</dd>
-      {key === 'publishers' && source && (
-        <dd class="detail-item-note"><a href={source} target="_blank" rel="noopener noreferrer">{value ? 'Fuente de los datos' : 'Fuente: ficha actual de Steam'}</a></dd>
-      )}
     </div>
   );
 })}

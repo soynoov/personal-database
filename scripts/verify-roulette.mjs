@@ -8,7 +8,7 @@ const libraryBefore = await readFile('games.json', 'utf8');
 try {
   const { toRouletteGame } = await server.ssrLoadModule('/src/lib/roulette-game.ts');
   const { isSteamAppId, parseSteamGameCredits, getSteamGameCredits } = await server.ssrLoadModule('/src/lib/steam-game-credits.ts');
-  const { getSavedGameCredits, getGameCredits, getGameCreditSource } = await server.ssrLoadModule('/src/lib/game-credits.ts');
+  const { getSavedGameCredits, getGameCredits, getGameCreditSource, getGameCreditLinks } = await server.ssrLoadModule('/src/lib/game-credits.ts');
   const savedFixture = {
     desarrolladoras: [' Nintendo ', '', 'Nintendo', 4], editoras: ['Nintendo'],
     fuentes_datos: ['javascript:alert(1)', 'not a URL', 'https://www.nintendo.com/'],
@@ -20,6 +20,19 @@ try {
   assert.equal(getGameCreditSource({ editoras: ['Nintendo'], fuentes_datos: ['http://example.com', 'https://user:pass@example.com'] }, 'publishers'), null);
   assert.equal(getGameCreditSource({ steam_appid: 42700 }, 'publishers'), 'https://store.steampowered.com/app/42700/');
   assert.equal(getGameCreditSource({ steam_appid: 42700, editoras: ['Original publisher'] }, 'publishers'), null, 'Never attribute saved facts to an unrelated Steam source');
+  assert.deepEqual(getGameCreditLinks({ steam_appid: 42700 }), [
+    { href: 'https://store.steampowered.com/app/42700/', label: 'Ficha de Steam' },
+  ]);
+  assert.deepEqual(getGameCreditLinks({ ...savedFixture, steam_appid: 42700 }), [
+    { href: 'https://store.steampowered.com/app/42700/', label: 'Ficha de Steam' },
+    { href: 'https://www.nintendo.com/', label: 'Fuente de datos' },
+  ], 'Steam navigation does not replace the original credits source');
+  assert.deepEqual(getGameCreditLinks(savedFixture), [{ href: 'https://www.nintendo.com/', label: 'Fuente de datos' }]);
+  assert.deepEqual(getGameCreditLinks({ steam_appid: 42700, editoras: ['Activision'], fuentes_datos: ['https://store.steampowered.com/app/42700/Call_of_Duty_Black_Ops/?l=spanish'] }), [
+    { href: 'https://store.steampowered.com/app/42700/', label: 'Ficha de Steam' },
+  ], 'Named Steam store URLs do not duplicate the button');
+  assert.deepEqual(getGameCreditLinks({ editoras: ['Studio'], fuentes_datos: ['javascript:alert(1)', 'https://user:pass@example.com'] }), []);
+  assert.deepEqual(getGameCreditLinks({ steam_appid: '42700' }), []);
   const fixture = { titulo: 'Un juego', lanzamiento: 2017, estado: 'Abandonado', generos: ['Acción'] };
   assert.equal(toRouletteGame(fixture).lanzamiento, 2017);
   assert.equal(toRouletteGame({ ...fixture, lanzamiento: null }).lanzamiento, null);
