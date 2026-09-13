@@ -10,7 +10,6 @@ import GameDetailFinance from '../../components/game-detail/GameDetailFinance.as
 import GameDetailCompetitive from '../../components/game-detail/GameDetailCompetitive.astro';
 import GameDetailStats from '../../components/game-detail/GameDetailStats.astro';
 import GameDetailDLCs from '../../components/game-detail/GameDetailDLCs.astro';
-import GameDetailComments from '../../components/game-detail/GameDetailComments.astro';
 import GameDetailMetacritic from '../../components/game-detail/GameDetailMetacritic.astro';
 import { buildGameCoverUrl, buildGameHeroUrl } from '../../lib/game-cover-url';
 import { getFullCompletionRuns, getGoldenCompletionKind } from '../../lib/game-achievements';
@@ -273,7 +272,6 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
       />
     )}
     <GameDetailMetacritic slug={slug} critique={game.critica ?? null} legacyScore={legacyScore} includeCommunity={includeCommunity} />
-    <GameDetailComments slug={slug} comentarios={formatValue(game.comentarios)} editValues={{ comentarios: game.comentarios ?? null }} />
 
   <GameDetailChartsScript />
   <script>

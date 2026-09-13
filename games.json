@@ -45,7 +45,6 @@
       "total": 26
     },
     "nota": 8,
-    "comentarios": null,
     "lanzamiento": 2024,
     "solo": true,
     "hltb": 4.2,
@@ -110,7 +109,6 @@
       "total": 44
     },
     "nota": null,
-    "comentarios": "Completado en su dÃƒÆ’Ã‚Â­a (horas no registradas).",
     "lanzamiento": 2022,
     "solo": false,
     "hltb": 5.1,
@@ -153,7 +151,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "Completado en su dÃƒÆ’Ã‚Â­a (horas no registradas).",
     "lanzamiento": 2016,
     "solo": true,
     "hltb": 4.1,
@@ -195,7 +192,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "Completado en su dÃƒÆ’Ã‚Â­a (horas no registradas).",
     "lanzamiento": 2015,
     "solo": true,
     "hltb": 8.2,
@@ -237,7 +233,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2020,
     "solo": null,
     "hltb": 12,
@@ -293,8 +288,7 @@
         "entretenimiento": 4
       },
       "mencion_honorifica": {
-        "nivel": 0,
-        "comentario": null
+        "nivel": 0
       },
       "version": 2,
       "original": null,
@@ -314,13 +308,11 @@
             "entretenimiento": 4
           },
           "mencion_honorifica": {
-            "nivel": 0,
-            "comentario": null
+            "nivel": 0
           }
         }
       }
     },
-    "comentarios": null,
     "lanzamiento": 2019,
     "solo": true,
     "hltb": 10.9,
@@ -359,7 +351,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2022,
     "solo": false,
     "hltb": 17,
@@ -402,7 +393,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2026,
     "solo": false,
     "hltb": null,
@@ -436,7 +426,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2024,
     "solo": true,
     "cover_url": "https://howlongtobeat.com/games/149627_Oddsparks_An_Automation_Adventure.jpg",
@@ -471,7 +460,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "En lista de deseados. Early Access disponible en Steam desde 2026-05-25.",
     "lanzamiento": 2026,
     "solo": null,
     "cover_url": "https://howlongtobeat.com/games/71509_Paralives.jpg",
@@ -512,7 +500,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2020,
     "solo": true,
     "hltb": 72.9,
@@ -555,7 +542,6 @@
       "total": 57
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2022,
     "solo": true,
     "hltb": 14.7,
@@ -598,7 +584,6 @@
       "total": 42
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2017,
     "solo": true,
     "hltb": 10.5,
@@ -619,8 +604,7 @@
           "titulo": "The Delicious Last Course",
           "fecha_adquisicion": "2022-10-22",
           "precio_pagado": null,
-          "tamano": "1,63 GB",
-          "notas": null
+          "tamano": "1,63 GB"
         }
       ]
     },
@@ -653,7 +637,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2025,
     "solo": null,
     "hltb": 8.6,
@@ -696,7 +679,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2018,
     "modos": [
       "cooperativo"
@@ -740,7 +722,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2021,
     "solo": null,
     "hltb": 163.3,
@@ -782,7 +763,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2019,
     "solo": true,
     "hltb": 15.4,
@@ -825,7 +805,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2025,
     "solo": true,
     "hltb": 32,
@@ -868,7 +847,6 @@
       "total": 49
     },
     "nota": null,
-    "comentarios": "Hero shooter competitivo. Top rango: Diamante 3.",
     "rango_maximo": "Diamante 3",
     "lanzamiento": 2024,
     "solo": false,
@@ -963,7 +941,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2019,
     "solo": null,
     "hltb": 6.8,
@@ -1006,7 +983,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2020,
     "solo": false,
     "hltb": 20.1,
@@ -1050,7 +1026,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2025,
     "solo": false,
     "hltb": 9.8,
@@ -1092,7 +1067,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2019,
     "solo": null,
     "hltb": 106.6,
@@ -1135,7 +1109,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2025,
     "solo": true,
     "hltb": 16.6,
@@ -1176,7 +1149,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2025,
     "solo": null,
     "hltb": 9.9,
@@ -1217,7 +1189,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "solo": true,
     "hltb": 10.3,
     "cover_url": "https://howlongtobeat.com/games/5947_Metro_Last_Light.jpg",
@@ -1258,7 +1229,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2024,
     "solo": true,
     "hltb": 5.6,
@@ -1291,7 +1261,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2019,
     "solo": null,
     "hltb": 6.6,
@@ -1334,7 +1303,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2018,
     "solo": null,
     "hltb": 46.5,
@@ -1376,7 +1344,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2022,
     "solo": false,
     "hltb": 6.5,
@@ -1419,7 +1386,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2013,
     "solo": false,
     "hltb": 5.1,
@@ -1462,7 +1428,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2013,
     "solo": false,
     "hltb": 27.1,
@@ -1506,7 +1471,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2014,
     "solo": null,
     "hltb": 3.6,
@@ -1549,7 +1513,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2011,
     "solo": true,
     "hltb": 8.5,
@@ -1592,7 +1555,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2021,
     "solo": true,
     "hltb": 17.8,
@@ -1635,7 +1597,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2018,
     "solo": null,
     "hltb": 25.4,
@@ -1677,7 +1638,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2017,
     "solo": true,
     "hltb": 3.5,
@@ -1720,7 +1680,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "Juego competitivo recurrente. Top rango: Diamante 4.",
     "rango_maximo": "Diamante 4",
     "lanzamiento": 2015,
     "solo": false,
@@ -1814,7 +1773,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2019,
     "solo": true,
     "hltb": 30.2,
@@ -1857,7 +1815,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2016,
     "solo": null,
     "hltb": 23.3,
@@ -1899,7 +1856,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2022,
     "solo": null,
     "hltb": 12,
@@ -1942,7 +1898,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2021,
     "solo": null,
     "cover_url": "https://howlongtobeat.com/games/53770_SoulWorker.jpg",
@@ -1989,7 +1944,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2021,
     "solo": null,
     "hltb": 6.5,
@@ -2032,7 +1986,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2016,
     "solo": true,
     "hltb": 53.4,
@@ -2075,7 +2028,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2018,
     "solo": true,
     "hltb": 30,
@@ -2117,7 +2069,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2018,
     "solo": true,
     "hltb": 22.2,
@@ -2161,7 +2112,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2011,
     "solo": true,
     "hltb": 51.8,
@@ -2204,7 +2154,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2014,
     "solo": true,
     "hltb": 5.6,
@@ -2246,7 +2195,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2011,
     "solo": null,
     "hltb": 34.7,
@@ -2288,7 +2236,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2014,
     "solo": null,
     "hltb": 19.4,
@@ -2331,7 +2278,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2019,
     "solo": false,
     "hltb": 42.2,
@@ -2372,7 +2318,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2015,
     "solo": null,
     "hltb": 51.6,
@@ -2414,7 +2359,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2016,
     "modos": [
       "solitario"
@@ -2459,7 +2403,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2015,
     "solo": false,
     "hltb": 3.3,
@@ -2504,7 +2447,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 1996,
     "solo": true,
     "hltb": 11.3,
@@ -2547,7 +2489,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2020,
     "solo": null,
     "hltb": 0.8,
@@ -2590,7 +2531,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2015,
     "solo": null,
     "hltb": 7,
@@ -2632,7 +2572,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2021,
     "solo": true,
     "hltb": 3.6,
@@ -2674,7 +2613,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2006,
     "solo": false,
     "cover_url": "https://howlongtobeat.com/games/57112_Urban_Rivals.jpg",
@@ -2718,7 +2656,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2016,
     "solo": true,
     "hltb": 33.2,
@@ -2760,7 +2697,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2019,
     "solo": null,
     "hltb": 2.4,
@@ -2802,7 +2738,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2010,
     "solo": false,
     "hltb": 8,
@@ -2845,7 +2780,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2018,
     "solo": false,
     "hltb": 9,
@@ -2886,7 +2820,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2019,
     "solo": false,
     "hltb": 33.2,
@@ -2931,7 +2864,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2023,
     "solo": null,
     "hltb": 16.2,
@@ -2975,7 +2907,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2024,
     "solo": true,
     "hltb": 27.2,
@@ -3018,7 +2949,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2013,
     "solo": false,
     "hltb": 10.6,
@@ -3060,7 +2990,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2012,
     "solo": null,
     "hltb": 30.1,
@@ -3103,7 +3032,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2011,
     "solo": true,
     "hltb": 13.2,
@@ -3145,7 +3073,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2018,
     "solo": true,
     "hltb": 8.3,
@@ -3188,7 +3115,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2023,
     "solo": false,
     "hltb": 145.5,
@@ -3271,7 +3197,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2020,
     "solo": false,
     "hltb": 26,
@@ -3313,7 +3238,6 @@
       "total": 297
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2016,
     "solo": false,
     "hltb": 78.6,
@@ -3335,7 +3259,6 @@
           "precio_actual": 8.39,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 1634040,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1634040/header.jpg?t=1682013373",
           "cover_source": "Steam appdetails API"
@@ -3347,7 +3270,6 @@
           "precio_actual": 8.39,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 2102730,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2102730/header.jpg?t=1760968571",
           "cover_source": "Steam appdetails API"
@@ -3359,7 +3281,6 @@
           "precio_actual": 0,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 1763310,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1763310/header.jpg?t=1704719964",
           "cover_source": "Steam appdetails API"
@@ -3371,7 +3292,6 @@
           "precio_actual": 0,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 1557310,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1557310/header.jpg?t=1704719885",
           "cover_source": "Steam appdetails API"
@@ -3383,7 +3303,6 @@
           "precio_actual": 0,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 509060,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/509060/header.jpg?t=1682025257",
           "cover_source": "Steam appdetails API"
@@ -3395,7 +3314,6 @@
           "precio_actual": 0,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 661770,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/661770/header.jpg?t=1681936970",
           "cover_source": "Steam appdetails API"
@@ -3407,7 +3325,6 @@
           "precio_actual": 0,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 1474030,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1474030/header.jpg?t=1704719824",
           "cover_source": "Steam appdetails API"
@@ -3419,7 +3336,6 @@
           "precio_actual": 3.49,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 1089270,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1089270/header.jpg?t=1682024598",
           "cover_source": "Steam appdetails API"
@@ -3431,7 +3347,6 @@
           "precio_actual": 3.99,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 1324970,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1324970/header.jpg?t=1681934376",
           "cover_source": "Steam appdetails API"
@@ -3443,7 +3358,6 @@
           "precio_actual": 0,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 1199880,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1199880/header.jpg?t=1704719608",
           "cover_source": "Steam appdetails API"
@@ -3455,7 +3369,6 @@
           "precio_actual": 0,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 925750,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/925750/header.jpg?t=1704719411",
           "cover_source": "Steam appdetails API"
@@ -3467,7 +3380,6 @@
           "precio_actual": 11.99,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 1135280,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1135280/header.jpg?t=1699306162",
           "cover_source": "Steam appdetails API"
@@ -3479,7 +3391,6 @@
           "precio_actual": 0,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 1009820,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1009820/header.jpg",
           "cover_source": "Steam appdetails API"
@@ -3491,7 +3402,6 @@
           "precio_actual": 0,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 1251000,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1251000/header.jpg?t=1704719679",
           "cover_source": "Steam appdetails API"
@@ -3503,7 +3413,6 @@
           "precio_actual": 0,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 799200,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/799200/header.jpg?t=1704719299",
           "cover_source": "Steam appdetails API"
@@ -3515,7 +3424,6 @@
           "precio_actual": 0,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 554381,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/554381/header.jpg?t=1704719076",
           "cover_source": "Steam appdetails API"
@@ -3527,7 +3435,6 @@
           "precio_actual": 3.99,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 750381,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/750381/header.jpg?t=1715626152",
           "cover_source": "Steam appdetails API"
@@ -3539,7 +3446,6 @@
           "precio_actual": 2.49,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 700280,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/700280/header.jpg?t=1682024980",
           "cover_source": "Steam appdetails API"
@@ -3551,7 +3457,6 @@
           "precio_actual": 4.99,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 627510,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/627510/header.jpg?t=1681937823",
           "cover_source": "Steam appdetails API"
@@ -3563,7 +3468,6 @@
           "precio_actual": 3.99,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 700282,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/700282/header.jpg?t=1681937223",
           "cover_source": "Steam appdetails API"
@@ -3575,7 +3479,6 @@
           "precio_actual": 0,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 582600,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/582600/header.jpg?t=1704719183",
           "cover_source": "Steam appdetails API"
@@ -3587,7 +3490,6 @@
           "precio_actual": 0,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 530711,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/530711/header.jpg?t=1768838667",
           "cover_source": "Steam appdetails API"
@@ -3599,7 +3501,6 @@
           "precio_actual": 0,
           "precio_salida": null,
           "tamano": null,
-          "notas": "DLC gratuito. Añade a Bill Overbeck (Left 4 Dead) como superviviente.",
           "steam_appid": 573940,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/573940/header.jpg?t=1682011782",
           "cover_source": "Steam appdetails API"
@@ -3611,7 +3512,6 @@
           "precio_actual": 2.49,
           "precio_salida": null,
           "tamano": null,
-          "notas": null,
           "steam_appid": 1009821,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1009821/header.jpg?t=1681937469",
           "cover_source": "Steam appdetails API"
@@ -3623,7 +3523,6 @@
           "precio_actual": 3.99,
           "precio_salida": null,
           "tamano": null,
-          "notas": "Crossover con Ringu (The Ring). Killer: The Onryō.",
           "steam_appid": 1899750,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1899750/header.jpg?t=1682015929",
           "cover_source": "Steam appdetails API"
@@ -3635,7 +3534,6 @@
           "precio_actual": 3.99,
           "precio_salida": null,
           "tamano": null,
-          "notas": "Killer: The Singularity. Superviviente: Gabriel Soma.",
           "steam_appid": 2399750,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2399750/header.jpg?t=1694619089",
           "cover_source": "Steam appdetails API"
@@ -3647,7 +3545,6 @@
           "precio_actual": 4.99,
           "precio_salida": null,
           "tamano": null,
-          "notas": "Superviviente: Nicolas Cage.",
           "steam_appid": 2469400,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2469400/header.jpg?t=1694527983",
           "cover_source": "Steam appdetails API"
@@ -3659,7 +3556,6 @@
           "precio_actual": 5.99,
           "precio_salida": null,
           "tamano": null,
-          "notas": "Killer: Xenomorph. Superviviente: Ellen Ripley.",
           "steam_appid": 2515990,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2515990/header.jpg?t=1706631917",
           "cover_source": "Steam appdetails API"
@@ -3671,7 +3567,6 @@
           "precio_actual": 3.49,
           "precio_salida": null,
           "tamano": null,
-          "notas": "Killer: Chucky (The Good Guy).",
           "steam_appid": 2656010,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2656010/header.jpg?t=1715626039",
           "cover_source": "Steam appdetails API"
@@ -3683,7 +3578,6 @@
           "precio_actual": 2.49,
           "precio_salida": null,
           "tamano": null,
-          "notas": "Superviviente: Alan Wake.",
           "steam_appid": 2661250,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2661250/header.jpg?t=1707164698",
           "cover_source": "Steam appdetails API"
@@ -3695,7 +3589,6 @@
           "precio_actual": 3.99,
           "precio_salida": null,
           "tamano": null,
-          "notas": "Killer: The Unknown. Superviviente: Sable Ward.",
           "steam_appid": 2661270,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2661270/header.jpg?t=1712678426",
           "cover_source": "Steam appdetails API"
@@ -3707,7 +3600,6 @@
           "precio_actual": 3.99,
           "precio_salida": null,
           "tamano": null,
-          "notas": "Killer: Vecna (The Lich). Supervivientes: Aestri Yazar / Baermar Uraz.",
           "steam_appid": 2958440,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2958440/header.jpg?t=1718052572",
           "cover_source": "Steam appdetails API"
@@ -3719,7 +3611,6 @@
           "precio_actual": 3.49,
           "precio_salida": null,
           "tamano": null,
-          "notas": "Superviviente: Lara Croft.",
           "steam_appid": 3024580,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3024580/header.jpg?t=1781805446",
           "cover_source": "Steam appdetails API"
@@ -3731,7 +3622,6 @@
           "precio_actual": 3.99,
           "precio_salida": null,
           "tamano": null,
-          "notas": "Killer: Dracula. Superviviente: Trevor Belmont.",
           "steam_appid": 3103150,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3103150/header.jpg?t=1740003609",
           "cover_source": "Steam appdetails API"
@@ -3743,7 +3633,6 @@
           "precio_actual": 3.99,
           "precio_salida": null,
           "tamano": null,
-          "notas": "Killer: The Houndmaster. Superviviente: Taurie Cain.",
           "steam_appid": 3261720,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3261720/header.jpg?t=1732809756",
           "cover_source": "Steam appdetails API"
@@ -3755,7 +3644,6 @@
           "precio_actual": 3.99,
           "precio_salida": null,
           "tamano": null,
-          "notas": "Killer: Ken Kaneki.",
           "steam_appid": 3448670,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3448670/746779b48c711e92b8c9ac553eae7476dfb6b323/header.jpg?t=1743609838",
           "cover_source": "Steam appdetails API"
@@ -3767,7 +3655,6 @@
           "precio_actual": 2.49,
           "precio_salida": null,
           "tamano": null,
-          "notas": "Superviviente: Orela Rose.",
           "steam_appid": 3698790,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3698790/f1ace921fee451527d9f4b2faf800d5e2ee9b2c1/header.jpg?t=1746543639",
           "cover_source": "Steam appdetails API"
@@ -3779,7 +3666,6 @@
           "precio_actual": 4.99,
           "precio_salida": null,
           "tamano": null,
-          "notas": "Killer: Springtrap (The Animatronic).",
           "steam_appid": 3796620,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3796620/f595a9f57ffba6ec18fe09fb8e705c061b629849/header.jpg?t=1779975883",
           "cover_source": "Steam appdetails API"
@@ -3791,7 +3677,6 @@
           "precio_actual": 5.59,
           "precio_salida": null,
           "tamano": null,
-          "notas": "Supervivientes: Rick Grimes y Michonne.",
           "steam_appid": 3884020,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3884020/a393f684ee00bdb302ae76b3cb7be85b1d80054c/header.jpg?t=1754333052",
           "cover_source": "Steam appdetails API"
@@ -3803,7 +3688,6 @@
           "precio_actual": 5.59,
           "precio_salida": null,
           "tamano": null,
-          "notas": "Killer: The Krasue. Superviviente: Vee Boonyasak. Folclore tailandés.",
           "steam_appid": 4019590,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4019590/162ef941606f012e659162f2263e2669045775a8/header.jpg?t=1759419781",
           "cover_source": "Steam appdetails API"
@@ -3815,7 +3699,6 @@
           "precio_actual": 11.99,
           "precio_salida": null,
           "tamano": null,
-          "notas": "Killer: Vecna, The First. Supervivientes: Eleven y Dustin Henderson.",
           "steam_appid": 4318580,
           "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4318580/fe996d56580b8242624a1bd464fcbf60c46ccf31/header.jpg?t=1769540708",
           "cover_source": "Steam appdetails API"
@@ -3862,7 +3745,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2017,
     "solo": false,
     "hltb": 12.2,
@@ -3907,7 +3789,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2018,
     "solo": false,
     "hltb": 12.1,
@@ -3949,7 +3830,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2014,
     "solo": false,
     "hltb": 34.1,
@@ -3992,7 +3872,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2015,
     "solo": null,
     "hltb": 18.2,
@@ -4036,7 +3915,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2017,
     "solo": false,
     "cover_url": "https://howlongtobeat.com/games/50597_Eternal_Return.jpg",
@@ -4078,7 +3956,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2012,
     "solo": null,
     "hltb": 45.9,
@@ -4120,7 +3997,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2015,
     "solo": null,
     "hltb": 27.8,
@@ -4162,7 +4038,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2015,
     "solo": null,
     "hltb": 18.4,
@@ -4207,7 +4082,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2006,
     "solo": false,
     "hltb": 51.4,
@@ -4248,7 +4122,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2021,
     "solo": null,
     "hltb": 25.1,
@@ -4292,7 +4165,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2022,
     "solo": null,
     "hltb": 17.4,
@@ -4335,7 +4207,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2016,
     "solo": null,
     "hltb": 25.5,
@@ -4381,7 +4252,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "Comprado en bundle junto a GTA: San Andreas (EU) por 8,99€ total, split estimado a partes iguales.",
     "lanzamiento": 2008,
     "solo": true,
     "hltb": 30.8,
@@ -4424,7 +4294,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "solo": true,
     "steam_appid": 271590,
     "generos": [
@@ -4467,7 +4336,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2018,
     "solo": true,
     "hltb": 3.6,
@@ -4510,7 +4378,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2018,
     "solo": true,
     "hltb": 23.4,
@@ -4553,7 +4420,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2026,
     "solo": null,
     "cover_url": "https://howlongtobeat.com/games/180772_Heartopia.jpg",
@@ -4597,7 +4463,6 @@
       "total": 45
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2023,
     "solo": true,
     "hltb": 26.7,
@@ -4640,7 +4505,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2017,
     "solo": true,
     "hltb": 27,
@@ -4683,7 +4547,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2021,
     "solo": false,
     "modos": [
@@ -4729,7 +4592,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2015,
     "solo": null,
     "hltb": 18.3,
@@ -4773,7 +4635,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2009,
     "solo": false,
     "hltb": 10.2,
@@ -4815,7 +4676,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2017,
     "solo": false,
     "hltb": 3.6,
@@ -4858,7 +4718,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "solo": null,
     "hltb": 66,
     "cover_url": "https://howlongtobeat.com/games/108501_Marvel_SNAP.jpg",
@@ -4882,8 +4741,7 @@
       "total": 1,
       "items": [
         {
-          "titulo": "Versión Mobile",
-          "notas": "66.1 horas jugadas en móvil (separadas de PC/Steam)."
+          "titulo": "Versión Mobile"
         }
       ]
     },
@@ -4944,7 +4802,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "Completado en Nintendo.",
     "lanzamiento": 2025,
     "solo": null,
     "hltb": 1.8,
@@ -4987,7 +4844,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2024,
     "solo": true,
     "hltb": 65.3,
@@ -5030,7 +4886,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2010,
     "solo": true,
     "hltb": 9.5,
@@ -5072,7 +4927,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "Shooter competitivo recurrente. Top rango: Oro 1.",
     "rango_maximo": "Oro 1",
     "lanzamiento": 2020,
     "solo": false,
@@ -5113,7 +4967,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "MOBA competitivo recurrente. Top rango: Bronze 1.",
     "rango_maximo": "Bronze 1",
     "lanzamiento": 2009,
     "solo": false,
@@ -5162,7 +5015,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2019,
     "solo": false,
     "hltb": 45.6,
@@ -5201,7 +5053,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2020,
     "solo": false,
     "hltb": 21,
@@ -5238,7 +5089,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2020,
     "solo": false,
     "hltb": 39.2,
@@ -5277,7 +5127,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2026,
     "solo": false,
     "hltb": 4.4,
@@ -5317,7 +5166,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "solo": null,
     "cover_url": "https://howlongtobeat.com/games/169141_Sea_of_Remnants.jpg",
     "steam_appid": 3633680,
@@ -5357,7 +5205,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "Registro recurrente. 6.9 horas acumuladas a 2026-06-14. Compra registrada 05/07/2026 15:57 vía Revolut Pay.",
     "lanzamiento": 2025,
     "modos": [
       "solitario",
@@ -5406,7 +5253,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2020,
     "solo": true,
     "hltb": 69.2,
@@ -5445,7 +5291,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2016,
     "solo": null,
     "hltb": 114.2,
@@ -5483,7 +5328,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2023,
     "solo": true,
     "hltb": 25.6,
@@ -5522,7 +5366,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2020,
     "solo": null,
     "cover_url": "https://howlongtobeat.com/games/96272_Tears_of_Themis.jpg",
@@ -5560,7 +5403,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2024,
     "solo": true,
     "hltb": 50.5,
@@ -5605,7 +5447,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": null,
     "solo": null,
     "hltb": null,
@@ -5648,7 +5489,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": null,
     "solo": null,
     "hltb": null,
@@ -5683,7 +5523,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": null,
     "solo": null,
     "hltb": null,
@@ -5724,7 +5563,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": null,
     "solo": null,
     "hltb": null,
@@ -5809,7 +5647,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": null,
     "solo": null,
     "hltb": null,
@@ -5852,7 +5689,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2019,
     "solo": true,
     "hltb": 7,
@@ -5894,7 +5730,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "No me ha gustado; desinstalado tras 55 minutos de juego.",
     "lanzamiento": 2022,
     "solo": true,
     "hltb": 13,
@@ -5937,7 +5772,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2024,
     "solo": true,
     "hltb": 15,
@@ -5981,7 +5815,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2016,
     "solo": false,
     "hltb": 7,
@@ -6023,7 +5856,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2015,
     "solo": true,
     "hltb": 3,
@@ -6066,7 +5898,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2018,
     "solo": true,
     "hltb": 45,
@@ -6109,7 +5940,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2014,
     "solo": true,
     "hltb": 3,
@@ -6152,7 +5982,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2016,
     "solo": true,
     "hltb": 11,
@@ -6194,7 +6023,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2012,
     "solo": true,
     "hltb": 6,
@@ -6237,7 +6065,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2013,
     "solo": true,
     "hltb": 5,
@@ -6280,7 +6107,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2013,
     "solo": null,
     "hltb": 14,
@@ -6322,7 +6148,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "Partida personalizada.",
     "lanzamiento": 2025,
     "solo": null,
     "hltb": null,
@@ -6360,7 +6185,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2021,
     "solo": true,
     "hltb": 5.5,
@@ -6403,7 +6227,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "Aplicación de fondos de pantalla animados, no un juego tradicional.",
     "lanzamiento": 2018,
     "solo": null,
     "hltb": null,
@@ -6441,7 +6264,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "Comprado en bundle junto a Seek Girl II y III (1,89€ total, split estimado a partes iguales).",
     "lanzamiento": 2019,
     "solo": true,
     "hltb": null,
@@ -6479,7 +6301,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "Comprado en bundle junto a Seek Girl y III (1,89€ total, split estimado a partes iguales).",
     "lanzamiento": 2019,
     "solo": true,
     "hltb": null,
@@ -6517,7 +6338,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "Comprado en bundle junto a Seek Girl y II (1,89€ total, split estimado a partes iguales).",
     "lanzamiento": 2020,
     "solo": true,
     "hltb": null,
@@ -6555,7 +6375,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "Comprado en bundle junto a GTA IV (EU) por 8,99€ total, split estimado a partes iguales.",
     "lanzamiento": 2004,
     "solo": true,
     "hltb": 32,
@@ -6598,7 +6417,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "Comprado con un 30% de descuento (precio habitual: 6,99 €).",
     "lanzamiento": 2025,
     "solo": true,
     "hltb": null,
@@ -6639,7 +6457,6 @@
       "total": 61
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2026,
     "solo": true,
     "hltb": null,
@@ -6678,7 +6495,6 @@
       "total": 59
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2025,
     "solo": true,
     "hltb": null,
@@ -6725,7 +6541,6 @@
       "total": 60
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2022,
     "solo": true,
     "hltb": null,
@@ -6771,7 +6586,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2014,
     "modos": [
       "solitario"
@@ -6816,7 +6630,6 @@
       "total": 46
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2023,
     "modos": [
       "solitario"
@@ -6864,7 +6677,6 @@
       "total": 47
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2022,
     "modos": [
       "solitario",
@@ -6912,7 +6724,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2022,
     "modos": [
       "solitario"
@@ -6959,7 +6770,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2021,
     "modos": [
       "solitario"
@@ -7006,7 +6816,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2014,
     "modos": [
       "solitario"
@@ -7052,7 +6861,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2012,
     "modos": [
       "solitario"
@@ -7096,7 +6904,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2020,
     "modos": [
       "multijugador"
@@ -7143,7 +6950,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2017,
     "modos": [
       "solitario"
@@ -7184,7 +6990,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2015,
     "modos": [
       "solitario"
@@ -7227,7 +7032,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2018,
     "modos": [
       "solitario"
@@ -7269,7 +7073,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": "Epic Games muestra menos de 5 minutos de juego.",
     "lanzamiento": 2015,
     "modos": [
       "solitario"
@@ -7311,7 +7114,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2017,
     "modos": [
       "solitario"
@@ -7354,7 +7156,6 @@
       "total": 75
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2026,
     "modos": [
       "solitario",
@@ -7403,7 +7204,6 @@
     },
     "partidas_al_100": 3,
     "nota": null,
-    "comentarios": "Completado 3 veces al 100 %. Horas estimadas: 108 h (3 × 36 h completionist de HLTB); no son horas registradas.",
     "lanzamiento": 2012,
     "modos": [
       "solitario",
@@ -7449,7 +7249,6 @@
     },
     "partidas_al_100": 1,
     "nota": null,
-    "comentarios": "Completado al 100 % en una copia pirata. El 100 % representa el progreso del juego, no logros registrados.",
     "lanzamiento": 2023,
     "modos": [
       "solitario"
@@ -7492,7 +7291,6 @@
       "total": null
     },
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2025,
     "modos": [
       "solitario",
@@ -7523,7 +7321,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 1993,
     "lanzamiento_nota": "Juego original de 1993 para MS-DOS, no el reinicio de 2016.",
     "modos": [
@@ -7565,7 +7362,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2011,
     "lanzamiento_nota": "Versión completa de 2011; primera versión pública en 2009.",
     "modos": [
@@ -7606,7 +7402,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2012,
     "modos": [
       "solitario",
@@ -7646,7 +7441,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2016,
     "modos": [
       "multijugador"
@@ -7685,7 +7479,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2010,
     "modos": [
       "solitario",
@@ -7725,7 +7518,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2007,
     "lanzamiento_nota": "Entrega original de 2007 en consolas; Director's Cut llegó a PC en 2008.",
     "modos": [
@@ -7765,7 +7557,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2018,
     "lanzamiento_nota": "Lanzamiento original en PS4; no la edición Remastered de PC.",
     "modos": [
@@ -7804,7 +7595,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2020,
     "lanzamiento_nota": "Lanzamiento original de 2020 en PlayStation; la versión de PC es posterior.",
     "modos": [
@@ -7844,7 +7634,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2023,
     "lanzamiento_nota": "Lanzamiento original de 2023 en PS5; la versión de PC es posterior.",
     "modos": [
@@ -7884,7 +7673,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2025,
     "modos": [
       "solitario",
@@ -7922,7 +7710,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2014,
     "lanzamiento_nota": "Versión original de Wii U, no Mario Kart 8 Deluxe de Switch.",
     "modos": [
@@ -7961,7 +7748,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2005,
     "modos": [
       "solitario",
@@ -7999,7 +7785,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2020,
     "modos": [
       "solitario",
@@ -8038,7 +7823,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2005,
     "lanzamiento_nota": "Estreno original en Japón en 2005; llegó a Europa en 2006.",
     "modos": [
@@ -8078,7 +7862,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2019,
     "modos": [
       "solitario",
@@ -8119,7 +7902,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2022,
     "modos": [
       "solitario",
@@ -8159,7 +7941,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2017,
     "modos": [
       "solitario",
@@ -8198,7 +7979,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2015,
     "modos": [
       "solitario",
@@ -8238,7 +8018,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2023,
     "modos": [
       "solitario",
@@ -8276,7 +8055,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2022,
     "modos": [
       "solitario",
@@ -8315,7 +8093,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2018,
     "lanzamiento_nota": "Lanzamiento original de 2018 en consolas; la versión de PC llegó en 2019.",
     "modos": [
@@ -8358,7 +8135,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2018,
     "lanzamiento_nota": "Lanzamiento original en PS4 en 2018; la versión de PC llegó en 2022. Los créditos corresponden al juego original.",
     "modos": [
@@ -8399,7 +8175,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2019,
     "lanzamiento_nota": "El juego original se publicó en 2019 con 505 Games; Control Ultimate Edition llegó a Steam en 2020. La editora indicada es la del lanzamiento original.",
     "modos": [
@@ -8440,7 +8215,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2014,
     "lanzamiento_nota": "Lanzamiento original en PC en 2014; su distribución en Steam comenzó en 2020.",
     "modos": [
@@ -8480,7 +8254,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2004,
     "modos": [
       "solitario"
@@ -8518,7 +8291,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2011,
     "lanzamiento_nota": "La entrega de Wii salió en 2011; la versión de Nintendo 3DS llegó en 2012. SEGA publicó el juego en Europa y Norteamérica; Nintendo, en Japón.",
     "modos": [
@@ -8559,7 +8331,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2019,
     "lanzamiento_nota": "Lanzamiento original en PS4 en 2019 con Sony Interactive Entertainment; la versión de PC llegó en 2020 publicada por 505 Games. No es la edición Director's Cut.",
     "modos": [
@@ -8599,7 +8370,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2008,
     "modos": [
       "solitario",
@@ -8641,7 +8411,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2017,
     "modos": [
       "cooperativo",
@@ -8681,7 +8450,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2026,
     "modos": [
       "solitario",
@@ -8720,7 +8488,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2013,
     "lanzamiento_nota": "Entrega original de PS3 de 2013; no es The Last of Us Remastered (2014) ni el remake The Last of Us Part I (2022).",
     "modos": [
@@ -8762,7 +8529,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2020,
     "lanzamiento_nota": "Entrega original de PS4 de 2020; no es The Last of Us Part II Remastered.",
     "modos": [
@@ -8803,7 +8569,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2014,
     "modos": [
       "solitario"
@@ -8841,7 +8606,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2014,
     "modos": [
       "solitario"
@@ -8879,7 +8643,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2015,
     "modos": [
       "solitario"
@@ -8917,7 +8680,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2015,
     "modos": [
       "solitario"
@@ -8955,7 +8717,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2016,
     "modos": [
       "solitario"
@@ -8993,7 +8754,6 @@
     "fecha_fin": null,
     "logros": null,
     "nota": null,
-    "comentarios": null,
     "lanzamiento": 2024,
     "lanzamiento_nota": "Acceso anticipado en Steam desde el 27 de agosto de 2024.",
     "modos": [

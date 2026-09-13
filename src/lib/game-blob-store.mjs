@@ -1,5 +1,6 @@
 import { BlobPreconditionFailedError, get, put } from '@vercel/blob';
 import { GamesVersionConflictError, validateGameLibrary } from './game-library.mjs';
+import { removePersonalNotes } from './game-personal-notes.mjs';
 
 export const GAMES_BLOB_PATH = 'personal-database/games.json';
 
@@ -27,7 +28,7 @@ export function createGameBlobStore(credentials = {}, sdk = { get, put }) {
       throw new Error('Hay que leer la versión de la biblioteca antes de guardarla.');
     }
     try {
-      const saved = await sdk.put(GAMES_BLOB_PATH, `${JSON.stringify(games, null, 2)}\n`, {
+      const saved = await sdk.put(GAMES_BLOB_PATH, `${JSON.stringify(removePersonalNotes(games), null, 2)}\n`, {
         ...credentials,
         access: 'private',
         addRandomSuffix: false,

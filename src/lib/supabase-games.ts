@@ -16,7 +16,6 @@
   logros_total: number | null;
   nota: number | null;
   tags: string[];
-  comentarios: string | null;
   source: string;
   created_at: string;
   updated_at: string;
@@ -49,7 +48,6 @@ export type GameJson = {
     logros_actual: number | null;
     logros_total: number | null;
     nota: number | null;
-    comentarios: string | null;
     source: string;
     updated_at: string;
   }>;

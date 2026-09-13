@@ -4,7 +4,7 @@ export type LegacyCritique = {
   metascore?: number | null;
   userscore?: number | null;
   criterios?: Partial<Record<ReviewCriterionKey | 'originalidad', number | null>> | null;
-  mencion_honorifica?: { nivel?: number | null; comentario?: string | null } | null;
+  mencion_honorifica?: { nivel?: number | null } | null;
 };
 
 export type GameCritique = LegacyCritique & {

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { createServer } from 'vite';
+import { removePersonalNotes } from '../src/lib/game-personal-notes.mjs';
 const server = await createServer({ configFile: false, appType: 'custom', server: { middlewareMode: true } });
 try {
   const { REVIEW_CRITERIA, calculatePersonalScore, getPublishedReview, getReviewProgress, isCommunityCriterionApplicable } = await server.ssrLoadModule('/src/lib/game-reviews.ts');
@@ -7,9 +8,9 @@ try {
   const { applyManualGamePatch } = await server.ssrLoadModule('/src/lib/manual-game-edit.ts');
   const { getGameValueMetrics } = await server.ssrLoadModule('/src/lib/game-finance.ts');
   const fixture = { titulo: 'Prueba de valoración', estado: 'Terminado', launcher: 'Steam', plataforma: 'PC', horas: 100,
-    fecha_inicio: null, fecha_fin: null, precio_pagado: 20, modos: ['solitario'], comentarios: 'Conservar este apunte.',
+    fecha_inicio: null, fecha_fin: null, precio_pagado: 20, modos: ['solitario'], comentarios: 'Apunte retirado.',
     critica: { metascore: 64, userscore: 5.5, criterios: { jugabilidad: 4, historia: 3, musica: 2, graficos_arte: 4, entretenimiento: 4, comunidad: 1, originalidad: 1 },
-      mencion_honorifica: { nivel: 2, comentario: 'Apunte histórico, no eliminar.' } } };
+      mencion_honorifica: { nivel: 2, comentario: 'Apunte histórico retirado.' } } };
   fixture.nota = calculatePersonalScore(fixture.critica, false);
   const original = structuredClone(fixture);
   const migrated = migrateGameReview(fixture);
@@ -17,7 +18,7 @@ try {
   assert.equal(migrated.critica.version, 2);
   assert.equal(migrated.critica.criterios.rendimiento, null);
   assert.equal(migrated.critica.criterios.progresion, null);
-  assert.deepEqual(migrated.critica.migracion.critica_anterior, original.critica);
+  assert.deepEqual(migrated.critica.migracion.critica_anterior, removePersonalNotes(original.critica));
   assert.equal(migrated.critica.migracion.nota_anterior, original.nota);
   assert.equal(migrated.critica.original, true);
   assert.equal(migrateGameReview(migrated), migrated, 'migración idempotente');
@@ -48,7 +49,7 @@ try {
   assert.equal(isCommunityCriterionApplicable({ modos: ['cooperativo'] }), false);
   assert.equal(isCommunityCriterionApplicable({ modos: ['multijugador'] }), true);
   assert.equal(calculatePersonalScore({ ...maximum, criterios: { ...maximum.criterios, comunidad: null } }, false), 10);
-  const externalOnly = { ...fixture, nota: null, critica: { metascore: 0, userscore: 0 } };
+  const externalOnly = { ...removePersonalNotes(fixture), nota: null, critica: { metascore: 0, userscore: 0 } };
   assert.equal(migrateGameReview(externalOnly), externalOnly);
   const numeric = migrateGameReview({ ...externalOnly, nota: 0 });
   assert.equal(numeric.critica.migracion.nota_anterior, 0, 'cero no es vacío');
@@ -58,7 +59,7 @@ try {
   assert.equal(saved.game.critica.metascore, 64);
   assert.equal(saved.game.critica.userscore, 5.5);
   assert.deepEqual(saved.game.critica.migracion, migrated.critica.migracion);
-  assert.equal(saved.game.comentarios, original.comentarios);
+  assert.equal(Object.hasOwn(saved.game, 'comentarios'), false);
   assert.equal(saved.game.precio_pagado, original.precio_pagado);
   for (const bad of [-1, 6, true, 'foo', 2.4]) {
     assert.equal(applyManualGamePatch(migrated, { critica_personal: { ...maximum, criterios: { ...maximum.criterios, jugabilidad: bad } } }).ok, false);

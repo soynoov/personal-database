@@ -5,6 +5,7 @@ import { getGameGenres } from './game-genres';
 import type { GameCritique, LocalGame } from './local-games';
 import { normalizePurchaseStores } from './purchase-stores';
 import { normalizeStatus } from './game-status';
+import { removePersonalNotes } from './game-personal-notes.mjs';
 
 type PatchError = { ok: false; status: number; error: string };
 type PatchSuccess = { ok: true; game: LocalGame };
@@ -76,7 +77,6 @@ function toGameCritique(value: unknown): GameCritique {
     },
     mencion_honorifica: {
       nivel: toBoundedNumber(honorary.nivel, 0, 3),
-      comentario: toNullableString(honorary.comentario),
     },
   };
 }
@@ -95,6 +95,9 @@ export function applyManualGamePatch(
   game: LocalGame,
   body: Record<string, unknown>,
 ): PatchError | PatchSuccess {
+  if (['comentarios', 'comentario', 'notas'].some(key => Object.hasOwn(body, key))) {
+    return { ok: false, status: 400, error: 'Los comentarios y notas personales ya no se guardan. Recarga la ficha.' };
+  }
   const updated: LocalGame = { ...game };
 
   if (body.estado !== undefined) updated.estado = toNullableString(body.estado) ?? game.estado;
@@ -140,7 +143,6 @@ export function applyManualGamePatch(
   }
   if (body.rango_actual !== undefined) updated.rango_actual = toNullableString(body.rango_actual);
   if (body.rango_maximo !== undefined) updated.rango_maximo = toNullableString(body.rango_maximo);
-  if (body.comentarios !== undefined) updated.comentarios = toNullableString(body.comentarios);
   if (body.partidas_al_100 !== undefined) {
     updated.partidas_al_100 = toNullableNonNegativeInteger(body.partidas_al_100);
   }
@@ -226,7 +228,6 @@ export function applyManualGamePatch(
       },
       mencion_honorifica: {
         nivel: toBoundedNumber(honorary.nivel, 0, 3),
-        comentario: toNullableString(honorary.comentario),
       },
     };
     updated.nota = calculatePersonalScore(
@@ -273,5 +274,5 @@ export function applyManualGamePatch(
     updated.nota = getPublishedReview(updated.critica, updated.nota, isCommunityCriterionApplicable(updated)).score;
   }
   updated.actualizado_en = new Date().toISOString();
-  return { ok: true, game: updated };
+  return { ok: true, game: removePersonalNotes(updated) };
 }

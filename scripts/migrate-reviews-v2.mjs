@@ -5,6 +5,7 @@ import path from 'node:path';
 import { gameBlobCredentials } from './lib/games-sync.mjs';
 import { createGameBlobStore } from '../src/lib/game-blob-store.mjs';
 import { validateGameLibrary } from '../src/lib/game-library.mjs';
+import { removePersonalNotes } from '../src/lib/game-personal-notes.mjs';
 
 const root = process.cwd();
 const args = new Set(process.argv.slice(2));
@@ -21,9 +22,9 @@ try {
     const before = validateGameLibrary(JSON.parse(raw.replace(/^\uFEFF/, '')), source);
     const after = migrateGameReviews(before);
     const changed = after.filter((game, index) => game !== before[index]);
-    // Defensa adicional: ninguna migración puede alterar horas, precios, títulos o DLC.
+    // Solo valoración y apuntes retirados: no alterar horas, precios, títulos o datos de DLC.
     after.forEach((game, index) => {
-      const omitReview = ({ critica, nota, ...rest }) => rest;
+      const omitReview = (entry) => { const { critica, nota, ...rest } = removePersonalNotes(entry); return rest; };
       if (JSON.stringify(omitReview(game)) !== JSON.stringify(omitReview(before[index]))) {
         throw new Error(`La migración intenta cambiar campos ajenos a la valoración (${source}).`);
       }
@@ -40,8 +41,9 @@ try {
       console.log(`Copia de seguridad privada local: ${backup}`);
     }
     console.log(JSON.stringify({ source, applied: apply, total: before.length, migrated: changed.length,
-      archivedScores: changed.filter((game) => game.critica.migracion.nota_anterior !== null).length,
-      missingNewAreas: changed.length, unchangedOtherFields: true }));
+      archivedScores: changed.filter((game) => game.critica?.migracion?.nota_anterior != null).length,
+      missingNewAreas: changed.filter((game) => game.critica?.version === 2 && (game.critica.criterios?.rendimiento == null || game.critica.criterios?.progresion == null)).length,
+      unchangedOtherFields: true }));
   }
   if (local) {
     const filename = path.join(root, 'games.json');

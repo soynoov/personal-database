@@ -1,9 +1,11 @@
 import type { LocalGame } from './local-games';
 import { isAcquiredDlc } from './game-finance';
+import { removePersonalNotes } from './game-personal-notes.mjs';
 
 type DlcItem = NonNullable<NonNullable<LocalGame['dlcs']>['items']>[number];
 
-export function applyManualDlcPatch(item: DlcItem, patch: Record<string, unknown> | null | undefined, today: string): DlcItem {
+export function applyManualDlcPatch(input: DlcItem, patch: Record<string, unknown> | null | undefined, today: string): DlcItem {
+  const item = removePersonalNotes(input);
   if (!patch) return item;
   if (patch.owned !== true) return { ...item, fecha_adquisicion: null, precio_pagado: null };
   const dateText = typeof patch.fecha_adquisicion === 'string' ? patch.fecha_adquisicion.trim() : '';

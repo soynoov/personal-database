@@ -9,6 +9,7 @@ import { gameHasMode, normalizeGameModes } from "./game-modes";
 import { normalizeGameTag } from "./game-tags";
 import historicGameCreationDates from "../data/game-created-at.json";
 import { migrateGameReview } from './review-migration';
+import { removePersonalNotes } from './game-personal-notes.mjs';
 import type { GameCritique } from './review-types';
 export type { GameCritique } from './review-types';
 
@@ -61,7 +62,6 @@ export type LocalGame = {
   } | null;
   nota?: number | null;
   critica?: GameCritique | null;
-  comentarios?: string | null;
   lanzamiento?: number | null;
   /** Contexto del lanzamiento original, sin confundirlo con ports o reediciones. */
   lanzamiento_nota?: string | null;
@@ -89,7 +89,6 @@ export type LocalGame = {
       precio_actual?: number | null;
       precio_salida?: number | null;
       tamano?: string | null;
-      notas?: string | null;
     }> | null;
   } | null;
 };
@@ -178,8 +177,9 @@ export async function readGames() {
  * incluido en el deploy. El ETag evita pisar cambios concurrentes.
  */
 export async function writeGames(games: LocalGame[]) {
-  validateGameLibrary(games);
-  const json = `${JSON.stringify(games, null, 2)}\n`;
+  const cleanGames = removePersonalNotes(games);
+  validateGameLibrary(cleanGames);
+  const json = `${JSON.stringify(cleanGames, null, 2)}\n`;
 
   if (!process.env.VERCEL) {
     await writeFile(gamesPath, json, "utf8");
@@ -194,7 +194,7 @@ export async function writeGames(games: LocalGame[]) {
 
   const previousEtag = gamesVersions.get(games);
 
-  gamesVersions.set(games, await gameBlobStore.write(games, previousEtag));
+  gamesVersions.set(games, await gameBlobStore.write(cleanGames, previousEtag));
 }
 
 export function findGameBySlug(games: LocalGame[], slug: string) {
@@ -242,7 +242,6 @@ export function filterGames(
   return games.filter((game) => {
     const searchMatches =
       containsText(game.titulo, filters.search) ||
-      containsText(game.comentarios, filters.search) ||
       containsText(game.launcher, filters.search) ||
       containsText(game.generos?.join(", "), filters.search);
 

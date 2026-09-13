@@ -1,9 +1,11 @@
 import type { LocalGame } from './local-games';
 import { REVIEW_CRITERIA, getPublishedReview, isCommunityCriterionApplicable } from './game-reviews';
 import { boundedReviewNumber } from './review-legacy';
+import { removePersonalNotes } from './game-personal-notes.mjs';
 
-/** Idempotente, sin I/O y sin modificar el objeto original ni datos ajenos a la valoración. */
-export function migrateGameReview(game: LocalGame): LocalGame {
+/** Idempotente y sin I/O: conserva las valoraciones, pero no comentarios ya retirados. */
+export function migrateGameReview(input: LocalGame): LocalGame {
+  const game = removePersonalNotes(input);
   if (game.critica?.version === 2) return game;
   const old = game.critica;
   const storedScore = boundedReviewNumber(game.nota, 10);

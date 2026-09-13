@@ -37,7 +37,7 @@ function memoryStore(initial = null, beforeWrite = () => {}) {
 }
 
 test('imports new games without changing any existing remote field or remote-only game', async () => {
-  const existing = game('Rivals', { horas: 241, logros: { actual: 49, total: 49 }, comentarios: 'Online', dlcs: { items: [{ titulo: 'DLC', notas: 'Keep' }] } });
+  const existing = game('Rivals', { horas: 241, logros: { actual: 49, total: 49 }, rango_maximo: 'Platino 3', dlcs: { items: [{ titulo: 'DLC', tamano: '5 GB' }] } });
   const store = memoryStore([existing, game('Solo online')]);
   const source = [game('Rivals', { horas: 1, logros: { actual: 0, total: 49 } }), game('Nuevo')];
   const before = structuredClone(source);

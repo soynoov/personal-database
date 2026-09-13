@@ -150,7 +150,6 @@ export const POST: APIRoute = async ({ params, request }) => {
       precio_actual: null,
       precio_salida: null,
       tamano: null,
-      notas: null,
     });
     added += 1;
   }

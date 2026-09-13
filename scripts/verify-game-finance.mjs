@@ -112,13 +112,13 @@ try {
   assert.equal(marvel.economicMultiple, 6.55);
 
   const manualEdit = applyManualGamePatch(
-    game({ estado: 'Pendiente', horas: 4, comentarios: 'Se conserva', rango_actual: 'Platino 3', rango_maximo: 'Diamante 1' }),
+    game({ estado: 'Pendiente', horas: 4, comentarios: 'Campo retirado', rango_actual: 'Platino 3', rango_maximo: 'Diamante 1' }),
     { estado: 'Terminado', horas: 6.5, fecha_fin: '2026-08-26' },
   );
   assert.equal(manualEdit.ok, true);
   assert.equal(manualEdit.game.estado, 'Terminado');
   assert.equal(manualEdit.game.horas, 6.5);
-  assert.equal(manualEdit.game.comentarios, 'Se conserva');
+  assert.equal(Object.hasOwn(manualEdit.game, 'comentarios'), false);
   assert.equal(manualEdit.game.rango_actual, 'Platino 3', 'Hidden historical rank survives an hours update');
   assert.equal(manualEdit.game.rango_maximo, 'Diamante 1');
   assert.match(manualEdit.game.actualizado_en, /^\d{4}-\d{2}-\d{2}T/);
@@ -197,7 +197,7 @@ try {
   assert.equal(optionalHonoraryComment.ok, true);
   assert.equal(optionalHonoraryComment.game.critica.criterios.originalidad, 0);
   assert.equal(optionalHonoraryComment.game.critica.mencion_honorifica.nivel, 2);
-  assert.equal(optionalHonoraryComment.game.critica.mencion_honorifica.comentario, null);
+  assert.equal(Object.hasOwn(optionalHonoraryComment.game.critica.mencion_honorifica, 'comentario'), false);
 
   const personalReview = applyManualGamePatch(game({
     critica: { metascore: 88, userscore: 8.4 },
@@ -211,7 +211,7 @@ try {
   assert.equal(personalReview.game.critica.metascore, 88);
   assert.equal(personalReview.game.critica.userscore, 8.4);
   assert.equal(personalReview.game.critica.criterios.jugabilidad, fullCritique.criterios.jugabilidad);
-  assert.equal(personalReview.game.critica.mencion_honorifica.comentario, 'Mi apunte');
+  assert.equal(Object.hasOwn(personalReview.game.critica.mencion_honorifica, 'comentario'), false);
 
   const pendingReport = getDataCompleteness([
     game({ estado: 'Terminado', horas: 12, fecha_inicio: '2026-01-01', fecha_fin: '2026-01-02', nota: null }),

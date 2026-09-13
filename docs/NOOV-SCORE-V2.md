@@ -43,7 +43,7 @@ El radar usa Chart.js, normaliza a 0–10 y no representa pesos. No dibuja los p
 
 `critica.version = 2` conserva los nombres de los criterios compatibles y añade `rendimiento` y `progresion` como `null`. `entretenimiento` pasa a mostrarse como Diversión manteniendo sus valores 0–5. La escala de Música conserva sus números 0–3 como respuestas importadas que conviene revisar; no se reconstruyen recuerdos ni respuestas que no existían.
 
-`critica.original` procede de la antigua originalidad cuando existía; lo desconocido se conserva como `null`. `migracion` archiva la crítica anterior completa, la nota que se publicaba y el antiguo campo `nota` (podía estar desactualizado). Comentarios y menciones históricas no se eliminan de los datos.
+`critica.original` procede de la antigua originalidad cuando existía; lo desconocido se conserva como `null`. `migracion` archiva los criterios anteriores, la nota que se publicaba y el antiguo campo `nota` (podía estar desactualizado). Por decisión del 13 de septiembre de 2026, se eliminan los comentarios libres, también los archivados; se conservan el nivel numérico de la mención y todos los datos necesarios para reproducir la puntuación anterior.
 
 La nota anterior permanece mientras haya áreas pendientes. Tras completar v2, `nota` se actualiza y `ultima_completa` conserva la última valoración completa para futuras revisiones parciales. No se publican medias parciales como definitivas. La fórmula del bonus económico no cambia; se verifica que migrar no altera su multiplicador.
 

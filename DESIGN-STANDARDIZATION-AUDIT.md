@@ -10,6 +10,12 @@
 
 ## Estado de implementación · 12 de septiembre de 2026
 
+### Retirada de comentarios y notas personales · 13 de septiembre de 2026
+
+- Se elimina el bloque Comentario/Notas de la ficha y su editor. La ficha termina en Valoración, sin un bloque vacío adicional.
+- Se retiran `comentarios`, `notas` de DLC y `comentario` de las menciones históricas de la biblioteca local y de Blob, con respaldo previo. Las lecturas y escrituras impiden que importaciones o formularios antiguos los reintroduzcan.
+- No se eliminan las puntuaciones (`nota`, NooV Score, User score y Metascore), los criterios de valoración ni las aclaraciones documentales como `lanzamiento_nota`. Las referencias posteriores a Comentarios describen el diseño histórico, no la interfaz vigente.
+
 ### Detalles y pistas de la ruleta · 13 de septiembre de 2026
 
 - Dentro de la misma sección hay dos bento de igual nivel: **Datos del juego** (géneros, lanzamiento, modos, etiquetas y créditos) y **Mis datos** (logros/completitud, dificultad, cromos Steam y mi copia). Transmisión y cooperativo privado se presentan como preferencias personales, no como características públicas.

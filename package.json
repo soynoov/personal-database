@@ -6,6 +6,7 @@
     "test:reviews": "node scripts/verify-reviews.mjs",
     "test:roulette": "node scripts/verify-roulette.mjs",
     "test:genres": "node scripts/verify-game-genres.mjs",
+    "test:notes": "node scripts/verify-game-notes.mjs",
     "migrate:reviews": "node scripts/migrate-reviews-v2.mjs",
     "sync:games": "node scripts/sync-games.mjs --apply",
     "sync:games:check": "node scripts/sync-games.mjs",
