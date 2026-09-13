@@ -14,7 +14,6 @@ import refreshIcon from '@tabler/icons/outline/refresh.svg?url';
 import searchIcon from '@tabler/icons/outline/search.svg?url';
 import trashIcon from '@tabler/icons/outline/trash.svg?url';
 import { getUniqueValues, readGames } from '../../lib/local-games';
-import { normalizeStatus } from '../../lib/game-status';
 import { GAME_MODES } from '../../lib/game-modes';
 import { PUBLIC_GAME_TAGS } from '../../lib/game-tags';
 import { toRouletteGame } from '../../lib/roulette-game';
@@ -35,9 +34,7 @@ const generos = [...new Set(games.flatMap((game) => game.generos ?? []))]
   .sort((a, b) => a.localeCompare(b, 'es'));
 
 
-const defaultSlugs = rouletteGames
-  .filter((game) => normalizeStatus(game.estado) === 'jugando')
-  .map((game) => game.slug);
+const defaultSlugs = rouletteGames.map((game) => game.slug);
 ---
 
 <BaseLayout title='Ruleta — NooVDB' active='ruleta' pageClass='roulette-page roulette-main'>
@@ -120,9 +117,9 @@ const defaultSlugs = rouletteGames
             <div class='field'>
               <label for='roulette-status'>Estado</label>
               <select id='roulette-status'>
-                <option value=''>Todos</option>
+                <option value='' selected>Todos</option>
                 {estados.map((estado) => (
-                  <option value={estado} selected={normalizeStatus(estado) === 'jugando'}>{estado}</option>
+                  <option value={estado}>{estado}</option>
                 ))}
               </select>
             </div>

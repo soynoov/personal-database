@@ -10,7 +10,8 @@ let wheelColors: string[][] = [];
 let wheelTheme: ReturnType<typeof readChartTheme>;
 
 const coverUrlCache = new Map<string, string>();
-const FILTER_STORAGE_KEY = 'personal-db:roulette-filters:v1';
+// Start once with the new all-games default, without restoring the old "Jugando" preset.
+const FILTER_STORAGE_KEY = 'personal-db:roulette-filters:v2';
 
 const getElement = <T extends HTMLElement>(id: string): T => {
   const element = document.getElementById(id);
