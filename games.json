@@ -5973,50 +5973,6 @@
     }
   },
   {
-    "titulo": "Figment",
-    "estado": "Pendiente",
-    "launcher": "Steam",
-    "plataforma": "PC",
-    "horas": 6,
-    "fecha_inicio": null,
-    "fecha_fin": null,
-    "logros": {
-      "actual": null,
-      "total": null
-    },
-    "nota": null,
-    "comentarios": null,
-    "lanzamiento": 2017,
-    "solo": true,
-    "hltb": 6,
-    "cover_url": null,
-    "steam_appid": 493540,
-    "generos": [
-      "Aventura",
-      "Acción",
-      "Indie"
-    ],
-    "precio_pagado": null,
-    "precio_actual": 3.99,
-    "precio_salida": 19.99,
-    "tags": [],
-    "hltb_breakdown": {
-      "main": 6,
-      "main_plus": 7.5,
-      "completionist": 10
-    },
-    "steam_store_genres": [
-      "Acción",
-      "Aventura"
-    ],
-    "steam_store_name": "Figment",
-    "steam_last_sync_at": "2026-08-20T11:25:02.995Z",
-    "critica": {
-      "metascore": 75,
-      "userscore": 7
-    }
-  },
-  {
     "titulo": "Titan Souls",
     "estado": "Pendiente",
     "launcher": "Steam",
