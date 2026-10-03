@@ -8,6 +8,7 @@
  */
 
 import { createGamePill, updateGamePill } from './game-pill';
+import { getGameLaunchers } from '../lib/game-hours.mjs';
 import { buildGameCoverUrl } from "../lib/game-cover-url";
 import { getGoldenCompletionKind, matchesGoldenFilter } from "../lib/game-achievements";
 import type { CatalogGame } from "../lib/catalog-game";
@@ -308,7 +309,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
       .filter((game) => {
         const searchMatch =
           textMatch(game.titulo, filters.search) ||
-          textMatch(game.launcher, filters.search) ||
+          textMatch(getGameLaunchers(game).join(', '), filters.search) ||
           textMatch(Array.isArray(game.generos) ? game.generos.join(', ') : '', filters.search) ||
           textMatch(Array.isArray(game.tags) ? game.tags.map(getGameTagLabel).join(', ') : '', filters.search) ||
           textMatch(getGameModes(game).map(getGameModeLabel).join(', '), filters.search);
@@ -319,7 +320,7 @@ export function initCatalog(allGames: CatalogGame[]): void {
             (isCompletedStatus(filters.estado)
               ? isCompletedStatus(game.estado)
               : normalizeStatus(game.estado) === normalizeStatus(filters.estado))) &&
-          textMatch(game.launcher, filters.launcher) &&
+          textMatch(getGameLaunchers(game).join(', '), filters.launcher) &&
           textMatch(game.plataforma, filters.plataforma) &&
           matchesTagFilter(game, filters.tag) &&
           (filters.precio ? getPriceFilterBucket(game) === filters.precio : true) &&
@@ -477,11 +478,10 @@ export function initCatalog(allGames: CatalogGame[]): void {
         node.querySelector('[data-title]')!.textContent = formatValue(game.titulo);
 
         const kickerPlatform = formatValue(game.plataforma, '');
-        const kickerLauncher = formatValue(game.launcher, '');
         const platformBadgesEl = node.querySelector('[data-platform-badges]')!;
 
         if (kickerPlatform) platformBadgesEl.appendChild(createGamePill('platform', game.plataforma));
-        if (kickerLauncher) platformBadgesEl.appendChild(createGamePill('launcher', game.launcher));
+        for (const launcher of getGameLaunchers(game)) platformBadgesEl.appendChild(createGamePill('launcher', launcher));
 
         const supportParts: string[] = [];
         if (game.lanzamiento != null && game.lanzamiento !== '')
@@ -533,7 +533,8 @@ export function initCatalog(allGames: CatalogGame[]): void {
 
       const rowStatus = rowNode.querySelector('[data-row-estado]') as HTMLElement;
       updateGamePill(rowStatus, 'status', game.estado);
-      updateGamePill(rowNode.querySelector('[data-row-launcher]') as HTMLElement, 'launcher', game.launcher, formatValue(game.launcher, 'Sin launcher'));
+      const launcherCell = rowNode.querySelector('[data-row-launcher]') as HTMLElement;
+      launcherCell.replaceChildren(...getGameLaunchers(game).map(launcher => createGamePill('launcher', launcher)));
       updateGamePill(rowNode.querySelector('[data-row-plataforma]') as HTMLElement, 'platform', game.plataforma);
 
       (rowNode.querySelector('[data-row-horas]') as HTMLElement).textContent =

@@ -1,6 +1,7 @@
 import type { LocalGame } from './local-games';
 import { slugifyGameTitle } from './local-games';
 import { getGameGenres } from './game-genres';
+import { getTotalGameHours } from './game-hours.mjs';
 
 export type RouletteGame = Pick<
   LocalGame,
@@ -9,6 +10,7 @@ export type RouletteGame = Pick<
   | 'launcher'
   | 'plataforma'
   | 'horas'
+  | 'horas_por_launcher'
   | 'hltb'
   | 'generos'
   | 'tags'
@@ -28,7 +30,8 @@ export function toRouletteGame(game: LocalGame): RouletteGame {
     estado: game.estado,
     launcher: game.launcher,
     plataforma: game.plataforma,
-    horas: game.horas,
+    horas: getTotalGameHours(game),
+    horas_por_launcher: game.horas_por_launcher,
     hltb: game.hltb,
     generos: getGameGenres(game.generos),
     tags: game.tags,

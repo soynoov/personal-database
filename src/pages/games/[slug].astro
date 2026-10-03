@@ -6,6 +6,7 @@ import GameDetailGoldenAtmosphere from '../../components/game-detail/GameDetailG
 import GameDetailTopbar from '../../components/game-detail/GameDetailTopbar.astro';
 import GameDetailNav from '../../components/game-detail/GameDetailNav.astro';
 import GameDetailHours from '../../components/game-detail/GameDetailHours.astro';
+import { getGameHourEntries, getGameLaunchers } from '../../lib/game-hours.mjs';
 import GameDetailFinance from '../../components/game-detail/GameDetailFinance.astro';
 import GameDetailCompetitive from '../../components/game-detail/GameDetailCompetitive.astro';
 import GameDetailStats from '../../components/game-detail/GameDetailStats.astro';
@@ -53,7 +54,8 @@ const formatCompactDate = (value: unknown) => {
 };
 
 const isRecurring = normalizeStatus(game.estado) === 'recurrente';
-const isSteam = normalizeStatus(game.launcher) === 'steam';
+const gameLaunchers = getGameLaunchers(game);
+const isSteam = gameLaunchers.some(launcher => normalizeStatus(launcher) === 'steam');
 
 const gameModes = getGameModes(game);
 const publicModes = gameModes.filter(mode => mode !== 'transmision');
@@ -171,7 +173,7 @@ const metadataGroups = [
         className: 'detail-item-steam-cards', progress: steamCardsProgress, kind: 'cards' as const,
         state: isSteam ? (steamCardsProgress === null ? 'empty' as const : steamCardsProgress >= 100 ? 'complete' as const : 'default' as const) : 'not-applicable' as const,
       },
-      { label: 'Launcher', value: formatValue(game.launcher, 'Sin launcher'), state: game.launcher ? 'default' as const : 'empty' as const },
+      { label: 'Launchers', value: gameLaunchers.join(' · ') || 'Sin launcher', values: gameLaunchers, state: gameLaunchers.length ? 'default' as const : 'empty' as const },
       { label: 'Plataforma', value: formatValue(game.plataforma), state: game.plataforma ? 'default' as const : 'empty' as const },
       ...(personalPreferences.length ? [{ label: 'Mis preferencias', value: personalPreferences.join(', '), values: personalPreferences, className: 'detail-item-preferences' }] : []),
     ],
@@ -206,6 +208,7 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
       heroCoverStyle={heroCoverStyle}
       status={formatValue(game.estado)}
       launcher={formatValue(game.launcher, 'Sin launcher')}
+      launchers={gameLaunchers.length ? gameLaunchers : ['Sin launcher']}
       platform={formatValue(game.plataforma)}
       tagBadges={heroBadges}
       goldenCompletionLabel={goldenCompletionLabel}
@@ -214,6 +217,7 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
 
     <section class="hero-analysis-grid" aria-label="Análisis de juego">
       <GameDetailHours
+        hourEntries={getGameHourEntries(game)}
         slug={slug}
         metrics={valueMetrics}
         hltbBreakdown={hltbBreakdown}
@@ -248,6 +252,7 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
       metadataGroups={metadataGroups}
       systemItems={systemItems}
       isSteam={isSteam}
+      hourLaunchers={game.horas_por_launcher ? getGameHourEntries(game).map(entry => entry.launcher) : undefined}
       editValues={{
         launcher: game.launcher,
         plataforma: game.plataforma,

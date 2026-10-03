@@ -2,6 +2,7 @@ import type { LocalGame } from './local-games';
 import { slugifyGameTitle } from './local-games';
 import { isCompletedStatus, normalizeStatus } from './game-status';
 import { getGameGenres } from './game-genres';
+import { getGameLaunchers, getTotalGameHours } from './game-hours.mjs';
 import {
   getGameValueMetrics,
   getRecordedBaseSpend,
@@ -64,10 +65,10 @@ export type YearRecap = {
 const toRef = (game: LocalGame, precioAtribuido: number | null): RecapGameRef => ({
   titulo: game.titulo,
   slug: slugifyGameTitle(game.titulo),
-  horas: game.horas ?? null,
+  horas: getTotalGameHours(game),
   fecha_inicio: game.fecha_inicio,
   fecha_fin: game.fecha_fin,
-  launcher: game.launcher,
+  launcher: getGameLaunchers(game).join(' · ') || null,
   generos: getGameGenres(game.generos),
   precioAtribuido,
   precioEstimado: false,
@@ -86,14 +87,16 @@ export function getYearRecap(games: LocalGame[], year: number): YearRecap {
   let horasAtribuidas = 0;
 
   iniciadosRaw.forEach((game) => {
-    const hours = Number(game.horas ?? 0);
+    const hours = Number(getTotalGameHours(game) ?? 0);
     const validHours = Number.isFinite(hours) ? hours : 0;
     horasAtribuidas += validHours;
     const month = monthOf(game.fecha_inicio);
     if (month) monthly[month - 1].horas += validHours;
     getGameGenres(game.generos).forEach((genre) => genreCounts.set(genre, (genreCounts.get(genre) ?? 0) + 1));
-    const launcher = game.launcher ?? '(sin launcher)';
-    launcherCounts.set(launcher, (launcherCounts.get(launcher) ?? 0) + 1);
+    const launchers = getGameLaunchers(game);
+    for (const launcher of launchers.length ? launchers : ['(sin launcher)']) {
+      launcherCounts.set(launcher, (launcherCounts.get(launcher) ?? 0) + 1);
+    }
     const base = getRecordedBaseSpend(game);
     const micro = getRecordedMicrotransactionSpend(game);
     iniciados.push(toRef(game, base === null && micro === 0 ? null : (base ?? 0) + micro));

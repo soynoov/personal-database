@@ -1059,7 +1059,17 @@
     "estado": "Terminado",
     "launcher": "Epic Games",
     "plataforma": "PC",
-    "horas": 342.4,
+    "horas": 424.7,
+    "horas_por_launcher": [
+      {
+        "launcher": "Epic Games",
+        "minutos": 20544
+      },
+      {
+        "launcher": "Steam",
+        "minutos": 4938
+      }
+    ],
     "fecha_inicio": null,
     "fecha_fin": null,
     "logros": {
@@ -5393,9 +5403,19 @@
   {
     "titulo": "Zenless Zone Zero",
     "estado": "Recurrente",
-    "launcher": "HoYoPlay",
+    "launcher": "Epic Games",
     "plataforma": "PC",
-    "horas": null,
+    "horas": 143.01666666666668,
+    "horas_por_launcher": [
+      {
+        "launcher": "Epic Games",
+        "minutos": 5503
+      },
+      {
+        "launcher": "Steam",
+        "minutos": 3078
+      }
+    ],
     "fecha_inicio": null,
     "fecha_fin": null,
     "logros": {

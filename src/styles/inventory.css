@@ -1,5 +1,9 @@
 @import './theme.css';
 
+@layer components {
+  .inventory-launchers { display: flex; flex-wrap: wrap; gap: .3rem; }
+}
+
 /* ================================================================
    inventory.css — tabla de inventario
    ================================================================ */

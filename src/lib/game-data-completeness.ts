@@ -4,6 +4,7 @@ import { hasGameTag } from './game-tags';
 import type { LocalGame } from './local-games';
 import { slugifyGameTitle } from './local-games';
 import { getReviewProgress, isCommunityCriterionApplicable } from './game-reviews';
+import { getGameHourEntries, getGameLaunchers, getTotalGameHours } from './game-hours.mjs';
 
 export type DataEditor = 'status' | 'technical' | 'hours' | 'finance' | 'review';
 export type DataGapCategory = 'copia' | 'actividad' | 'compra' | 'valoracion';
@@ -68,12 +69,12 @@ function getGaps(game: LocalGame) {
   };
 
   if (!hasText(game.estado)) add('estado', 'Estado', 'copia', 'status');
-  if (!hasText(game.launcher)) add('launcher', 'Launcher', 'copia', 'technical');
+  if (!getGameLaunchers(game).length) add('launcher', 'Launcher', 'copia', 'technical');
   if (!hasText(game.plataforma)) add('plataforma', 'Plataforma', 'copia', 'technical');
 
   if (PLAYED_STATUSES.has(status)) {
     applicableFields += 2;
-    if (!hasNumber(game.horas)) add('horas', 'Horas jugadas', 'actividad', 'hours');
+    if (!hasNumber(getTotalGameHours(game)) || getGameHourEntries(game).some(entry => entry.minutos === null)) add('horas', 'Horas jugadas', 'actividad', 'hours');
     if (!hasText(game.fecha_inicio)) add('fecha_inicio', 'Fecha de inicio', 'actividad', 'hours');
   }
 

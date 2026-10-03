@@ -15,6 +15,7 @@ interface Props {
   heroCoverStyle: string;
   status: string;
   launcher: string;
+  launchers?: string[];
   platform: string;
   tagBadges: Array<{ value: string; label: string }>;
   goldenCompletionLabel?: string | null;
@@ -26,6 +27,7 @@ const {
   heroCoverStyle,
   status,
   launcher,
+  launchers = [launcher],
   platform,
   tagBadges,
   goldenCompletionLabel = null,
@@ -53,7 +55,7 @@ const {
     <div class="badges game-page-badges" role="group" aria-label="Información del juego">
       <div class="game-hero-badge-row">
         <GamePill kind="status" value={status} />
-        <GamePill kind="launcher" value={launcher} />
+        {launchers.map(value => <GamePill kind="launcher" {value} />)}
         <GamePill kind="platform" value={platform} />
       </div>
       {(goldenCompletionLabel || tagBadges.length > 0) && (

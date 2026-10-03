@@ -1,4 +1,5 @@
 import { readChartTheme, readCssColors } from './chart-theme';
+import { getGameLaunchers } from '../lib/game-hours.mjs';
 import { buildGameCoverUrl, buildGameHeroUrl } from '../lib/game-cover-url';
 import { gameHasMode } from '../lib/game-modes';
 import { normalizeStatus } from '../lib/game-status';
@@ -380,7 +381,7 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
       (!tag || hasGameTag(game.tags, tag)) &&
       (!genre || game.generos?.some((item) => normalizeText(item) === genre)) &&
       (!platform || normalizeText(game.plataforma) === platform) &&
-      (!launcher || normalizeText(game.launcher) === launcher),
+      (!launcher || getGameLaunchers(game).some(name => normalizeText(name) === launcher)),
     );
 
     pool = new Set(matches.map((game) => game.slug));
@@ -429,7 +430,7 @@ export function initRoulette(games: RouletteGame[], defaultSlugs: string[]) {
     status.textContent = winner.estado || 'Sin estado';
     status.dataset.status = normalizeStatus(winner.estado);
     getElement<HTMLElement>('roulette-winner-genres').textContent = winner.generos?.slice(0, 3).join(' · ') || 'Sin género';
-    getElement<HTMLElement>('roulette-winner-launcher').textContent = winner.launcher || 'Sin launcher';
+    getElement<HTMLElement>('roulette-winner-launcher').textContent = getGameLaunchers(winner).join(' · ') || 'Sin launcher';
     getElement<HTMLElement>('roulette-winner-hltb').textContent = formatHltb(winner.hltb);
     const winnerLink = getElement<HTMLAnchorElement>('roulette-winner-link');
     winnerLink.href = `/games/${winner.slug}/#game-info`;

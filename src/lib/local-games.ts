@@ -11,6 +11,7 @@ import historicGameCreationDates from "../data/game-created-at.json";
 import { migrateGameReview } from './review-migration';
 import { removePersonalNotes } from './game-personal-notes.mjs';
 import type { GameCritique } from './review-types';
+import { getGameLaunchers, getTotalGameHours, withComputedHours, type LauncherHours } from './game-hours.mjs';
 export type { GameCritique } from './review-types';
 
 export type LocalGame = {
@@ -23,6 +24,8 @@ export type LocalGame = {
   launcher: string | null;
   plataforma: string | null;
   horas: number | null;
+  /** Contadores acumulados independientes. `horas` es su suma, nunca otro contador. */
+  horas_por_launcher?: LauncherHours[] | null;
   /** Indica que `horas` es una aproximación y no un registro del launcher. */
   horas_estimadas?: boolean | null;
   dificultad?: string | null;
@@ -117,7 +120,7 @@ function applyGameDataMigrations(games: LocalGame[]) {
       ? normalizeGameModes([...(game.modos ?? []), 'transmision'])
       : game.modos;
     const migratedGame = {
-      ...game,
+      ...withComputedHours(game),
       creado_en: game.creado_en ?? historicCreationByTitle[game.titulo] ?? null,
       ...(hadLegacyStreamingTag ? { tags, modos } : {}),
     };
@@ -177,7 +180,7 @@ export async function readGames() {
  * incluido en el deploy. El ETag evita pisar cambios concurrentes.
  */
 export async function writeGames(games: LocalGame[]) {
-  const cleanGames = removePersonalNotes(games);
+  const cleanGames = removePersonalNotes(games.map(withComputedHours));
   validateGameLibrary(cleanGames);
   const json = `${JSON.stringify(cleanGames, null, 2)}\n`;
 
@@ -242,7 +245,7 @@ export function filterGames(
   return games.filter((game) => {
     const searchMatches =
       containsText(game.titulo, filters.search) ||
-      containsText(game.launcher, filters.search) ||
+      containsText(getGameLaunchers(game).join(', '), filters.search) ||
       containsText(game.generos?.join(", "), filters.search);
 
     return (
@@ -251,7 +254,7 @@ export function filterGames(
         (isCompletedStatus(filters.estado)
           ? isCompletedStatus(game.estado)
           : normalizeStatus(game.estado) === normalizeStatus(filters.estado))) &&
-      containsText(game.launcher, filters.launcher) &&
+      containsText(getGameLaunchers(game).join(', '), filters.launcher) &&
       containsText(game.plataforma, filters.plataforma) &&
       (!filters.modo || gameHasMode(game, filters.modo)) &&
       matchesSoloFilter(game.solo, filters.solo)
@@ -260,6 +263,7 @@ export function filterGames(
 }
 
 export function getUniqueValues(games: LocalGame[], key: keyof LocalGame) {
+  if (key === 'launcher') return [...new Set(games.flatMap(getGameLaunchers))].sort((a, b) => a.localeCompare(b, 'es'));
   return [...new Set(games.map((game) => game[key]).filter(Boolean).map(String))].sort((a, b) =>
     a.localeCompare(b, "es"),
   );
@@ -273,11 +277,13 @@ export function getStats(games: LocalGame[]) {
 
   for (const game of games) {
     const estado = game.estado ?? "(sin estado)";
-    const launcher = game.launcher ?? "(sin launcher)";
+    const gameLaunchers = getGameLaunchers(game);
 
     estados.set(estado, (estados.get(estado) ?? 0) + 1);
-    launchers.set(launcher, (launchers.get(launcher) ?? 0) + 1);
-    horas += Number(game.horas ?? 0);
+    for (const launcher of gameLaunchers.length ? gameLaunchers : ['(sin launcher)']) {
+      launchers.set(launcher, (launchers.get(launcher) ?? 0) + 1);
+    }
+    horas += Number(getTotalGameHours(game) ?? 0);
 
     if (isCompletedStatus(estado)) {
       terminados++;

@@ -2,6 +2,9 @@
 import '../../styles/game-detail/shared.css';
 import '../../styles/game-detail/hours.css';
 import '../../styles/game-detail/edit.css';
+import '../../styles/game-detail/launcher-hours.css';
+import type { LauncherHours } from '../../lib/game-hours.mjs';
+import LauncherHourRow from './LauncherHourRow.astro';
 import { formatHoursDuration, type GameValueMetrics } from '../../lib/game-finance';
 import FormCheckbox from '../FormCheckbox.astro';
 import GameDetailHoursGoal from './GameDetailHoursGoal.astro';
@@ -16,6 +19,7 @@ import targetIcon from '@tabler/icons/outline/target-arrow.svg?url';
 
 interface Props {
   slug: string;
+  hourEntries: LauncherHours[];
   metrics: GameValueMetrics;
   hltbBreakdown: { main: number | null; mainPlus: number | null; completionist: number | null };
   period: { startLabel: string; endLabel: string; elapsedDays: number | null };
@@ -23,7 +27,7 @@ interface Props {
   isRecurring?: boolean;
 }
 
-const { slug, metrics, hltbBreakdown, period, editValues, isRecurring = false } = Astro.props;
+const { slug, hourEntries, metrics, hltbBreakdown, period, editValues, isRecurring = false } = Astro.props;
 const progress = Math.max(0, Math.min(100, metrics.hltbProgressPercent ?? 0));
 const hltbReferences = metrics.showHltbTarget ? [
   { label: 'Historia', value: hltbBreakdown.main },
@@ -71,7 +75,7 @@ const hltbState = !metrics.showHltbTarget
     <article class:list={['value-kpi', 'value-kpi-primary', metrics.realHours === null && 'is-null']}>
       <span class="value-kpi-icon"><TablerIcon src={clockIcon} /></span>
       <div class="value-kpi-copy">
-        <span>{editValues.horas_estimadas ? 'Horas estimadas' : 'Horas reales'}</span>
+        <span>{editValues.horas_estimadas ? 'Horas estimadas' : hourEntries.length > 1 ? 'Total registrado' : 'Horas reales'}</span>
         <strong>{metrics.realHours === null ? 'Sin registrar' : `${editValues.horas_estimadas ? '≈' : ''}${formatHoursDuration(metrics.realHours)}`}</strong>
       </div>
     </article>
@@ -123,6 +127,11 @@ const hltbState = !metrics.showHltbTarget
 
   </div>
 
+  {hourEntries.length > 1 && <dl class="launcher-hours-breakdown" aria-label="Horas por launcher">
+    {hourEntries.map(entry => <div><dt>{entry.launcher}</dt><dd>{entry.minutos === null ? 'Sin registrar' : formatHoursDuration(entry.minutos / 60)}</dd></div>)}
+  </dl>}
+  {hourEntries.length > 1 && hourEntries.some(entry => entry.minutos === null) && <p class="launcher-hours-help">Total parcial: hay launchers sin horas registradas.</p>}
+
   <div class:list={["hours-secondary-grid", !hasHltbBreakdown && "is-goal-only"]}>
     <GameDetailHoursGoal metrics={metrics} estimated={editValues.horas_estimadas} />
     {hasHltbBreakdown && (
@@ -141,11 +150,13 @@ const hltbState = !metrics.showHltbTarget
       <button class="edit-dialog-close" id="hours-edit-close" type="button" aria-label="Cerrar">×</button>
     </div>
     <p class="edit-dialog-error" id="hours-edit-error" hidden></p>
-    <form id="hours-edit-form" data-slug={slug} data-recurring={isRecurring ? 'true' : 'false'}>
-      <div class="edit-field">
-        <label for="hours-edit-value">Horas jugadas</label>
-        <input id="hours-edit-value" name="horas" type="number" step="0.01" min="0" value={editValues.horas ?? ''} />
-      </div>
+    <form id="hours-edit-form" data-slug={slug} data-hours-base={JSON.stringify(hourEntries)} data-recurring={isRecurring ? 'true' : 'false'}>
+      <div id="hours-launcher-rows">{hourEntries.map(entry => <LauncherHourRow {entry} />)}</div>
+      <template id="hours-launcher-template"><LauncherHourRow /></template>
+      <datalist id="hours-launchers"><option value="Steam" /><option value="Epic Games" /><option value="HoYoPlay" /><option value="GOG" /><option value="Xbox" /><option value="Battle.net" /></datalist>
+      <button class="edit-dialog-cancel" type="button" id="hours-launcher-add">Añadir launcher</button>
+      <p class="launcher-hours-help">Introduce el contador acumulado de cada launcher. Deja ambos campos vacíos si no lo conoces. El total se calcula automáticamente.</p>
+      <div class="launcher-hours-total"><span>Total registrado</span><strong id="hours-edit-total">{formatHoursDuration(metrics.realHours)}</strong></div>
       <div class="edit-field edit-field-checkbox">
         <FormCheckbox inputId="hours-edit-estimated" name="horas_estimadas" value="true" checked={editValues.horas_estimadas}>
           Estas horas son una estimación
@@ -175,45 +186,6 @@ const hltbState = !metrics.showHltbTarget
 </dialog>
 
 <script>
-  import { editorFetch } from '../../scripts/editor-auth';
-  import { finishGameEdit } from '../../scripts/game-edit-feedback';
-
-  const trigger = document.getElementById('hours-edit-trigger');
-  const dialog = document.getElementById('hours-edit-dialog');
-  const form = document.getElementById('hours-edit-form');
-  const errorBox = document.getElementById('hours-edit-error');
-  const submit = document.getElementById('hours-edit-submit');
-  if (trigger instanceof HTMLButtonElement && dialog instanceof HTMLDialogElement && form instanceof HTMLFormElement && errorBox instanceof HTMLElement && submit instanceof HTMLButtonElement) {
-    const close = () => dialog.close();
-    trigger.addEventListener('click', () => { errorBox.hidden = true; dialog.showModal(); });
-    document.getElementById('hours-edit-close')?.addEventListener('click', close);
-    document.getElementById('hours-edit-cancel')?.addEventListener('click', close);
-    dialog.addEventListener('click', (event) => { if (event.target === dialog) close(); });
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const data = new FormData(form);
-      submit.disabled = true;
-      submit.textContent = 'Guardando…';
-      try {
-        const response = await editorFetch(`/api/games/${form.dataset.slug ?? ''}/edit`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            horas: data.get('horas'),
-            horas_estimadas: data.has('horas_estimadas'),
-            fecha_inicio: data.get('fecha_inicio'),
-            ...(form.dataset.recurring === 'true' ? {} : { fecha_fin: data.get('fecha_fin') }),
-          }),
-        });
-        const result = await response.json().catch(() => ({}));
-        if (!response.ok || !result.ok) throw new Error(result.error || `HTTP ${response.status}`);
-        finishGameEdit('hours', 'Horas y periodo actualizados');
-      } catch (error) {
-        errorBox.textContent = error instanceof Error ? error.message : 'No se pudo guardar.';
-        errorBox.hidden = false;
-        submit.disabled = false;
-        submit.textContent = 'Guardar cambios';
-      }
-    });
-  }
+  import { initGameHoursEditor } from '../../scripts/game-hours-editor';
+  initGameHoursEditor();
 </script>

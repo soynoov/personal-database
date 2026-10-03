@@ -95,6 +95,36 @@ servidor crea una cookie HttpOnly y SameSite durante 30 dias; la contraseña no
 se almacena en el navegador. Las escrituras usan ETag para rechazar cambios
 simultaneos en lugar de sobrescribirlos silenciosamente.
 
+## Horas por launcher
+
+Una ficha puede tener varios contadores acumulados independientes en
+`horas_por_launcher`: `[{ "launcher": "Steam", "minutos": 3078 }]`.
+Se guardan minutos enteros; `null` significa desconocido y `0` significa cero
+registrado. `horas` se deriva de la suma de los contadores conocidos. El editor
+muestra total parcial cuando falta alguno. No hay que registrar sesiones que
+dos launchers hayan contado a la vez en ambos contadores.
+
+Los juegos antiguos conservan su precisión y se presentan como un contador de
+su launcher actual. Al guardar el desglose se convierten a minutos. Los filtros
+reconocen todos los launchers; las estadísticas filtradas por launcher usan solo
+sus horas, mientras la amortización de la ficha utiliza el total.
+
+El editor permite añadir/quitar launchers y editar horas y minutos. Rechaza un
+guardado si los contadores cambiaron desde que se abrió la ficha. Para importar
+un contador mediante la API autenticada, envía
+`{ "horas_launcher": { "launcher": "Steam", "minutos": 3078 } }` al endpoint de
+edición: reemplaza el acumulado de Steam y conserva los demás contadores. La
+sincronización de metadatos de Steam **no importa horas automáticamente**.
+
+Para incorporar el desglose local de una ficha existente en Blob por primera
+vez (sin sobrescribir otros campos ni contadores ya editados online):
+
+```powershell
+node scripts/sync-launcher-hours.mjs "Zenless Zone Zero" "Satisfactory"
+node scripts/sync-launcher-hours.mjs --apply "Zenless Zone Zero" "Satisfactory"
+npm run test:hours
+```
+
 ## Endpoints locales
 
 ```text

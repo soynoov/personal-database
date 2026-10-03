@@ -20,6 +20,7 @@ import xIcon from '@tabler/icons/outline/x.svg?url';
 import { getUniqueValues, readGames } from '../../lib/local-games';
 import { normalizeStatus } from '../../lib/game-status';
 import { getAvailableYears, getDataQuality, getYearRecap } from '../../lib/recap';
+import { getGameLaunchers, scopeGameHoursToLauncher } from '../../lib/game-hours.mjs';
 
 const games = await readGames();
 const estados = getUniqueValues(games, 'estado');
@@ -39,10 +40,10 @@ const hasActiveFilters = Boolean(selectedPlatform || selectedLauncher || selecte
 
 const filteredGames = games.filter((game) => {
   if (selectedPlatform && game.plataforma !== selectedPlatform) return false;
-  if (selectedLauncher && game.launcher !== selectedLauncher) return false;
+  if (selectedLauncher && !getGameLaunchers(game).includes(selectedLauncher)) return false;
   if (selectedStatus && normalizeStatus(game.estado) !== normalizeStatus(selectedStatus)) return false;
   return true;
-});
+}).map(game => scopeGameHoursToLauncher(game, selectedLauncher)!);
 
 const recap = getYearRecap(filteredGames, year);
 const prevRecap = getYearRecap(filteredGames, year - 1);

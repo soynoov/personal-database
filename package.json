@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test:hours": "node scripts/verify-game-hours.mjs",
     "test:reviews": "node scripts/verify-reviews.mjs",
     "test:roulette": "node scripts/verify-roulette.mjs",
     "test:genres": "node scripts/verify-game-genres.mjs",

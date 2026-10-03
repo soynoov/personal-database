@@ -1,5 +1,6 @@
 import { getPurchasedUnits, type LocalGame } from './local-games';
 import { normalizeStatus } from './game-status';
+import { getTotalGameHours } from './game-hours.mjs';
 import { hasGameTag } from './game-tags';
 import {
   getPublishedReview,
@@ -126,8 +127,8 @@ export function getGameValueMetrics(game: LocalGame): GameValueMetrics {
   // A positive known cost supports a provisional goal. Unknown costs never
   // establish a free acquisition or a completed zero-cost goal.
   const canCalculateUsage = dataComplete || recordedSpend > 0;
-  const parsedHours = finiteNonNegative(game.horas);
-  const realHours = game.horas === null || game.horas === undefined ? null : parsedHours;
+  const totalHours = getTotalGameHours(game);
+  const realHours = totalHours === null ? null : finiteNonNegative(totalHours);
 
   const includeCommunity = isCommunityCriterionApplicable(game);
   const publishedReview = getPublishedReview(game.critica, game.nota, includeCommunity);

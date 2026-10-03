@@ -1,4 +1,5 @@
 ---
+import { getGameLaunchers } from '../lib/game-hours.mjs';
 import type { CatalogGame } from '../lib/catalog-game';
 import { getGoldenCompletionKind } from '../lib/game-achievements';
 import { buildGameCoverUrl } from '../lib/game-cover-url';
@@ -53,9 +54,7 @@ const support = [game.lanzamiento, game.generos?.slice(0, 2).join(', ')].filter(
             {game.plataforma && (
               <GamePill kind="platform" value={game.plataforma} />
             )}
-            {game.launcher && (
-              <GamePill kind="launcher" value={game.launcher} />
-            )}
+            {getGameLaunchers(game).map(launcher => <GamePill kind="launcher" value={launcher} />)}
           </div>
         </div>
       </div>

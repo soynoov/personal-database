@@ -5,6 +5,7 @@ import { getGameTagLabel, hasGameTag, normalizeGameTag } from "./game-tags";
 import { gameHasMode } from "./game-modes";
 import { matchesGoldenFilter } from "./game-achievements";
 import { getGameGenres } from "./game-genres";
+import { getGameLaunchers, getTotalGameHours } from './game-hours.mjs';
 import {
   getGameProfitabilityStatus,
   type GameProfitabilityStatus,
@@ -17,6 +18,7 @@ export type CatalogGame = Pick<
   | "launcher"
   | "plataforma"
   | "horas"
+  | "horas_por_launcher"
   | "horas_estimadas"
   | "generos"
   | "tags"
@@ -47,7 +49,8 @@ export function toCatalogGame(game: LocalGame): CatalogGame {
     estado: game.estado,
     launcher: game.launcher,
     plataforma: game.plataforma,
-    horas: game.horas,
+    horas: getTotalGameHours(game),
+    horas_por_launcher: game.horas_por_launcher,
     horas_estimadas: game.horas_estimadas,
     generos: getGameGenres(game.generos),
     tags: game.tags,
@@ -95,7 +98,7 @@ export function filterCatalogGames(games: CatalogGame[], filters: CatalogFilters
   return games.filter((game) => {
     const searchMatches =
       containsText(game.titulo, filters.search) ||
-      containsText(game.launcher, filters.search) ||
+      containsText(getGameLaunchers(game).join(', '), filters.search) ||
       containsText(game.generos?.join(", "), filters.search) ||
       containsText(game.tags?.map(getGameTagLabel).join(", "), filters.search);
 
@@ -105,7 +108,7 @@ export function filterCatalogGames(games: CatalogGame[], filters: CatalogFilters
         (isCompletedStatus(filters.estado)
           ? isCompletedStatus(game.estado)
           : normalizeStatus(game.estado) === normalizeStatus(filters.estado))) &&
-      containsText(game.launcher, filters.launcher) &&
+      containsText(getGameLaunchers(game).join(', '), filters.launcher) &&
       containsText(game.plataforma, filters.plataforma) &&
       matchesTag(game, filters.tag) &&
       (!filters.modo || gameHasMode(game, filters.modo)) &&

@@ -1,0 +1,17 @@
+@layer components {
+  .launcher-hours-breakdown { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1rem 0; }
+  .launcher-hours-breakdown > div { display: flex; align-items: baseline; gap: .7rem; padding: .65rem .8rem; border: 1px solid var(--line); border-radius: .65rem; }
+  .launcher-hours-breakdown dt { color: var(--muted); font-size: .8rem; }
+  .launcher-hours-breakdown dd { margin: 0; font-variant-numeric: tabular-nums; font-weight: 600; }
+  .launcher-hour-row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) 2rem; align-items: end; gap: .5rem; margin-bottom: .8rem; }
+  .launcher-hour-row label { display: grid; gap: .35rem; font-size: .8rem; min-width: 0; }
+  .launcher-hour-row input { width: 100%; min-width: 0; }
+  .launcher-hour-row button { height: 2.5rem; border: 1px solid var(--line); border-radius: .5rem; color: var(--muted); background: transparent; cursor: pointer; }
+  .launcher-hour-row button:disabled { opacity: .35; cursor: default; }
+  .launcher-hours-total { display: flex; justify-content: space-between; gap: 1rem; margin: 1rem 0; font-size: .9rem; }
+  .launcher-hours-help { font-size: .8rem; color: var(--muted); margin: .6rem 0 1rem; }
+  @media (max-width: 480px) {
+    .launcher-hour-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 2rem; }
+    .launcher-hour-row label:first-child { grid-column: 1 / -1; }
+  }
+}

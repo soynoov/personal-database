@@ -1,3 +1,5 @@
+import { parseLauncherHours } from './game-hours.mjs';
+
 /** The same stable identity used by the game's URL. */
 export function slugifyGameTitle(title) {
   return String(title)
@@ -26,6 +28,7 @@ export function validateGameLibrary(games, source = 'La biblioteca') {
     const slug = slugifyGameTitle(game.titulo);
     if (slugs.has(slug)) throw new Error(`${source} contiene un título duplicado: ${game.titulo}.`);
     slugs.add(slug);
+    if (game.horas_por_launcher != null) parseLauncherHours(game.horas_por_launcher);
   }
   return games;
 }

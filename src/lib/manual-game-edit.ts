@@ -6,6 +6,7 @@ import type { GameCritique, LocalGame } from './local-games';
 import { normalizePurchaseStores } from './purchase-stores';
 import { normalizeStatus } from './game-status';
 import { removePersonalNotes } from './game-personal-notes.mjs';
+import { getGameHourEntries, parseLauncherHours, updateLauncherMinutes, withComputedHours } from './game-hours.mjs';
 
 type PatchError = { ok: false; status: number; error: string };
 type PatchSuccess = { ok: true; game: LocalGame };
@@ -103,7 +104,31 @@ export function applyManualGamePatch(
   if (body.estado !== undefined) updated.estado = toNullableString(body.estado) ?? game.estado;
   if (body.launcher !== undefined) updated.launcher = toNullableString(body.launcher);
   if (body.plataforma !== undefined) updated.plataforma = toNullableString(body.plataforma);
-  if (body.horas !== undefined) updated.horas = toNullableNumber(body.horas);
+  const hourInputs = ['horas', 'horas_por_launcher', 'horas_launcher'].filter(key => body[key] !== undefined);
+  if (hourInputs.length > 1) return { ok: false, status: 400, error: 'Envía un único tipo de edición de horas.' };
+  try {
+    if (body.horas_por_launcher !== undefined) {
+      if (body.horas_por_launcher_base !== undefined && JSON.stringify(parseLauncherHours(body.horas_por_launcher_base)) !== JSON.stringify(getGameHourEntries(game))) {
+        return { ok: false, status: 409, error: 'Los contadores cambiaron mientras editabas. Recarga la ficha antes de guardar.' };
+      }
+      updated.horas_por_launcher = parseLauncherHours(body.horas_por_launcher);
+    } else if (body.horas_launcher !== undefined) {
+      const [entry] = parseLauncherHours([body.horas_launcher]);
+      Object.assign(updated, updateLauncherMinutes(updated, entry.launcher, entry.minutos));
+    } else if (body.horas !== undefined) {
+      if ((game.horas_por_launcher?.length ?? 0) > 1) {
+        return { ok: false, status: 409, error: 'Este juego tiene horas por launcher. Recarga la ficha y edita su desglose.' };
+      }
+      const hours = toNullableNumber(body.horas);
+      if (String(body.horas ?? '').trim() && hours === null) throw new Error('Las horas deben ser un número válido.');
+      if (hours !== null && hours < 0) throw new Error('Las horas no pueden ser negativas.');
+      if (game.horas_por_launcher?.length) {
+        updated.horas_por_launcher = parseLauncherHours([{ launcher: game.horas_por_launcher[0].launcher, minutos: hours === null ? null : Math.round(hours * 60) }]);
+      } else updated.horas = hours;
+    }
+  } catch (error) {
+    return { ok: false, status: 400, error: error instanceof Error ? error.message : 'Desglose de horas inválido.' };
+  }
   if (body.horas_estimadas !== undefined) updated.horas_estimadas = toNullableBoolean(body.horas_estimadas);
   if (body.dificultad !== undefined) updated.dificultad = toNullableString(body.dificultad);
   if (body.tamano !== undefined) updated.tamano = toNullableString(body.tamano);
@@ -274,5 +299,8 @@ export function applyManualGamePatch(
     updated.nota = getPublishedReview(updated.critica, updated.nota, isCommunityCriterionApplicable(updated)).score;
   }
   updated.actualizado_en = new Date().toISOString();
-  return { ok: true, game: removePersonalNotes(updated) };
+  if (body.launcher !== undefined && updated.horas_por_launcher && !getGameHourEntries(updated).some(entry => entry.launcher.toLowerCase() === (updated.launcher ?? 'Sin launcher').toLowerCase())) {
+    return { ok: false, status: 400, error: 'El launcher principal debe estar en el desglose. Añade o renombra launchers desde Horas.' };
+  }
+  return { ok: true, game: removePersonalNotes(withComputedHours(updated)) };
 }
