@@ -545,12 +545,12 @@
     0 0 0 1px rgba(214, 102, 255, 0.14),
     0 8px 20px rgba(214, 102, 255, 0.18);
 }
-.legend-chip-pending.is-active {
-  border-color: rgba(245, 197, 24, 0.7);
-  background: rgba(245, 197, 24, 0.18);
+.legend-chip-wishlist.is-active {
+  border-color: rgba(247, 99, 140, 0.7);
+  background: rgba(247, 99, 140, 0.18);
   box-shadow:
-    0 0 0 1px rgba(245, 197, 24, 0.14),
-    0 8px 20px rgba(245, 197, 24, 0.18);
+    0 0 0 1px rgba(247, 99, 140, 0.14),
+    0 8px 20px rgba(247, 99, 140, 0.18);
 }
 .legend-chip-free.is-active {
   border-color: rgba(90, 208, 255, 0.7);

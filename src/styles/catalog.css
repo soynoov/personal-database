@@ -293,8 +293,8 @@
   --legend-accent: var(--status-playing-fg);
 }
 
-.legend-chip-pending {
-  --legend-accent: var(--status-pending-fg);
+.legend-chip-wishlist {
+  --legend-accent: var(--status-wishlist-fg);
 }
 
 .legend-chip-free {
