@@ -1814,6 +1814,119 @@
   },
   {
     "titulo": "Sid Meier's Civilization VI",
+    "dlcs": {
+      "total": 9,
+      "items": [
+        {
+          "titulo": "Sid Meier's Civilization VI: Australia Civilization & Scenario Pack",
+          "launcher": "Epic Games",
+          "precio_pagado": 0,
+          "fecha_adquisicion": null,
+          "tamano": "42.06 MB",
+          "steam_appid": 512034,
+          "cover_source": "Steam appdetails API",
+          "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/512034/header.jpg?t=1613788699",
+          "precio_actual": null,
+          "precio_salida": null
+        },
+        {
+          "titulo": "Sid Meier's Civilization VI: Aztec DLC",
+          "launcher": "Epic Games",
+          "precio_pagado": 0,
+          "fecha_adquisicion": null,
+          "tamano": "233 B",
+          "steam_appid": null,
+          "cover_source": "Steam base game artwork",
+          "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/289070/header.jpg?t=1784651829",
+          "precio_actual": null,
+          "precio_salida": null
+        },
+        {
+          "titulo": "Sid Meier's Civilization VI: Gathering Storm",
+          "launcher": "Epic Games",
+          "precio_pagado": 0,
+          "fecha_adquisicion": null,
+          "tamano": "3.92 GB",
+          "steam_appid": 947510,
+          "cover_source": "Steam appdetails API",
+          "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/947510/header.jpg?t=1734134756",
+          "precio_actual": null,
+          "precio_salida": null
+        },
+        {
+          "titulo": "Sid Meier's Civilization VI: Khmer and Indonesia Civilization & Scenario Pack",
+          "launcher": "Epic Games",
+          "precio_pagado": 0,
+          "fecha_adquisicion": null,
+          "tamano": "166.72 MB",
+          "steam_appid": 645401,
+          "cover_source": "Steam appdetails API",
+          "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/645401/header.jpg?t=1613788691",
+          "precio_actual": null,
+          "precio_salida": null
+        },
+        {
+          "titulo": "Sid Meier's Civilization VI: Nubia Civilization & Scenario Pack",
+          "launcher": "Epic Games",
+          "precio_pagado": 0,
+          "fecha_adquisicion": null,
+          "tamano": "53.57 MB",
+          "steam_appid": 645400,
+          "cover_source": "Steam appdetails API",
+          "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/645400/header.jpg?t=1613788693",
+          "precio_actual": null,
+          "precio_salida": null
+        },
+        {
+          "titulo": "Sid Meier's Civilization VI: Persia and Macedon Civilization & Scenario Pack",
+          "launcher": "Epic Games",
+          "precio_pagado": 0,
+          "fecha_adquisicion": null,
+          "tamano": "2.67 MB",
+          "steam_appid": 512035,
+          "cover_source": "Steam appdetails API",
+          "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/512035/header.jpg?t=1613788696",
+          "precio_actual": null,
+          "precio_salida": null
+        },
+        {
+          "titulo": "Sid Meier's Civilization VI: Poland Civilization & Scenario Pack",
+          "launcher": "Epic Games",
+          "precio_pagado": 0,
+          "fecha_adquisicion": null,
+          "tamano": "43.73 MB",
+          "steam_appid": 512033,
+          "cover_source": "Steam appdetails API",
+          "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/512033/header.jpg?t=1613788702",
+          "precio_actual": null,
+          "precio_salida": null
+        },
+        {
+          "titulo": "Sid Meier's Civilization VI: Rise and Fall",
+          "launcher": "Epic Games",
+          "precio_pagado": 0,
+          "fecha_adquisicion": null,
+          "tamano": "3.31 GB",
+          "steam_appid": 645402,
+          "cover_source": "Steam appdetails API",
+          "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/645402/header.jpg?t=1734133062",
+          "precio_actual": null,
+          "precio_salida": null
+        },
+        {
+          "titulo": "Sid Meier's Civilization VI: Vikings Scenario Pack",
+          "launcher": "Epic Games",
+          "precio_pagado": 0,
+          "fecha_adquisicion": null,
+          "tamano": "78.13 MB",
+          "steam_appid": 512032,
+          "cover_source": "Steam appdetails API",
+          "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/512032/header.jpg?t=1613788705",
+          "precio_actual": null,
+          "precio_salida": null
+        }
+      ]
+    },
     "estado": "Terminado",
     "launcher": "Epic Games",
     "plataforma": "PC",

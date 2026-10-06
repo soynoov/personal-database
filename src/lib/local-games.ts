@@ -84,6 +84,8 @@ export type LocalGame = {
     total?: number | null;
     items?: Array<{
       titulo: string;
+      /** Plataforma en la que se adquirió este DLC, independiente de sus metadatos Steam. */
+      launcher?: string | null;
       cover_source?: string | null;
       cover_url?: string | null;
       steam_appid?: number | null;
