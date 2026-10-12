@@ -153,7 +153,6 @@ const hltbState = !metrics.showHltbTarget
     <form id="hours-edit-form" data-slug={slug} data-hours-base={JSON.stringify(hourEntries)} data-recurring={isRecurring ? 'true' : 'false'}>
       <div id="hours-launcher-rows">{hourEntries.map(entry => <LauncherHourRow {entry} />)}</div>
       <template id="hours-launcher-template"><LauncherHourRow /></template>
-      <datalist id="hours-launchers"><option value="Steam" /><option value="Epic Games" /><option value="HoYoPlay" /><option value="GOG" /><option value="Xbox" /><option value="Battle.net" /></datalist>
       <button class="edit-dialog-cancel" type="button" id="hours-launcher-add">Añadir contador</button>
       <p class="launcher-hours-help">Copia las horas decimales de Steam (837.3 = 837 h 18 min) o las horas y minutos de Epic. Para una beta, repite Steam y añade la etiqueta Playtest. Deja el tiempo vacío si no lo conoces. No sumes sesiones que ya estén incluidas en otro contador.</p>
       <div class="launcher-hours-total"><span>Total registrado</span><strong id="hours-edit-total">{formatHoursDuration(metrics.realHours)}</strong></div>

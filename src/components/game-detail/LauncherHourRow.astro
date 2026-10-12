@@ -4,9 +4,15 @@ import { formatMinuteDuration, minutesToDecimalHours } from '../../lib/hour-inpu
 interface Props { entry?: LauncherHours; }
 const { entry = { launcher: '', minutos: null } } = Astro.props;
 const decimal = entry.launcher.trim().toLowerCase() === 'steam';
+const launchers = ['Steam', 'Epic Games', 'PS', 'Pirata'];
+const hasLegacyLauncher = Boolean(entry.launcher) && !launchers.includes(entry.launcher);
 ---
 <div class="launcher-hour-row edit-field" data-hour-row data-input-format={decimal ? 'decimal' : 'duration'}>
-  <label class="hour-launcher-field">Launcher<input data-hour-launcher aria-label="Launcher" list="hours-launchers" maxlength="80" required value={entry.launcher} /></label>
+  <label class="hour-launcher-field">Launcher<select data-hour-launcher aria-label="Launcher" required>
+    <option value="" disabled selected={!entry.launcher}>Selecciona un launcher</option>
+    {launchers.map(launcher => <option value={launcher} selected={launcher === entry.launcher}>{launcher}</option>)}
+    {hasLegacyLauncher && <option value={entry.launcher} selected>{entry.launcher} (actual)</option>}
+  </select></label>
   <label class="hour-label-field">Contador (opcional)<input data-hour-label aria-label="Contador" maxlength="80" placeholder="Juego principal, Playtest…" value={entry.etiqueta ?? ''} /></label>
   <button type="button" data-remove-hour aria-label="Quitar contador">×</button>
   <label class="hour-format-field">Formato<select data-hour-format aria-label="Formato de horas"><option value="decimal" selected={decimal}>Horas decimales · Steam</option><option value="duration" selected={!decimal}>Horas y minutos · Epic</option></select></label>

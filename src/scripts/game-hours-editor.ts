@@ -14,7 +14,7 @@ export function initGameHoursEditor() {
   const total = document.getElementById('hours-edit-total');
   if (!(trigger instanceof HTMLButtonElement && dialog instanceof HTMLDialogElement && form instanceof HTMLFormElement && errorBox instanceof HTMLElement && submit instanceof HTMLButtonElement && rows instanceof HTMLElement && template instanceof HTMLTemplateElement)) return;
   const originalRows = rows.innerHTML;
-  const input = (row: Element, selector: string) => row.querySelector(selector) as HTMLInputElement;
+  const input = (row: Element, selector: string) => row.querySelector(selector) as HTMLInputElement | HTMLSelectElement;
   const readMinutes = (row: HTMLElement) => row.dataset.inputFormat === 'decimal'
     ? decimalHoursToMinutes(input(row, '[data-hour-decimal]').value)
     : hoursMinutesToMinutes(input(row, '[data-hour-hours]').value, input(row, '[data-hour-minutes]').value);
@@ -96,7 +96,7 @@ export function initGameHoursEditor() {
   document.getElementById('hours-launcher-add')?.addEventListener('click', () => {
     if (rows.childElementCount >= 30) return;
     rows.append(template.content.cloneNode(true));
-    (rows.lastElementChild?.querySelector('input') as HTMLInputElement)?.focus();
+    (rows.lastElementChild?.querySelector('[data-hour-launcher]') as HTMLSelectElement)?.focus();
     preview();
   });
   form.addEventListener('submit', async event => {
