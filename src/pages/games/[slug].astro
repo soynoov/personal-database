@@ -252,7 +252,7 @@ const purchaseStores = normalizePurchaseStores(game.tiendas_compra);
       metadataGroups={metadataGroups}
       systemItems={systemItems}
       isSteam={isSteam}
-      hourLaunchers={game.horas_por_launcher ? getGameHourEntries(game).map(entry => entry.launcher) : undefined}
+      hourLaunchers={game.horas_por_launcher ? [...new Set(getGameHourEntries(game).map(entry => entry.launcher))] : undefined}
       editValues={{
         launcher: game.launcher,
         plataforma: game.plataforma,

@@ -1,10 +1,29 @@
 import assert from 'node:assert/strict';
 import { createServer } from 'vite';
-import { getGameHourEntries, getTotalGameHours, parseLauncherHours, scopeGameHoursToLauncher, updateLauncherMinutes, withComputedHours } from '../src/lib/game-hours.mjs';
+import { getGameHourEntries, getGameLaunchers, getTotalGameHours, parseLauncherHours, scopeGameHoursToLauncher, updateLauncherMinutes, withComputedHours } from '../src/lib/game-hours.mjs';
+import { decimalHoursToMinutes, hoursMinutesToMinutes, minutesToDecimalHours } from '../src/lib/hour-input.mjs';
 import { validateGameLibrary } from '../src/lib/game-library.mjs';
 
 const base = { titulo: 'Prueba', estado: 'Jugando', launcher: 'Epic Games', plataforma: 'PC', horas: 91 + 43 / 60, fecha_inicio: '2026-01-01', fecha_fin: null, precio_pagado: 10 };
 const zzz = updateLauncherMinutes(updateLauncherMinutes(base, 'Epic Games', 5503), 'Steam', 3078);
+assert.equal(decimalHoursToMinutes('837.3'), 50238);
+assert.equal(decimalHoursToMinutes('837,3'), 50238);
+assert.equal(decimalHoursToMinutes('13.5'), 810);
+assert.equal(hoursMinutesToMinutes('837', '18'), 50238);
+assert.equal(hoursMinutesToMinutes('837', '3'), 50223, 'Three minutes are not 0.3 hours');
+assert.equal(decimalHoursToMinutes(''), null);
+assert.equal(decimalHoursToMinutes('0'), 0);
+assert.equal(hoursMinutesToMinutes('', ''), null);
+assert.equal(hoursMinutesToMinutes('', '30'), 30);
+for (const value of ['-1', 'Infinity', '837.3.4', '1e3', '3 min', '1,000.5', '1000001']) assert.throws(() => decimalHoursToMinutes(value));
+for (const [h, m] of [['13.5', ''], ['1', '60'], ['-1', '5'], ['1', '3.5'], ['1000000', '1']]) assert.throws(() => hoursMinutesToMinutes(h, m));
+for (const minutes of [0, 1, 3, 59, 61, 50238, 51048, 59999999]) assert.equal(decimalHoursToMinutes(minutesToDecimalHours(minutes)), minutes);
+const rivals = updateLauncherMinutes(updateLauncherMinutes({ ...base, launcher: 'Steam', horas: 0 }, 'Steam', 50238), 'Steam', 810, 'Playtest (beta cerrada)');
+assert.equal(getTotalGameHours(rivals), 850.8);
+assert.deepEqual(getGameLaunchers(rivals), ['Steam']);
+assert.equal(scopeGameHoursToLauncher(rivals, 'Steam').horas, 850.8);
+assert.equal(updateLauncherMinutes(rivals, 'Steam', 50300).horas_por_launcher[1].minutos, 810, 'Updating main Steam must preserve Playtest');
+assert.throws(() => parseLauncherHours([{ launcher: 'Steam', minutos: 1, etiqueta: 'Playtest' }, { launcher: 'steam', minutos: 2, etiqueta: ' playtest ' }]));
 assert.equal(getTotalGameHours(zzz) * 60, 8581);
 assert.equal(getTotalGameHours(updateLauncherMinutes(zzz, 'Steam', 3138)) * 60, 8641);
 assert.equal(updateLauncherMinutes(zzz, 'Steam', 3138).horas_por_launcher[0].minutos, 5503);
@@ -30,6 +49,9 @@ try {
   const { getYearRecap } = await server.ssrLoadModule('/src/lib/recap.ts');
   assert.equal(getGameValueMetrics({ ...zzz, horas: 1 }).realHours * 60, 8581);
   const updated = applyManualGamePatch(zzz, { horas_launcher: { launcher: 'Steam', minutos: 3138 } });
+  assert.equal(applyManualGamePatch(rivals, { horas_launcher: { launcher: 'Steam', etiqueta: 'Playtest (beta cerrada)', minutos: 900 } }).game.horas_por_launcher[0].minutos, 50238);
+  assert.equal(applyManualGamePatch(rivals, { horas_por_launcher: rivals.horas_por_launcher, horas_por_launcher_base: rivals.horas_por_launcher }).game.horas_por_launcher[1].etiqueta, 'Playtest (beta cerrada)');
+  assert.equal(getStats([rivals]).launchers.Steam, 1);
   assert.equal(updated.ok, true);
   assert.equal(updated.game.horas_por_launcher[0].minutos, 5503);
   assert.equal(updated.game.horas * 60, 8641);
@@ -56,5 +78,6 @@ try {
   for (const [title, minutes] of [['Zenless Zone Zero', 8581], ['Satisfactory', 25482]]) {
     assert.equal(Math.round(games.find(game => game.titulo === title).horas * 60), minutes);
   }
+  assert.equal(games.find(game => game.titulo === 'Marvel Rivals').horas, 850.8);
   console.log('Horas verificadas: totales, legacy, filtros, estadísticas, validación y actualización independiente.');
 } finally { await server.close(); }

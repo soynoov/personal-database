@@ -3,7 +3,7 @@ import '../../styles/game-detail/shared.css';
 import '../../styles/game-detail/hours.css';
 import '../../styles/game-detail/edit.css';
 import '../../styles/game-detail/launcher-hours.css';
-import type { LauncherHours } from '../../lib/game-hours.mjs';
+import { getGameHourEntryLabel, type LauncherHours } from '../../lib/game-hours.mjs';
 import LauncherHourRow from './LauncherHourRow.astro';
 import { formatHoursDuration, type GameValueMetrics } from '../../lib/game-finance';
 import FormCheckbox from '../FormCheckbox.astro';
@@ -128,7 +128,7 @@ const hltbState = !metrics.showHltbTarget
   </div>
 
   {hourEntries.length > 1 && <dl class="launcher-hours-breakdown" aria-label="Horas por launcher">
-    {hourEntries.map(entry => <div><dt>{entry.launcher}</dt><dd>{entry.minutos === null ? 'Sin registrar' : formatHoursDuration(entry.minutos / 60)}</dd></div>)}
+    {hourEntries.map(entry => <div><dt>{getGameHourEntryLabel(entry)}</dt><dd>{entry.minutos === null ? 'Sin registrar' : formatHoursDuration(entry.minutos / 60)}</dd></div>)}
   </dl>}
   {hourEntries.length > 1 && hourEntries.some(entry => entry.minutos === null) && <p class="launcher-hours-help">Total parcial: hay launchers sin horas registradas.</p>}
 
@@ -154,8 +154,8 @@ const hltbState = !metrics.showHltbTarget
       <div id="hours-launcher-rows">{hourEntries.map(entry => <LauncherHourRow {entry} />)}</div>
       <template id="hours-launcher-template"><LauncherHourRow /></template>
       <datalist id="hours-launchers"><option value="Steam" /><option value="Epic Games" /><option value="HoYoPlay" /><option value="GOG" /><option value="Xbox" /><option value="Battle.net" /></datalist>
-      <button class="edit-dialog-cancel" type="button" id="hours-launcher-add">Añadir launcher</button>
-      <p class="launcher-hours-help">Introduce el contador acumulado de cada launcher. Deja ambos campos vacíos si no lo conoces. El total se calcula automáticamente.</p>
+      <button class="edit-dialog-cancel" type="button" id="hours-launcher-add">Añadir contador</button>
+      <p class="launcher-hours-help">Copia las horas decimales de Steam (837.3 = 837 h 18 min) o las horas y minutos de Epic. Para una beta, repite Steam y añade la etiqueta Playtest. Deja el tiempo vacío si no lo conoces. No sumes sesiones que ya estén incluidas en otro contador.</p>
       <div class="launcher-hours-total"><span>Total registrado</span><strong id="hours-edit-total">{formatHoursDuration(metrics.realHours)}</strong></div>
       <div class="edit-field edit-field-checkbox">
         <FormCheckbox inputId="hours-edit-estimated" name="horas_estimadas" value="true" checked={editValues.horas_estimadas}>

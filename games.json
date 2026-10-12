@@ -839,7 +839,11 @@
     "estado": "Recurrente",
     "launcher": "Steam",
     "plataforma": "PC",
-    "horas": 800.6,
+    "horas": 850.8,
+    "horas_por_launcher": [
+      { "launcher": "Steam", "minutos": 50238 },
+      { "launcher": "Steam", "etiqueta": "Playtest (beta cerrada)", "minutos": 810 }
+    ],
     "fecha_inicio": null,
     "fecha_fin": null,
     "logros": {

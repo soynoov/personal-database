@@ -1,11 +1,19 @@
 ---
 import type { LauncherHours } from '../../lib/game-hours.mjs';
+import { formatMinuteDuration, minutesToDecimalHours } from '../../lib/hour-input.mjs';
 interface Props { entry?: LauncherHours; }
 const { entry = { launcher: '', minutos: null } } = Astro.props;
+const decimal = entry.launcher.trim().toLowerCase() === 'steam';
 ---
-<div class="launcher-hour-row edit-field" data-hour-row>
-  <label>Launcher<input data-hour-launcher aria-label="Launcher" list="hours-launchers" maxlength="80" required value={entry.launcher} /></label>
-  <label>Horas<input data-hour-hours aria-label="Horas" type="number" min="0" max="1000000" step="1" value={entry.minutos === null ? '' : Math.floor(entry.minutos / 60)} /></label>
-  <label>Minutos<input data-hour-minutes aria-label="Minutos" type="number" min="0" max="59" step="1" value={entry.minutos === null ? '' : entry.minutos % 60} /></label>
+<div class="launcher-hour-row edit-field" data-hour-row data-input-format={decimal ? 'decimal' : 'duration'}>
+  <label class="hour-launcher-field">Launcher<input data-hour-launcher aria-label="Launcher" list="hours-launchers" maxlength="80" required value={entry.launcher} /></label>
+  <label class="hour-label-field">Contador (opcional)<input data-hour-label aria-label="Contador" maxlength="80" placeholder="Juego principal, Playtest…" value={entry.etiqueta ?? ''} /></label>
   <button type="button" data-remove-hour aria-label="Quitar contador">×</button>
+  <label class="hour-format-field">Formato<select data-hour-format aria-label="Formato de horas"><option value="decimal" selected={decimal}>Horas decimales · Steam</option><option value="duration" selected={!decimal}>Horas y minutos · Epic</option></select></label>
+  <label class="hour-decimal-field" hidden={!decimal}>Horas decimales<input data-hour-decimal aria-label="Horas decimales" type="text" inputmode="decimal" placeholder="Ej. 837.3" value={minutesToDecimalHours(entry.minutos)} disabled={!decimal} /></label>
+  <div class="hour-duration-fields" hidden={decimal}>
+    <label>Horas<input data-hour-hours aria-label="Horas" type="number" min="0" max="1000000" step="1" value={entry.minutos === null ? '' : Math.floor(entry.minutos / 60)} disabled={decimal} /></label>
+    <label>Minutos<input data-hour-minutes aria-label="Minutos" type="number" min="0" max="59" step="1" value={entry.minutos === null ? '' : entry.minutos % 60} disabled={decimal} /></label>
+  </div>
+  <small class="hour-conversion" data-hour-conversion>{formatMinuteDuration(entry.minutos)}</small>
 </div>

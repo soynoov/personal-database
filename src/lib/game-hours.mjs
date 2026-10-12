@@ -3,7 +3,7 @@ const key = value => String(value ?? '').trim().toLocaleLowerCase('es');
 
 export function parseLauncherHours(value) {
   if (!Array.isArray(value) || !value.length || value.length > 30) {
-    throw new Error('Registra entre 1 y 30 launchers.');
+    throw new Error('Registra entre 1 y 30 contadores.');
   }
   const seen = new Set();
   return value.map(entry => {
@@ -11,13 +11,17 @@ export function parseLauncherHours(value) {
       throw new Error('Cada contador necesita un nombre de launcher.');
     }
     const launcher = entry.launcher.trim();
-    if (seen.has(key(launcher))) throw new Error('No repitas el mismo launcher.');
-    seen.add(key(launcher));
+    if (entry.etiqueta != null && typeof entry.etiqueta !== 'string') throw new Error('La etiqueta del contador debe ser texto.');
+    const etiqueta = entry.etiqueta?.trim() || '';
+    if (etiqueta.length > 80) throw new Error('La etiqueta del contador es demasiado larga.');
+    const identity = `${key(launcher)}\0${key(etiqueta)}`;
+    if (seen.has(identity)) throw new Error('No repitas el mismo launcher y contador. Usa una etiqueta para distinguir un Playtest.');
+    seen.add(identity);
     const minutos = entry.minutos;
     if (minutos !== null && (!Number.isSafeInteger(minutos) || minutos < 0 || minutos > 60_000_000)) {
       throw new Error('Las horas deben expresarse en minutos enteros no negativos.');
     }
-    return { launcher, minutos };
+    return { launcher, minutos, ...(etiqueta ? { etiqueta } : {}) };
   });
 }
 
@@ -33,7 +37,7 @@ export function getGameLaunchers(game) {
   const names = game.horas_por_launcher != null
     ? getGameHourEntries(game).map(entry => entry.launcher)
     : [game.launcher];
-  return [...new Set(names.filter(name => name && key(name) !== 'sin launcher'))];
+  return [...new Map(names.filter(name => name && key(name) !== 'sin launcher').map(name => [key(name), name])).values()];
 }
 
 export function getTotalGameHours(game) {
@@ -51,13 +55,17 @@ export function withComputedHours(game) {
 }
 
 /** Used by imports: replace one cumulative counter, never add it to its previous value. */
-export function updateLauncherMinutes(game, launcher, minutos) {
-  const [next] = parseLauncherHours([{ launcher, minutos }]);
+export function updateLauncherMinutes(game, launcher, minutos, etiqueta) {
+  const [next] = parseLauncherHours([{ launcher, minutos, etiqueta }]);
   const entries = getGameHourEntries(game);
-  const index = entries.findIndex(entry => key(entry.launcher) === key(next.launcher));
+  const index = entries.findIndex(entry => key(entry.launcher) === key(next.launcher) && key(entry.etiqueta) === key(next.etiqueta));
   if (index < 0) entries.push(next);
   else entries[index] = next;
   return withComputedHours({ ...game, horas_por_launcher: entries });
+}
+
+export function getGameHourEntryLabel(entry) {
+  return entry.etiqueta ? `${entry.launcher} · ${entry.etiqueta}` : entry.launcher;
 }
 
 export function scopeGameHoursToLauncher(game, launcher) {

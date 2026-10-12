@@ -1,4 +1,5 @@
 import { parseLauncherHours } from '../lib/game-hours.mjs';
+import { decimalHoursToMinutes, hoursMinutesToMinutes, minutesToDecimalHours, formatMinuteDuration } from '../lib/hour-input.mjs';
 import { editorFetch } from './editor-auth';
 import { finishGameEdit } from './game-edit-feedback';
 
@@ -13,22 +14,52 @@ export function initGameHoursEditor() {
   const total = document.getElementById('hours-edit-total');
   if (!(trigger instanceof HTMLButtonElement && dialog instanceof HTMLDialogElement && form instanceof HTMLFormElement && errorBox instanceof HTMLElement && submit instanceof HTMLButtonElement && rows instanceof HTMLElement && template instanceof HTMLTemplateElement)) return;
   const originalRows = rows.innerHTML;
-  const entries = () => parseLauncherHours(Array.from(rows.querySelectorAll('[data-hour-row]')).map(row => {
-    const launcher = (row.querySelector('[data-hour-launcher]') as HTMLInputElement).value;
-    const hours = (row.querySelector('[data-hour-hours]') as HTMLInputElement).value;
-    const minutes = (row.querySelector('[data-hour-minutes]') as HTMLInputElement).value;
-    return { launcher, minutos: !hours && !minutes ? null : Number(hours || 0) * 60 + Number(minutes || 0) };
-  }));
+  const input = (row: Element, selector: string) => row.querySelector(selector) as HTMLInputElement;
+  const readMinutes = (row: HTMLElement) => row.dataset.inputFormat === 'decimal'
+    ? decimalHoursToMinutes(input(row, '[data-hour-decimal]').value)
+    : hoursMinutesToMinutes(input(row, '[data-hour-hours]').value, input(row, '[data-hour-minutes]').value);
+  const entries = () => parseLauncherHours(Array.from(rows.querySelectorAll<HTMLElement>('[data-hour-row]')).map(row => ({
+    launcher: input(row, '[data-hour-launcher]').value,
+    etiqueta: input(row, '[data-hour-label]').value,
+    minutos: readMinutes(row),
+  })));
+  const switchFormat = (row: HTMLElement, next: string) => {
+    const select = row.querySelector('[data-hour-format]') as HTMLSelectElement;
+    try {
+      const minutes = readMinutes(row);
+      input(row, '[data-hour-decimal]').value = minutesToDecimalHours(minutes);
+      input(row, '[data-hour-hours]').value = minutes === null ? '' : String(Math.floor(minutes / 60));
+      input(row, '[data-hour-minutes]').value = minutes === null ? '' : String(minutes % 60);
+      row.dataset.inputFormat = next;
+      select.value = next;
+      (row.querySelector('.hour-decimal-field') as HTMLElement).hidden = next !== 'decimal';
+      (row.querySelector('.hour-duration-fields') as HTMLElement).hidden = next === 'decimal';
+      input(row, '[data-hour-decimal]').disabled = next !== 'decimal';
+      input(row, '[data-hour-hours]').disabled = next === 'decimal';
+      input(row, '[data-hour-minutes]').disabled = next === 'decimal';
+    } catch {
+      // Do not erase an invalid edit when switching formats. Correct it first.
+      select.value = row.dataset.inputFormat ?? 'duration';
+    }
+  };
   const preview = () => {
     if (!total) return;
-    const numbers = Array.from(rows.querySelectorAll('[data-hour-row]')).map(row => {
-      const hours = (row.querySelector('[data-hour-hours]') as HTMLInputElement).value;
-      const minutes = (row.querySelector('[data-hour-minutes]') as HTMLInputElement).value;
-      return !hours && !minutes ? null : Number(hours || 0) * 60 + Number(minutes || 0);
+    let invalid = false;
+    const numbers = Array.from(rows.querySelectorAll<HTMLElement>('[data-hour-row]')).map(row => {
+      const conversion = row.querySelector('[data-hour-conversion]') as HTMLElement;
+      try {
+        const minutes = readMinutes(row);
+        conversion.textContent = `${row.dataset.inputFormat === 'decimal' && minutes !== null ? 'Equivale a ' : ''}${formatMinuteDuration(minutes)}`;
+        return minutes;
+      } catch (error) {
+        invalid = true;
+        conversion.textContent = error instanceof Error ? error.message : 'Formato de horas inválido.';
+        return null;
+      }
     });
     const known = numbers.filter((value): value is number => value !== null && Number.isFinite(value));
     const sum = known.reduce((value, next) => value + next, 0);
-    total.textContent = known.length ? `${Math.floor(sum / 60)} h ${sum % 60} min${known.length < numbers.length ? ' (parcial)' : ''}` : 'Sin registrar';
+    total.textContent = invalid ? 'Revisa el formato de horas' : known.length ? `${formatMinuteDuration(sum)}${known.length < numbers.length ? ' (parcial)' : ''}` : 'Sin registrar';
     rows.querySelectorAll<HTMLButtonElement>('[data-remove-hour]').forEach(button => button.disabled = numbers.length <= 1);
   };
   trigger.addEventListener('click', () => {
@@ -43,6 +74,18 @@ export function initGameHoursEditor() {
   document.getElementById('hours-edit-cancel')?.addEventListener('click', close);
   dialog.addEventListener('click', event => { if (event.target === dialog) close(); });
   rows.addEventListener('input', preview);
+  rows.addEventListener('change', event => {
+    if (!(event.target instanceof Element)) return;
+    const row = event.target.closest<HTMLElement>('[data-hour-row]');
+    if (!row) return;
+    if (event.target.matches('[data-hour-format]')) {
+      row.dataset.formatManual = 'true';
+      switchFormat(row, (event.target as HTMLSelectElement).value);
+    } else if (event.target.matches('[data-hour-launcher]') && row.dataset.formatManual !== 'true') {
+      switchFormat(row, input(row, '[data-hour-launcher]').value.trim().toLowerCase() === 'steam' ? 'decimal' : 'duration');
+    }
+    preview();
+  });
   rows.addEventListener('click', event => {
     if (!(event.target instanceof Element)) return;
     if (event.target.closest('[data-remove-hour]') && rows.childElementCount > 1) {

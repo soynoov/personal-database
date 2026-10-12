@@ -99,6 +99,12 @@ simultaneos en lugar de sobrescribirlos silenciosamente.
 
 Una ficha puede tener varios contadores acumulados independientes en
 `horas_por_launcher`: `[{ "launcher": "Steam", "minutos": 3078 }]`.
+El editor admite **horas decimales** (Steam: `837.3` o `837,3` → 837 h 18 min)
+y **horas + minutos** (Epic). Cambiar de formato convierte el mismo tiempo, no
+lo reinterpreta. La conversión se muestra al lado del campo.
+Un Playtest o una beta se registra bajo el mismo launcher con una `etiqueta`
+distinta, por ejemplo `{ "launcher": "Steam", "etiqueta": "Playtest", "minutos": 810 }`.
+Las estadísticas de Steam incluyen ambos contadores sin inventar otro launcher.
 Se guardan minutos enteros; `null` significa desconocido y `0` significa cero
 registrado. `horas` se deriva de la suma de los contadores conocidos. El editor
 muestra total parcial cuando falta alguno. No hay que registrar sesiones que
@@ -109,11 +115,13 @@ su launcher actual. Al guardar el desglose se convierten a minutos. Los filtros
 reconocen todos los launchers; las estadísticas filtradas por launcher usan solo
 sus horas, mientras la amortización de la ficha utiliza el total.
 
-El editor permite añadir/quitar launchers y editar horas y minutos. Rechaza un
+El editor permite añadir/quitar contadores y editar cualquiera de los dos formatos. Rechaza un
 guardado si los contadores cambiaron desde que se abrió la ficha. Para importar
 un contador mediante la API autenticada, envía
 `{ "horas_launcher": { "launcher": "Steam", "minutos": 3078 } }` al endpoint de
-edición: reemplaza el acumulado de Steam y conserva los demás contadores. La
+edición: reemplaza el acumulado de Steam y conserva los demás contadores.
+La propiedad opcional `etiqueta` permite actualizar solo un Playtest, conservando
+el contador principal y los demás. La
 sincronización de metadatos de Steam **no importa horas automáticamente**.
 
 Para incorporar el desglose local de una ficha existente en Blob por primera

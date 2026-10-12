@@ -114,7 +114,7 @@ export function applyManualGamePatch(
       updated.horas_por_launcher = parseLauncherHours(body.horas_por_launcher);
     } else if (body.horas_launcher !== undefined) {
       const [entry] = parseLauncherHours([body.horas_launcher]);
-      Object.assign(updated, updateLauncherMinutes(updated, entry.launcher, entry.minutos));
+      Object.assign(updated, updateLauncherMinutes(updated, entry.launcher, entry.minutos, entry.etiqueta));
     } else if (body.horas !== undefined) {
       if ((game.horas_por_launcher?.length ?? 0) > 1) {
         return { ok: false, status: 409, error: 'Este juego tiene horas por launcher. Recarga la ficha y edita su desglose.' };
@@ -123,7 +123,7 @@ export function applyManualGamePatch(
       if (String(body.horas ?? '').trim() && hours === null) throw new Error('Las horas deben ser un número válido.');
       if (hours !== null && hours < 0) throw new Error('Las horas no pueden ser negativas.');
       if (game.horas_por_launcher?.length) {
-        updated.horas_por_launcher = parseLauncherHours([{ launcher: game.horas_por_launcher[0].launcher, minutos: hours === null ? null : Math.round(hours * 60) }]);
+        updated.horas_por_launcher = parseLauncherHours([{ ...game.horas_por_launcher[0], minutos: hours === null ? null : Math.round(hours * 60) }]);
       } else updated.horas = hours;
     }
   } catch (error) {
