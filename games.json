@@ -1,5 +1,54 @@
 [
   {
+    "titulo": "ReStory: Chill Electronics Repairs",
+    "creado_en": "2026-10-12T17:26:36Z",
+    "estado": null,
+    "launcher": "Steam",
+    "plataforma": "PC",
+    "horas": 1.9166666666666667,
+    "horas_por_launcher": [
+      {
+        "launcher": "Steam",
+        "etiqueta": "Playtest",
+        "minutos": 115
+      }
+    ],
+    "horas_estimadas": false,
+    "fecha_inicio": null,
+    "fecha_fin": null,
+    "logros": {
+      "actual": null,
+      "total": null
+    },
+    "nota": null,
+    "lanzamiento": 2026,
+    "modos": [
+      "solitario"
+    ],
+    "solo": true,
+    "hltb": null,
+    "cover_source": "Steam appdetails API",
+    "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3812600/e99dc0e496e4e39fc6f80053ddfd4d5e38fc0125/header.jpg?t=1790169325",
+    "steam_appid": 3812600,
+    "generos": [
+      "Indie",
+      "Simulación"
+    ],
+    "precio_pagado": null,
+    "precio_actual": null,
+    "precio_salida": null,
+    "tags": [],
+    "desarrolladoras": [
+      "Mandragora"
+    ],
+    "editoras": [
+      "tinyBuild"
+    ],
+    "fuentes_datos": [
+      "https://store.steampowered.com/app/3812600/"
+    ]
+  },
+  {
     "titulo": "Friday the 13th: The Game",
     "creado_en": "2026-09-12T10:59:28Z",
     "estado": "Abandonado",

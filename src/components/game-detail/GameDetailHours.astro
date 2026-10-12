@@ -127,7 +127,7 @@ const hltbState = !metrics.showHltbTarget
 
   </div>
 
-  {hourEntries.length > 1 && <dl class="launcher-hours-breakdown" aria-label="Horas por launcher">
+  {(hourEntries.length > 1 || hourEntries.some(entry => entry.etiqueta)) && <dl class="launcher-hours-breakdown" aria-label="Horas por launcher">
     {hourEntries.map(entry => <div><dt>{getGameHourEntryLabel(entry)}</dt><dd>{entry.minutos === null ? 'Sin registrar' : formatHoursDuration(entry.minutos / 60)}</dd></div>)}
   </dl>}
   {hourEntries.length > 1 && hourEntries.some(entry => entry.minutos === null) && <p class="launcher-hours-help">Total parcial: hay launchers sin horas registradas.</p>}
