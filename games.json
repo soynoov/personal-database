@@ -1,5 +1,14 @@
 [
   {
+    "titulo": "Dice Hoarder",
+    "creado_en": "2026-11-19T22:02:00Z",
+    "estado": "Terminado",
+    "horas": 5,
+    "fecha_inicio": "2026-11-19",
+    "fecha_fin": "2026-11-19",
+    "logros": { "actual": 11, "total": 16 }
+  },
+  {
     "titulo": "ReStory: Chill Electronics Repairs",
     "creado_en": "2026-10-12T17:26:36Z",
     "estado": null,
