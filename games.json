@@ -6,7 +6,10 @@
     "horas": 5,
     "fecha_inicio": "2026-11-19",
     "fecha_fin": "2026-11-19",
-    "logros": { "actual": 11, "total": 16 }
+    "logros": { "actual": 11, "total": 16 },
+    "precio_pagado": 0,
+    "cover_source": "Steam appdetails API",
+    "cover_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3687090/af03fa8cadd860459554ac85a2e47c47190c9f90/header.jpg?t=1794973412"
   },
   {
     "titulo": "ReStory: Chill Electronics Repairs",
